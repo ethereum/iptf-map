@@ -42,3 +42,7 @@ When adding new content:
 - Keep content concise and actionable
 - Cross-reference related patterns, approaches, and use cases
 - Ensure no confidential business information is included
+
+## Copyright
+
+Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
