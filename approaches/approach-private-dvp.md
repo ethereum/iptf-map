@@ -1,88 +1,177 @@
-# Approach: Atomic Settlement with Privacy L2s
+# Approach: Private Delivery-versus-Payment (DvP)
 
-Related to:
+**Use Case Links:**
 
-- [private-rwa-tokenization](../use-cases/private-rwa-tokenization.md)
-- [private-bonds](../use-cases/private-bonds.md)
-- [private-derivatives](../use-cases/private-derivatives.md)
+- [Private Bonds](../use-cases/private-bonds.md)
+- [Private RWA Tokenization](../use-cases/private-rwa-tokenization.md)
+
+**High-level goal:** Enable atomic delivery-versus-payment settlement with confidential amounts and counterparties while maintaining regulatory auditability and eliminating settlement risk.
 
 ## Overview
 
-Institutions need **both**:
+### Problem Interaction
 
-- **Atomic DvP**: prevent partial settlement risk across cash and asset legs.
-- **Privacy guarantees**: hide balances, identities, and trades while still enabling compliance.
+Traditional DvP requires coordinating two fundamental challenges:
 
-On their own:
+1. **Settlement Risk**: Ensuring atomic delivery of assets against payment without counterparty default
+2. **Information Leakage**: Preventing competitors from observing trading strategies through on-chain analysis
 
-- **ERC-7573** → ensures atomic settlement semantics (safe DvP).
-- **Private L2s** (Aztec, Aleo, fhEVM, etc.) → ensure private execution and state.
+These problems interact because atomic settlement typically requires transparent on-chain coordination, while privacy mechanisms often break the synchronization needed for true DvP. The solution requires cryptographic techniques that enable verifiable atomic execution on private state.
 
-Combined:
+### Key Constraints
 
-- Institutions can issue and trade programmable private assets while settling **atomically within an L2**, or with **practical atomicity across L1 ↔ L2** using ERC-7573.
+- Must maintain atomicity (true atomicity within single network, conditional atomicity across networks)
+- Cross-network settlement between different asset types and chains
+- Regulatory oversight requiring selective disclosure capabilities
+- Integration with existing custodial and settlement infrastructure
+- Daily settlement cycles with economically viable costs
 
-**Constraints**:
+### TLDR for Different Personas
 
-- Aligning standards across L1/L2.
-- Bridging and migration overhead.
-- Regulator/compliance flows add complexity (view keys, ZK audit proofs).
-
----
-
-### TLDR for Personas
-
-- **Business**: Confidential, atomic settlement reduces counterparty + information leakage risk.
-- **Technical**: Combine ERC-7573 settlement flows with private L2 execution environments (Aztec, fhEVM, etc.).
-- **Legal/Compliance**: Selective regulator access possible, but frameworks are not standardized yet.
-
----
+- **Business:** Execute bond trades and asset transfers atomically while hiding volumes and positions from competitors
+- **Technical:** Combine ERC-7573 atomic settlement with privacy L2 execution for confidential but verifiable DvP
+- **Legal:** Maintains regulatory oversight through selective disclosure while protecting proprietary trading information
 
 ## Architecture and Design Choices
 
-- **Settlement**: ERC-7573 handles atomic DvP across cash/asset legs.
-- **Privacy**: Assets live as private notes / encrypted balances in the L2 (ZK or FHE).
-- **Compliance hooks**: Regulator access via ZK proofs, scoped viewing keys, and/or disclosure logs anchored in **EAS**.
-- **Ecosystem**:
-  - Vendors: Aztec, Aleo, Zama/fhEVM, EAS, stablecoin issuers.
-  - Standards: ERC-3643 (eligibility), ERC-7984 (confidential ERC-20), ERC-7573 (DvP), EIP-4844 (blobs for scaling), EAS attestations.
-  - Linked patterns: `pattern-dvp-erc7573.md` · `pattern-private-l2s.md`.
+### Recommended Architecture: Privacy L2 + Atomic Settlement
 
----
+**Primary Pattern:** [ERC-7573 DvP](../patterns/pattern-dvp-erc7573.md)
+**Supporting Patterns:**
+
+- [Private L2s](../patterns/pattern-privacy-l2s.md)
+- [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
+- [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
+- [Shielded ERC-20 Transfers](../patterns/pattern-shielding.md)
+
+#### Core Components:
+
+1. **Atomic Settlement Layer (ERC-7573)**
+
+   - Cross-network settlement coordination
+   - Cryptographic commitment schemes for settlement triggers
+   - Timeout and rollback mechanisms for failed settlements
+   - Support for multi-leg transactions (cash + multiple assets)
+
+2. **Privacy Execution Environment**
+
+   - **Option A:** Privacy L2 (Aztec, Fhenix) with native confidential assets
+   - **Option B:** Shielded pools on L1/L2 with encrypted state
+   - **Option C:** FHE-based confidential contracts (Zama fhEVM)
+
+3. **Cross-Chain Bridge Infrastructure**
+
+   - Secure asset bridging between L1 and privacy L2
+   - State commitment anchoring for finality guarantees
+   - Optimistic or ZK-based bridge verification
+
+4. **Regulatory Compliance Layer**
+
+   - Selective disclosure mechanisms for trade reporting
+   - EAS attestation logging for audit trails
+   - Time-bounded viewing keys for regulatory access
+
+### Vendor Recommendations
+
+**Primary Infrastructure:**
+
+- **Privacy L2:** Aztec Network for shielded asset infrastructure
+- **Atomic Settlement:** Native ERC-7573 implementations with Chainlink ACE for compliance
+- **Stablecoins:** Circle USDC with privacy L2 bridge support
+
+**Alternative Approaches:**
+
+- **FHE Path:** [Zama](../vendors/zama.md) fhEVM for homomorphic DvP computation
+- **Intent-Based:** [Orion Finance](../vendors/orion-finance.md) for institutional portfolio settlement
+
+### Implementation Strategy
+
+**Phase 1: Single-Chain Private DvP**
+
+- Deploy shielded asset contracts via:
+  - **Privacy L2:** Native confidential assets on Aztec/Fhenix
+  - **L1 Shielding:** Railgun-style commitment pools on Ethereum
+  - **L2 Shielding:** Privacy Pools on Polygon/Arbitrum
+- Implement basic ERC-7573 settlement within chosen environment
+- Single-currency bond trading with confidential amounts
+
+**Phase 2: Cross-Chain Atomic Settlement**
+
+- L1 ↔ L2 bridge integration with ERC-7573
+- Multi-currency support (USDC, EURC, tokenized assets)
+- Regulatory disclosure infrastructure
+
+**Phase 3: Multi-Asset Portfolio Settlement**
+
+- Complex DvP with multiple asset legs
+- Integration with traditional settlement systems
+- Advanced privacy features (stealth addresses, etc.)
 
 ## More Details
 
-- **Trade-offs**
+### Trade-offs
 
-  - Platform maturity risks (all private L2s in PoC/pilot).
-  - Bridging complexity for L1 ↔ L2 interoperability.
-  - Unclear governance for regulator access (view keys, proof standards).
-  - Cross-network settlements rely on relayers/finality → not strictly synchronous atomicity.
-  - If realized with an **fhEVM**, additional latency/cost overhead and delayed finality (optimistic rollup).
+**Privacy L2 vs L1 Shielded Pools:**
 
-- **Open Questions**
-  - How to standardize regulator access semantics?
-  - How to manage cross-rollup or multi-L2 settlements?
-  - Can compliance proofs (e.g. EAS attestations) be enforced natively inside private L2s?
+- **L2 Benefits:** Native privacy, lower costs, better UX for private assets
+- **L1 Benefits:** Maximum security, simpler bridge complexity, broader ecosystem
+- **Recommendation:** Privacy L2 for execution with L1 anchoring for critical state
 
----
+**Single-Network vs Cross-Network Atomicity:**
 
-## Example
+- **Single Network:** True atomicity within one blockchain (all-or-nothing in single transaction)
+- **Cross-Network:** Conditional atomicity via ERC-7573 coordination (deterministic settlement with rollback)
+- **Hybrid:** True atomicity within each network, conditional coordination between networks
 
-- Bank A sells **€5m bond** to Bank B.
-- Onchain only shows A↔B counterparties; trade amount hidden.
-- EURC finality on L1 triggers bond settlement on the privacy L2 via ERC-7573.
-- Auditor receives a time-boxed view of Trade #42, with disclosure logged in EAS.
+**FHE vs ZK Privacy:**
 
----
+- **FHE (Zama):** Simpler programming model, higher ongoing costs
+- **ZK (Aztec):** Better cost efficiency, more complex development
+- **Recommendation:** ZK for production scale, FHE for rapid prototyping
+
+### Open Questions
+
+1. **Settlement Finality:** How to handle L1↔L2 finality differences in conditional settlement coordination?
+
+2. **Regulatory Standards:** Standardization of selective disclosure formats across jurisdictions?
+
+3. **Cross-Chain Coordination:** Managing conditional settlement across multiple privacy L2s?
+
+4. **Custodial Integration:** Bridging between on-chain privacy and traditional custody systems?
+
+5. **Liquidity Fragmentation:** Impact of privacy requirements on market depth and price discovery?
+
+### Alternative Approaches Considered
+
+**MPC Coordination**
+
+- Use case: Multi-party settlement with complex privacy requirements
+- Trade-off: Higher complexity vs granular privacy control
+- Pattern: [MPC Custody](../patterns/pattern-mpc-custody.md)
+
+**HTLC-Based (Legacy)**
+
+- Use case: Simple atomic swaps without complex settlement logic
+- Trade-off: Brittleness vs simplicity, being phased out for ERC-7573
+
+## Example Scenarios
+
+### Scenario 1: Private Bond Settlement
+
+- Bank A sells €5M government bond to Bank B
+- Settlement: Bond delivery on Aztec L2, EURC payment on L1
+- Privacy: Trade amount and positions hidden, counterparties visible
+- Compliance: Regulator receives time-bounded viewing key, logged in EAS
+
+### Scenario 2: Multi-Asset Portfolio Transfer
+
+- Asset manager transfers mixed portfolio (bonds + equities) to pension fund
+- Settlement: Atomic delivery of 5 assets against single USD payment
+- Privacy: Portfolio composition and values confidential
+- Compliance: Trade reporting via ZK proofs to regulatory node
 
 ## Links and Notes
 
-- ERC-7573 spec: https://ercs.ethereum.org/ERCS/erc-7573
-- Aztec docs: https://docs.aztec.network/
-- Aleo: https://aleo.org/
-- Zama fhEVM: https://zama.ai/fhevm
-- ERC-3643: https://docs.erc3643.org/erc-3643
-- ERC-7984 (Confidential ERC-20): https://docs.openzeppelin.com/confidential-contracts/0.2/token
-- EIP-4844: https://eips.ethereum.org/EIPS/eip-4844
-- EAS docs: https://easscan.org/docs
+- **Standards:** [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573), [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [EIP-6123](https://eips.ethereum.org/EIPS/eip-6123), [ICMA BDT](../patterns/pattern-icma-bdt-data-model.md), [ISO 20022](../patterns/pattern-private-iso20022.md)
+- **Infrastructure:** [Aztec Network](https://docs.aztec.network/), [Zama fhEVM](https://docs.zama.ai/fhevm)
+- **Related Approaches:** [Private Derivatives](../approaches/approach-private-derivatives.md), [Private Stablecoins](../approaches/approach-shielded-stablecoins.md)
