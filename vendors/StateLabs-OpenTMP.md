@@ -1,6 +1,6 @@
 ## State Labs – OpenTMP LLM (Collaborative Private AI)
 **Type:** Distributed Edge AI Training and Inferences & Privacy Framework for Collaborative AI  
-**Category:** Private AI 
+**Category:** Private LLM AI 
 
 **Description:**  
 OpenTMP LLM enables efficient, secure and privacy-preserving large-model training and inference across distributed environments.  
