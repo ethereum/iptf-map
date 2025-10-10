@@ -1,4 +1,4 @@
-## State Labs – Tx Shield （Private Payment)
+## State Labs – Tx Shield （Private Payments)
 **Type:** Regulated Private Payment Layer/Solution  
 **Category:** Private Payments / Compliance Infrastructure  
 
