@@ -1,0 +1,14 @@
+## State Labs – Tx Shield （Private Payment)
+**Type:** Regulated Private Payment Layer/Solution  
+**Category:** Private Payments / Compliance Infrastructure  
+
+**Description:**  
+Tx Shield is a regulated private payment layer/solution built on MPC-based encryption and threshold key control.  
+Transactions are visible only to the sender and receiver, while regulators can access details through granted audit keys.  
+This architecture preserves institutional privacy and compliance simultaneously, enabling confidential settlement of stablecoins, RWAs, and bonds on-chain, while achieving high performance (~10 k TPS) through optimized MPC execution.
+
+**Tech Stack:**  
+MPC, TSS, Audit-Key Framework, ERC-20 / ERC-3643 Compatibility  
+
+**Website:** https://statelabs.ai  
+**Contact:** joezyx@statelabs.ai | kyle@statelabs.ai
