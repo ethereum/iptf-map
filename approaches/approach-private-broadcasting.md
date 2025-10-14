@@ -28,7 +28,7 @@ These problems interact because traditional broadcasting requires public visibil
 
 ## Architecture and Design Choices
 
-### Two Primary Approaches
+### Primary Approaches
 
 **MEV Protection (OTC Execution):**
 
@@ -42,25 +42,39 @@ These problems interact because traditional broadcasting requires public visibil
 - [SUAVE](../patterns/pattern-pretrade-privacy-shutter-suave.md) for private intent expression
 - Encrypted mempool solutions with threshold decryption
 
+**Private Rollups:**
+
+- Hidden state with encrypted mempool
+- 2 categories:
+  - Shared [Private Rollups](../patterns/pattern-privacy-l2s.md) (Aztec, Fhenix)
+  - Enterprise Rollups: [zkSync Prividium](../vendors/zksync-prividium.md), [EY Nightfall](../vendors/ey-nightfall.md)
+
 ### Recommended Architecture
 
-**Hybrid Model:** OTC execution for large transactions, encrypted broadcasting for smaller operations
+**Tiered Privacy Model:**
+
+- **Large institutional trades:** OTC execution (Renegade, Flashbots) to prevent MEV extraction
+- **Regular operations:** Encrypted mempools (Shutter, SUAVE) for intent privacy
+- **Comprehensive privacy:** Private rollups (Aztec, Prividium) for complete transaction hiding
 
 ## More Details
 
 ### Trade-offs
 
-**OTC vs Encrypted Broadcasting:**
+**OTC vs Encrypted Broadcasting vs Private Rollups:**
 
-- **OTC:** Better privacy, higher complexity, custody integration challenges
-- **Encrypted:** Broader compatibility, timing analysis still possible
+- **OTC:** Better privacy, higher complexity, custody integration challenges, best to avoid MEV extraction
+- **Encrypted:** Broader compatibility, timing analysis still possible, best for hiding intent signals
+- **Private Rollups:** Complete privacy but requires L2 migration, suitable for comprehensive privacy needs
 
 ### Open Questions
 
 1. **Regulatory Acceptance:** How do regulators view private broadcasting vs traditional transparency?
 2. **Market Impact:** Effects on price discovery and market structure?
+3. **Cross-Chain Coordination:** How to maintain privacy when broadcasting across multiple networks?
+4. **Timing Analysis:** Can sophisticated adversaries still extract information from transaction timing patterns?
 
 ## Links and Notes
 
-- **Patterns:** [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-shutter-suave.md)
-- **Vendors:** [Railgun](../vendors/railgun.md), [Flashbots](../vendors/flashbots.md)
+- **Patterns:** [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-shutter-suave.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md)
+- **Vendors:** [Renegade](../vendors/renegade.md), [Flashbots](../vendors/flashbots.md), [Shutter](../vendors/shutter.md)
