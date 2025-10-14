@@ -53,17 +53,16 @@ These problems interact because traditional privacy solutions (like simple encry
    - Daily oracle price inputs (public, signed)
    - ZK circuits proving: `delta = f(notional, price, direction, caps)`
    - Either counterparty can submit valid proofs (first wins)
-   - Maintains ERC-6123 margin and cap enforcement
+   - Privacy-aware wrapper contracts implementing ERC-6123 semantics on encrypted state
 
 3. **Selective Disclosure Layer**
 
    - Regulator view keys for scoped audit access
    - Time-bound, threshold-controlled disclosure
-   - EAS attestation logging for compliance trails
 
 4. **Conditional Settlement Infrastructure**
 
-   - ERC-7573 integration for coordinated cross-network settlement (conditional atomicity, not strict atomicity)
+   - ERC-7573 integration for coordinated cross-network settlement relayer (conditional atomicity, not strict atomicity)
    - Cross-chain compatibility for diverse collateral
    - Automated unwind triggers on margin breaches
 
@@ -73,10 +72,9 @@ These problems interact because traditional privacy solutions (like simple encry
 
 - **Shielding Options:**
   - **Privacy L2:** Aztec Network for native privacy
-  - **L1 Shielding:** Railgun for mature commitment-based pools on Ethereum
-  - **L2 Shielding:** Privacy Pools or similar on Polygon/Arbitrum
-- **ZK Proving:** Polygon Zero or Risc Zero for efficient daily proof generation
-- **Oracles:** Chainlink with privacy-preserving price feeds
+  - **Shielded Pools:** [Railgun](../vendors/railgun.md) UTXO-style privacy (L1/L2 compatible)
+- **ZK Proving:** Groth16 for cost-efficient proofs, PLONK for flexibility
+- **Oracles:** Privacy-preserving price feeds
 
 **Alternative/Emerging:**
 
@@ -85,23 +83,22 @@ These problems interact because traditional privacy solutions (like simple encry
 
 ### Implementation Strategy
 
-**Phase 1: Core Privacy**
+**Phase 1: Core Privacy Infrastructure**
 
-- Deploy shielded pool contracts on chosen L2
-- Implement basic ZK state transition circuits
-- Oracle integration with signed price feeds
+- Deploy shielded pool contracts (privacy L2 or L1/L2 compatible)
+- Implement ZK circuits for ERC-6123 wrapper contracts
+- Oracle integration with price feeds and settlement triggers
 
-**Phase 2: Regulatory Compliance**
+**Phase 2: Regulatory & Compliance**
 
-- Selective disclosure key management
-- EAS attestation integration
-- Audit trail infrastructure
+- Selective disclosure mechanism (viewing keys, ZK proofs)
+- Regulatory reporting interfaces
 
-**Phase 3: Production Scaling**
+**Phase 3: Production & Ecosystem**
 
-- Multi-collateral support
-- Cross-chain conditional settlement (ERC-7573)
-- Institutional tooling integration
+- Multi-collateral margin support (USDC, EURC, etc.)
+- ERC-7573 conditional settlement coordination
+- Integration with institutional custody and risk management systems
 
 ## More Details
 
