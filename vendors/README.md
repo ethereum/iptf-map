@@ -2,6 +2,8 @@
 
 **Purpose.** Neutral documentation on products that can **complement** patterns (e.g., compliance orchestration, enterprise privacy groups). These are *not* patterns; they point to the patterns they fit with.
 
+**Vendor scope (Ethereum-aligned):** IPTF lists vendors that are Ethereum-aligned according to norms in the Ethereum community. This includes products built for or deployed on Ethereum mainnet or production L2s, as well as multichain solutions that benefit the Ethereum ecosystem—e.g., by supporting Ethereum standards (EIPs/ERCs), advancing shared privacy patterns, or bringing institutional adoption that strengthens Ethereum's position. We exclude offerings that primarily serve non-Ethereum L1s without meaningful Ethereum integration or benefit. Borderline cases are marked "Maybe" with a one-line rationale.
+
 **Current vendors:**
 - `chainlink-ace.md` — Automated compliance for digital assets; modular compliance layer with identity and policy controls
 - `kaleido-paladin.md` — Programmable privacy for EVM; enterprise privacy layer with ZK UTXO, notary tokens, and private groups
