@@ -5,8 +5,8 @@ status: draft
 
 # State Labs – Privacy-Preserving Infrastructure
 
-State Labs develops regulared privacy-preserving infrastructure for institutional payments (Tx-Shields), Private AI collaboration (OpenTMP LLM), and MPC-TSS Key Management (Collab-Key).  
-Our three core solutions — **Tx-Shield**, **OpenTMP LLM**, and **Collab-Key** — address compliance, compute, and custody privacy challenges for regulated institutions.
+State Labs develops regulated privacy-preserving infrastructure for institutional payments (Tx-Shield), private AI collaboration (OpenTMP LLM), and MPC-TSS key management (Collab-Key). 
+State Labs’ three core solutions — **Tx-Shield**, **OpenTMP LLM**, and **Collab-Key** — address compliance, compute, and custody privacy challenges faced by regulated institutions.
 
 ---
 
