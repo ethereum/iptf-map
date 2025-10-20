@@ -29,21 +29,17 @@ Each module can operate independently or as part of a unified privacy-preserving
 ## Fits with patterns (names only)
 
 Tx-Shield:
-- Private Payments  
-- Regulated Settlement  
-- Compliance Infrastructure  
+- pattern-private-stablecoin-shielded-payments
+- pattern-private-pvp-stablecoins-erc5753
+- pattern-regulatory-disclosure-keys-proofs
+- pattern-te-ex-settlement
 
-
-OpenTMP LLM:
-- Federated Learning  
-- Collaborative AI  
-- Secure Inference  
-
+OpenTMP LLM (adjacency):
+- pattern-adj-private-consortium-ledger
+- pattern-adj-delayed-post-trade-reporting
 
 Collab-Key:
-- Custody / Key Management  
-- Threshold Signatures  
-- Distributed Signing Infrastructure  
+- pattern-key-management-threshold-kms
 
 ---
 
