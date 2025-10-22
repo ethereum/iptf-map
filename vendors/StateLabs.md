@@ -46,8 +46,9 @@ Collab-Key:
 ## Not a substitute for
 
 Tx-Shield:
-- Non-compliant on-chain transfer systems  
-- Centralized custodial payment rails  
+- ZK-based L2 privacy frameworks (e.g., Aztec, Scroll)
+- General-purpose MPC or TEE frameworks for secure computation (Tx-Shield focuses on transactional privacy and compliance)
+- Traditional on-chain settlement systems without regulator access
 
 
 OpenTMP LLM:
