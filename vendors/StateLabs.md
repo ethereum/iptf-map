@@ -112,22 +112,9 @@ Collab-Key:
 ---
 
 ## Strengths
-Tx-Shield:
-- Combines institutional privacy and regulatory compliance  
-- High performance (~10k TPS)  
-- Fine-grained regulator audit access through cryptographic keys  
-
-OpenTMP LLM: 
-- Keeps data local during training and inference  
-- Enables joint model ownership and governance  
-- High efficiency through edge AI optimization  
-
-Collab-Key:
-- Eliminates single-party key reconstruction  
-- Integrates seamlessly with KMS and signing APIs  
-- Backed by peer-reviewed research from *USENIX Security 2025*  
-1. *Improved Secure Two-party Computation from a Geometric Perspective* (USENIX Security 2025)
-2. *Achilles: A Formal Framework of Leaking Secrets from Signature Schemes via Rowhammer* (USENIX Security 2025, Honorable Mentions)
+- Tx-Shield delivers institutional-grade transactional privacy with built-in regulatory visibility.  
+- OpenTMP LLM enables privacy-preserving multi-party AI collaboration across edge and federated (hybrid on/off-chain) environments.  
+- Collab-Key provides fault-tolerant, MPC-TSS-based signing with formal security foundations (*USENIX Security 2025*).  
 
 ---
 
