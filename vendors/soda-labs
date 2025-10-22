@@ -1,7 +1,7 @@
 ---
 title: "Vendor: Soda Labs"
 status: draft
-maturity: mainnet (for integrated privacy) & testnet (for plug-and-play privacy)
+maturity: mainnet (for integrated privacy) & testnet (for plug-and-play privacy) explained below
 ---
 
 # Soda Labs – MPC SDK & Confidential Smart Contracts <br>(Garbled Circuit for EVM)
