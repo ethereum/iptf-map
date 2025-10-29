@@ -1,12 +1,19 @@
 ---
-title: "Vendor: Kaleido Paladin"
+title: "Vendor: Paladin"
 status: draft
 ---
 
-# Kaleido - Paladin (Programmable privacy for EVM)
+# Paladin - Modular Runtime for Programmable Privacy for EVM
 
 ## What it is
-Open-source (Apache-2.0) enterprise privacy layer under the Linux Foundation Decentralized Trust. Runs as a sidecar next to an EVM client (for example Hyperledger Besu). On-chain holds masked or commitment state; cleartext is exchanged off-chain over mutual TLS or gRPC. Targets network builders (3-50 orgs) and asset holders that need private programmable workflows, PvP, and DvP with enterprise custody.
+Open-source (Apache-2.0) privacy layer under the [Linux Foundation Decentralized Trust](https://github.com/LFDT-Paladin/paladin). Paladin provides the common wallet/vault functions that are needed to interact with all forms of privacy preserving smart contracts. It also provides a model for atomic programmability across these privacy preserving smart contracts, harnessing the power of the underlying EVM shared ledger.
+
+Paladin uses standard EVM smart contracts as the source of truth for the finalization of the transaction, and verification of the private logic. On-chain state holds masked or commitment state; cleartext states are exchanged off-chain in private channels over mutual TLS or gRPC. Targets asset issuers and holders that need tokenized cash (central bank and commercial bank money), and tokenized assets (bonds and other financial assets), for payments, PvP and DvP.
+
+Runs as a sidecar next to a standard EVM client (for example Hyperledger Besu, or a Layer 2 node like Linea). Zero modifications are required to the underlying blockchain, and any permissioned or public EVM can be used.
+
+A strong design principle of the project is that existing privacy preserving tokens should be able to become compatible with Paladin wallet/vault functions and programmability with limited changes. Three privacy domains are implemented today (see below), with planned future support for other privacy preserving tokens such as confidential ERC20 based on FHE.
+
 
 ## Fits with patterns (names only)
 - [L1 ZK Commitment Pool](../patterns/pattern-l1-zk-commitment-pool.md)
@@ -19,46 +26,53 @@ Open-source (Apache-2.0) enterprise privacy layer under the Linux Foundation Dec
 - Identity and Attestations
 
 ## Architecture
-- Sidecar next to Besu; Paladin acts as a privacy-preserving transaction manager for Ethereum (no client fork).
+- Sidecar next to any standard EVM node; Paladin acts as a privacy-preserving transaction manager for Ethereum (no client fork).
 - Secure channels between Paladin nodes for selective disclosure; data at rest remains private, data in-flight is encrypted end-to-end.
 - Privacy-preserving smart contracts split across two parts:
-  - Base EVM smart contract on the unmodified chain (ordering/finality, double-spend checks).
+  - Base EVM smart contract on the unmodified chain (ordering/finality, double-spend, KYC and other spending policy checks).
   - Off-chain Paladin runtime that manages private state, proofs/endorsements, and coordination.
 - Provides similar function to legacy privacy-group managers (e.g., Tessera) with additional interoperability and atomic composition across domains.
 - Base EVM ledger is the single source of truth; all domains interoperate atomically on one ledger; state stored in masked form to preserve confidentiality and anonymity.
 - Transaction manager coordinates assembly, submission, and confirmation to:
   - Public EVM contracts
+  - UTXO-based privacy preserving tokens
+  - FHE based confidential tokens (future plans)
   - Private EVM contracts in privacy groups
-  - UTXO-based private tokens
-- Key management integrates with enterprise HSM/SSM; supports native Ethereum, EIP-712 endorsements, and ZKP-compatible crypto.
+- Key management integrates with enterprise HSM/SSM; supports native Ethereum signing, EIP-712 endorsements, ZKP proof generation, as well as FHE wallet-side cryptography in future plans.
 - Programming model includes plug points for:
-  - Wallet functions (coin/state selection)
-  - Endorsement coordination and signature collection
-  - Sequencer selection, transaction verification, and proof generation
+  - Wallet functions (coin/state indexing and selection for submission)
+  - Endorsement coordination and signature collection with flexible endorsement policies
+  - Distributed sequencer for transaction coordination
+  - Proof generation (ZK proofs, notary certificates, and others)
   - High-performance code modules in Java and WebAssembly
 
 ## Privacy domains
 - Zeto (ZK UTXO tokens)
-  - Circom-based ZK proofs; hides ownership/amounts/history; enforces conservation via proofs.
+  - Onchain commitments hide ownership/amounts/history of the UTXOs.
+  - Enforces mass conservation and other spending policies (KYC, auditability, etc.) via ZK proofs.
+  - Currently implemented with zkSNARKs in Circom based circuits, using groth16 by default.
   - Paladin runtime includes a token indexer, UTXO selector, and proof generator.
-  - Optional ERC20 bridge via deposit/withdraw; lockProof prevents proof theft in multi-leg flows (e.g., DvP).
+  - Optional ERC20 bridge via deposit/withdraw.
+  - Lock/unlock flows prevent proof theft in multi-leg flows (e.g., DvP).
 - Noto (notarized UTXO tokens)
-  - Notary/issuer governs confidential UTXO state; on-chain shows only commitments.
+  - Onchain commitments hide ownership/amounts/history of the UTXOs.
+  - Enforces mass conservation and other spending policies via notary certificates (EIP-712 signatures).
+  - Notary/issuer governs confidential UTXO state; can be backed by EOAs or privacy groups.
   - Supports basic and hooks notary modes; private and public ABIs for mint/transfer/burn and lock/unlock flows; approveTransfer and delegateLock enable delegated execution.
 - Pente (private EVM execution in privacy groups)
-  - Each privacy group is a unique contract that maintains its own private world state.
+  - Each privacy group is a unique contract that maintains its own private world state as UTXO commitments onchain.
   - Exact transitions are pre-verified off-chain and endorsed; on-chain verification uses threshold/EIP-712 signatures with no base EVM changes.
-  - Paladin runs ephemeral Besu EVMs in-process for pre-execution; private EVM can interoperate atomically with token domains.
+  - Paladin runs ephemeral Besu EVMs in-process for pre-execution; privacy groups can interoperate atomically with token domains.
 
 ## Enterprise demand and use cases
-- Segments: network builders and asset holders needing custody/compliance.
+- Segments: asset issuers, asset holders and network builders needing custody/compliance.
 - Common implementations: cash-like tokens plus tradeable assets; PvP; DvP; private negotiation of programmable transaction rules.
 - Buyer profile: typically VP or Head of Digital Assets; privacy repeatedly cited as a key blocker for public-chain adoption.
 
 ## Technical details
 - Data transports and registry
   - Two identity types:
-    - Account signing identities (long-lived; may be secp256k1, BabyJubJub, ZK-related).
+    - Account signing identities (long-lived; may be secp256k1, BabyJubJub).
     - Runtime routing identities (for data-in-flight; transport certs/addresses/hosts/topics).
   - Registry plugin resolves routing identifiers to transport details; address book maps friendly names to accounts.
   - Transport principles: asynchronous message transfer, idempotent requests with retries, end-to-end encryption even via hubs/buses.
