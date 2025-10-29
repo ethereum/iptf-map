@@ -93,12 +93,12 @@ A strong design principle of the project is that existing privacy preserving tok
 - Scope and roadmap for interop with public DeFi and external venues.
 
 ## Links
-- Architecture overview: https://lf-decentralized-trust-labs.github.io/paladin/head/architecture/overview/
-- Atomic interop (approval-based): https://lf-decentralized-trust-labs.github.io/paladin/head/architecture/atomic_interop/
-- Data transports and registry: https://lf-decentralized-trust-labs.github.io/paladin/head/architecture/data_and_registry/
-- Key management: https://lf-decentralized-trust-labs.github.io/paladin/head/architecture/key_management/
-- Programming model: https://lf-decentralized-trust-labs.github.io/paladin/head/architecture/programming_model/
-- Zeto (ZK tokens): https://lf-decentralized-trust-labs.github.io/paladin/head/architecture/zeto/
-- Noto (notarized tokens): https://lf-decentralized-trust-labs.github.io/paladin/head/architecture/noto/
-- Pente (privacy groups): https://lf-decentralized-trust-labs.github.io/paladin/head/architecture/pente/
-- Repository: https://github.com/LF-Decentralized-Trust-labs/paladin
+- Architecture overview: https://lfdt-paladin.github.io/paladin/head/architecture/overview/
+- Atomic interop (approval-based): https://lfdt-paladin.github.io/paladin/head/architecture/atomic_interop/
+- Data transports and registry: https://lfdt-paladin.github.io/paladin/head/architecture/data_and_registry/
+- Key management: https://lfdt-paladin.github.io/paladin/head/architecture/key_management/
+- Programming model: https://lfdt-paladin.github.io/paladin/head/architecture/programming_model/
+- Zeto (ZK tokens): https://lfdt-paladin.github.io/paladin/head/architecture/zeto/
+- Noto (notarized tokens): https://lfdt-paladin.github.io/paladin/head/architecture/noto/
+- Pente (privacy groups): https://lfdt-paladin.github.io/paladin/head/architecture/pente/
+- Repository: https://github.com/LFDT-Paladin/paladin
