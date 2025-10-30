@@ -32,7 +32,6 @@ A strong design principle of the project is that existing privacy preserving tok
 - Secure channels between Paladin nodes for selective disclosure; data at rest remains private, data in-flight is encrypted end-to-end.
 - Privacy-preserving smart contracts split across two parts:
   - Base EVM smart contract on the unmodified chain (ordering/finality, double-spend, proof validation, signature validation).
-  - ````
   - Off-chain Paladin runtime that manages private state, proofs/endorsements, and coordination.
 - Provides similar function to legacy privacy-group managers (e.g., Tessera) with additional interoperability and atomic composition across domains.
 - Base EVM ledger is the single source of truth; all domains interoperate atomically on one ledger; state stored in masked form to preserve confidentiality and anonymity.
