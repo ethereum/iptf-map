@@ -48,7 +48,12 @@ A strong design principle of the project is that existing privacy preserving tok
   - Proof generation (ZK proofs, notary certificates, and others)
   - High-performance code modules in Java and WebAssembly
 
-## Privacy domains
+Privacy domains are implementations of a plug-point for the on-chain logic (pure on-chain EVM), and the app-layer logic (proof systems, merkle tree management, private EVM execution, endorsement/attestation coordination), that are the common components of every privacy-preserving smart contract in the EVM ecosystem.
+
+Paladin aims to be open and flexible enough that any privacy system could plug in - as any transparent ERC-20 can plug into a wallet today.
+
+Hardened reference implementations are provided out of the box as follows:
+
 - Zeto (ZK UTXO tokens)
   - Onchain commitments hide ownership/amounts/history of the UTXOs.
   - Enforces mass conservation and other spending policies (KYC, auditability, etc.) via ZK proofs.
