@@ -3,14 +3,14 @@ title: "Pattern: Shielded-Pool Atomic Swap (ZK-HTLC)"
 status: draft
 maturity: PoC
 works-best-when:
-  * Both assets already live in shielded pools (zk-rollups, privacy L2s).
-  * Cross-chain atomicity is required without revealing linkages.
+  - Both assets already live in shielded pools (zk-rollups, privacy L2s).
+  - Cross-chain atomicity is required without revealing linkages.
 avoid-when:
-  * No shielded pool infra available on either chain.
-  * You rely on public HTLC compatibility for interoperability.
+  - No shielded pool infra available on either chain.
+  - You rely on public HTLC compatibility for interoperability.
 dependencies:
-  * ERC-7573 (conditional transfer)
-  * Shielded-pool circuits (Railgun, Penumbra, etc.)
+  - ERC-7573 (conditional transfer)
+  - Shielded-pool circuits (Railgun, Penumbra, etc.)
 ---
 
 ## Intent
