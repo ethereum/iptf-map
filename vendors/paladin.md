@@ -3,7 +3,7 @@ title: "Vendor: Paladin"
 status: draft
 ---
 
-# Paladin - Modular Runtime for Programmable Privacy for EVM
+# Paladin - Modular System for Programmable Privacy on EVM chains
 
 ## What it is
 Open-source (Apache-2.0) privacy layer under the [Linux Foundation Decentralized Trust](https://github.com/LFDT-Paladin/paladin). Paladin provides the common wallet/vault functions that are needed to interact with all forms of privacy preserving smart contracts. It also provides a model for atomic programmability across these privacy preserving smart contracts, harnessing the power of the underlying EVM shared ledger.
