@@ -8,7 +8,9 @@ status: draft
 ## What it is
 Open-source (Apache-2.0) privacy layer under the [Linux Foundation Decentralized Trust](https://github.com/LFDT-Paladin/paladin). Paladin provides the common wallet/vault functions that are needed to interact with all forms of privacy preserving smart contracts. It also provides a model for atomic programmability across these privacy preserving smart contracts, harnessing the power of the underlying EVM shared ledger.
 
-Paladin uses standard EVM smart contracts as the source of truth for the finalization of the transaction, and verification of the private logic. On-chain state holds masked or commitment state; cleartext states are exchanged off-chain in private channels over mutual TLS or gRPC. Targets asset issuers and holders that need tokenized cash (central bank and commercial bank money), and tokenized assets (bonds and other financial assets), for payments, PvP and DvP.
+Paladin uses standard EVM smart contracts as the source of truth for the finalization of the transaction, and verification of the private logic. On-chain state holds masked or commitment state; cleartext states are exchanged off-chain in private channels over mutual TLS or gRPC (or optionally encrypted on-chain).
+
+Reference implementations and samples of smart contracts are provided for asset issuers and holders that need tokenized cash (central bank and commercial bank money), and tokenized assets (bonds and other financial assets), for payments, PvP and DvP.```
 
 Runs as a sidecar next to a standard EVM client (for example Hyperledger Besu, or a Layer 2 node like Linea). Zero modifications are required to the underlying blockchain, and any permissioned or public EVM can be used.
 
