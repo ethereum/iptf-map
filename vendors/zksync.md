@@ -1,13 +1,13 @@
 ---
-title: "Vendor: zkSync Prividium"
+title: "Vendor: ZKsync Prividium"
 status: draft
 ---
 
-# zkSync - Prividium (Privacy L2 for Ethereum)
+# ZKsync - Prividium (Privacy L2 for Ethereum)
 
 ## What it is
 
-An Ethereum-secured blockchain platform purpose-built for institutions that demand privacy, compliance, and full control of their data. Prividium is part of zkSync's suite of enterprise solutions, designed for real-world asset tokenization, private capital markets, and institutional-grade financial infrastructure with selective disclosure capabilities.
+An Ethereum-secured blockchain platform purpose-built for institutions that demand privacy, compliance, and full control of their data. Prividium is part of ZKsync's suite of enterprise solutions, designed for real-world asset tokenization, private capital markets, and institutional-grade financial infrastructure with selective disclosure capabilities.
 
 ## Fits with patterns (names only)
 
@@ -26,7 +26,7 @@ An Ethereum-secured blockchain platform purpose-built for institutions that dema
 
 - Permissioned RPCs
 - Each Prividium manages their own private state and permission controls
-- Prividiums uses the ZkSync Gateway for setllement, who Zk commit blocks on the Ethereum L1
+- Prividiums uses the ZKsync Gateway for setllement, who ZK commit blocks on the Ethereum L1
 
 ## Privacy domains (if applicable)
 
@@ -44,7 +44,7 @@ Target segments include financial institutions tokenizing treasuries and fund sh
 - Powered by Airbender RISC-V prover delivering subsecond block proofs on commodity GPUs with ~$0.0001 per transfer costs
 - EVM-native development using Solidity, Hardhat, and Foundry without custom languages
 - Includes passkeys, smart accounts, and session keys for institutional onboarding
-- Integration with zkSync Connect for interoperability across public and private systems.
+- Integration with ZKsync Connect for interoperability across public and private systems.
 
 ## Strengths
 
