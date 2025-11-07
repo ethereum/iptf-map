@@ -20,6 +20,15 @@
 - **Be accurate** - no marketing, just facts
 - **Check for duplicates** - don't add what's already there
 - **Include working links** - make sure documentation works
+- **Use semantic commits** - helps us track changes
+
+**Semantic commit types:**
+
+- `feat:` - New vendor, pattern, use case, or approach
+- `fix:` - Corrections to existing content
+- `docs:` - Documentation updates
+- `refactor:` - Reorganizing content without changing meaning
+- `chore:` - Maintenance tasks
 
 ## Getting Help
 
