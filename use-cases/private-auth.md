@@ -29,7 +29,7 @@ Current authentication methods (e.g., message signatures) prove key control but 
 
 - **Must hide:** client identities, links between institutions and users, links between user EOAs
 - **Public OK:** registry root, institutional contract addresses, [compliance attestations](../patterns/pattern-verifiable-attestation.md)
-- **Regulator access:** scoped access to Merkle inclusion proofs, registry updates, or decryption keys
+- **Regulator access:** scoped access to Merkle inclusion proofs, registry updates, or decryption keys where required
 - **Settlement:** proof verification + transaction execution
 - **Ops:** resilience against replay attacks; low-cost proof generation; interop across rollups
 

@@ -17,17 +17,17 @@ Issuer · Investors · Crypto-Registry · Regulator · Oracles (valuation, payme
 ## 4) Problems
 
 ### Problem 1: Transaction Privacy with Regulatory Compliance
-Public chains expose volumes, prices, and positions by default, which enables front-running and competitive intelligence gathering—unacceptable for institutional bonds. Institutions require transaction-level confidentiality while maintaining selective disclosure capabilities for regulators.
+Public chains expose volumes, prices, and positions by default, enabling front-running and competitive intelligence gathering. Institutions require transaction-level confidentiality while maintaining selective disclosure for regulatory compliance.
 
 **Requirements:**
 - **Must hide:** amounts, positions, trade details (issuance + secondary); ideally RFQ/order size pre-inclusion
 - **Public OK:** legal entity identities; existence of transactions/events (no figures)
-- **Regulator access:** scoped viewing keys and/or ZK proofs; access logging (attestations)
+- **Regulator access:** scoped viewing keys and/or ZK proofs; access logging ([attestations](../patterns/pattern-verifiable-attestation.md))
 - **Settlement:** atomic DvP; minutes-level finality acceptable; **daily** cycles
 - **Ops:** predictable **L2** costs (post-4844), append-only encrypted audit log with on-chain anchors; key rotation & retention policies
 
 **Constraints:**
-- eWpG/MiCA compliance (crypto-register in loop)
+- Regulatory compliance (crypto-register integration where required)
 - Production timeline: **1–2 years**
 - Avoid HTLC brittleness
 - Infrastructure costs viable during adoption phase
