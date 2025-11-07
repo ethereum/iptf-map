@@ -53,7 +53,4 @@ Privacy-preserving technologies in Hong Kong's cryptocurrency services operate w
 ## See also
 
 - [Jurisdiction: China mainland](cn-crypto-ban.md) - Separate regulatory framework for China mainland
-- [SFC Virtual Assets](https://www.sfc.hk/en/Regulatory-functions/Intermediaries/Licensing/Licensing-of-virtual-asset-trading-platform-operators)
-- [Hong Kong Monetary Authority - CBDC](https://www.hkma.gov.hk/eng/key-functions/monetary-stability/e-hkd/)
-- [AMLO Guidance](https://www.fstb.gov.hk/fsb/aml/en/index.htm)
-- [Companies Registry Hong Kong](https://www.cr.gov.hk/en/home/index.htm)
+- [AMLO Guidance](https://www.hkma.gov.hk/eng/key-functions/banking/anti-money-laundering-and-counter-financing-of-terrorism/ordinances-statutory-guidelines/)

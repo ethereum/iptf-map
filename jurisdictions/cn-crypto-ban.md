@@ -47,6 +47,4 @@ China encourages blockchain technology development through the Blockchain Servic
 ## See also
 
 - [Jurisdiction: Hong Kong](cn-hk-crypto.md) - Separate regulatory framework for Hong Kong SAR with licensed crypto trading
-- [People's Bank of China - Digital Yuan](http://www.pbc.gov.cn/)
 - [Blockchain Service Network (BSN)](https://bsnbase.io/)
-- [Cyberspace Administration of China - Data Regulations](http://www.cac.gov.cn/)
