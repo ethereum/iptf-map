@@ -32,7 +32,7 @@ On-chain RWA tokenization exposes ownership, valuation, and transfer history by 
 **Requirements:**
 
 - **Must hide:** who owns the RWA (and amount if not NFT), history of ownership, value if NFT
-- **Public OK:** <what can be public>
+- **Public OK:** asset existence; contract code; compliance schema; [attestation](../patterns/pattern-verifiable-attestation.md) framework
 - **Regulator access:** selective disclosure of trade info such as owner id, amount/value of RWA, and pause/freeze RWA (granularity varies by jurisdiction)
 - **Settlement:** atomic DvP
 - **Ops:** N/A
@@ -45,17 +45,7 @@ On-chain RWA tokenization exposes ownership, valuation, and transfer history by 
 
 ## 5) Recommended Approaches
 
-**TODO: Refactor these approaches into approaches/ folder following template**
-
-### Top Candidates
-
-1. RWA can inherit private transfer solutions (from Private Bonds/Stablecoins, both L1/L2) with an emphasis in transfer compliance check (complexity depending on regulatory requirements) + RWA standards (ERC-3643, ERC-7943 with slight modifications for privacy using commitments); Compliance check upon onboarding could leverage zkKYC/ML for public KYC model, MPC/FHE for private KYC model + co-SNARK for public verifiability
-2. Same as 1) but to lessen overhead of compliance check (both transfer and onboarding), can use private oracles (trust the oracles)
-
-### Non‑Solutions
-
-- **zk/mpc-TLS** (such as TLSNotary/DECO) — not necessary, only useful when there is no API for direct onboarding
-- **FHE-based EVM** (such as Fhenix) — no unlinkable ownership with account-based model
+See [Private Bonds](../approaches/approach-private-bonds.md) and [Private Payments](../approaches/approach-private-payments.md) approaches - RWA tokenization can inherit private transfer solutions with emphasis on transfer compliance checks and RWA-specific standards (ERC-3643, ERC-7943 with privacy modifications using commitments).
 
 ## 6) Open Questions
 

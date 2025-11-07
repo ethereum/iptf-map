@@ -35,16 +35,7 @@ Current authentication methods (e.g., message signatures) prove key control but 
 
 ## 5) Recommended Approaches
 
-**TODO: Refactor these approaches into approaches/ folder following template**
-
-### Top Candidates
-
-1. [Private MTP authentication](../patterns/pattern-private-mtp-auth.md) — ZK Merkle proofs of KYC'd clients
-
-### Non-Solutions
-
-- **Pure signature challenges** — expose addresses, replay risk, no selective disclosure
-- **Centralized custodial wallets** — incompatible with self-custody mandates
+See detailed solution architecture and trade-offs in [**Approach: Private Authentication**](../approaches/approach-private-auth.md).
 
 ## 6) Open Questions
 

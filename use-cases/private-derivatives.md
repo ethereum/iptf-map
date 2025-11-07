@@ -39,20 +39,7 @@ Visible daily cashflows and buffer levels expose risk appetites and strategies, 
 
 ## 5) Recommended Approaches
 
-**TODO: Refactor these approaches into approaches/ folder following template**
-
-### Top Candidates
-
-1. [ZK + Shielded Balances](../../patterns/pattern-zk-shielded-balances.md) — commitments/nullifiers manage confidential margin & settlements; daily ZK state transitions; regulator view keys
-2. [MPC + CoSNARK Proofs for Derivatives](../../patterns/pattern-zk-derivative-delta.md) — oracle + counterparties compute daily delta via MPC; post SNARK proof (e.g., CoSnarks) to enforce ERC-6123 semantics
-3. [Exploratory: Confidential ERC-20 (FHE) + ERC-7573](../../patterns/pattern-confidential-erc20-fhe-l2-erc7573.md) — balances updated homomorphically on-chain; developer-friendly but heavy gas/latency profile
-
-### Non-Solutions
-
-- **Private/permissioned chains** — competitors inside consortium still see data
-- **Simple encryption** — unverifiable computation, breaks automation/audit
-- **Commit-reveal only** — leaks during reveal window; fails real-time auditability
-- **Fully off-chain settlement** — loses atomicity and automated risk controls
+See detailed solution architecture and trade-offs in [**Approach: Private Derivatives**](../approaches/approach-private-derivatives.md).
 
 ## 6) Open Questions
 
