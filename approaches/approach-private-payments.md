@@ -68,7 +68,7 @@ These problems interact because traditional payment transparency conflicts with 
 
    - Regulator viewing keys for scoped audit access
    - Time-bound, threshold-controlled disclosure mechanisms
-   - EAS attestation logging for compliance trails
+   - [Attestation logging](../patterns/pattern-verifiable-attestation.md) for compliance trails (EAS, W3C VC, or ONCHAINID)
    - Encrypted audit logs with selective decryption
 
 3. **Traditional Rail Integration**

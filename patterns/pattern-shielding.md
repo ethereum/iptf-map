@@ -9,7 +9,7 @@ avoid-when:
   - Transparency is mandated by design.
 dependencies:
   - ERC-20
-  - Optional: ERC-5564 (stealth addresses), ERC-3643 (eligibility gating), EAS (audit)
+  - Optional: ERC-5564 (stealth addresses), ERC-3643 (eligibility gating), [Attestations](pattern-verifiable-attestation.md) for audit
 ---
 
 ## Intent
@@ -18,7 +18,7 @@ Enable **confidential ERC-20 transfers** by shielding balances and transfer meta
 
 ## Ingredients
 
-- **Standards**: ERC-20 base; optional ERC-5564 (stealth addresses), EAS for audit logs.
+- **Standards**: ERC-20 base; optional ERC-5564 (stealth addresses)
 - **Implementations**:
   - **L1/L2 contracts** (e.g., Railgun-style shielded pools).
   - **Privacy L2/app-chains** (e.g., Aztec, Zama fhEVM, Fhenix) with native shielding.

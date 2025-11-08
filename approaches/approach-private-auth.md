@@ -60,7 +60,7 @@ These problems interact because traditional authentication methods (message sign
 
    - Contract hooks for proof verification before transactions
    - ERC-3643 integration for permissioned token transfers
-   - EAS attestation logging for compliance trails
+   - [Attestation logging](../patterns/pattern-verifiable-attestation.md) for compliance trails
    - Cross-chain registry synchronization
 
 4. **Regulatory Compliance Infrastructure**
@@ -74,7 +74,7 @@ These problems interact because traditional authentication methods (message sign
 **Primary Infrastructure:**
 
 - **ZK Frameworks:** Semaphore for membership proofs, Aztec Noir for custom circuits
-- **Registry Management:** EAS for attestation infrastructure, custom Merkle tree contracts
+- **Registry Management:** [Attestation infrastructure](../patterns/pattern-verifiable-attestation.md) (EAS, W3C VC, ONCHAINID), custom Merkle tree contracts
 - **Identity Standards:** ERC-3643 for permissioned tokens, ERC-734/735 for identity claims
 
 **Alternative Approaches:**
