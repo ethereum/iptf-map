@@ -19,7 +19,7 @@ Co-SNARKs let institutions, investors, or service providers jointly prove proper
 
 - **Cryptography**: co-SNARK ([Collaborative zk-SNARKs](https://eprint.iacr.org/2021/1530.pdf), e.g. TACEO)
 - **Infra**: Offchain MPC network, optional L1/L2 onchain commitments
-- **Standards**: Can tie into ERC-3643 (identity claims), EAS attestations, ERC-7573 for settlement
+- **Standards**: Can tie into ERC-3643 (identity claims), [attestations](pattern-verifiable-attestation.md), ERC-7573 for settlement
 
 ## Protocol (concise)
 

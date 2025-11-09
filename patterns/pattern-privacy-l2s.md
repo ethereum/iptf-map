@@ -21,7 +21,7 @@ Use a **privacy-native rollup** (ZK or FHE-based) to execute financial logic wit
 
 - **Standards**: ERC-20/3643 (bridged); ERC-7573 optional for settlement
 - **Infra**:
-  - ZK rollups: Aztec, Aleo, Lita
+  - ZK rollups: Aztec, Aleo, Lita, Miden
   - FHE rollups: Zama/fhEVM, Inco
 - **Off-chain**: Key management, regulator view proofs
 
@@ -48,3 +48,4 @@ Use a **privacy-native rollup** (ZK or FHE-based) to execute financial logic wit
 - Aztec docs: https://docs.aztec.network/
 - Aleo: https://aleo.org/
 - Zama fhEVM: https://zama.ai/fhevm
+- Miden: https://miden.xyz/

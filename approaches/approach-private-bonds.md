@@ -83,7 +83,7 @@ This approach preserves the regulatory benefits of ERC-3643 while adding the pri
 4. **Regulatory Compliance Layer**
    - Selective disclosure mechanisms for regulator access
    - Crypto-registry integration for legal entity verification
-   - EAS attestation logging for audit trails
+   - [Attestation logging](../patterns/pattern-verifiable-attestation.md) for audit trails (EAS, W3C VC, or ONCHAINID)
    - Encrypted append-only audit logs with on-chain anchoring
 
 ### Vendor Recommendations

@@ -90,7 +90,9 @@
 
 **KYC/AML**: Know Your Customer/Anti-Money Laundering regulatory compliance requirements
 
-**EAS (Ethereum Attestation Service)**: Protocol for creating and verifying on-chain attestations
+**Attestations**: Cryptographically signed claims about identities, credentials, or data that can be verified on-chain with minimal disclosure. See [Pattern: Attestation Verifiable On-Chain](patterns/pattern-verifiable-attestation.md) for implementation approaches including EAS, W3C Verifiable Credentials, and ONCHAINID.
+
+**EAS (Ethereum Attestation Service)**: One implementation of on-chain attestation protocol. See attestations pattern for holistic overview.
 
 **Crypto-Registry**: Regulatory registry for digital asset compliance (eWpG requirement)
 
