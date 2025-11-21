@@ -39,7 +39,8 @@ Provide **on-demand, scoped visibility** into confidential trades/positions via 
 - System issues 24-hour read token; EAS logs event; auto-revokes.
 
 ## See also
-- pattern-confidential-erc20-fhe-l2-erc7573.md · pattern-l2-encrypted-offchain-audit.md
+- pattern-confidential-erc20-fhe-l2-erc7573.md
+- [Low-cost L2 + Off-chain Encrypted Audit Log](pattern-l2-encrypted-offchain-audit.md)
 
 ## See also (external)
 - EAS docs: https://easscan.org/docs

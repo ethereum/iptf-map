@@ -28,8 +28,8 @@ This folder contains public-facing documentation for IPTF, including technical p
 
 **For legal/compliance:**
 1. Review [Jurisdictions](./jurisdictions/) for regulatory frameworks
-2. Read use case requirements sections for compliance constraints
-3. Check approach documents for regulatory disclosure mechanisms
+2. Read [Use Cases](./use-cases/) for compliance constraints
+3. Check [Approaches](./approaches/) for regulatory disclosure mechanisms
 
 ## Confidential Information
 

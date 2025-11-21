@@ -54,7 +54,7 @@ Enable Delivery-versus-Payment where **both legs settle inside shielded pools**;
 
 ## See also
 
-- pattern-l1-zk-commitment-pool.md
+- [pattern-l1-zk-commitment-pool.md](pattern-l1-zk-commitment-pool.md)
 - pattern-aztec-privacy-l2-erc7573.md
-- pattern-dvp-erc7573.md
-- pattern-l2-encrypted-offchain-audit.md
+- [pattern-dvp-erc7573.md](pattern-dvp-erc7573.md)
+- [pattern-l2-encrypted-offchain-audit.md](pattern-l2-encrypted-offchain-audit.md)
