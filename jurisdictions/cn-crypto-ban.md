@@ -46,5 +46,5 @@ China encourages blockchain technology development through the Blockchain Servic
 
 ## See also
 
-- [Jurisdiction: Hong Kong](cn-hk-crypto.md) - Separate regulatory framework for Hong Kong SAR with licensed crypto trading
+- [Jurisdiction: Hong Kong](hk-crypto-licensing.md) - Separate regulatory framework for Hong Kong SAR with licensed crypto trading
 - [Blockchain Service Network (BSN)](https://bsnbase.io/)

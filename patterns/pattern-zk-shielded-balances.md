@@ -61,6 +61,6 @@ For **auditability**, regulators can be provisioned with scoped keys — i.e. cr
 
 ## See also
 
-- pattern-l1-zk-commitment-pool.md
+- [pattern-l1-zk-commitment-pool.md](pattern-l1-zk-commitment-pool.md)
 - pattern-confidential-erc20-fhe-l2-erc7573.md
-- pattern-regulatory-disclosure-keys-proofs.md
+- [pattern-regulatory-disclosure-keys-proofs.md](pattern-regulatory-disclosure-keys-proofs.md)

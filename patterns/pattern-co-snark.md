@@ -26,7 +26,7 @@ Co-SNARKs let institutions, investors, or service providers jointly prove proper
 1. Each participant provides private inputs (e.g. compliance model, investor data, transaction intent).
 2. Parties jointly run a co-SNARK protocol to produce a single proof.
 3. Proof can be verified by a regulator, counterparty, or onchain contract.
-4. Can aintain a **shared private state** in a 3PC setting, committing roots onchain.
+4. Can maintain a **shared private state** in a 3PC setting, committing roots onchain.
 
 ## Guarantees
 

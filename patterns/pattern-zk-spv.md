@@ -65,7 +65,7 @@ A zk-SPV proof convinces Chain A that _“tx X was finalized on Chain B under co
 
 ## See also
 
-- pattern-zk-htlc.md
-- pattern-commit-and-prove.md
-- pattern-dvp-erc7573.md
+- [pattern-zk-htlc.md](pattern-zk-htlc.md)
+- [pattern-commit-and-prove.md](pattern-commit-and-prove.md)
+- [pattern-dvp-erc7573.md](pattern-dvp-erc7573.md)
 - pattern-aztec-privacy-l2-erc7573.md
