@@ -73,6 +73,6 @@ Observers see the transfer to a fresh address, but only the receiver can detect 
 
 ## See also
 
-- pattern-private-iso20022.md (messaging integration with stealth/hidden settlement)
+- [pattern-private-iso20022.md](pattern-private-iso20022.md) (messaging integration with stealth/hidden settlement)
 - pattern-aztec-privacy-l2-erc7573.md (shielded pool settlement)
 - pattern-confidential-erc20-fhe-l2-erc7573.md (amount-hiding tokens)
