@@ -17,7 +17,8 @@ Allows onboarding identities such as ERC-734/735 in a public verfiable manner fo
 - zk-KYC/ML such as EZKL
 
 ## Protocol (concise)
-- Claims in ERC-734/735 are zk-proofs of regulatory compliance (instead of signatures from authorized entities)
+- Investor obtains a zk proof of KYC/AML identities from offchain system using zk-TLS or zk proof of compliant EOA ownership
+- Claims in ERC-734/735 are zk-proofs of regulatory compliance above (instead of signatures from authorized entities)
 
 ## Guarantees
 - Compliance of regulatory framework upon identities onboarding
@@ -27,7 +28,7 @@ Allows onboarding identities such as ERC-734/735 in a public verfiable manner fo
 - 
 
 ## Example
-- Bank A issues an id for an investor, needs to generate a proof of KYC/AML of the investor;
+- Bank issues an id for an investor, needs to generate a proof of KYC/AML of the investor;
 
 ## See also
 N/A

@@ -2,15 +2,15 @@
 
 **Use Case Link:** [Private Authentication & Interaction of Client EOAs](../use-cases/private-auth.md)
 
-**High-level goal:** Enable institutions to verify client identity and EOA ownership while protecting client privacy, preventing address linkability, and maintaining regulatory compliance.
+**High-level goal:** Enable institutions to verify valid client identity and EOA ownership while protecting client privacy, preventing address linkability, and maintaining regulatory compliance.
 
 ## Overview
 
 ### Problem Interaction
 
-Private authentication addresses two interconnected challenges:
+Private authentication addresses three interconnected challenges:
 
-1. **Regulatory Compliance**: Institutions must verify client KYC/AML status and address ownership for regulatory requirements
+1. **Regulatory Compliance**: Institutions must verify valid client KYC/AML status and address ownership for regulatory requirements
 2. **Privacy Protection**: Clients need to protect their identity and prevent linkability between their various addresses and institutional relationships
 
 These problems interact because traditional authentication methods (message signatures, satoshi test) satisfy compliance but expose sensitive client information and create trackable on-chain patterns. The solution requires cryptographic techniques that enable verifiable compliance without identity disclosure.
@@ -18,6 +18,7 @@ These problems interact because traditional authentication methods (message sign
 ### Key Constraints
 
 - Must satisfy institutional KYC/AML compliance requirements
+- Must support and check identity revocation
 - Prevent linking multiple addresses belonging to the same client
 - Support self-custody while enabling institutional verification
 - Provide regulatory audit capabilities without compromising privacy
@@ -26,7 +27,7 @@ These problems interact because traditional authentication methods (message sign
 ### TLDR for Different Personas
 
 - **Business:** Verify client compliance and address ownership without exposing client identities or creating trackable patterns
-- **Technical:** Use ZK proofs and Merkle tree membership to prove inclusion in KYC registries without revealing which specific client
+- **Technical:** Use ZK proofs and Merkle tree membership to prove inclusion in KYC registries and exclusoion from revoked list without revealing which specific client
 - **Legal:** Maintain regulatory compliance through verifiable proofs while protecting client privacy rights
 
 ## Architecture and Design Choices
@@ -37,6 +38,7 @@ These problems interact because traditional authentication methods (message sign
 **Supporting Patterns:**
 
 - [ZK-KYC/ML + ONCHAINID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md)
+- [zk-TLS](../patterns/pattern-zk-tls.md)
 - [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
 - [Co-SNARK](../patterns/pattern-co-snark.md)
 
@@ -46,13 +48,14 @@ These problems interact because traditional authentication methods (message sign
 
    - Off-chain KYC verification and client onboarding
    - Merkle tree construction with approved client addresses
+   - Lean Incremental Merkle tree for revoked client addresses
    - On-chain root commitment with regular updates
    - Multi-institutional registry coordination
 
 2. **ZK Proof System**
 
    - [Semaphore](https://semaphore.pse.dev/)-style membership proofs for registry inclusion
-   - Nullifier system to prevent proof reuse and replay attacks
+   - Nullifier system or verifier challenge system to prevent proof reuse and replay attacks
    - Private key ownership verification within the proof
    - Support for multi-address ownership proofs (same seed, different EOAs)
 
@@ -73,12 +76,13 @@ These problems interact because traditional authentication methods (message sign
 
 **Primary Infrastructure:**
 
-- **ZK Frameworks:** Semaphore for membership proofs, Aztec Noir for custom circuits
+- **ZK Frameworks:** Semaphore for membership proofs and exclusion proofs, Aztec Noir for custom circuits
 - **Registry Management:** [Attestation infrastructure](../patterns/pattern-verifiable-attestation.md) (EAS, W3C VC, ONCHAINID), custom Merkle tree contracts
 - **Identity Standards:** ERC-3643 for permissioned tokens, ERC-734/735 for identity claims
 
 **Alternative Approaches:**
 
+- **ZK TLS:** [zk-TLS](../patterns/pattern-zk-tls.md) for KYC data portability from web2
 - **MPC-based:** [Co-SNARK](../patterns/pattern-co-snark.md) for multi-party KYC verification
 - **FHE Integration:** [Zama](../vendors/zama.md) for homomorphic identity verification
 - **Privacy L2:** Aztec Network for native privacy-preserving authentication
@@ -88,7 +92,7 @@ These problems interact because traditional authentication methods (message sign
 **Phase 1: Basic ZK Authentication**
 
 - Deploy Merkle tree registry contracts on Ethereum L1/L2
-- Implement Semaphore-style membership proofs
+- Implement zk-TLS for data portability or Semaphore-style membership and LeanIMT exclusion proofs
 - Basic wallet integration for proof generation
 - Single-institution pilot deployment
 
@@ -139,13 +143,15 @@ These problems interact because traditional authentication methods (message sign
 
 5. **Key Recovery:** Institutional-grade key management for clients while maintaining self-custody principles?
 
+6. **Trust assumption on Notary** How to guarantee Notary trustworthiness?
+
 ### Alternative Approaches Considered
 
-**Threshold Signatures**
+<!-- **Threshold Signatures**
 
 - Use case: Multi-party control of authentication without full ZK overhead
 - Trade-off: Simpler cryptography vs reduced privacy guarantees
-- Status: Complementary technology for key management
+- Status: Complementary technology for key management -->
 
 **TEE-Based Authentication**
 
