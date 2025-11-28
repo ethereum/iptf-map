@@ -21,7 +21,9 @@ A dedicated network or service that publishes and stores the data required for D
 
 **Sequencer**: Layer 2 operator that accepts transactions on a L2 network, orders them, and produces blocks or batches that are later finalized on Layer 1 (like Ethereum).
 
-**Prover**: Entity that generates validity proofs for L2 state transitions (can see private state)
+**Prover**: Entity that runs a specified computation on given inputs (public and private, like L2 state transistions, private notes,...) and outputs both the result and a cryptographic proof that it was computed correctly. Provers may see plaintext data, so who runs them and how they are operated is an explicit part of the trust and privacy model.
+
+**Verifier**: Entity (often a smart contract) that checks proofs from provers and decides whether to accept the claimed result (for example, a new state root or settlement outcome).
 
 **Relayer**: Third party that submits transactions on behalf of users to hide identity
 
