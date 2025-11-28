@@ -2,27 +2,30 @@
 
 ### Core Privacy Concepts
 
-**Commitment**: Hash binding note contents (value, secrets); stored on-chain without revealing contents
+**Commitment**: Cryptographic value computed from hidden data (for example, amount and secrets). It lets others later verify that revealed data is consistent, without learning the data from the commitment itself.
 
-**Nullifier**: Unique tag derived from note secret; marks note as spent, prevents double-spending
+**Note**: Private record that represents ownership of some value plus the secrets needed to prove it. The note is usually stored off-chain or encrypted; on-chain you only see commitments, nullifiers and proofs.
 
-**Note**: Off-chain record encoding value + secrets; only commitment stored on-chain
+**Nullifier**: Unique value derived from a note’s secret and revealed when the note is spent. The system stores used nullifiers to prevent double-spending without exposing which note belonged to which party.
 
-**Stealth Address**: Ephemeral address derived per-transaction to prevent address reuse
+**Stealth Address**: is an address generated per transaction so that multiple payments to the same party cannot be easily linked on-chain. The recipient publishes some public information once; senders use it to derive fresh, unlinkable addresses.
 
-**View Key**: Cryptographic key allowing selective decryption of encrypted state without spending authority
+**View Key**: is a cryptographic key that allows read-only access to encrypted state, like private balances or notes. It enables controlled visibility for auditors, regulators, or internal control functions.
 
 ### Blockchain Architecture
 
-**Data Availability (DA)**: Where transaction/state data is stored for verification and reconstruction
+**Data Availability (DA)**: The guarantee that all transaction and state data needed to recompute and verify the system is actually published and retrievable. If DA fails, independent verifiers cannot reliably check state, even if proofs appear valid.
 
-**Sequencer**: L2 operator that orders transactions and produces batches
+**Data Availability Layer (DA Layer)**:
+A dedicated network or service that publishes and stores the data required for DA (for example, rollup or application data), separate from the main execution chain.
+
+**Sequencer**: Layer 2 operator that accepts transactions on a L2 network, orders them, and produces blocks or batches that are later finalized on Layer 1 (like Ethereum).
 
 **Prover**: Entity that generates validity proofs for L2 state transitions (can see private state)
 
 **Relayer**: Third party that submits transactions on behalf of users to hide identity
 
-**Paymaster**: ERC-4337 entity that sponsors gas for UserOperations
+**Paymaster**: ERC-4337 entity that defines how gas fees for user operations are paid or sponsored. It allows us to implement controlled gasless flows or internal fee routing.
 
 ### L2 Categories
 
