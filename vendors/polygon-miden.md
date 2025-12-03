@@ -1,74 +1,72 @@
 ---
-title: "Vendor/Pattern: Polygon Miden"
+title: "Vendor/Pattern: Miden"
 status: draft
 maturity: PoC
 ---
 
-# Polygon Miden – STARK-based VM / Privacy & Prover Infrastructure
+# Miden – Privacy Rollup
 
 ## What it is
 
-Polygon Miden is a zero-knowledge-focused virtual machine / blockchain stack that supports provable state transitions, private notes, and Rust-based contracts compiled to run in a STARK-friendly VM.  
-It aims to scale privacy and programmability together, allowing verifiable computation in a trust-minimal, scalable way.
+Polygon Miden is a ZK-rollup that prioritizes throughput and privacy over full EVM compatibility. It uses the Miden VM, a STARK-based virtual machine designed for client-side proving.
 
-## Fits with patterns (names only)
+Unlike Ethereum (where the network executes everything), Miden pushes execution to the user (the "Edge"). Users execute their own transactions locally, generate a ZK proof, and the network simply verifies the proof and updates the state.
 
-- Pattern: ZK Shielded Balances for Derivatives
-- Pattern: Private ISO 20022 Messaging & Settlement
-- Pattern: zk-SPV (cross-chain atomicity)
-- Pattern: Confidential ERC-20 (Private L2s)
+## Fits with patterns
+
+- [pattern-zk-shielded-balances.md](../patterns/pattern-zk-shielded-balances.md) - Confidential balances for derivatives
+- [pattern-private-iso20022.md](../patterns/pattern-private-iso20022.md) - Private messaging & settlement
+- [pattern-privacy-l2s.md](../patterns/pattern-privacy-l2s.md) - Privacy-native rollup execution
 
 ## Not a substitute for
 
-- Not a shielded-pool rail _per se_ (unless privacy note infrastructure is used for value shielding).
-- Not a ready drop-in private stablecoin or ERC-20 token privacy layer (needs token/shielded note support).
-- Not a full cross-chain DvP on its own (bridging + finality proofs still needed).
+- Fully private EVM
+- High througput but public rollups
 
 ## Architecture
 
-- **VM model**: STARK-based VM with a “transaction kernel” model, Rust compiler output, private notes as part of the state.
-- **Prover system**: Uses STARKs & efficient hash functions tuned for their VM (see “XHash,” “Polygon Miden VM / Asset Model”).
-- **Privacy features**:
-
-  - Private notes (assets/state hidden from public view).
-  - Multi-sig and custom logic supported in Rust contracts.
-  - Amount hiding and account privacy depend on how notes are used.
-
-- **Infrastructure**: Testnet live (Alpha v6); roadmap includes private note UX, multi-sig, and extended proving infra.
+- Execution model: Actor Model (Concurrent). Unlike the EVM (sequential), every Account and Note is an isolated "Actor" that can be processed in parallel.
+- Hybrid State Model
+  - Accounts hold persistent state (like a wallet or DeFi pool).
+  - Notes (UTXOs) carry assets and scripts between accounts.
+- Smart contracts are written in Rust (compiling to Miden Assembly/MASM).
+- Proof system: zk-STARKs (via Winterfell). Quantum-secure, transparent (no trusted setup), and optimized for recursion.
+- DA model: Rollup posts data to Ethereum L1 (utilizing EIP-4844 blobs).
+- Settlement: L2 validity proofs are verified on Ethereum L1.
 
 ## Privacy domains
 
 - **Private state changes**: private notes enable selective hidden state.
-- **Programmable confidentiality**: Rust contracts + note abstraction.
+- **Programmable confidentiality**: Hybrid model enables both public and private state.
 - **Audit / disclosure**: potential via note keys; regulator access not yet formally defined.
 
 ## Enterprise demand and use cases
 
-- Developers building privacy-aware smart contracts with STARK performance.
-- Confidential asset flows, private transaction kernels, financial logic requiring hidden state.
-- Candidate for institutional settlement rails if token models + governance are aligned.
+- Financial institutions: private stablecoin transfers and settlement.
+- Asset managers: confidential DeFi strategies and portfolio movements.
+- Corporate treasuries: cross-border payments with regulatory audit but hidden competitive data.
 
 ## Technical details
 
-- Supports private/public/encrypted note types.
-- STARK-friendly primitives (e.g. XHash).
-- Rust → Miden assembler compilation pipeline.
-- Data availability: follows Polygon L2 DA design (Ethereum DA for rollup, alt DA for validium/volition).
+- A "transfer" is creating a Note. The recipient must execute a transaction to "consume" the Note. Notes carry their own scripts (e.g., "Only consumable if Oracle X says price > $100").
+- Client-Side Proving: The user _is_ the prover. This allows for infinite horizontal scaling because the network does not re-execute complex logic, it only verifies the proof.
+- A high-performance STARK prover (Winterfell) used to generate proofs for the Miden VM.
+- L1/L2 communication bridging handles assets by locking funds in an L1 contract and minting a corresponding Note on L2 (and vice versa).
+- Native account abstraction at the protocol level; accounts are smart contracts with updatable code.
+- Because users generate the proofs, the Sequencer is lightweight—it only aggregates proofs and builds blocks, preventing the "bottleneck" seen in EVM rollups.
 
 ## Strengths
 
-- Strong STARK foundation: scalable, transparent setup.
-- Flexible VM with Rust programmability.
-- Private notes for asset/state confidentiality.
-- Actively developed, testnet live with growing dev resources.
+- Massive Concurrency: Parallel transaction processing prevents "gas wars" between unrelated apps, resulting in privacy with high throughput.
+- Privacy by Design: Local execution naturally hides user data without complex "add-on" privacy mixers.
+- Quantum Security: Relies on hash-based STARKs.
 
 ## Risks and open questions
 
-- Token privacy not yet standardized (how ERC-20s map to notes).
-- Audit/disclosure path for regulators still unclear.
-- Wallet UX for note discovery/spending immature.
-- Cross-chain atomicity still requires bridging (zk-SPV or similar).
-- Prover costs/latency in production TBD.
+- Audit/Disclosure, path for regulators still unclear.
+- Developer Friction, high learning curve (Rust/MASM + Actor model vs. Solidity/EVM).
+- Data Availability, if a user loses their private local state (and didn't back it up), they may lose access to their Private Account.
+- Wallet Complexity, Wallets must be "smart" enough to track, discover, and consume Notes automatically for a good UX. As well as being powerful enough to perform the proving locally.
 
 ## Links
 

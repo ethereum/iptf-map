@@ -4,7 +4,7 @@ status: draft
 maturity: production (Ignition Chain)
 ---
 
-# Aztec - Aztec Rollup (privacy L2 with programmable zk circuits)
+# Aztec - Privacy Rollup
 
 ## What it is
 
@@ -21,9 +21,8 @@ It uses the **Noir** language to write zk circuits and enables a hybrid executio
 
 ## Not a substitute for
 
-- Private EVM equivalent
-- Multi-chain atomic settlement (requires bridge infrastructure or zk-SPV for cross-L2 DvP)
-- Production-grade institutional custody (testnet maturity, key management standards still evolving)
+- Fully private EVM
+- High througput but public rollups
 
 ## Architecture
 
@@ -43,9 +42,9 @@ It uses the **Noir** language to write zk circuits and enables a hybrid executio
 
 ## Enterprise demand and use cases
 
-- **Financial institutions**: private stablecoin transfers and settlement.
-- **Asset managers**: confidential DeFi strategies and portfolio movements.
-- **Corporate treasuries**: cross-border payments with regulatory audit but hidden competitive data.
+- Financial institutions: private stablecoin transfers and settlement.
+- Asset managers: confidential DeFi strategies and portfolio movements.
+- Corporate treasuries: cross-border payments with regulatory audit but hidden competitive data.
 
 ## Technical details
 
@@ -63,10 +62,10 @@ It uses the **Noir** language to write zk circuits and enables a hybrid executio
 
 ## Risks and open questions
 
-- No native cross-chain atomicity; needs zk-SPV or trusted bridges for multi-domain DvP.
-- Block finality; still not compliant for high frequency operations.
-- Key management and regulator disclosure processes not standardized.
-- DA model (L1 blobs vs validium) impacts trust assumptions and compliance.
+- Wallet Complexity, wallets must be "smart" enough to track, discover, and consume Notes automatically for a good UX. As well as being powerful enough to perform the proving locally.
+- State Synchronization ("Note Discovery"), users cannot just query a balance; they must download and trial-decrypt the chain's note history to find their funds. This creates a significant syncing bottleneck compared to public L2s.
+- Compliance vs. Permissionlessness, While "Selective Disclosure" exists, it is unclear if regulators will accept retroactive auditing over proactive censorship (e.g., OFAC lists at the sequencer level).
+- Performances, this system requires a lot of engineering at the cost of a lower throughput, raising the question of use cases that it could tackle now.
 
 ## Links
 
