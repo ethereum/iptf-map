@@ -8,7 +8,7 @@ maturity: PoC
 
 ## What it is
 
-Polygon Miden is a ZK-rollup that prioritizes throughput and privacy over full EVM compatibility. It uses the Miden VM, a STARK-based virtual machine designed for client-side proving.
+Polygon Miden is a privacy focused Ethereum rollup (zk-zk-rollup) that prioritizes throughput and privacy over full EVM compatibility. It uses the Miden VM, a STARK-based virtual machine designed for client-side proving.
 
 Unlike Ethereum (where the network executes everything), Miden pushes execution to the user (the "Edge"). Users execute their own transactions locally, generate a ZK proof, and the network simply verifies the proof and updates the state.
 
@@ -25,7 +25,7 @@ Unlike Ethereum (where the network executes everything), Miden pushes execution 
 
 ## Architecture
 
-- Execution model: Actor Model (Concurrent). Unlike the EVM (sequential), every Account and Note is an isolated "Actor" that can be processed in parallel.
+- Execution model: Actor Model (Concurrent). Unlike the EVM (sequential global state), every `Account` and `Note` is an isolated "Actor" with a local state. Transactions between independent accounts can be executed and proven in parallel, as they don't require locking shared global state.
 - Hybrid State Model
   - Accounts hold persistent state (like a wallet or DeFi pool).
   - Notes (UTXOs) carry assets and scripts between accounts.
@@ -36,9 +36,9 @@ Unlike Ethereum (where the network executes everything), Miden pushes execution 
 
 ## Privacy domains
 
-- **Private state changes**: private notes enable selective hidden state.
+- **Private transfers**: Default shielding of token amounts, counterparties hidden from public chain.
 - **Programmable confidentiality**: Hybrid model enables both public and private state.
-- **Audit / disclosure**: potential via note keys; regulator access not yet formally defined.
+- **Client-side execution**: Users execute transactions locally and submit proofs, keeping transaction details private from public but efficiently provable.
 
 ## Enterprise demand and use cases
 
@@ -49,9 +49,9 @@ Unlike Ethereum (where the network executes everything), Miden pushes execution 
 ## Technical details
 
 - A "transfer" is creating a Note. The recipient must execute a transaction to "consume" the Note. Notes carry their own scripts (e.g., "Only consumable if Oracle X says price > $100").
-- Client-Side Proving: The user _is_ the prover. This allows for infinite horizontal scaling because the network does not re-execute complex logic, it only verifies the proof.
+- The user _is_ the prover, from its own client or through delegated proving. This allows for infinite horizontal scaling because the network does not re-execute complex logic, it only verifies the proof.
 - A high-performance STARK prover (Winterfell) used to generate proofs for the Miden VM.
-- L1/L2 communication bridging handles assets by locking funds in an L1 contract and minting a corresponding Note on L2 (and vice versa).
+- L1/L2 communication bridging still to be defined.
 - Native account abstraction at the protocol level; accounts are smart contracts with updatable code.
 - Because users generate the proofs, the Sequencer is lightweight—it only aggregates proofs and builds blocks, preventing the "bottleneck" seen in EVM rollups.
 
@@ -66,7 +66,7 @@ Unlike Ethereum (where the network executes everything), Miden pushes execution 
 - Audit/Disclosure, path for regulators still unclear.
 - Developer Friction, high learning curve (Rust/MASM + Actor model vs. Solidity/EVM).
 - Data Availability, if a user loses their private local state (and didn't back it up), they may lose access to their Private Account.
-- Wallet Complexity, Wallets must be "smart" enough to track, discover, and consume Notes automatically for a good UX. As well as being powerful enough to perform the proving locally.
+- Wallet Complexity, Wallets must be "smart" enough to track, discover, and consume Notes automatically for a good UX. Client-side proving requires either local compute resources or delegation to a proving service.
 
 ## Links
 

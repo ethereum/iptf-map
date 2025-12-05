@@ -62,10 +62,10 @@ It uses the **Noir** language to write zk circuits and enables a hybrid executio
 
 ## Risks and open questions
 
-- Wallet Complexity, wallets must be "smart" enough to track, discover, and consume Notes automatically for a good UX. As well as being powerful enough to perform the proving locally.
-- State Synchronization ("Note Discovery"), users cannot just query a balance; they must download and trial-decrypt the chain's note history to find their funds. This creates a significant syncing bottleneck compared to public L2s.
+- State Synchronization, users must download and trial-decrypt note history to discover their funds (cannot simply query a balance). Wallets must actively track, discover, and consume Notes, creating sync bottlenecks compared to public L2s.
+- Client-Side Proving, private execution requires local proof generation (via PXE), demanding significant compute resources for end users.
 - Compliance vs. Permissionlessness, While "Selective Disclosure" exists, it is unclear if regulators will accept retroactive auditing over proactive censorship (e.g., OFAC lists at the sequencer level).
-- Performances, this system requires a lot of engineering at the cost of a lower throughput, raising the question of use cases that it could tackle now.
+- Performances, this system requires a lot of engineering at the cost of a lower throughput, raising the question of use cases that it could tackle.
 
 ## Links
 
