@@ -1,5 +1,5 @@
 ---
-title: "Vendor: [Product Fhenix]"
+title: "Vendor: Product Fhenix"
 status: draft
 maturity: testnet
 ---
