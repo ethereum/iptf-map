@@ -3,12 +3,14 @@ title: "Pattern: Atomic DvP via ERC-7573 (cross-network)"
 status: ready
 maturity: pilot
 works-best-when:
-  - Asset side and payment side live on different networks (L1/L2 or sidechains).
+  - Asset and cash legs live on different networks (L1/L2).
 avoid-when:
-  - Both sides already settle on the same network with simple on-chain transfers.
+  - Both legs already settle on the same network with simple on-chain transfers.
+  - You're searching for a production-ready solution (EIP not yet recommended)
+  - You're searching for a fully trustless solution
 dependencies:
-  - ERC-7573 locking contract (asset side)
-  - ERC-7573 decryption contract (payment side)
+  - ERC-7573 locking contract (asset leg)
+  - ERC-7573 decryption contract (payment leg)
   - Stateless decryption oracle on the payment network
 ---
 
@@ -18,8 +20,8 @@ Enable atomic Delivery-versus-Payment (DvP) across two networks using ERC-7573, 
 The pattern targets institutions that need cross-network settlement with clear behaviour, auditability, and optional privacy.
 
 In this pattern:
-- **asset side** = the tokenised security or collateral being delivered
-- **payment side** = the token used for payment (for example, a stablecoin or tokenised deposit)
+- **asset leg** = the tokenised security or collateral being delivered
+- **cash leg** = the token used for payment (for example, a stablecoin or tokenised deposit)
 - **decryption oracle** = a service on the payment network that, for each trade, decrypts one of two outcome keys based on the actual payment result; the asset contract then uses that key to decide whether to deliver or reclaim
 
 ## Ingredients
@@ -55,7 +57,7 @@ In this pattern:
    The buyer executes the payment through the decryption contract. The contract checks the payment against the registered details for `T` and then asks the decryption oracle to decrypt the encrypted key that matches the actual outcome (success or failure).  
    The oracle decrypts and returns that outcome key to the decryption contract.
 
-5. **Settle on the asset side**  
+5. **Settle on the asset leg**  
    An authorised party submits the outcome key for `T` to the locking contract on the asset network. The contract verifies it against the registered values and either:
    - delivers the locked asset to the buyer (payment succeeded), or
    - lets the seller reclaim the asset (payment failed, was cancelled, or never completed in time).  
@@ -73,14 +75,14 @@ Standard ERC-7573 provides atomic settlement but no privacy. For institutional u
   Keep full trade terms (price, size, counterparties) in internal systems; on-chain, store only a trade identifier and a short reference that links back to those records.
 
 - **Private or proof-based payment layer**  
-  Use a network or rollup for the payment side that hides detailed balances but can provide a clear “payment completed / not completed” result for each trade identifier.
+  Use a network or rollup for the cash leg that hides detailed balances but can provide a clear “payment completed / not completed” result for each trade identifier.
 
 These extensions do not change how ERC-7573 contracts decide outcomes: the asset contract still receives an outcome key and either delivers the asset or allows reclaim.
 
 ## Guarantees
 
 - **Atomic settlement**  
-  For each trade, both asset and payment settle together, or the asset is reclaimed by the seller; one-sided settlement is not an intended state.
+  For each trade, both asset and cash legs settle together, or the asset is reclaimed by the seller; one-sided settlement is not an intended state.
 
 - **Defined failure behaviour**  
   If the payment fails, is cancelled, no outcome key is released, or the latest time passes, the contracts expose a predictable reclaim path for the seller.
@@ -104,8 +106,8 @@ These extensions do not change how ERC-7573 contracts decide outcomes: the asset
 
 ## Example
 
-- Bank A issues a tokenised bond on Ethereum L1 (asset side).  
-- Bank B holds EURC stablecoin on an L2 rollup (payment side).  
+- Bank A issues a tokenised bond on Ethereum L1 (asset leg).  
+- Bank B holds EURC stablecoin on an L2 rollup (cash leg).  
 - They agree off-chain on trade id `T`, bond quantity, payment amount, and a latest settlement time.  
 - Bank A locks the bond in the ERC-7573 locking contract on L1 under `T`.  
 - Bank B registers `T` and executes the EURC payment via the ERC-7573 decryption contract on the rollup; the oracle releases the success outcome key for `T`.  
