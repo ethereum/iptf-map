@@ -1,7 +1,8 @@
 ---
 title: "Pattern: Open Intent Framework (OIF)"
 status: draft
-maturity: PoC
+maturity: ready
+rollout-plan: ready to build solvers
 works-best-when:
   - Cross-chain settlement needed
   - Intent-based execution preferred

@@ -1,7 +1,8 @@
 ---
 title: "Pattern: EIL (Ethereum Interoperability Layer)"
 status: draft
-maturity: PoC
+maturity: ready
+rollout-plan: ready to be integrated in wallets
 works-best-when:
   - User needs to execute calls on multiple L2s with one signature
   - Assets scattered across chains need to be used without bridging friction
@@ -15,7 +16,7 @@ dependencies: [ERC-4337, EIP-7701, RIP-7859]
 
 ## Intent
 
-Account-based cross-L2 interoperability where users sign once and execute transactions directly on multiple chains. XLPs (Crosschain Liquidity Providers) supply gas and liquidity via atomic swaps, but never execute calls on the user's behalf. This enables the optimistic design that's much faster and more efficient than HTLC's pessimistic hash-secret approach.
+Account-based cross-L2 interoperability where users sign once and execute transactions directly on multiple chains. XLPs (Crosschain Liquidity Providers) supply gas and liquidity via optimistic atomic swaps, but never execute calls on the user's behalf.
 
 ## Ingredients
 
@@ -29,7 +30,7 @@ Account-based cross-L2 interoperability where users sign once and execute transa
 ## Protocol
 
 1. Alice finds registered XLPs operating on both source and destination chains
-2. Alice signs multichain UserOp. On source chain she locks funds in `CrossChainPaymaster`, requests voucher specifying XLP list and fee schedule (reverse Dutch auction). Request is short-lived; funds unlock if no voucher provided promptly
+2. Alice signs multichain `UserOp`. On source chain she locks funds in `CrossChainPaymaster`, requests voucher specifying XLP list and fee schedule (reverse Dutch auction). Request is short-lived; funds unlock if no voucher provided promptly
 3. XLP claims Alice's source funds by providing signed voucher (commitment for destination). Same voucher that claims source funds releases XLP funds on destination. Source funds remain locked 1 hour before crediting XLP deposit
 4. Alice appends XLP voucher to destination `UserOp` signature, submits to destination chain
 5. Destination `CrossChainPaymaster` verifies voucher, checks XLP has sufficient deposits, pays gas and gives Alice the funds
@@ -62,5 +63,5 @@ Arbitrum Alice wants to mint 1 ETH NFT on Linea. She has 0.8 ETH on Arbitrum and
 ## See also
 
 - [Ethrearch post](https://ethresear.ch/t/eil-trust-minimized-cross-l2-interop/23437)
-- [Typescritpt SDK](https://github.com/eth-infinitism/eil-sdk)
+- [Typescript SDK](https://github.com/eth-infinitism/eil-sdk)
 - [Yoav Weiss - Trust-Minimized Interop with EIL](https://www.youtube.com/watch?v=kFKvZuXUmQY)

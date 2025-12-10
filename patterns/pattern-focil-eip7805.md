@@ -1,7 +1,8 @@
 ---
 title: "Pattern: FOCIL - Fork-Choice Enforced Inclusion Lists"
 status: draft
-maturity: PoC
+maturity: not yet recommended
+rollout-plan: glamsterdam or later forks
 works-best-when:
   - Censorship resistance is critical
   - Block builders concentrate power and may censor transactions
@@ -13,7 +14,7 @@ dependencies: [EIP-7805]
 
 ## Intent
 
-FOCIL (Fork-Choice Enforced Inclusion Lists) is a standard that enables a committee of 16 validators to force-include transactions in blocks, preventing censorship by sophisticated block builders. FOCIL itself does not provide privacy, transactions remain fully visible in the public mempool and on-chain. It only guarantees that transactions cannot be censored once submitted to the mempool.
+FOCIL (Fork-Choice Enforced Inclusion Lists) is an EIP that enables a committee of 16 validators to force-include transactions in blocks, preventing censorship by sophisticated block builders. FOCIL itself does not provide privacy, transactions remain fully visible in the public mempool and on-chain. It only guarantees that transactions cannot be censored once submitted to the mempool.
 
 ## Protocol (concise)
 
