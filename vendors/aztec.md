@@ -4,13 +4,13 @@ status: draft
 maturity: production (Ignition Chain)
 ---
 
-# Aztec - Privacy Rollup
+# Aztec - Privacy ZK Rollup
 
 ## What it is
 
-Aztec is a privacy focused rollup (or zk-zk-rollup) on Ethereum that enables private transactions and programmable privacy. Unlike its predecessor, it is a fully programmable network where applications can access both private and public state.
+Aztec is a privacy focused rollup (or zk-zk-rollup) on Ethereum that enables private transactions and programmable privacy. It is a fully programmable network where applications can access both private and public state.
 
-It uses the **Noir** language to write zk circuits and enables a hybrid execution model: private functions execute client-side (for privacy), while public functions execute on the network (for transparency/auditability).
+It uses the **Noir** language along with the Aztec.nr framework to write smart contracts with a hybrid execution model: private functions execute client-side (for privacy), while public functions execute on the network (for transparency/auditability).
 
 ## Fits with patterns
 
@@ -27,16 +27,16 @@ It uses the **Noir** language to write zk circuits and enables a hybrid executio
 ## Architecture
 
 - Hybrid State Model
-  - Private state (UTXO-based) is managed by the PXE (Private Execution Environment) on the user's device.
+  - Private state (UTXO-based) is managed by the wallet on the user's device.
   - Public state (Account-based) is managed by the AVM (Aztec Virtual Machine) on nodes.
-- Smart contracts are written in [Noir](../patterns/pattern-noir-private-contracts.md).
+- Smart contracts are written in [Noir](../patterns/pattern-noir-private-contracts.md) using the Aztec.nr framework.
 - Proof system: Honk (UltraHonk) and UltraPlonk. Honk allows for fast recursion and removes the need for a trusted setup.
 - DA model: Rollup posts data to Ethereum L1 using EIP-4844 Blobs.
-- Settlement: Decentralized sequencer; L2 validity proofs are verified on Ethereum L1.
+- Settlement: Decentralized sequencers; L2 validity proofs are verified on Ethereum L1.
 
 ## Privacy domains
 
-- **Private transfers**: Default shielding of token amounts, counterparties hidden from public chain.
+- **Private transfers**: Optional shielding of token amounts, counterparties from the public chain.
 - **Selective disclosure**: Users can export viewing keys for auditors/regulators.
 - **Programmable privacy**: Circuits allow private execution of DeFi-like logic (DEX, lending) within Aztec.
 
@@ -56,8 +56,8 @@ It uses the **Noir** language to write zk circuits and enables a hybrid executio
 
 ## Strengths
 
-- Strong privacy guarantees for transfers and balances.
-- Programmable privacy circuits extend beyond simple shielded transfers.
+- Strong privacy guarantees for: any private data, private function execution, private smart contract code, privacy over who executed the functions.
+- Programmable privacy smart contract execution extend beyond simple shielded transfers.
 - Mature research team with open-source infrastructure and audits.
 
 ## Risks and open questions
