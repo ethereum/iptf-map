@@ -35,7 +35,7 @@ Use **ICMA Bond Data Taxonomy** as the canonical schema for bond terms & lifecyc
 - Issuance terms in BDT; hash anchored via EAS; regulator verifies consistency.
 
 ## See also
-- pattern-crypto-registry-bridge-eWpG-eas.md
+- pattern-crypto-registry-bridge-ewpg-eas.md
 
 ## See also (external)
 - ICMA BDT overview: https://www.icmagroup.org/fintech-and-digitalisation/fintech-advisory-committee-and-related-groups/bond-data-taxonomy/

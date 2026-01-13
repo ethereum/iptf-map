@@ -13,7 +13,7 @@ status: draft
 ## Shortest-path patterns
 - [zk-KYC/ML + ONCHAINID (ERC-734-735)](/patterns/pattern-zk-kyc-ml-id-erc734-735.md)
 - [Selective disclosure (view keys + proofs)](/patterns/pattern-regulatory-disclosure-keys-proofs.md)
-- [Crypto-registry bridge (eWpG) + EAS](/patterns/pattern-crypto-registry-bridge-eWpG-eas.md)
+- [Crypto-registry bridge (eWpG) + EAS](/patterns/pattern-crypto-registry-bridge-ewpg-eas.md)
 
 ## Adjacent vendors
 - [Chainlink ACE](/vendors/chainlink-ace.md)

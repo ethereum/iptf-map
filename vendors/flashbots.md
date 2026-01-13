@@ -16,7 +16,7 @@ Flashbots develops **MEV infrastructure** including private mempools, block buil
 
 ## Key Use Cases / Patterns
 
-- [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-shutter-suave.md) - Private intent expression via SUAVE
+- [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-encryption.md) - Private intent expression via SUAVE
 - [Private Broadcasting](../approaches/approach-private-broadcasting.md) - MEV protection through private mempools
 
 ## Technical Approach
