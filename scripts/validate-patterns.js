@@ -118,8 +118,8 @@ function validatePattern(filePath) {
   const fileErrors = [];
   const fileWarnings = [];
 
-  // Skip template file
-  if (fileName === '_template.md') {
+  // Skip template and README files
+  if (fileName === '_template.md' || fileName === 'README.md') {
     return;
   }
 
