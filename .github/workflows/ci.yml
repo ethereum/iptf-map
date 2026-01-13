@@ -1,0 +1,90 @@
+name: CI Quality Gates
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [master, main]
+
+jobs:
+  validate-patterns:
+    runs-on: ubuntu-latest
+    name: Validate Documentation Patterns
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd scripts
+          npm install
+
+      - name: Validate pattern documents
+        id: validate
+        run: |
+          node scripts/validate-patterns.js
+        env:
+          CI_MODE: strict
+
+      - name: Check markdown links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          config-file: '.github/markdown-link-check-config.json'
+        continue-on-error: true
+
+      - name: Markdown linting
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: |
+            patterns/*.md
+            approaches/*.md
+            use-cases/*.md
+            vendors/*.md
+        continue-on-error: true
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## CI Quality Gates Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f validation-report.md ]; then
+            cat validation-report.md >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ CI checks completed" >> $GITHUB_STEP_SUMMARY
+
+  validate-vendors:
+    runs-on: ubuntu-latest
+    name: Validate Vendor Documentation
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check vendor neutrality
+        run: |
+          echo "Checking vendor documentation for neutrality..."
+          # Check for marketing language patterns
+          if grep -r -i -E "(best|leading|superior|unmatched|revolutionary)" vendors/*.md 2>/dev/null; then
+            echo "::warning::Found potential marketing language in vendor documentation"
+          fi
+
+      - name: Verify vendor cross-references
+        run: |
+          echo "Checking vendor pattern references..."
+          # Ensure vendors reference generic patterns, not vendor-specific ones
+          for file in vendors/*.md; do
+            if [ -f "$file" ]; then
+              if grep -E "pattern-.*-(flashbots|shutter|suave)" "$file" 2>/dev/null; then
+                echo "::error::Vendor file $file references vendor-specific pattern names"
+                exit 1
+              fi
+            fi
+          done

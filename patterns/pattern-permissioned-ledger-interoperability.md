@@ -59,4 +59,4 @@ Enable atomic transactions and data exchange across distinct permissioned ledger
 
 - Pattern: [DvP ERC-7573](../patterns/pattern-dvp-erc7573.md)
 - Pattern: [Private ISO20022](../patterns/pattern-private-iso20022.md)
-- Pattern: [Crypto-Registry Bridge eWpG-EAS](../patterns/pattern-crypto-registry-bridge-eWpG-eas.md)
+- Pattern: [Crypto-Registry Bridge eWpG-EAS](../patterns/pattern-crypto-registry-bridge-ewpg-eas.md)

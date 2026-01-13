@@ -63,7 +63,7 @@ Enable compliant tokenization of real-world assets with built-in identity manage
 ## See also
 
 - [Private Bonds Approach](../approaches/approach-private-bonds.md)
-- [Crypto Registry Bridge eWpG EAS](pattern-crypto-registry-bridge-eWpG-eas.md)
+- [Crypto Registry Bridge eWpG EAS](pattern-crypto-registry-bridge-ewpg-eas.md)
 - [Regulatory Disclosure Keys Proofs](pattern-regulatory-disclosure-keys-proofs.md)
 - [ZK KYC ML ID ERC734-735](pattern-zk-kyc-ml-id-erc734-735.md)
 - [ERC-3643 Documentation](https://docs.erc3643.org/erc-3643)

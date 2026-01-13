@@ -9,9 +9,9 @@ avoid-when:
   - Strong amount confidentiality is required (use shielded pools or confidential tokens).
   - Institutions require regulator keys / scoped audit by default.
 dependencies:
-  - [ERC-20](https://eips.ethereum.org/EIPS/eip-20)
-  - [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) (optional, account abstraction for wallet UX)
-  - [EIP-5564](https://eips.ethereum.org/EIPS/eip-5564) (Ethereum Stealth Addresses draft)
+  - ERC-20
+  - ERC-4337 (optional, account abstraction for wallet UX)
+  - EIP-5564 (Ethereum Stealth Addresses draft)
 ---
 
 ## Intent

@@ -16,7 +16,7 @@ Shutter Network provides **encrypted mempool** infrastructure that prevents MEV 
 
 ## Key Use Cases / Patterns
 
-- [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-shutter-suave.md) - Encrypted mempool with threshold decryption
+- [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-encryption.md) - Encrypted mempool with threshold decryption
 - [Private Broadcasting](../approaches/approach-private-broadcasting.md) - Intent signaling protection
 
 ## Technical Approach

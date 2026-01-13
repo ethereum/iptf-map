@@ -21,7 +21,7 @@ A strong design principle of the project is that existing privacy preserving tok
 - [L1 ZK Commitment Pool](../patterns/pattern-l1-zk-commitment-pool.md)
 - [DvP ERC7573](../patterns/pattern-dvp-erc7573.md)
 - [Confidential ERC20 FHE L2 ERC7573](../patterns/pattern-confidential-erc20-fhe-l2-erc7573.md)
-- [Crypto Registry Bridge eWpG EAS](../patterns/pattern-crypto-registry-bridge-eWpG-eas.md)
+- [Crypto Registry Bridge eWpG EAS](../patterns/pattern-crypto-registry-bridge-ewpg-eas.md)
 
 ## Not a substitute for
 - Privacy L2 or App-chain
