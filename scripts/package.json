@@ -1,0 +1,17 @@
+{
+  "name": "iptf-map-validation",
+  "version": "1.0.0",
+  "description": "Validation scripts for IPTF Map documentation",
+  "main": "validate-patterns.js",
+  "scripts": {
+    "validate": "node validate-patterns.js",
+    "validate:ci": "CI_MODE=strict node validate-patterns.js"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "license": "CC0"
+}
