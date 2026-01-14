@@ -67,7 +67,7 @@ Hide transaction content from the public mempool to prevent front-running, sandw
   - Shutter: Trust threshold committee (cryptographic enforcement, k-of-n threshold security).
 - **Latency**: May add 10-100ms for relay routing; encrypted mempool adds decryption step.
 - **Inclusion priority**: Private transactions may have lower priority than direct builder submissions.
-- **Coverage**: Not all builders participate in private transaction protocols; Flashbots covers ~90% of Ethereum blocks.
+- **Coverage**: MEV-Boost covers ~90% of Ethereum blocks; Flashbots relay handles ~70% of MEV-Boost blocks.
 - **Failure mode**: If private relay unavailable, transaction can fallback to public mempool (losing privacy) or fail (losing liveness).
 - **Cost**: Some private relay services charge fees or take MEV share; Shutter requires threshold committee infrastructure.
 
@@ -97,7 +97,7 @@ Hide transaction content from the public mempool to prevent front-running, sandw
 - **Network**: Ethereum L1, Gnosis Chain (Shutter), L2s with private mempool support
 - **Latency**: +10-100ms vs public mempool submission
 - **Cost**: Varies by provider; Flashbots Protect is free, MEV-Share takes percentage
-- **Coverage**: ~90% of Ethereum blocks support Flashbots; Shutter live on Gnosis
+- **Coverage**: ~90% of Ethereum blocks use MEV-Boost relays; Shutter live on Gnosis
 - **Failure rate**: <1% relay unavailability; fallback paths available
 
 ## See also

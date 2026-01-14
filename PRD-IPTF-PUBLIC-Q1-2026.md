@@ -466,53 +466,55 @@ Before EVERY commit:
 
 ## Appendix C: Accuracy Verification Findings (January 2026)
 
-External research conducted via Grok and ChatGPT to verify claims in repository documentation.
+External research conducted via web search to verify claims in repository documentation.
 
 ### EIP/ERC Status Updates
 
-| Standard | Status | Notes |
-|----------|--------|-------|
-| ERC-3643 (T-REX) | **Final** | Production on mainnet, 60+ deployments |
-| ERC-4337 (Account Abstraction) | Review | Major bundlers operational |
-| EIP-5564 (Stealth Addresses) | Finalized | Wallet implementations emerging |
-| EIP-6123 (SDC) | Draft | No major implementations yet |
-| EIP-7573 (DvP) | Draft | Limited adoption |
-| EIP-7805 (FOCIL) | Draft | Testnet exploration ongoing |
+| Standard | Status | Notes | Source |
+|----------|--------|-------|--------|
+| ERC-3643 (T-REX) | **Final** | Production on mainnet, first tokenization standard to achieve Final | [erc3643.org](https://www.erc3643.org/news/ethereum-community-approves-erc3643-as-the-first-tokenization-standard) |
+| ERC-4337 (Account Abstraction) | Review | Major bundlers operational | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-4337) |
+| EIP-5564 (Stealth Addresses) | Draft | Wallet implementations emerging | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-5564) |
+| EIP-6123 (SDC) | Draft | No major implementations yet | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-6123) |
+| EIP-7573 (DvP) | Draft | Limited adoption | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-7573) |
+| EIP-7805 (FOCIL) | Draft | Testnet exploration ongoing | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-7805) |
 
 ### Vendor Status Updates
 
-| Vendor | Status | Action Needed |
-|--------|--------|---------------|
-| **Flashbots** | ~80% block coverage | Update from 90% claim in docs |
-| **SUAVE** | Testnet only | Not mainnet yet |
-| **Shutter** | Gnosis Chain only | Accurate as documented |
-| **Aztec Connect** | Shutdown March 2024 | Document as historical |
-| **Aztec Noir** | Stable release | Mainnet expected 2025 |
-| **Zama fhEVM** | Testnet | coFHE with Fhenix in development |
+| Vendor | Status | Action Needed | Source |
+|--------|--------|---------------|--------|
+| **MEV-Boost** | ~90% of blocks | Accurate (MEV-Boost overall, not just Flashbots relay) | [rated.network](https://blog.rated.network/blog/merge-mev) |
+| **Flashbots relay** | ~70% of MEV-Boost blocks | Flashbots relay dominates within MEV-Boost ecosystem | [relayscan.io](https://www.relayscan.io/) |
+| **SUAVE** | Testnet only | Not mainnet yet | Flashbots docs |
+| **Shutter** | Gnosis Chain only | Accurate as documented | [shutter.network](https://shutter.network/) |
+| **Aztec Connect** | Shutdown March 2023 | Document as historical | [cointelegraph](https://cointelegraph.com/news/privacy-focused-blockchain-network-closes-aztec-connect-tool) |
+| **Aztec Noir** | Stable release | Mainnet expected 2025 | Aztec docs |
+| **Zama fhEVM** | Testnet | coFHE with Fhenix in development | Zama docs |
 
 ### TEE Security Updates
 
-| Platform | Status | Recommendation |
-|----------|--------|----------------|
-| **Intel SGX** | Deprecation announced | Consumer EOL 2027; plan migration |
-| **AMD SEV-SNP** | Current | Recommended alternative |
-| **AWS Nitro** | Stable | No major incidents |
+| Platform | Status | Recommendation | Source |
+|----------|--------|----------------|--------|
+| **Intel SGX** | Deprecated on consumer | Removed from 11th/12th gen+; server Xeon continues | [Intel](https://www.intel.com/content/www/us/en/support/articles/000089326/software/intel-security-products.html), [Wikipedia](https://en.wikipedia.org/wiki/Software_Guard_Extensions) |
+| **Intel IAS** | EOL April 2025 | Migrate to DCAP attestation | [Intel Community](https://community.intel.com/t5/Intel-Software-Guard-Extensions/IAS-End-of-Life-Announcement/m-p/1545831) |
+| **AMD SEV-SNP** | Current | Recommended alternative for confidential VMs | AMD docs |
+| **AWS Nitro** | Stable | No major incidents | AWS docs |
 
-**Key finding**: Intel SGX deprecation requires migration guidance in TEE patterns.
+**Key finding**: Intel SGX deprecated on consumer platforms since 2021 (11th gen). Server Xeon continues support. Migration guidance needed in TEE patterns.
 
 ### Regulatory Status
 
-| Framework | Status | Effective |
-|-----------|--------|-----------|
-| **MiCA** | Fully in force | December 2024 |
-| **DORA** | Applied | January 2025 |
-| **eIDAS 2.0** | In development | TBD |
+| Framework | Status | Effective | Source |
+|-----------|--------|-----------|--------|
+| **MiCA** | Fully in force | December 30, 2024 | [ESMA](https://www.esma.europa.eu/esmas-activities/digital-finance-and-innovation/markets-crypto-assets-regulation-mica) |
+| **DORA** | Applied | January 17, 2025 | [EIOPA](https://www.eiopa.europa.eu/digital-operational-resilience-act-dora_en) |
+| **eIDAS 2.0** | In development | TBD | EU Commission |
 
 ### Action Items for Repository
 
-- [ ] `pattern-private-transaction-broadcasting.md`: Update Flashbots coverage (90% → ~80%)
-- [ ] `pattern-tee-based-privacy.md`: Add SGX deprecation warning and migration guidance
-- [ ] Add Aztec Connect shutdown note where referenced
+- [ ] `pattern-private-transaction-broadcasting.md`: Clarify MEV-Boost vs Flashbots relay coverage
+- [ ] `pattern-tee-based-privacy.md`: Add SGX consumer deprecation warning; note server Xeon continues
+- [ ] Add Aztec Connect shutdown note (March 2023, not 2024)
 - [ ] Verify ERC-3643 references reflect Final status
 
 ---
