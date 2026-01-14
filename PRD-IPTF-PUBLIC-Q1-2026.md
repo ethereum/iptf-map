@@ -136,7 +136,7 @@ References: GitHub Issue #41
 
 ### Sprint 1: Core Patterns [Week 1, Days 3-5]
 
-**PR-003: Private Transaction Broadcasting Pattern**
+**PR-003: Private Transaction Broadcasting Pattern** ✅ DONE ([PR #43](https://github.com/ethereum/iptf-map/pull/43))
 ```
 File: patterns/pattern-private-transaction-broadcasting.md
 DoD: All sections complete, 3+ vendor examples in See Also
@@ -144,7 +144,7 @@ Size: ~150 lines
 Related vendors: Flashbots, Shutter, SUAVE
 ```
 
-**PR-004: TEE Privacy Pattern**
+**PR-004: TEE Privacy Pattern** ✅ DONE ([PR #44](https://github.com/ethereum/iptf-map/pull/44))
 ```
 File: patterns/pattern-tee-based-privacy.md
 DoD: Trust model explicit, failure modes documented
@@ -152,7 +152,7 @@ Size: ~150 lines
 Covers: Intel SGX, AMD SEV, AWS Nitro approaches
 ```
 
-**PR-005: Threshold Encrypted Mempool Pattern**
+**PR-005: Threshold Encrypted Mempool Pattern** ✅ DONE ([PR #45](https://github.com/ethereum/iptf-map/pull/45))
 ```
 File: patterns/pattern-threshold-encrypted-mempool.md
 DoD: Protocol steps clear, committee assumptions stated
@@ -424,10 +424,10 @@ iptf-map/
 **File**: `patterns/pattern-tee-based-privacy.md`
 **Success**: Explicit trust assumptions, vendor-neutral
 
-### PR-005: Pattern README Cleanup [DAY 3]
-**Objective**: Address explicit TODO, organize pattern index
-**File**: `patterns/README.md`
-**Success**: TODO removed, patterns indexed by category
+### PR-005: Threshold Encrypted Mempool Pattern [DAY 3]
+**Objective**: Document k-of-n threshold encryption for MEV protection
+**File**: `patterns/pattern-threshold-encrypted-mempool.md`
+**Success**: Protocol steps clear, committee assumptions stated
 
 ---
 
@@ -464,6 +464,59 @@ Before EVERY commit:
 
 ---
 
+## Appendix C: Accuracy Verification Findings (January 2026)
+
+External research conducted via Grok and ChatGPT to verify claims in repository documentation.
+
+### EIP/ERC Status Updates
+
+| Standard | Status | Notes |
+|----------|--------|-------|
+| ERC-3643 (T-REX) | **Final** | Production on mainnet, 60+ deployments |
+| ERC-4337 (Account Abstraction) | Review | Major bundlers operational |
+| EIP-5564 (Stealth Addresses) | Finalized | Wallet implementations emerging |
+| EIP-6123 (SDC) | Draft | No major implementations yet |
+| EIP-7573 (DvP) | Draft | Limited adoption |
+| EIP-7805 (FOCIL) | Draft | Testnet exploration ongoing |
+
+### Vendor Status Updates
+
+| Vendor | Status | Action Needed |
+|--------|--------|---------------|
+| **Flashbots** | ~80% block coverage | Update from 90% claim in docs |
+| **SUAVE** | Testnet only | Not mainnet yet |
+| **Shutter** | Gnosis Chain only | Accurate as documented |
+| **Aztec Connect** | Shutdown March 2024 | Document as historical |
+| **Aztec Noir** | Stable release | Mainnet expected 2025 |
+| **Zama fhEVM** | Testnet | coFHE with Fhenix in development |
+
+### TEE Security Updates
+
+| Platform | Status | Recommendation |
+|----------|--------|----------------|
+| **Intel SGX** | Deprecation announced | Consumer EOL 2027; plan migration |
+| **AMD SEV-SNP** | Current | Recommended alternative |
+| **AWS Nitro** | Stable | No major incidents |
+
+**Key finding**: Intel SGX deprecation requires migration guidance in TEE patterns.
+
+### Regulatory Status
+
+| Framework | Status | Effective |
+|-----------|--------|-----------|
+| **MiCA** | Fully in force | December 2024 |
+| **DORA** | Applied | January 2025 |
+| **eIDAS 2.0** | In development | TBD |
+
+### Action Items for Repository
+
+- [ ] `pattern-private-transaction-broadcasting.md`: Update Flashbots coverage (90% → ~80%)
+- [ ] `pattern-tee-based-privacy.md`: Add SGX deprecation warning and migration guidance
+- [ ] Add Aztec Connect shutdown note where referenced
+- [ ] Verify ERC-3643 references reflect Final status
+
+---
+
 **Document Status**: Ready for Implementation
-**Next Action**: Create PR-001 (CI Quality Gates)
+**Next Action**: Begin Sprint 2 (PR-006: Hybrid Privacy Architecture)
 **Success Criteria**: All PRs pass automated checks, ralph-loop operational
