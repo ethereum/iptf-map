@@ -122,6 +122,18 @@ DoD: Validates all required fields and sections
 Size: ~150 lines
 ```
 
+**PR-002b: Remediate Existing Pattern Warnings**
+```
+Files: 34 pattern files with CI warnings (see GitHub Issue #41)
+DoD: All patterns have required frontmatter fields, missing sections added, maturity values standardized
+Size: ~10-20 lines per file
+Fixes:
+- Add `layer`, `privacy_goal`, `assumptions`, `last_reviewed` fields to all patterns
+- Add missing sections to: pattern-focil-eip7805.md, pattern-privacy-l2s.md, pattern-shielding.md, pattern-zk-derivative-delta.md
+- Standardize maturity values in: pattern-eil.md, pattern-focil-eip7805.md, pattern-lean-ethereum.md, pattern-oif.md, pattern-private-iso20022.md, pattern-zk-spv.md
+References: GitHub Issue #41
+```
+
 ### Sprint 1: Core Patterns [Week 1, Days 3-5]
 
 **PR-003: Private Transaction Broadcasting Pattern**
@@ -183,6 +195,14 @@ References: ERC-7573, EIP-6123
 File: patterns/pattern-cross-chain-privacy-bridge.md
 DoD: Trust assumptions explicit, verification steps detailed
 Size: ~150 lines
+```
+
+**PR-010b: vOPRF Privacy Pattern**
+```
+File: patterns/pattern-voprf-nullifiers.md
+DoD: Pattern card with intent, ingredients, protocol steps; maps to credential/signal mechanisms; vendor examples in See Also if applicable
+Size: ~150 lines
+References: GitHub Issue #24
 ```
 
 ### Sprint 3: Documentation & Analysis [Week 3]
@@ -377,6 +397,12 @@ iptf-map/
 ---
 
 ## 9. Top 5 Initial PRs (Start Immediately)
+
+> **GitHub Issue Traceability:**
+> - PR-002b → Issue #41 (frontmatter remediation)
+> - PR-004 → Issue #28 (TEE patterns)
+> - PR-010b → Issue #24 (vOPRF solutions)
+> - PR-011 → Issue #27 (L2 privacy comparison)
 
 ### PR-001: CI Quality Gates [DAY 1]
 **Objective**: Block all future PRs that don't meet quality standards
