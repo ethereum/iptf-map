@@ -12,6 +12,10 @@
 
 **View Key**: is a cryptographic key that allows read-only access to encrypted state, like private balances or notes. It enables controlled visibility for auditors, regulators, or internal control functions.
 
+**JoinSplit**: Circuit pattern that consumes one or more input notes (revealed via nullifiers) and produces one or more output notes (as new commitments). Enables private transfers, splits, and merges of value.
+
+**Memo**: Encrypted payload attached to a private transaction containing information the recipient needs (e.g., note details, amount, blinding factor). Only the intended recipient can decrypt it using their encryption key.
+
 ### Blockchain Architecture
 
 **Data Availability (DA)**: The guarantee that all transaction and state data needed to recompute and verify the system is actually published and retrievable. If DA fails, independent verifiers cannot reliably check state, even if proofs appear valid.
