@@ -108,21 +108,21 @@ Each deliverable scored on:
 
 ### Sprint 0: Infrastructure [Week 1, Days 1-2]
 
-**PR-001: CI Quality Gates**
+**PR-001: CI Quality Gates** ✅ DONE ([PR #40](https://github.com/ethereum/iptf-map/pull/40))
 ```
 Files: .github/workflows/ci.yml, scripts/validate-patterns.js
 DoD: Runs on every PR, blocks merge if checks fail
 Size: ~200 lines
 ```
 
-**PR-002: Pattern Validation Script**
+**PR-002: Pattern Validation Script** ✅ DONE ([PR #40](https://github.com/ethereum/iptf-map/pull/40))
 ```
 Files: scripts/check-frontmatter.py, scripts/check-sections.py
 DoD: Validates all required fields and sections
 Size: ~150 lines
 ```
 
-**PR-002b: Remediate Existing Pattern Warnings**
+**PR-002b: Remediate Existing Pattern Warnings** ✅ DONE ([PR #42](https://github.com/ethereum/iptf-map/pull/42))
 ```
 Files: 34 pattern files with CI warnings (see GitHub Issue #41)
 DoD: All patterns have required frontmatter fields, missing sections added, maturity values standardized
