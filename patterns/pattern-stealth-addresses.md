@@ -2,6 +2,10 @@
 title: "Pattern: Stealth Addresses"
 status: draft
 maturity: PoC
+layer: L1
+privacy_goal: Hide address linkages via one-time destination addresses; amounts remain visible
+assumptions: EIP-5564 support, wallet view/spend key management, optional registry for public view keys
+last_reviewed: 2026-01-14
 works-best-when:
   - Sender and receiver want to hide address linkages on a public chain.
   - Amount privacy is less critical than unlinkability of counterparties.

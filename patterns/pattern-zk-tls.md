@@ -2,6 +2,10 @@
 title: "Pattern: zk-TLS"
 status: draft
 maturity: PoC
+layer: offchain
+privacy_goal: Export verifiable identity/data from web2 systems via ZK proofs on TLS transcripts
+assumptions: TLSNotary or similar, trusted Notary for TLS session, ZK prover for transcript
+last_reviewed: 2026-01-14
 works-best-when:
   - data needs to be captured using a website
 avoid-when:

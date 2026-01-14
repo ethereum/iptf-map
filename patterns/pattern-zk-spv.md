@@ -1,7 +1,11 @@
 ---
 title: "Pattern: zk-SPV (Succinct Cross-Chain Verification)"
 status: draft
-maturity: research
+maturity: experimental
+layer: hybrid
+privacy_goal: Trustless cross-chain verification via ZK proofs of transaction finality
+assumptions: zkSNARK/zkSTARK prover, target chain consensus in-circuit, verifier contract on verifying chain
+last_reviewed: 2026-01-14
 works-best-when:
   - Assets/contracts must verify events on another EVM chain.
   - Institutions require strong DvP atomicity across ledgers.

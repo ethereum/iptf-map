@@ -2,6 +2,10 @@
 title: "Pattern: Permissioned Ledger Interoperability"
 status: draft
 maturity: pilot
+layer: offchain
+privacy_goal: Cross-ledger atomicity with counterparty-only visibility of transaction state
+assumptions: Canton/DAML or similar sync protocol, harmonized governance, selective disclosure for regulators
+last_reviewed: 2026-01-14
 works-best-when:
   - Multiple financial institutions each operate their own permissioned ledger but require atomic cross-ledger settlement
   - Regulatory constraints prevent moving all participants onto a single shared chain

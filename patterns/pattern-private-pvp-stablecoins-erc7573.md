@@ -2,6 +2,10 @@
 title: "Pattern: Private PvP (cash↔cash) Settlement via ERC‑7573"
 status: draft
 maturity: PoC
+layer: hybrid
+privacy_goal: Atomic PvP between stablecoins with amount privacy and stakeholder-only visibility
+assumptions: ERC-7573 escrows, FX/price oracles, shielded transfer infrastructure on both legs
+last_reviewed: 2026-01-14
 works-best-when:
   - Two permissioned/regulated stablecoins (same L2 or cross‑L2) must settle **atomically** with **amount privacy**.
   - FX or cross‑issuer settlement requires on‑chain finality sensing and pricing.

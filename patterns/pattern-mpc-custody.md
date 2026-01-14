@@ -1,7 +1,11 @@
 ---
 title: "Pattern: MPC Custody and Transaction Control"
 status: draft
-maturity: prod
+maturity: production
+layer: offchain
+privacy_goal: Protect private keys via threshold distribution; no on-chain privacy of transactions
+assumptions: Threshold ECDSA/EdDSA infrastructure, MPC nodes in TEE/HSM, policy engine
+last_reviewed: 2026-01-14
 works-best-when:
   - Institutions require regulated-grade custody for digital assets
   - Key material must never exist in one place, but transactions must be orchestrated quickly

@@ -1,7 +1,11 @@
 ---
 title: Lean Ethereum
 status: draft
-maturity: research
+maturity: experimental
+layer: L1
+privacy_goal: No direct privacy; consensus redesign enabling light client verification
+assumptions: Post-quantum signatures, minimal zkVMs, 4-5 year research timeline, ~15 client teams
+last_reviewed: 2026-01-14
 works-best-when:
   - Long-term Ethereum consensus redesign needed
   - Solo validation accessibility matters

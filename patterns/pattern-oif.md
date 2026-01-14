@@ -1,7 +1,11 @@
 ---
 title: "Pattern: Open Intent Framework (OIF)"
 status: draft
-maturity: ready
+maturity: pilot
+layer: hybrid
+privacy_goal: No transaction privacy; intents visible to solvers during discovery
+assumptions: Active solver network, cross-chain messaging layer, price oracles
+last_reviewed: 2026-01-14
 rollout-plan: ready to build solvers
 works-best-when:
   - Cross-chain settlement needed

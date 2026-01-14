@@ -2,6 +2,10 @@
 title: "Pattern: TEE key manager"
 status: draft
 maturity: pilot
+layer: offchain
+privacy_goal: Isolate private keys in TEE with policy-bound signing; no on-chain transaction privacy
+assumptions: Attested TEE hardware (SGX/SEV), attestation verification service, KMS for bootstrapping
+last_reviewed: 2026-01-14
 works-best-when:
   - Institutions need hot or warm keys with stronger isolation than software-only wallets.
   - TEE operator and hardware vendor are known and contractually bound.

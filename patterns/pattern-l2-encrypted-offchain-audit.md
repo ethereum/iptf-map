@@ -2,6 +2,10 @@
 title: "Pattern: Low-cost L2 + Off-chain Encrypted Audit Log"
 status: ready
 maturity: pilot
+layer: hybrid
+privacy_goal: Hide amounts and positions with only commitments on-chain; encrypted audit log off-chain
+assumptions: L2 infrastructure, threshold KMS for scoped keys, EAS for access logging
+last_reviewed: 2026-01-14
 works-best-when:
   - Need hidden amounts/positions with minimal on-chain footprint.
   - Prefer cheap daily settlement over full on-chain private compute.

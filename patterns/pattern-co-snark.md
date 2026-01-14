@@ -2,6 +2,10 @@
 title: "Pattern: co-SNARKs (Collaborative Proving)"
 status: draft
 maturity: PoC
+layer: hybrid
+privacy_goal: Enable multi-party ZK proving over distributed private inputs without disclosure
+assumptions: co-SNARK protocol infrastructure, MPC network coordination, honest majority among proving parties
+last_reviewed: 2026-01-14
 works-best-when:
   - Multiple parties each hold sensitive data or models, and need to jointly prove compliance, settlement, or state updates without revealing inputs.
 avoid-when:

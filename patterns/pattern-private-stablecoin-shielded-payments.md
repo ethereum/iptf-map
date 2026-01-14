@@ -2,6 +2,10 @@
 title: "Pattern: Private Stablecoin Shielded Payments"
 status: ready
 maturity: pilot
+layer: L2
+privacy_goal: Stakeholder-only stablecoin transfers with view-key/proof-based disclosure for regulators
+assumptions: Privacy L2 (Aztec/Zama/Fhenix), wallet/KMS integration, optional L1 anchoring
+last_reviewed: 2026-01-14
 works-best-when:
   - Cash leg must be private (amounts + counterparties) with selective disclosure.
   - You need Ethereum‑native tooling (L2/app‑chain) and interop with PvP or DvP.

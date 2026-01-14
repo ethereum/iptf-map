@@ -2,6 +2,10 @@
 title: "Pattern: Hybrid TEE + ZK Settlement"
 status: draft
 maturity: pilot
+layer: hybrid
+privacy_goal: Private cross-chain settlement in TEEs with ZK proofs attesting correct execution
+assumptions: Attested TEE infrastructure, ZK prover backend, attestation registry
+last_reviewed: 2026-01-14
 works-best-when:
   - Participants accept some trust in TEEs but want zk-based attestations for audit.
   - Privacy requirements exceed what public smart contracts can do alone.

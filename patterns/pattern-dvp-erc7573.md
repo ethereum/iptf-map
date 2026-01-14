@@ -2,6 +2,10 @@
 title: "Pattern: Atomic DvP via ERC-7573 (cross-network)"
 status: ready
 maturity: pilot
+layer: hybrid
+privacy_goal: Enable atomic cross-network DvP with optional privacy extensions
+assumptions: ERC-7573 contracts on both networks, stateless decryption oracle, trade negotiation system
+last_reviewed: 2026-01-14
 works-best-when:
   - Asset and cash legs live on different networks (L1/L2).
 avoid-when:

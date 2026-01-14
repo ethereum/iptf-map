@@ -2,6 +2,10 @@
 title: "Pattern: Private Client Authentication for Institutional EOAs"
 status: draft
 maturity: pilot
+layer: hybrid
+privacy_goal: Authenticate client EOAs via Merkle proofs without revealing identity or linking addresses
+assumptions: ZK circuits for Merkle membership, on-chain Merkle root registry, Semaphore or similar
+last_reviewed: 2026-01-14
 works-best-when:
   - Institutions must comply with KYC/AML but want to protect client privacy onchain.
   - Clients need to prove control of EOAs without revealing identity.
