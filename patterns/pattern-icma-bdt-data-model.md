@@ -1,7 +1,11 @@
 ---
 title: "Pattern: ICMA Bond Data Taxonomy (canonical terms/events)"
 status: ready
-maturity: prod
+maturity: production
+layer: offchain
+privacy_goal: Standardize bond data for clean attestations without exposing raw data
+assumptions: ICMA BDT schema adoption, schema validator tooling, registrar integration
+last_reviewed: 2026-01-14
 works-best-when:
   - You want machine-readable bond terms/events across tools.
 avoid-when:

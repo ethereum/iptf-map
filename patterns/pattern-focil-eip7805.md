@@ -1,7 +1,11 @@
 ---
 title: "Pattern: FOCIL - Fork-Choice Enforced Inclusion Lists"
 status: draft
-maturity: not yet recommended
+maturity: experimental
+layer: L1
+privacy_goal: No privacy; provides censorship resistance via forced transaction inclusion
+assumptions: EIP-7805 adoption, 1-of-16 honest IL committee member, consensus layer changes
+last_reviewed: 2026-01-14
 rollout-plan: glamsterdam or later forks
 works-best-when:
   - Censorship resistance is critical
@@ -15,6 +19,12 @@ dependencies: [EIP-7805]
 ## Intent
 
 FOCIL (Fork-Choice Enforced Inclusion Lists) is an EIP that enables a committee of 16 validators to force-include transactions in blocks, preventing censorship by sophisticated block builders. FOCIL itself does not provide privacy, transactions remain fully visible in the public mempool and on-chain. It only guarantees that transactions cannot be censored once submitted to the mempool.
+
+## Ingredients
+
+- **Standards**: EIP-7805 (FOCIL specification)
+- **Infra**: Ethereum consensus layer with fork-choice enforcement, P2P gossip network for IL propagation
+- **Off-chain**: IL committee selection mechanism, equivocation detection
 
 ## Protocol (concise)
 

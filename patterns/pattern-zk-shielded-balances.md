@@ -2,6 +2,10 @@
 title: "Pattern: ZK Shielded Balances for Derivatives"
 status: draft
 maturity: PoC
+layer: L2
+privacy_goal: Confidential balances and daily deltas in shielded pool with regulator view keys
+assumptions: ERC-6123 SDC, shielded-pool L2, ZK prover infrastructure, key governance for regulators
+last_reviewed: 2026-01-14
 works-best-when:
   - Daily settlements (margin calls, deltas) must be hidden.
   - Regulators require replayable audits via view keys.

@@ -2,6 +2,10 @@
 title: "Pattern: Private Intent-Based Vaults"
 status: draft
 maturity: PoC
+layer: hybrid
+privacy_goal: Hide strategy parameters and order flow while keeping deposited assets auditable
+assumptions: FHE-enabled chain or privacy L2, intent relayers/solvers, compliance oracles
+last_reviewed: 2026-01-14
 works-best-when:
   - Institutions or funds need private strategy execution while assets remain transparently custodied.
   - Strategies are automated or intent-driven and should not leak parameters to competitors.

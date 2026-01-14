@@ -2,6 +2,10 @@
 title: "Pattern: Shielded-Pool Atomic Swap (ZK-HTLC)"
 status: draft
 maturity: PoC
+layer: hybrid
+privacy_goal: Cross-chain DvP with both legs in shielded pools; atomicity via ZK proofs
+assumptions: Shielded pool infrastructure on both chains, relayer/bridge, proof bundling service
+last_reviewed: 2026-01-14
 works-best-when:
   - Both assets already live in shielded pools (zk-rollups, privacy L2s).
   - Cross-chain atomicity is required without revealing linkages.

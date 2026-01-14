@@ -2,6 +2,10 @@
 title: "Pattern: Pre-trade privacy (Shutter/SUAVE/private RFQ)"
 status: ready
 maturity: pilot
+layer: hybrid
+privacy_goal: Prevent front-running and information leakage via encrypted order submission
+assumptions: Encrypted mempool (Shutter) or private builders (SUAVE), allow-listed counterparties
+last_reviewed: 2026-01-14
 works-best-when:
   - RFQ/secondary trading must not leak intent, size, or price pre-inclusion.
 avoid-when:

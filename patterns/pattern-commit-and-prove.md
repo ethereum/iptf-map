@@ -2,6 +2,10 @@
 title: "Pattern: Commit-and-Prove Fallback"
 status: draft
 maturity: pilot
+layer: hybrid
+privacy_goal: Achieve conditional atomicity via shared commitments across chains
+assumptions: On-chain commitment contracts, coordination runbook, both parties accept coordination overhead
+last_reviewed: 2026-01-14
 works-best-when:
   - Both parties accept extra coordination overhead.
   - Circuit complexity or infra constraints block other patterns.

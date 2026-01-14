@@ -1,7 +1,11 @@
 ---
 title: "Pattern: EIL (Ethereum Interoperability Layer)"
 status: draft
-maturity: ready
+maturity: pilot
+layer: hybrid
+privacy_goal: No privacy improvements; provides censorship-resistant cross-L2 execution
+assumptions: ERC-4337 accounts, XLP infrastructure with L1 staking, L1 canonical bridge for disputes
+last_reviewed: 2026-01-14
 rollout-plan: ready to be integrated in wallets
 works-best-when:
   - User needs to execute calls on multiple L2s with one signature

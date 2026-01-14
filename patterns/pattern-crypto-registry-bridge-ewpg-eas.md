@@ -2,6 +2,10 @@
 title: "Pattern: Crypto-register bridge (eWpG) with EAS mirroring"
 status: ready
 maturity: pilot
+layer: hybrid
+privacy_goal: Mirror licensed crypto-register facts on-chain as attestations without exposing PII
+assumptions: Licensed crypto-register (eWpG), EAS infrastructure, registrar API access
+last_reviewed: 2026-01-14
 works-best-when:
   - Germany/eWpG applies and a licensed crypto-register is required.
 avoid-when:

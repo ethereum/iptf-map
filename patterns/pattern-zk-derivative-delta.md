@@ -2,6 +2,10 @@
 title: "Pattern: ZK Proof of Private State Transition"
 status: draft
 maturity: PoC
+layer: hybrid
+privacy_goal: Apply daily margin updates without revealing delta or balances on-chain
+assumptions: ERC-6123 SDC, zkSNARK prover/verifier, public oracle with signed price data
+last_reviewed: 2026-01-14
 works-best-when:
   - Oracle price or price change is public and signed.
   - Counterparties share the same private state (notional, direction, balances).
@@ -13,6 +17,12 @@ dependencies:
   - (optional) Shielded-pool ledger (commitments + nullifiers)
   - (optional) CoSnark prover/verifier
 ---
+
+## Ingredients
+
+- **Standards**: ERC-6123 (SDC framework)
+- **Infra**: zkSNARK prover/verifier, SDC contract on L1/L2
+- **Off-chain**: Oracle providing signed price data, optional shielded-pool ledger, CoSnark infrastructure for MPC variants
 
 ## Intent
 
@@ -56,5 +66,11 @@ If the payoff uses **additional private inputs that the other party must not lea
 
 - 1y IRS, public rate fixings.
 - Parties share notional & direction; oracle signs daily rate.
-- Prover submits ZK proof “delta computed correctly; C_prev → C_next valid.”
+- Prover submits ZK proof "delta computed correctly; C_prev → C_next valid."
 - Chain updates state; no amounts leak.
+
+## See also
+
+- [pattern-zk-shielded-balances.md](pattern-zk-shielded-balances.md)
+- [pattern-regulatory-disclosure-keys-proofs.md](pattern-regulatory-disclosure-keys-proofs.md)
+- [pattern-co-snark.md](pattern-co-snark.md)

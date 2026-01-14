@@ -2,6 +2,10 @@
 title: "Pattern: zk-KYC/ML + ONCHAINID (ERC-734-735)"
 status: draft
 maturity: PoC
+layer: hybrid
+privacy_goal: Public verifiable identity onboarding via ZK proofs of KYC/AML compliance
+assumptions: ERC-734/735 identity framework, zk-KYC/ML prover (EZKL), zk-TLS or compliant EOA proofs
+last_reviewed: 2026-01-14
 works-best-when:
 - need public verifiability of identities onboarding (perhaps for instant settlement)
 avoid-when:

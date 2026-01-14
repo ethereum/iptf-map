@@ -2,6 +2,10 @@
 title: "Pattern: Shielded ERC-20 Transfers"
 status: draft
 maturity: PoC
+layer: hybrid
+privacy_goal: Confidential ERC-20 transfers hiding balances and metadata with selective disclosure
+assumptions: Shielded pool contracts or privacy L2, wallet support for shielded keys
+last_reviewed: 2026-01-14
 works-best-when:
   - You need confidential transfer amounts/counterparties.
   - Selective disclosure/auditing is required.
@@ -23,6 +27,16 @@ Enable **confidential ERC-20 transfers** by shielding balances and transfer meta
   - **L1/L2 contracts** (e.g., Railgun-style shielded pools).
   - **Privacy L2/app-chains** (e.g., Aztec, Zama fhEVM, Fhenix) with native shielding.
 - **Wallet/KMS**: Management of shielded keys and optional viewing keys.
+
+## Protocol (concise)
+
+1. Deposit ERC-20 tokens into shielded pool contract.
+2. Receive private notes/commitments representing the deposit.
+3. Execute shielded transfers by spending notes and creating new ones.
+4. Generate ZK proof for each transfer (balance validity, no double-spend).
+5. Optionally use stealth addresses (ERC-5564) for recipient unlinkability.
+6. Provide viewing keys to auditors for selective disclosure.
+7. Withdraw by proving ownership of notes and burning them.
 
 ## Guarantees
 

@@ -1,7 +1,11 @@
 ---
 title: "Pattern: Private ISO 20022 Messaging & Settlement"
 status: draft
-maturity: research
+maturity: experimental
+layer: hybrid
+privacy_goal: Private ERC-20 settlements linked to ISO 20022 instructions with regulator-only visibility
+assumptions: ISO 20022 schema, shielded pool or confidential token infrastructure, threshold KMS
+last_reviewed: 2026-01-14
 works-best-when:
   - Institutions already exchange ISO 20022 messages (pacs.008/009/002, camt.\*).
   - On-chain settlement (ERC-20, tokenized deposits) must link to SWIFT/ISO workflows.

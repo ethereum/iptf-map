@@ -2,6 +2,10 @@
 title: "Pattern: Aztec Noir Private Contracts"
 status: ready
 maturity: pilot
+layer: L2
+privacy_goal: Enable composable private and public state in single contracts via ZK proofs
+assumptions: Aztec rollup infrastructure, client-side proving capability (8GB RAM), Barretenberg prover
+last_reviewed: 2026-01-14
 works-best-when:
   - Applications need composable private and public state in a single contract
   - Developers want privacy without abandoning familiar programming paradigms

@@ -2,6 +2,10 @@
 title: "Pattern: L1 ZK commitment pool (low volume)"
 status: ready
 maturity: pilot
+layer: L1
+privacy_goal: Hide amounts and positions on L1 via shielded pool with commitments and nullifiers
+assumptions: ZK proof system, prover infrastructure, ERC-3643/ERC-7573 integration
+last_reviewed: 2026-01-14
 works-best-when:
   - Low trade frequency; L2 not available or desirable.
 avoid-when:

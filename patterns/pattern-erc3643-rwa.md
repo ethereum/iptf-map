@@ -1,7 +1,11 @@
 ---
 title: "Pattern: ERC-3643 Tokenized RWAs"
 status: ready
-maturity: prod
+maturity: production
+layer: L1
+privacy_goal: Enforce compliant token transfers with identity verification at contract level
+assumptions: ONCHAINID infrastructure, trusted claim issuers, ERC-734/735 key management
+last_reviewed: 2026-01-14
 works-best-when:
   - Regulatory compliance is mandatory
   - Need permissioned transfers with identity verification
