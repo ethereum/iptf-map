@@ -18,109 +18,93 @@ These problems interact because traditional bond trading requires transparent pr
 
 ### Key Constraints
 
-- Must comply with eWpG/MiCA regulations and crypto-registry requirements
+- Must comply with different regulations and crypto-registry requirements
 - Atomic DvP settlement with minutes-level finality acceptable
 - Daily settlement cycles with economically viable L2 costs
 - Pre-trade privacy for RFQ processes and order flow
 - Production timeline of 1-2 years with proven infrastructure
-- Avoid HTLC brittleness in favor of ERC-7573 standards
+- Same-chain atomic DvP achievable; cross-chain DvP requires trusted relayer or bridging
 
 ### TLDR for Different Personas
 
 - **Business:** Execute bond issuance and trading privately while maintaining regulatory compliance and market efficiency
-- **Technical:** ERC-3643 tokenized securities with UTXO-style shielding for confidential transfers and ERC-7573 atomic settlement
-- **Legal:** Maintain eWpG/MiCA compliance through selective disclosure while protecting proprietary trading information
+- **Technical:** UTXO-based shielded notes with zero-knowledge circuits for confidential transfers; atomic DvP on same chain
+- **Legal:** Maintain compliance (e.g., eWpG/MiCA) through selective disclosure (viewing keys, attestations) while protecting proprietary trading information
 
 ## Architecture and Design Choices
 
-### Recommended Architecture: ERC-3643 + Privacy Extensions
+### Fundamental Choice: UTXO vs Account Model
 
-**Primary Pattern:** [ERC-3643 T-REX protocol](https://docs.erc3643.org/erc-3643) + [Shielded transfers](../patterns/pattern-shielding.md)
+The core architectural decision for private bonds is the state model:
+
+| Model                      | Privacy   | How it Works                                                                         | Compliance                           |
+| -------------------------- | --------- | ------------------------------------------------------------------------------------ | ------------------------------------ |
+| **Account-based (ERC-20)** | Bolted-on | Balances public by default; privacy added via encryption wrappers or shielding pools | Native (ERC-3643, transfer hooks)    |
+| **UTXO-based (Notes)**     | Native    | Value stored as hidden commitments; only nullifiers revealed on spend                | Added via viewing keys, attestations |
+| **Native Privacy L2**      | Native    | Private state at protocol level (e.g., Aztec notes)                                  | Added via compliance contracts       |
+
+**Recommendation:** UTXO-based notes provide privacy by default, making them the preferred architecture for confidential bond issuance. Compliance can be layered on top via selective disclosure rather than retrofitted onto a transparent base.
+
+### Recommended Architecture: UTXO Shielded Notes
+
+**Primary Pattern:** [Shielding](../patterns/pattern-shielding.md) with zero-knowledge circuits
 **Supporting Patterns:**
 
-- [Private L2s](../patterns/pattern-privacy-l2s.md)
+- [ZK Shielded Balances](../patterns/pattern-zk-shielded-balances.md)
+- [Privacy L2s](../patterns/pattern-privacy-l2s.md)
 - [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
 - [ICMA BDT Data Model](../patterns/pattern-icma-bdt-data-model.md)
 
-#### Core Components:
+#### Core Components
 
-1. **Bond Lifecycle Management**
+1. **Note-Based Bond Representation**
 
-   - ERC-3643 compliant tokenized securities with confidential transfers
-   - ICMA Bond Data Taxonomy integration for standardized bond data
-   - Private identity verification and eligibility management (can be relaxed for a first iteration)
-   - Confidential issuance parameters and secondary trading
+   - Bonds represented as UTXO notes (commitments hiding amount + owner)
+   - Transfers via JoinSplit: consume input notes (nullifiers) → produce output notes (commitments)
+   - Merkle tree tracks valid note set; nullifier set prevents double-spend
 
-### Key Standard: ERC-3643 + Privacy Layer
+2. **Identity Model**
 
-ERC-3643 provides the regulatory compliance framework for tokenized securities, while privacy extensions enable confidential transfers:
+   - **Transport Identity:** Public address for gas, on-chain authorization, KYC linkage
+   - **Shielded Identity:** Spending key (ZK proofs) + Encryption key (private memos)
+   - Issuer maintains mapping for regulatory disclosure
 
-- **Identity Layer:** ERC-3643's ONCHAINID system handles KYC/eligibility verification
-- **Transfer Rules:** Compliance checks (investor accreditation, transfer restrictions) remain transparent
-- **Privacy Layer:** Shielding applied to transfer amounts and holder balances
-- **Selective Disclosure:** Regulators maintain oversight through viewing keys while protecting commercial data
+3. **Issuance & Redemption**
 
-This approach preserves the regulatory benefits of ERC-3643 while adding the privacy needed for institutional bond trading.
+   - **Issuance:** Global Note → JoinSplit into individual holder notes
+   - **Transfer:** JoinSplit circuits with encrypted memos to recipients
+   - **Redemption:** Burn proof reveals value to issuer for settlement
 
-2. **Privacy Implementation Options**
-
-   - **Option A (Recommended):** UTXO-style Shielded ERC-3643
-
-     - Combines Railgun-style UTXO privacy model with ERC-3643 compliance framework
-     - Maintains regulatory compliance while enabling confidential transfers
-     - Proven cryptographic foundations with institutional regulatory acceptance
-
-   - **Option B:** ERC-3643 on Privacy L2 with native confidential transfers
-   - **Option C:** ERC-3643 + FHE for homomorphic bond calculations
-
-3. **Atomic Settlement Infrastructure**
-
-   - ERC-7573 integration for bond-vs-cash atomic settlement
-   - Cross-chain compatibility for diverse stablecoin payment rails
-   - Integration with crypto-registry for eWpG compliance
+4. **Atomic Settlement**
+   - Same-chain atomic DvP for bond-vs-stablecoin settlement
+   - Cross-chain settlement requires trusted relayer or bridge
    - Automated settlement triggers and failure handling
 
-4. **Regulatory Compliance Layer**
-   - Selective disclosure mechanisms for regulator access
-   - Crypto-registry integration for legal entity verification
-   - [Attestation logging](../patterns/pattern-verifiable-attestation.md) for audit trails (EAS, W3C VC, or ONCHAINID)
-   - Encrypted append-only audit logs with on-chain anchoring
+### Alternative Architectures
 
-### Vendor Recommendations
+**Option A: Native Privacy L2 (Aztec)**
 
-**Primary Infrastructure:**
+- Bonds as native Aztec private notes with protocol-level privacy
+- No shielding implementation overhead — private notes is part of the execution model
+- Compliance via Aztec's private contracts and selective disclosure
+- Trade-off: Ecosystem maturity, liquidity fragmentation
+- See: [Aztec Network](../vendors/aztec.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md)
 
-- **Shielding Protocol:** [Railgun](../vendors/railgun.md) for UTXO-style privacy with ERC-3643 integration
-- **Tokenized Securities:** ERC-3643 T-REX protocol for compliant bond tokenization
-- **Settlement:** Native ERC-7573 implementations for atomic DvP coordination
-- **Compliance:** [Chainlink ACE](../vendors/chainlink-ace.md) for regulatory compliance automation
+**Option B: FHE-Based (Zama fhEVM)**
 
-**Alternative Privacy Approaches:**
+- Encrypted balances with homomorphic computation
+- Trade-off: Higher compute costs, less mature tooling
+- Benefit: Simpler programming model for complex bond logic
+- See: [Zama](../vendors/zama.md)
 
-- **Privacy L2:** [Aztec Network](../vendors/aztec-l2.md) for native private notes with ERC-3643 adaptation
-- **FHE-First:** [Zama](../vendors/zama.md) fhEVM for homomorphic bond computation
+### Compliance Layer (Optional Add-ons)
 
-### Implementation Strategy
+Regardless of architecture, compliance can be layered via:
 
-**Phase 1: Private Bond Infrastructure**
-
-- Deploy ERC-3643 tokenized securities with privacy extensions
-- Integrate identity verification (ONCHAINID) and eligibility management
-- Basic ICMA BDT integration for standardized bond data
-- Single-currency settlement (USDC/EURC)
-
-**Phase 2: Atomic Settlement & Compliance**
-
-- ERC-7573 atomic DvP implementation
-- Crypto-registry integration for eWpG compliance
-- Selective disclosure infrastructure for regulators (shielding + view keys)
-- Multi-currency settlement support
-
-**Phase 3: Secondary Market & Scaling**
-
-- Private RFQ and order book infrastructure
-- Pre-trade privacy for institutional order flow
-- Full ecosystem integration with existing bond infrastructure
+- **Viewing Keys:** Grant auditors/regulators read access to specific notes
+- **Attestations:** On-chain claims (EAS, ONCHAINID) linking shielded identity to KYC status
+- **ERC-3643 Integration:** For jurisdictions requiring explicit transfer rules, wrap notes in compliant token interface
+- **Crypto-Registry:** Legal entity verification for eWpG/MiCA compliance
 
 ## More Details
 
@@ -128,7 +112,7 @@ This approach preserves the regulatory benefits of ERC-3643 while adding the pri
 
 **UTXO Shielding vs Privacy L2:**
 
-- **UTXO Benefits:** Proven security model, ERC-3643 compatibility, deplyable on L1/L2
+- **UTXO Benefits:** Proven security model, ERC-3643 compatibility, deployable on L1/L2
 - **Private L2 Benefits:** no shielding overhead, native privacy, better UX for frequent trading
 - **Recommendation:** UTXO-style shielding (Railgun approach) for institutional adoption with established compliance, then private L2s when ready
 
@@ -156,14 +140,6 @@ This approach preserves the regulatory benefits of ERC-3643 while adding the pri
 
 5. **Market Data:** How to provide market data and analytics while preserving transaction privacy?
 
-### Alternative Approaches Considered
-
-**L1 ZK Commitment Pool**
-
-- Use case: Very low volume, maximum security requirements
-- Trade-off: Higher per-transaction costs vs maximum security guarantees
-- Pattern: [L1 ZK Commitment Pool](../patterns/pattern-l1-zk-commitment-pool.md)
-
 ## Example Scenarios
 
 ### Scenario 1: Corporate Bond Issuance
@@ -178,11 +154,12 @@ This approach preserves the regulatory benefits of ERC-3643 while adding the pri
 - Asset manager trades €25M government bond position
 - Privacy: Trade size, counterparty, and portfolio impact hidden
 - RFQ Process: Private quote requests without revealing intended size
-- Settlement: ERC-7573 atomic settlement with encrypted audit trail
+- Settlement: Same-chain atomic DvP with encrypted audit trail
 
 ## Links and Notes
 
-- **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573), [ICMA BDT](https://www.icmagroup.org/market-practice-and-regulatory-policy/repo-and-collateral-markets/legal-documentation/global-master-repurchase-agreement-gmra/)
+- **Reference Implementation:** [Private Tokenised Bonds PoC](https://github.com/Meyanis95/private-tokenised-bonds) - UTXO shielded bond issuance with JoinSplit circuits
+- **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ICMA BDT](https://www.icmagroup.org/market-practice-and-regulatory-policy/repo-and-collateral-markets/legal-documentation/global-master-repurchase-agreement-gmra/)
 - **Research:** [Private Tokenized Securities with UTXO Model](https://eprint.iacr.org/2025/1715.pdf) - UTXO-style privacy for ERC-3643 compliant securities
 - **Regulations:** [eWpG](../jurisdictions/de-eWpG.md), [MiCA](../jurisdictions/eu-MiCA.md)
 - **Infrastructure:** [Railgun](https://railgun.org/), [Aztec Network](https://docs.aztec.network/), [Zama fhEVM](https://docs.zama.ai/fhevm)
