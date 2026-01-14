@@ -19,6 +19,8 @@ dependencies: [Threshold cryptography, Distributed key generation, Block builder
 
 ## Intent
 
+> **Sub-pattern of [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md)** — This pattern provides detailed coverage of threshold encryption specifically. See the parent pattern for alternative approaches (private relays, TEE-based builders).
+
 Prevent MEV extraction by encrypting transaction content before mempool submission, with decryption occurring only after block ordering is committed. A distributed committee holds threshold key shares; no single party can decrypt prematurely. This provides cryptographic (not trust-based) protection against front-running while maintaining censorship resistance.
 
 ## Ingredients
