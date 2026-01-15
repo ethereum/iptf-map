@@ -30,6 +30,27 @@
 - `refactor:` - Reorganizing content without changing meaning
 - `chore:` - Maintenance tasks
 
+## Changelog
+
+When adding new patterns, vendors, or significant changes:
+
+1. Add an entry to `[Unreleased]` section in [CHANGELOG.md](./CHANGELOG.md)
+2. Include a markdown link to the new file
+3. Reference the PR number: `(#123)`
+
+Example entry:
+```markdown
+- [New pattern name](patterns/pattern-slug.md) (#123)
+```
+
+### Weekly Summaries
+
+Generate a weekly summary for sharing:
+```bash
+./scripts/weekly-summary.sh           # Last 7 days
+./scripts/weekly-summary.sh 2026-01-08 2026-01-15  # Custom range
+```
+
 ## Getting Help
 
 - Open an issue for questions
