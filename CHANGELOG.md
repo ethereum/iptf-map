@@ -19,6 +19,8 @@ All notable changes to the IPTF Map are documented here.
 
 ## [0.2.0] - 2025-12-19
 
+> End of Year checkpoint - unofficial release after Devconnect, before 2026.
+
 ### Added
 - feat(pattern): [TEE key manager](patterns/pattern-tee-key-manager.md) (#33)
 - feat(pattern): [EIL](patterns/pattern-eil.md) - Encrypted Inline Ledger (#26)
@@ -47,6 +49,8 @@ All notable changes to the IPTF Map are documented here.
 ---
 
 ## [0.1.0] - 2025-10-06
+
+> MVP - Initial public release of the IPTF Map.
 
 ### Added
 - feat: Initial repository import with 62 files
