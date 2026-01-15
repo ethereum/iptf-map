@@ -5,42 +5,42 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Added
-- feat(pattern): [Private transaction broadcasting](patterns/pattern-private-transaction-broadcasting.md) (#43)
-- feat(pattern): [TEE-based privacy](patterns/pattern-tee-based-privacy.md) (#44)
-- feat(pattern): [Threshold encrypted mempool](patterns/pattern-threshold-encrypted-mempool.md) (#45)
-- feat(vendor): [Fhenix](vendors/fhenix.md) - FHE privacy (#32)
-- feat(ci): Pattern validation workflow (#40)
-- docs: [Q1 2026 PRD](PRD-IPTF-PUBLIC-Q1-2026.md) with sprint planning (#39)
+- feat(pattern): [Private transaction broadcasting](patterns/pattern-private-transaction-broadcasting.md) ([#43](https://github.com/ethereum/iptf-map/pull/43))
+- feat(pattern): [TEE-based privacy](patterns/pattern-tee-based-privacy.md) ([#44](https://github.com/ethereum/iptf-map/pull/44))
+- feat(pattern): [Threshold encrypted mempool](patterns/pattern-threshold-encrypted-mempool.md) ([#45](https://github.com/ethereum/iptf-map/pull/45))
+- feat(vendor): [Fhenix](vendors/fhenix.md) - FHE privacy ([#32](https://github.com/ethereum/iptf-map/pull/32))
+- feat(ci): Pattern validation workflow ([#40](https://github.com/ethereum/iptf-map/pull/40))
+- docs: [Q1 2026 PRD](PRD-IPTF-PUBLIC-Q1-2026.md) with sprint planning ([#39](https://github.com/ethereum/iptf-map/pull/39))
 
 ### Fixed
-- fix(pattern): Required frontmatter fields across all patterns (#42)
+- fix(pattern): Required frontmatter fields across all patterns ([#42](https://github.com/ethereum/iptf-map/pull/42))
 
 ## [0.2.0] - 2025-12-19 (End of Year)
 
 ### Added
-- feat(pattern): [TEE key manager](patterns/pattern-tee-key-manager.md) (#33)
-- feat(pattern): [EIL](patterns/pattern-eil.md) - Encrypted Inline Ledger (#26)
-- feat(pattern): [FOCIL-EIP7805](patterns/pattern-focil-eip7805.md) (#26)
-- feat(pattern): [Lean Ethereum](patterns/pattern-lean-ethereum.md) (#26)
-- feat(pattern): [OIF](patterns/pattern-oif.md) - Optimized Integrity Framework (#26)
-- feat(pattern): [Noir private contracts](patterns/pattern-noir-private-contracts.md) (#21)
-- feat(vendor): [Paladin](vendors/paladin.md) (#19)
-- feat(vendor): [State Labs](vendors/StateLabs.md) - Tx Shield, OpenTMP LLM, Collab-Key (#7)
+- feat(pattern): [TEE key manager](patterns/pattern-tee-key-manager.md) ([#33](https://github.com/ethereum/iptf-map/pull/33))
+- feat(pattern): [EIL](patterns/pattern-eil.md) - Encrypted Inline Ledger ([#26](https://github.com/ethereum/iptf-map/pull/26))
+- feat(pattern): [FOCIL-EIP7805](patterns/pattern-focil-eip7805.md) ([#26](https://github.com/ethereum/iptf-map/pull/26))
+- feat(pattern): [Lean Ethereum](patterns/pattern-lean-ethereum.md) ([#26](https://github.com/ethereum/iptf-map/pull/26))
+- feat(pattern): [OIF](patterns/pattern-oif.md) - Optimized Integrity Framework ([#26](https://github.com/ethereum/iptf-map/pull/26))
+- feat(pattern): [Noir private contracts](patterns/pattern-noir-private-contracts.md) ([#21](https://github.com/ethereum/iptf-map/pull/21))
+- feat(vendor): [Paladin](vendors/paladin.md) ([#19](https://github.com/ethereum/iptf-map/pull/19))
+- feat(vendor): [State Labs](vendors/StateLabs.md) - Tx Shield, OpenTMP LLM, Collab-Key ([#7](https://github.com/ethereum/iptf-map/pull/7))
 - feat(vendor): [Soda Labs](vendors/soda-labs.md)
-- feat(vendor): [Miden](vendors/miden.md) docs (#18)
-- feat(approach): [Private broadcasting](approaches/approach-private-broadcasting.md) (#6)
+- feat(vendor): [Miden](vendors/miden.md) docs ([#18](https://github.com/ethereum/iptf-map/pull/18))
+- feat(approach): [Private broadcasting](approaches/approach-private-broadcasting.md) ([#6](https://github.com/ethereum/iptf-map/pull/6))
 - feat(approach): [Private bonds](approaches/approach-private-bonds.md)
-- feat(jurisdiction): [EU Data Protection](jurisdictions/eu-data-protection.md) (#8)
-- docs: [GLOSSARY.md](GLOSSARY.md) - privacy terminology (#5)
+- feat(jurisdiction): [EU Data Protection](jurisdictions/eu-data-protection.md) ([#8](https://github.com/ethereum/iptf-map/pull/8))
+- docs: [GLOSSARY.md](GLOSSARY.md) - privacy terminology ([#5](https://github.com/ethereum/iptf-map/pull/5))
 
 ### Changed
-- refactor: Split patterns directory into patterns + approaches (#2)
+- refactor: Split patterns directory into patterns + approaches ([#2](https://github.com/ethereum/iptf-map/pull/2))
 
 ### Fixed
-- fix(pattern): [DvP ERC-7573](patterns/pattern-dvp-erc7573.md) updates (#31)
+- fix(pattern): [DvP ERC-7573](patterns/pattern-dvp-erc7573.md) updates ([#31](https://github.com/ethereum/iptf-map/pull/31))
 - fix(use-case): [Private-auth](use-cases/private-auth.md) - revocation, zk-TLS mechanism
-- fix(docs): Glossary - clarified core privacy concepts (#29)
-- fix(docs): ZKsync naming standardization (#20)
+- fix(docs): Glossary - clarified core privacy concepts ([#29](https://github.com/ethereum/iptf-map/pull/29))
+- fix(docs): ZKsync naming standardization ([#20](https://github.com/ethereum/iptf-map/pull/20))
 
 ## [0.1.0] - 2025-10-06 (MVP)
 
