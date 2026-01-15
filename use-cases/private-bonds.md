@@ -41,10 +41,16 @@ Public chains expose volumes, prices, and positions by default, enabling front-r
 
 See detailed solution architecture and trade-offs in [**Approach: Private Bonds**](../approaches/approach-private-bonds.md).
 
+**PoC Implementation:** [Private Tokenised Bonds](https://github.com/Meyanis95/private-tokenised-bonds) — UTXO shielded bond issuance with JoinSplit circuits.
+
 ## 6) Open Questions
 
+_Notes below reference the PoC implementation._
+
 - Secondary market: RFQ model + pre-trade privacy requirements (what must be hidden?)
+  - _PoC approach:_ Issuer acts as relayer and can serve as market matcher; peer-to-peer RFQ not in scope
 - Minimum viable privacy: amounts/positions only vs parts of the term sheet?
+  - _PoC approach:_ Amounts and positions hidden; legal entity identities can remain public (dual identity model)
 - ISO 20022 relevance for bond workflows vs ICMA BDT usage
 
 ## 7) Notes And Links
