@@ -88,3 +88,48 @@ jobs:
               fi
             fi
           done
+
+  validate-changelog:
+    runs-on: ubuntu-latest
+    name: Validate Changelog
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check changelog update
+        run: |
+          # Get list of changed files in PR
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+
+          # Check if content directories were modified
+          CONTENT_CHANGED=false
+          for pattern in "patterns/" "vendors/" "approaches/" "use-cases/" "jurisdictions/" "domains/"; do
+            if echo "$CHANGED_FILES" | grep -q "^$pattern"; then
+              CONTENT_CHANGED=true
+              break
+            fi
+          done
+
+          # Check if CHANGELOG.md was updated
+          CHANGELOG_UPDATED=false
+          if echo "$CHANGED_FILES" | grep -q "^CHANGELOG.md"; then
+            CHANGELOG_UPDATED=true
+          fi
+
+          # Warn if content changed but changelog wasn't updated
+          if [ "$CONTENT_CHANGED" = true ] && [ "$CHANGELOG_UPDATED" = false ]; then
+            echo "::warning::Content files were modified but CHANGELOG.md was not updated."
+            echo "::warning::Please add an entry to the [Unreleased] section in CHANGELOG.md"
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ **Changelog Reminder**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Content files were modified. Please update CHANGELOG.md:" >> $GITHUB_STEP_SUMMARY
+            echo "1. Add entry to \`[Unreleased]\` section" >> $GITHUB_STEP_SUMMARY
+            echo "2. Use format: \`- feat(type): [Name](path) ([#PR](url))\`" >> $GITHUB_STEP_SUMMARY
+          elif [ "$CHANGELOG_UPDATED" = true ]; then
+            echo "✅ CHANGELOG.md was updated" >> $GITHUB_STEP_SUMMARY
+          fi

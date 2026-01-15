@@ -63,6 +63,20 @@ Each directory has `_template.md` and `README.md`. Key structures:
 - `refactor:` - Reorganizing without changing meaning
 - `chore:` - Maintenance tasks
 
+## Changelog Requirements
+
+**Always update CHANGELOG.md** when adding new content or making significant changes:
+
+1. Add entry to `[Unreleased]` section
+2. Use semantic prefix: `feat(pattern):`, `feat(vendor):`, `fix:`, `docs:`, etc.
+3. Link to the file: `[Name](path/to/file.md)`
+4. Link to PR: `([#123](https://github.com/ethereum/iptf-map/pull/123))`
+
+Example:
+```markdown
+- feat(pattern): [New pattern name](patterns/pattern-slug.md) ([#123](https://github.com/ethereum/iptf-map/pull/123))
+```
+
 ## Content Organization
 
 1. **Patterns** = Reusable building blocks (single architectural solution)
