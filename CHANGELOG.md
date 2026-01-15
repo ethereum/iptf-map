@@ -15,11 +15,7 @@ All notable changes to the IPTF Map are documented here.
 ### Fixed
 - fix(pattern): Required frontmatter fields across all patterns (#42)
 
----
-
-## [0.2.0] - 2025-12-19
-
-> End of Year checkpoint - unofficial release after Devconnect, before 2026.
+## [0.2.0] - 2025-12-19 (End of Year)
 
 ### Added
 - feat(pattern): [TEE key manager](patterns/pattern-tee-key-manager.md) (#33)
@@ -46,11 +42,7 @@ All notable changes to the IPTF Map are documented here.
 - fix(docs): Glossary - clarified core privacy concepts (#29)
 - fix(docs): ZKsync naming standardization (#20)
 
----
-
-## [0.1.0] - 2025-10-06
-
-> MVP - Initial public release of the IPTF Map.
+## [0.1.0] - 2025-10-06 (MVP)
 
 ### Added
 - feat: Initial repository import with 62 files
@@ -80,8 +72,6 @@ All notable changes to the IPTF Map are documented here.
 - feat(vendor): [Renegade](vendors/renegade.md)
 - docs: [GLOSSARY.md](GLOSSARY.md) with standardized terminology
 - docs: CC0 public domain license
-
----
 
 [Unreleased]: https://github.com/ethereum/iptf-map/compare/v0.2.0...HEAD
 [0.2.0]: https://github.com/ethereum/iptf-map/compare/v0.1.0...v0.2.0
