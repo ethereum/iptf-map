@@ -273,6 +273,63 @@ DoD: References 2+ patterns each, includes recommended approach
 Size: ~200 lines each
 ```
 
+### Sprint 6: Client-Side Proving & Compliance [Week 5-6]
+
+> **Problem Context:** Private payments require both (1) efficient ZK proving on user devices for maximum privacy, and (2) compliance infrastructure for institutional adoption. Current gaps identified via IPTF discussions and PSE roadmap alignment.
+
+**PR-027: Client-Side Proving Pattern**
+```
+File: patterns/pattern-client-side-proving.md
+Problem: Users need to generate ZK proofs locally (mobile, browser) to avoid trusting servers with private data, but device constraints (RAM, CPU, battery) limit proving feasibility.
+DoD: Mobile/browser proving strategies, device constraints table, delegation fallback options
+Size: ~175 lines
+References: PSE Roadmap (Mopro, Noir acceleration), Aztec PXE, Miden edge execution
+```
+
+**PR-028: Proof Delegation Pattern**
+```
+File: patterns/pattern-proof-delegation.md
+Problem: When client-side proving exceeds device capabilities, users need privacy-preserving delegation options with clear trust trade-offs.
+DoD: Delegation approaches (trusted, TEE, MPC), trust model comparison, when to delegate vs prove locally
+Size: ~150 lines
+Cross-refs: pattern-client-side-proving.md, pattern-tee-key-manager.md
+```
+
+**PR-029: Proving Infrastructure Comparison**
+```
+File: domains/proving-infrastructure-comparison.md
+Problem: No centralized comparison of ZK proving systems (Barretenberg, Winterfell, Halo2, etc.) with benchmarks for institutional decision-making.
+DoD: Prover comparison matrix, resource requirements, proving time benchmarks with sources
+Size: ~250 lines
+Covers: Barretenberg, Winterfell, Halo2, SnarkJS, RISC Zero
+```
+
+**PR-030: Compliance Monitoring Pattern**
+```
+File: patterns/pattern-compliance-monitoring.md
+Problem: Institutions need transaction monitoring and alerting for AML/CFT compliance, but this conflicts with privacy goals. No pattern documents the trade-offs.
+DoD: Transaction screening approaches, alert thresholds, escalation procedures, privacy vs auditability trade-offs
+Size: ~175 lines
+Cross-refs: pattern-regulatory-disclosure-keys-proofs.md, pattern-verifiable-attestation.md
+```
+
+**PR-031: Payment Policy Enforcement Pattern**
+```
+File: patterns/pattern-payment-policy-enforcement.md
+Problem: Private payments need policy controls (who can pay whom, limits, approval workflows) but existing patterns (MPC, TEE) mention this only tangentially.
+DoD: Policy specification templates, approval workflows, limit escalation, cross-border restrictions
+Size: ~150 lines
+Cross-refs: pattern-mpc-custody.md, pattern-erc3643-rwa.md
+```
+
+**PR-032: Private Payments Approach Enhancement**
+```
+File: approaches/approach-private-payments.md (enhancement)
+Problem: Current approach lacks CSP considerations and compliance requirements matrix.
+DoD: Add client-side proving section, compliance requirements matrix linking to new patterns
+Size: +100 lines enhancement
+```
+
 ---
 
 ## 4. Documentation Requirements (Replacing Performance Targets)
@@ -326,7 +383,13 @@ Example format:
 ### Week 5: Finalization
 - **Days 1-3**: Remaining use cases (PR-024 through PR-026)
 - **Days 4-5**: Cross-reference validation, final review
-- **Final checkpoint**: All CI checks green
+- **Review checkpoint**: All CI checks green
+
+### Week 6: Client-Side Proving & Compliance
+- **Days 1-2**: CSP patterns (PR-027, PR-028)
+- **Days 3-4**: Proving comparison and compliance monitoring (PR-029, PR-030)
+- **Day 5**: Policy enforcement and approach enhancement (PR-031, PR-032)
+- **Final checkpoint**: All Sprint 6 patterns pass CI, cross-refs validated
 
 ---
 
@@ -519,6 +582,7 @@ External research conducted via web search to verify claims in repository docume
 
 ---
 
-**Document Status**: Ready for Implementation
-**Next Action**: Begin Sprint 2 (PR-006: Hybrid Privacy Architecture)
+**Document Status**: Ready for Implementation (Sprint 6 added January 2026)
+**Next Action**: Continue Sprint 2 (PR-006: Hybrid Privacy Architecture), then proceed through Sprint 6
 **Success Criteria**: All PRs pass automated checks, ralph-loop operational
+**Sprint 6 Context**: CSP (Client-Side Proving) and compliance patterns added per IPTF discussions and PSE roadmap alignment
