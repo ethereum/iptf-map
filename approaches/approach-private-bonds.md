@@ -43,7 +43,7 @@ The core architectural decision for private bonds is the state model:
 | **UTXO-based (Notes)**     | Native    | Value stored as hidden commitments; only nullifiers revealed on spend                | Added via viewing keys, attestations |
 | **Native Privacy L2**      | Native    | Private state at protocol level (e.g., Aztec notes)                                  | Added via compliance contracts       |
 
-**Recommendation:** UTXO-based notes provide privacy by default, making them the preferred architecture for confidential bond issuance. Compliance can be layered on top via selective disclosure rather than retrofitted onto a transparent base.
+**Recommendation:** UTXO-based notes with zero-knowledge proofs provide privacy by default, making them the preferred architecture for confidential bond issuance. Compliance can be layered on top via selective disclosure rather than retrofitted onto a transparent base. This model is battle-tested in privacy systems (Zcash, Monero) and on EVM (Railgun, Tornado Cash), offers a natural fit for note-based instruments like bonds, maintains a minimal on-chain footprint (only commitments + nullifiers), and scales with chain throughput.
 
 ### Recommended Architecture: UTXO Shielded Notes
 
