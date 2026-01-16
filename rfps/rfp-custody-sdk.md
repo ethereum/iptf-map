@@ -3,7 +3,6 @@ title: "RFP: Custody Controls Reference SDK"
 status: draft
 category: grant
 tier: 1
-effort: 8-10 weeks
 ---
 
 # RFP: Custody Controls Reference SDK

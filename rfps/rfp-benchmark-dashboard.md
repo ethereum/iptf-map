@@ -3,7 +3,6 @@ title: "RFP: Living Benchmark Dashboard"
 status: draft
 category: grant
 tier: 0
-effort: 8-10 weeks
 ---
 
 # RFP: Living Benchmark Dashboard

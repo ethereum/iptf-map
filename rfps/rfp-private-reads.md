@@ -2,8 +2,7 @@
 title: "RFP: Private Reads / RPC Privacy"
 status: draft
 category: pse-research
-tier: 1
-effort: 6-8 weeks
+tier: 2
 ---
 
 # RFP: Private Reads / RPC Privacy
@@ -11,6 +10,8 @@ effort: 6-8 weeks
 ## Problem
 
 Most institutional privacy discussions focus on transaction privacy (hiding sender, receiver, amount). But institutions leak sensitive information *before* ever posting a transaction: RPC queries reveal portfolio positions, trading intent, counterparty relationships, and risk exposures. An observer monitoring RPC traffic can infer strategy without seeing any on-chain activity.
+
+**Note:** This is less of a pain point for large institutions that run their own nodes. For them, [private transaction broadcasting](../patterns/pattern-private-transaction-broadcasting.md) is a more significant need. This RFP targets smaller institutions or those using third-party RPC providers.
 
 ## Why It Matters
 

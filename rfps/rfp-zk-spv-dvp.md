@@ -3,7 +3,6 @@ title: "RFP: zk-SPV for Private Cross-Chain DvP"
 status: draft
 category: pse-research
 tier: 2
-effort: 8-12 weeks (recommend phased)
 ---
 
 # RFP: zk-SPV for Private Cross-Chain DvP
@@ -17,13 +16,13 @@ Delivery-versus-Payment (DvP) is fundamental to institutional settlement: asset 
 - DvP is non-negotiable for institutional settlement (principal risk = regulatory concern)
 - Cross-chain is reality: institutions operate across multiple networks
 - Privacy + atomicity is the "holy grail" for institutional adoption
-- Informs ERC-7573 extensions and future settlement patterns
+- Informs ERC-7573 (draft) extensions and future settlement patterns
 
 ## Scope
 
 ### In-Scope
 
-**Phase A: Design & Specification (6-8 weeks)**
+**Phase A: Design & Specification**
 - Design space analysis for private cross-chain DvP:
   - zk-SPV (succinct cross-chain verification)
   - ZK-HTLC variants
@@ -33,9 +32,9 @@ Delivery-versus-Payment (DvP) is fundamental to institutional settlement: asset 
 - Threat model for each approach
 - Protocol specification for most promising candidate
 
-**Phase B: Reference Implementation (6-8 weeks, optional)**
+**Phase B: Reference Implementation (optional)**
 - Prototype implementation
-- Integration with ERC-7573 DvP standard
+- Integration with ERC-7573 (draft) DvP standard
 - Cross-chain proof-of-concept (e.g., Ethereum ↔ L2)
 
 ### Out-of-Scope
@@ -54,7 +53,7 @@ Delivery-versus-Payment (DvP) is fundamental to institutional settlement: asset 
 
 **Phase B (if funded):**
 - [ ] Reference implementation (Solidity + off-chain components)
-- [ ] Integration guide for ERC-7573
+- [ ] Integration guide for ERC-7573 (draft)
 - [ ] Cross-chain PoC demo
 
 ## Dependencies
@@ -65,12 +64,12 @@ Delivery-versus-Payment (DvP) is fundamental to institutional settlement: asset 
 
 **Enables:**
 - Private institutional settlement infrastructure
-- Extensions to ERC-7573
+- Extensions to ERC-7573 (draft)
 - Foundation for multi-leg settlement
 
 ## See Also
 
-- [Pattern: DvP Settlement (ERC-7573)](../patterns/pattern-dvp-erc7573.md)
+- [Pattern: DvP Settlement (ERC-7573, draft)](../patterns/pattern-dvp-erc7573.md)
 - [Pattern: ZK Light Client Bridge](../patterns/pattern-zk-light-client-bridge.md)
 - [Use Case: Private Bonds](../use-cases/private-bonds.md)
-- [ERC-7573 Specification](https://eips.ethereum.org/EIPS/eip-7573)
+- [ERC-7573 Specification (draft)](https://eips.ethereum.org/EIPS/eip-7573)

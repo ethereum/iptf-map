@@ -3,7 +3,6 @@ title: "RFP: <Short Name>"
 status: draft
 category: pse-research | grant
 tier: 0 | 1 | 2
-effort: X-Y weeks
 ---
 
 # RFP: <Title>

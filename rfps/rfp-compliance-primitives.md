@@ -3,7 +3,6 @@ title: "RFP: Compliance Primitives Toolkit"
 status: draft
 category: grant
 tier: 2
-effort: 8-10 weeks
 ---
 
 # RFP: Compliance Primitives Toolkit

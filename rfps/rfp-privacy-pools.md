@@ -3,7 +3,6 @@ title: "RFP: Privacy Pools Institutional Integration"
 status: draft
 category: grant
 tier: 1
-effort: 6-8 weeks
 ---
 
 # RFP: Privacy Pools Institutional Integration

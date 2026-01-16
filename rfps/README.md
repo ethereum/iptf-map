@@ -41,7 +41,6 @@ Tightly-scoped tooling and integration work suitable for external teams:
 
 | RFP | Category | Why Now |
 |-----|----------|---------|
-| [Private Reads / RPC Privacy](rfp-private-reads.md) | PSE Research | Metadata leakage before tx submission is a silent killer |
 | [Custody Controls SDK](rfp-custody-sdk.md) | Grant | "Day 2" operational blocker for institutions |
 | [Privacy Pools Integration](rfp-privacy-pools.md) | Grant | Compliance-friendly privacy narrative |
 
@@ -49,6 +48,7 @@ Tightly-scoped tooling and integration work suitable for external teams:
 
 | RFP | Category | Notes |
 |-----|----------|-------|
+| [Private Reads / RPC Privacy](rfp-private-reads.md) | PSE Research | Less critical for large institutions running own nodes |
 | [zk-SPV for Private DvP](rfp-zk-spv-dvp.md) | PSE Research | Cross-chain settlement with privacy + atomicity |
 | [Compliance Primitives Toolkit](rfp-compliance-primitives.md) | Grant | ZK credentials, Travel Rule plumbing |
 
@@ -56,8 +56,8 @@ Tightly-scoped tooling and integration work suitable for external teams:
 
 | Category | Count | Focus |
 |----------|-------|-------|
-| PSE Research | 3 | Protocol design, threat models, cryptographic research |
-| Grants | 4 | Tooling, integrations, benchmarks, documentation |
+| PSE Research | 3 | Trust analysis, RPC privacy, cross-chain DvP |
+| Grants | 4 | Benchmarks, custody SDK, Privacy Pools, compliance |
 
 ## How to Propose New RFPs
 

@@ -3,7 +3,6 @@ title: "RFP: Trust Assurance Framework"
 status: draft
 category: pse-research
 tier: 0
-effort: 4-6 weeks
 ---
 
 # RFP: Trust Assurance Framework
