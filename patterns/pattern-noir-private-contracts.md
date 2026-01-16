@@ -63,6 +63,12 @@ Noir is the DSL developed by Aztec, enable developers to write Ethereum-compatib
 - Contract logic is open-source and auditable in Noir
 - Private logs enable encrypted event emission for note discovery and auditing
 
+**Private Logs**
+
+- Encrypted logs enable private event emission and while maintaining confidentiality
+- Recipients scan encrypted onchain logs to identify private transactions meant for them. This is known as **note discovery**.
+- Only parties with decryption keys can read log contents; observers see encrypted data only
+
 ## Trade-offs
 
 **Performance:**
@@ -89,12 +95,6 @@ Noir is the DSL developed by Aztec, enable developers to write Ethereum-compatib
 - Leverage growing [Awesome Noir](https://github.com/noir-lang/awesome-noir) ecosystem for shared libraries
 - Start with selective privacy layers, expand as tooling matures
 - Optimize circuit design to minimize proving time
-
-## Private Logs
-
-- Encrypted logs enable private event emission and while maintaining confidentiality
-- Recipients scan encrypted onchain logs to identify private transactions meant for them. This is known as **note discovery**.
-- Only parties with decryption keys can read log contents; observers see encrypted data only
 
 ## Example
 
