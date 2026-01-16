@@ -230,6 +230,14 @@ DoD: 15+ vendors evaluated, capabilities mapped to patterns
 Size: ~400 lines
 ```
 
+**PR-013b: Vendor Compliance & Assurance Section**
+```
+File: vendors/_template.md (enhancement)
+DoD: Add "Compliance & Assurance" section to vendor template covering SOC 2, ISO 27001, pentest status, bug bounty
+Size: ~30 lines template addition
+Note: Backfill existing vendor docs in follow-up PRs
+```
+
 **PR-014: MEV Protection Guide**
 ```
 File: approaches/approach-mev-protection-institutional.md
