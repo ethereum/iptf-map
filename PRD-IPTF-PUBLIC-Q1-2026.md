@@ -175,14 +175,14 @@ DoD: Layer boundaries defined, composability explained
 Size: ~150 lines
 ```
 
-**PR-008: White-label Infrastructure Pattern**
+**PR-008: White-label Infrastructure Pattern** ✅ DONE ([PR #55](https://github.com/ethereum/iptf-map/pull/55))
 ```
 File: patterns/pattern-white-label-deployment.md
 DoD: Governance model, upgrade paths documented
 Size: ~150 lines
 ```
 
-**PR-009: Enhanced DvP Pattern**
+**PR-009: Enhanced DvP Pattern** ✅ DONE ([PR #56](https://github.com/ethereum/iptf-map/pull/56))
 ```
 File: patterns/pattern-delivery-vs-payment-atomic.md
 DoD: Payment locking mechanics, escrow conditions clear

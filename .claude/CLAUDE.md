@@ -35,7 +35,17 @@ The **Institutional Privacy Task Force (IPTF) Map** is a public reference reposi
 Each directory has `_template.md` and `README.md`. Key structures:
 
 ### Pattern Template
-- Frontmatter: title, status (draft|ready), maturity (PoC|pilot|prod), works-best-when, avoid-when, dependencies
+- Frontmatter (required):
+  - `title`: "Pattern: <descriptive name>"
+  - `status`: draft|ready
+  - `maturity`: PoC|pilot|prod
+  - `layer`: L1|L2|offchain|hybrid
+  - `privacy_goal`: One-line description of what privacy this provides
+  - `assumptions`: Key trust/infrastructure assumptions
+  - `last_reviewed`: YYYY-MM-DD
+  - `works-best-when`: Bulleted list (1-3 lines)
+  - `avoid-when`: Bulleted list (1-3 lines)
+  - `dependencies`: List of standards, infrastructure
 - Sections: Intent, Ingredients, Protocol (5-8 steps max), Guarantees, Trade-offs, Example, See also
 
 ### Use Case Template
@@ -101,6 +111,15 @@ Example:
 - **CONTRIBUTING.md** - Contribution process and conventions
 - Pattern/vendor READMEs contain organization notes and TODO lists
 
+## PRD Workflow
+
+When working on tasks from `PRD-IPTF-PUBLIC-Q1-2026.md`:
+
+1. Create a separate branch for each PR (e.g., `pr-008-white-label-deployment`)
+2. Update CHANGELOG.md with the new content
+3. Mark the PRD task as ✅ DONE with PR link when complete
+4. Fill in PR description checklist before requesting review
+
 ## Notes for AI Assistants
 
 1. Check GLOSSARY.md for correct technical terminology
@@ -111,3 +130,4 @@ Example:
 6. Use semantic commit prefixes
 7. Verify Ethereum alignment when discussing vendors
 8. No confidential business data in public docs
+9. When completing PRD tasks, update PRD with completion status and PR link
