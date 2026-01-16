@@ -5,6 +5,7 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Added
+- feat(pattern): [Modular Privacy Stack](patterns/pattern-modular-privacy-stack.md) - Four-layer privacy architecture ([#54](https://github.com/ethereum/iptf-map/pull/54))
 - feat(pattern): [Private transaction broadcasting](patterns/pattern-private-transaction-broadcasting.md) ([#43](https://github.com/ethereum/iptf-map/pull/43))
 - feat(pattern): [TEE-based privacy](patterns/pattern-tee-based-privacy.md) ([#44](https://github.com/ethereum/iptf-map/pull/44))
 - feat(pattern): [Threshold encrypted mempool](patterns/pattern-threshold-encrypted-mempool.md) ([#45](https://github.com/ethereum/iptf-map/pull/45))
