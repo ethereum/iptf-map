@@ -1,0 +1,20 @@
+# Marketing language exceptions
+# These phrases are allowed because they are technical terms or proper names
+
+# Glossary terms
+Best Execution
+best execution
+
+# Technical terms that happen to contain marketing words
+unique identifier
+unique ID
+first-come-first-served
+end-to-end encryption
+end-to-end encrypted
+
+# Describing limitations (not promotional)
+only works with
+only supports
+only available
+first step
+first phase

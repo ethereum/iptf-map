@@ -11,7 +11,17 @@ const yaml = require('js-yaml');
 // Configuration
 const PATTERNS_DIR = path.join(__dirname, '..', 'patterns');
 const VENDORS_DIR = path.join(__dirname, '..', 'vendors');
+const APPROACHES_DIR = path.join(__dirname, '..', 'approaches');
+const USE_CASES_DIR = path.join(__dirname, '..', 'use-cases');
+const ROOT_DIR = path.join(__dirname, '..');
 const IS_CI = process.env.CI_MODE === 'strict';
+
+// Word count limits for conciseness
+const WORD_LIMITS = {
+  patterns: { warn: 800, error: 1500 },
+  vendors: { warn: 1000, error: 1800 },
+  approaches: { warn: 2000, error: 3000 }
+};
 
 // Required frontmatter fields for patterns
 const REQUIRED_PATTERN_FRONTMATTER = [
@@ -79,6 +89,59 @@ function parseMarkdown(filePath) {
   }
 
   return { frontmatter, content: markdownContent };
+}
+
+/**
+ * Extract and validate internal markdown links
+ */
+function validateInternalLinks(filePath, content) {
+  const linkErrors = [];
+  const dir = path.dirname(filePath);
+
+  // Match markdown links: [text](path)
+  const linkRegex = /\[([^\]]*)\]\(([^)]+)\)/g;
+  let match;
+
+  while ((match = linkRegex.exec(content)) !== null) {
+    const linkPath = match[2];
+
+    // Skip external links, anchors, and special protocols
+    if (linkPath.startsWith('http://') ||
+        linkPath.startsWith('https://') ||
+        linkPath.startsWith('#') ||
+        linkPath.startsWith('mailto:')) {
+      continue;
+    }
+
+    // Handle relative .md links
+    if (linkPath.endsWith('.md') || linkPath.includes('.md#')) {
+      const mdPath = linkPath.split('#')[0]; // Remove anchor
+      const resolvedPath = path.resolve(dir, mdPath);
+
+      if (!fs.existsSync(resolvedPath)) {
+        linkErrors.push(`Broken internal link: ${linkPath}`);
+      }
+    }
+  }
+
+  return linkErrors;
+}
+
+/**
+ * Count words in content (excluding frontmatter and code blocks)
+ */
+function countWords(content) {
+  // Remove code blocks
+  let text = content.replace(/```[\s\S]*?```/g, '');
+  // Remove inline code
+  text = text.replace(/`[^`]+`/g, '');
+  // Remove links but keep text
+  text = text.replace(/\[([^\]]*)\]\([^)]+\)/g, '$1');
+  // Remove markdown formatting
+  text = text.replace(/[#*_\[\]]/g, ' ');
+  // Split and count
+  const words = text.split(/\s+/).filter(w => w.length > 0);
+  return words.length;
 }
 
 /**
@@ -163,6 +226,25 @@ function validatePattern(filePath) {
         fileWarnings.push(`Missing required section: ${section}`);
       }
     }
+  }
+
+  // Validate internal links (blocking in CI)
+  const linkErrors = validateInternalLinks(filePath, content);
+  if (linkErrors.length > 0) {
+    if (IS_CI) {
+      fileErrors.push(...linkErrors);
+    } else {
+      fileWarnings.push(...linkErrors);
+    }
+  }
+
+  // Check word count for conciseness
+  const wordCount = countWords(content);
+  const limits = WORD_LIMITS.patterns;
+  if (wordCount > limits.error) {
+    fileErrors.push(`Content too long: ${wordCount} words (max ${limits.error})`);
+  } else if (wordCount > limits.warn) {
+    fileWarnings.push(`Content length: ${wordCount} words (recommended max ${limits.warn})`);
   }
 
   // Report errors and warnings
