@@ -5,6 +5,7 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Added
+- feat(approach): [Atomic DvP Settlement](approaches/approach-dvp-atomic-settlement.md)
 - feat(pattern): [Modular Privacy Stack](patterns/pattern-modular-privacy-stack.md) - Four-layer privacy architecture ([#54](https://github.com/ethereum/iptf-map/pull/54))
 - feat(pattern): [Hybrid public-private modes](patterns/pattern-hybrid-public-private-modes.md)
 - feat(pattern): [Private transaction broadcasting](patterns/pattern-private-transaction-broadcasting.md) ([#43](https://github.com/ethereum/iptf-map/pull/43))

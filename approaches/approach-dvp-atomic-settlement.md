@@ -1,46 +1,24 @@
----
-title: "Pattern: Atomic DvP Settlement"
-status: draft
-maturity: pilot
-layer: L2
-privacy_goal: Ensure asset delivery occurs if and only if payment completes, with configurable escrow conditions
-assumptions: Both legs on same network or coordinated networks, escrow contract deployed, settlement finality available
-last_reviewed: 2026-01-16
-works-best-when:
-  - Asset and payment legs settle on the same network or L2
-  - Clear escrow conditions can be defined upfront
-  - Counterparties need guaranteed atomicity without trusted intermediaries
-avoid-when:
-  - Complex multi-leg settlement requiring orchestration across many networks
-  - Regulatory requirements mandate human intervention in settlement
-  - One leg lacks programmable settlement capability
-dependencies: [Escrow contract, ERC-20/ERC-721 tokens, Optional: ERC-7573, EIP-6123]
----
+# Atomic DvP Settlement
 
-## Intent
+> Approach for implementing atomic delivery-versus-payment using escrow, HTLCs, or oracle-based mechanisms.
 
-Guarantee that delivery of an asset and corresponding payment either both complete or both fail, eliminating settlement risk where one party delivers without receiving payment. This pattern documents the core locking and escrow mechanisms that enable atomic settlement, applicable to securities, derivatives, and tokenized assets.
+## Overview
 
-## Ingredients
+Settlement risk occurs when one party delivers an asset without receiving payment, or vice versa. This approach documents multiple mechanisms for achieving atomic settlement where both legs complete or neither does, eliminating counterparty risk.
 
-- **Standards**
-  - ERC-20 or ERC-721 for asset and payment tokens
-  - ERC-7573 for cross-network coordination (optional)
-  - EIP-6123 for derivative lifecycle integration (optional)
+**Relationship to [Atomic DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md)**: The ERC-7573 pattern specifically addresses cross-network coordination using the ERC-7573 standard. This approach is more general, documenting the core atomicity mechanisms (HTLCs, escrow, oracles) that work on single networks or can be composed with ERC-7573 for cross-network scenarios.
 
-- **Escrow Infrastructure**
-  - Escrow smart contract with conditional release logic
-  - Time-lock or hash-lock primitives
-  - Event listeners for settlement triggers
+### TLDR for different personas
 
-- **Settlement Components**
-  - Asset token contract (security, bond, derivative position)
-  - Payment token contract (stablecoin, tokenized deposit, CBDC)
-  - Settlement coordinator (on-chain or hybrid)
+- **Business**: Eliminates settlement risk - both legs complete or neither does. Reduces counterparty exposure and enables trustless settlement with unknown parties.
+- **Technical**: Multiple implementation options: HTLCs for trustless atomic swaps, escrow with dual approval for institutional workflows, oracle-based for event-driven settlement. Can integrate with EIP-6123 for derivatives.
+- **Legal**: Clear failure modes and timeout behaviors for dispute resolution. Deterministic outcomes based on explicit conditions. Automatic recovery paths when settlement fails.
 
-## Payment Locking Mechanisms
+## Architecture and Design Choices
 
-### Hash Time-Locked Contracts (HTLC)
+### Payment Locking Mechanisms
+
+#### Hash Time-Locked Contracts (HTLC)
 
 | Aspect | Description |
 |--------|-------------|
@@ -57,7 +35,7 @@ Guarantee that delivery of an asset and corresponding payment either both comple
 5. Buyer uses S to claim asset
 ```
 
-### Escrow with Dual Approval
+#### Escrow with Dual Approval
 
 | Aspect | Description |
 |--------|-------------|
@@ -73,7 +51,7 @@ Guarantee that delivery of an asset and corresponding payment either both comple
 4. Escrow atomically transfers both legs
 ```
 
-### Conditional Transfer with Oracle
+#### Conditional Transfer with Oracle
 
 | Aspect | Description |
 |--------|-------------|
@@ -89,9 +67,9 @@ Guarantee that delivery of an asset and corresponding payment either both comple
 4. Escrow executes atomic swap based on attestation
 ```
 
-## Escrow Conditions
+### Escrow Conditions
 
-### Time-Based Conditions
+#### Time-Based Conditions
 
 | Condition | Description | Example |
 |-----------|-------------|---------|
@@ -99,7 +77,7 @@ Guarantee that delivery of an asset and corresponding payment either both comple
 | **Lock Period** | Minimum hold before release allowed | Vesting schedules |
 | **Expiry** | Automatic return if not settled by deadline | Failed trade cleanup |
 
-### Event-Based Conditions
+#### Event-Based Conditions
 
 | Condition | Description | Example |
 |-----------|-------------|---------|
@@ -107,7 +85,7 @@ Guarantee that delivery of an asset and corresponding payment either both comple
 | **Regulatory Approval** | Release when compliance check passes | Cross-border settlement |
 | **Multi-sig Threshold** | Release when N-of-M parties approve | Committee settlement |
 
-### Value-Based Conditions
+#### Value-Based Conditions
 
 | Condition | Description | Example |
 |-----------|-------------|---------|
@@ -115,16 +93,7 @@ Guarantee that delivery of an asset and corresponding payment either both comple
 | **Collateral Ratio** | Release only if collateralization maintained | Margin calls |
 | **Net Settlement** | Batch and net multiple obligations | Clearing house |
 
-## Protocol (concise)
-
-1. **Agree**: Counterparties agree on asset, payment amount, escrow conditions, and timeout parameters.
-2. **Lock Asset**: Seller transfers asset to escrow contract with release conditions.
-3. **Lock Payment**: Buyer transfers payment to escrow contract with matching conditions.
-4. **Verify**: Escrow contract (or oracle) verifies all conditions are met.
-5. **Settle**: If conditions satisfied, escrow atomically transfers asset to buyer, payment to seller.
-6. **Timeout**: If conditions not met by deadline, escrow returns assets to original owners.
-
-## Integration with EIP-6123 (Derivatives)
+### Integration with EIP-6123 (Derivatives)
 
 For derivative contracts using EIP-6123 lifecycle management:
 
@@ -136,14 +105,31 @@ For derivative contracts using EIP-6123 lifecycle management:
 | **Settlement** | Final exchange of payment vs position closure |
 | **Early Termination** | Escrow handles close-out netting |
 
-## Guarantees
+### Protocol Flow
+
+1. **Agree**: Counterparties agree on asset, payment amount, escrow conditions, and timeout parameters.
+2. **Lock Asset**: Seller transfers asset to escrow contract with release conditions.
+3. **Lock Payment**: Buyer transfers payment to escrow contract with matching conditions.
+4. **Verify**: Escrow contract (or oracle) verifies all conditions are met.
+5. **Settle**: If conditions satisfied, escrow atomically transfers asset to buyer, payment to seller.
+6. **Timeout**: If conditions not met by deadline, escrow returns assets to original owners.
+
+### Recommended Components
+
+- **Standards**: ERC-20 or ERC-721 for asset and payment tokens; ERC-7573 for cross-network coordination; EIP-6123 for derivative lifecycle
+- **Infrastructure**: Escrow smart contract with conditional release logic; time-lock or hash-lock primitives; event listeners for settlement triggers
+- **Settlement**: Asset token contract (security, bond, derivative position); payment token contract (stablecoin, tokenized deposit, CBDC); settlement coordinator (on-chain or hybrid)
+
+## Trade-offs and Open Questions
+
+### Guarantees
 
 - **Settlement Atomicity**: Both legs complete or neither completes; no partial settlement
 - **Counterparty Risk Elimination**: Assets locked in escrow, not held by counterparty
 - **Deterministic Outcomes**: Clear conditions define exactly when settlement occurs
 - **Timeout Safety**: Automatic recovery path if settlement conditions not met
 
-## Trade-offs
+### Trade-offs
 
 - **Capital Lockup**: Assets locked during settlement window reduce liquidity
 - **Condition Complexity**: Complex conditions increase gas costs and audit surface
@@ -151,7 +137,7 @@ For derivative contracts using EIP-6123 lifecycle management:
 - **Timing Risks**: Network congestion may cause timeout before legitimate settlement
 - **Upgrade Constraints**: Escrow contract immutability limits future modifications
 
-## Failure Modes
+### Failure Modes
 
 | Failure | Impact | Mitigation |
 |---------|--------|------------|
@@ -161,9 +147,7 @@ For derivative contracts using EIP-6123 lifecycle management:
 | **Counterparty disappears** | Delayed recovery | Automatic timeout refunds |
 | **Condition ambiguity** | Disputed settlement | Precise condition specification, arbitration |
 
-## Example
-
-**Bond Purchase with Tokenized Deposit**
+### Example: Bond Purchase with Tokenized Deposit
 
 1. Asset Manager A sells €1M corporate bond to Bank B on L2 network.
 2. A locks bond tokens in escrow contract with conditions: release to B if €1M EURC received, timeout in 24 hours.
@@ -172,11 +156,16 @@ For derivative contracts using EIP-6123 lifecycle management:
 5. Escrow atomically transfers: bond to B, EURC to A.
 6. If B had not deposited EURC within 24 hours, A would reclaim bond via timeout.
 
-## See also
+## Links and Notes
 
-- [Atomic DvP via ERC-7573](pattern-dvp-erc7573.md) - Cross-network DvP coordination
-- [ERC-3643 RWA Tokenization](pattern-erc3643-rwa.md) - Compliant security tokens
-- [MPC Custody](pattern-mpc-custody.md) - Secure key management for escrow
-- [Commit and Prove](pattern-commit-and-prove.md) - Privacy-preserving condition verification
+### Related Patterns
+
+- [Atomic DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md) - Cross-network DvP coordination
+- [ERC-3643 RWA Tokenization](../patterns/pattern-erc3643-rwa.md) - Compliant security tokens
+- [MPC Custody](../patterns/pattern-mpc-custody.md) - Secure key management for escrow
+- [Commit and Prove](../patterns/pattern-commit-and-prove.md) - Privacy-preserving condition verification
+
+### References
+
 - [EIP-6123 spec](https://eips.ethereum.org/EIPS/eip-6123) - Smart Derivative Contract standard
 - [ERC-7573 spec](https://ercs.ethereum.org/ERCS/erc-7573) - Cross-network settlement standard
