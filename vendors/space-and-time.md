@@ -65,7 +65,7 @@ The proof can be verified by an EVM-compatible verifier contract, enabling downs
 
 ## Strengths
 
-- **Extreme performance:** As the first sub-second ZK prover, the protocol can execute analytic queries over 1M+ rows in less than a second. It can aggregate over millions of rows of indexed data within Ethereum block time on a single NVIDIA T4 GPU.
+- **Performance:** The protocol is designed to execute and prove analytical SQL queries over large datasets, including aggregate queries over 1M+ rows, in under one second (see [benchmarks](https://github.com/spaceandtimefdn/sxt-proof-of-sql#benchmarks)). It can aggregate over millions of rows of indexed data within Ethereum block time on a single NVIDIA T4 GPU.
 - **Cryptographic integrity at scale:** Proof of SQL scales to return ZK proofs for queries against tables with hundreds of millions of rows of indexed events/transactions without consensus-style re-execution.
 - **SQL-native developer experience:** Leverage a mature query model (joins, filters, aggregates) instead of bespoke onchain indexing logic. 
 - **Composable with EVM apps: **Verified results can directly gate contract execution via onchain verifier + callback pattern.
