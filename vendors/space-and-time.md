@@ -29,7 +29,13 @@ The proof can be verified by an EVM-compatible verifier contract, enabling downs
 ## Architecture
 
 - **Decentralized validator set holding tamperproof tables:** Indexed blockchain data (events, txns, balances, etc with block hashes as attestation source) as well as signed user/enterprise-loaded datasets are held by a global validator network that collectively updates commitments on each table (with BFT consensus and threshold signatures) as batches of new data are added.
-- **Prover nodes:** When a contract/API issues a query, a prover executes the SQL and generates the ZK proof before relaying both back to a relayer contract for verification and data-callback to client contract; with a next-gen proving pipeline (AST → witnesses → commitments → constraints → sum-check → openings). 
+- **Prover nodes:** When a contract or API issues a query, a prover executes the SQL and generates a ZK proof, then relays both to a relayer contract for verification and data callback to the client contract. This pipeline enables proofs for aggregate queries over tables with 1M+ rows in under one second.
+  1. **AST:** SQL is parsed into an AST and relational plan
+  2. **Witnesses:** The plan is executed to produce witness data
+  3. **Commitments:** Witnesses are committed using standard polynomial commitment schemes
+  4. **Constraints & Sum-check:** Constraints are generated and verified via sum-check
+  5. **Openings:** Opening proofs are generated for verification
+  - _More information is available in the white paper:_ https://sxtdocspub.blob.core.windows.net/docs/sxt-whitepaper.pdf
 - **EVM integration (relayer + verifier):** An onchain “query relayer” endpoint + an onchain verifier contract on supported EVM networks; results are delivered to the requesting contract after verification. 
 - **Developer tooling:** SDKs/repos for running queries and verifying proofs locally, and smart-contract-facing integration docs (including deployed contract addresses). 
 
