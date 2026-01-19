@@ -1,6 +1,8 @@
 # Atomic DvP Settlement
 
-> Approach for implementing atomic delivery-versus-payment using escrow, HTLCs, or oracle-based mechanisms.
+> Approach for atomic delivery-versus-payment settlement, applicable to
+> [Private Bonds](../use-cases/private-bonds.md) and
+> [Private Derivatives](../use-cases/private-derivatives.md).
 
 ## Overview
 
