@@ -5,7 +5,7 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Added
-- feat(pattern): [White-label infrastructure deployment](patterns/pattern-white-label-deployment.md)
+- feat(approach): [White-label infrastructure deployment](approaches/approach-white-label-deployment.md)
 - feat(approach): [Atomic DvP Settlement](approaches/approach-dvp-atomic-settlement.md) ([#56](https://github.com/ethereum/iptf-map/pull/56))
 - feat(pattern): [Modular Privacy Stack](patterns/pattern-modular-privacy-stack.md) - Four-layer privacy architecture ([#54](https://github.com/ethereum/iptf-map/pull/54))
 - feat(pattern): [Hybrid public-private modes](patterns/pattern-hybrid-public-private-modes.md)
