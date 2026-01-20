@@ -8,7 +8,9 @@
 
 Settlement risk occurs when one party delivers an asset without receiving payment, or vice versa. This approach documents multiple mechanisms for achieving atomic settlement where both legs complete or neither does, eliminating counterparty risk.
 
-**Relationship to [Atomic DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md)**: The ERC-7573 pattern specifically addresses cross-network coordination using the ERC-7573 standard. This approach is more general, documenting the core atomicity mechanisms (HTLCs, escrow, oracles) that work on single networks or can be composed with ERC-7573 for cross-network scenarios.
+**Single-network vs cross-network atomicity**: On a single network (L1 or L2), atomic settlement is an inherent property of blockchain transactions—a smart contract can execute both legs in one transaction, making atomicity straightforward. Cross-network settlement (e.g., L2↔L2 or L1↔L2) is fundamentally harder: trustless atomicity across independent chains remains an open research problem. Current cross-network approaches rely on trusted intermediaries, oracles, or optimistic assumptions.
+
+**Relationship to [Atomic DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md)**: The ERC-7573 pattern (draft; requires trusted oracle) specifically addresses cross-network coordination. This approach is more general, documenting the core atomicity mechanisms (HTLCs, escrow, oracles) that work on single networks or can be composed with ERC-7573 for cross-network scenarios.
 
 ### TLDR for different personas
 
@@ -118,7 +120,7 @@ For derivative contracts using EIP-6123 lifecycle management:
 
 ### Recommended Components
 
-- **Standards**: ERC-20 or ERC-721 for asset and payment tokens; ERC-7573 for cross-network coordination; EIP-6123 for derivative lifecycle
+- **Standards**: ERC-20 or ERC-721 for asset and payment tokens; ERC-7573 (draft) for cross-network coordination; EIP-6123 for derivative lifecycle
 - **Infrastructure**: Escrow smart contract with conditional release logic; time-lock or hash-lock primitives; event listeners for settlement triggers
 - **Settlement**: Asset token contract (security, bond, derivative position); payment token contract (stablecoin, tokenized deposit, CBDC); settlement coordinator (on-chain or hybrid)
 
@@ -138,6 +140,7 @@ For derivative contracts using EIP-6123 lifecycle management:
 - **Oracle Dependency**: Event-based conditions require trusted oracle infrastructure
 - **Timing Risks**: Network congestion may cause timeout before legitimate settlement
 - **Upgrade Constraints**: Escrow contract immutability limits future modifications
+- **Cross-Network Trust**: Cross-network settlement requires trusted intermediaries or oracles; trustless cross-network DvP remains an unsolved problem
 
 ### Failure Modes
 
