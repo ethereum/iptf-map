@@ -161,14 +161,14 @@ Size: ~150 lines
 
 ### Sprint 2: Architectural Patterns [Week 2]
 
-**PR-006: Hybrid Privacy Architecture**
+**PR-006: Hybrid Privacy Architecture** ✅ DONE ([PR #51](https://github.com/ethereum/iptf-map/pull/51))
 ```
 File: patterns/pattern-hybrid-public-private-modes.md
 DoD: Mode switching mechanics, compliance hooks documented
 Size: ~175 lines
 ```
 
-**PR-007: Modular Privacy Layers Pattern**
+**PR-007: Modular Privacy Layers Pattern** ✅ DONE ([PR #54](https://github.com/ethereum/iptf-map/pull/54))
 ```
 File: patterns/pattern-modular-privacy-stack.md
 DoD: Layer boundaries defined, composability explained
@@ -220,7 +220,7 @@ Covers: Aztec, Polygon Miden, Scroll, Taiko, Linea
 File: approaches/approach-privacy-standards-survey.md
 DoD: Existing EIPs mapped, gaps identified, no new standards created
 Size: ~250 lines
-Covers: ERC-3643, ERC-7573, EIP-5564, EIP-6123, EIP-78
+Covers: ERC-3643, ERC-7573, EIP-5564, EIP-6123, EIP-78, ERC-7945, ERC-8065
 ```
 
 **PR-013: Vendor Capability Matrix**
@@ -541,6 +541,8 @@ External research conducted via web search to verify claims in repository docume
 | EIP-6123 (SDC) | Draft | No major implementations yet | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-6123) |
 | EIP-7573 (DvP) | Draft | Limited adoption | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-7573) |
 | EIP-7805 (FOCIL) | Draft | Testnet exploration ongoing | [eips.ethereum.org](https://eips.ethereum.org/EIPS/eip-7805) |
+| ERC-7945 (CT Token) | Draft | Standard for confidential token transfers | [ethereum-magicians](https://ethereum-magicians.org/t/eip-7945-confidential-transactions-supported-token/23586) |
+| ERC-8065 (ZK Wrapper) | Draft | Standard for ZK-wrapping existing tokens | [ethereum-magicians](https://ethereum-magicians.org/t/erc-8065-zero-knowledge-token-wrapper/26006) |
 
 ### Vendor Status Updates
 
