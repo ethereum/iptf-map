@@ -330,6 +330,17 @@ DoD: Add client-side proving section, compliance requirements matrix linking to 
 Size: +100 lines enhancement
 ```
 
+### Backlog: Scalability & Sync [Unprioritized]
+
+**PR-033: Nullifier Set Scalability Pattern**
+```
+File: patterns/pattern-nullifier-set-scalability.md
+Problem: Shielded pools using commitment/nullifier models face unbounded nullifier set growth, creating sync and storage challenges for light clients.
+DoD: Document nullifier bloat problem, oblivious sync approaches (Zcash Tachyon, OMR), trade-offs for institutional deployments
+Size: ~150 lines
+References: Zcash Tachyon project, oblivious message retrieval research
+```
+
 ---
 
 ## 4. Documentation Requirements (Replacing Performance Targets)
