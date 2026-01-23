@@ -143,7 +143,9 @@ jobs:
         run: |
           mkdir -p .vale/styles
           cd .vale/styles
-          wget -qO- https://github.com/errata-ai/write-good/releases/download/v1.0.2/write-good.zip | busybox unzip -
+          wget -q https://github.com/errata-ai/write-good/releases/download/v1.0.2/write-good.zip
+          unzip -q write-good.zip
+          rm write-good.zip
 
       - name: Run Vale
         run: |
