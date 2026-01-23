@@ -5,14 +5,14 @@ status: draft
 
 # State Labs – Privacy-Preserving Infrastructure
 
-State Labs develops regulated privacy-preserving infrastructure for institutional payments (Tx-Shield), private AI collaboration (OpenTMP LLM), and MPC-TSS key management (Collab-Key). 
-State Labs’ three core solutions — **Tx-Shield**, **OpenTMP LLM**, and **Collab-Key** — address compliance, compute, and custody privacy challenges faced by regulated institutions.
+State Labs develops regulated privacy-preserving infrastructure for institutional payments (TX-SHIELD), private AI collaboration (OpenTMP LLM), and MPC-TSS key management (Collab-Key). 
+State Labs’ three core solutions — **TX-SHIELD**, **OpenTMP LLM**, and **Collab-Key** — address compliance, compute, and custody privacy challenges faced by regulated institutions.
 
 ---
 
 ## What it is
 State Labs builds modular privacy layers/solutions for institutional finance and AI systems:
-- **Tx Shield** — a regulated private payment layer/solution built on MPC-based encryption and threshold key control.  
+- **TX-SHIELD** — a regulated private payment layer/solution built on MPC-based encryption and threshold key control.  
 It enables confidential settlement for stablecoins, RWAs, and bonds while ensuring regulator-auditable transparency.  
 Transactions are visible only to stakeholders, while regulators can access details through granted audit keys.
 
@@ -26,7 +26,7 @@ Each module can operate independently or as part of a unified privacy-preserving
 
 ## Fits with patterns (names only)
 
-Tx-Shield:
+TX-SHIELD:
 - pattern-private-stablecoin-shielded-payments
 - pattern-private-pvp-stablecoins-erc5753
 - pattern-regulatory-disclosure-keys-proofs
@@ -43,9 +43,9 @@ Collab-Key:
 
 ## Not a substitute for
 
-Tx-Shield:
+TX-SHIELD:
 - ZK-based L2 privacy frameworks (e.g., Aztec, Scroll)
-- General-purpose MPC or TEE frameworks for secure computation (Tx-Shield focuses on transactional privacy and compliance)
+- General-purpose MPC or TEE frameworks for secure computation (TX-SHIELD focuses on transactional privacy and compliance)
 - Traditional on-chain settlement systems without regulator access
 
 
@@ -61,7 +61,7 @@ Collab-Key:
 ---
 
 ## Architecture
-### Tx-Shield
+### TX-SHIELD
 Implements a high performance MPC-based private payment layer with threshold key control and an audit-key protocol for regulator visibility.  
 Only sender, receiver i.e. stakers, and authorized regulators can access encrypted transaction details.  
 Optimized MPC execution enables high performance (~10k TPS).
@@ -85,7 +85,7 @@ Features an offline-by-default architecture with native FIDO2 support, integrati
 ---
 
 ## Enterprise demand and use cases
-Tx-Shield:
+TX-SHIELD:
 - Institutional settlement for stablecoins, tokenized RWAs, and bonds on-chain.  
 - Ideal for financial institutions needing confidentiality and compliance together.
 
@@ -98,7 +98,7 @@ Institutional wallets, custodians, and enterprise-grade signing infrastructure r
 ---
 
 ## Technical details
-Tx-Shield:
+TX-SHIELD:
 - MPC-based encryption, threshold key control (TSS), high-throughput multi-party computation.
 
 OpenTMP LLM: 
@@ -110,14 +110,14 @@ Collab-Key:
 ---
 
 ## Strengths
-- Tx-Shield delivers institutional-grade transactional privacy with built-in regulatory visibility.  
+- TX-SHIELD delivers institutional-grade transactional privacy with built-in regulatory visibility.  
 - OpenTMP LLM enables privacy-preserving multi-party AI collaboration across edge and federated (hybrid on/off-chain) environments.  
-- Collab-Key provides fault-tolerant, MPC-TSS-based signing with formal security foundations (*USENIX Security 2025*)，strengthened by CrossBar ReRAM hardware-level isolation to eliminate physical-layer vulnerabilities.
+- Collab-Key provides fault-tolerant, MPC-TSS-based signing with formal security foundations (*USENIX Security 2025*), strengthened by CrossBar ReRAM hardware-level isolation to eliminate physical-layer vulnerabilities.
 
 ---
 
 ## Risks and open questions
-Tx-Shield:
+TX-SHIELD:
 - Governance over regulator audit keys  
 - Integration complexity across different blockchain environments  
 
@@ -134,7 +134,7 @@ Collab-Key:
 ---
 
 ## Links
-Official Website: [TX-SHIELD](https://tx-shield.com) | [BenPay|Privacy Wallet](https://www.benpay.com/wallet?type=privacy)
+Official Website: [TX-SHIELD](https://TX-SHIELD.com) | [BenPay|Privacy Wallet](https://www.benpay.com/wallet?type=privacy)
 
 Contact: [ZYX Research](mailto:zyxresearch@gmail.com) | [haiyangxue@smu.edu.sg](mailto:haiyangxue@smu.edu.sg)
 
