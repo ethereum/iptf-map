@@ -8,12 +8,13 @@ assumptions: Destination chain has shielded pool or private execution; bridge tr
 last_reviewed: 2026-01-22
 works-best-when:
   - Moving assets between domains while minimizing linkability
-  - Destination has shielded pool or private execution environment
+  - Both chains have shielded pools (required for full amount privacy)
   - Explicit bridge trust assumptions are acceptable
 avoid-when:
   - Both legs on same domain (use internal transfer)
   - Destination lacks privacy primitive (no benefit to bridge privacy)
   - Regulatory requirements demand end-to-end public transparency
+  - Either or both chains have frequent reorgs (finality assumptions unreliable)
 dependencies:
   - Source-domain escrow contract (lock or burn)
   - Destination-domain mint contract integrated with shielded pool
@@ -28,7 +29,7 @@ Move assets between chains while preserving privacy on the destination by mintin
 
 ## Ingredients
 
-- **Source escrow:** Lock-mint or burn-unlock contract on origin chain
+- **Source escrow:** Lock-mint (forward) / burn-unlock (return) contract on origin chain
 - **Destination privacy primitive:** Shielded pool with commitments + nullifiers (e.g., Aztec, Railgun, Privacy Pools)
 - **Cross-domain message:** Event/log attesting to deposit; inclusion proof
 - **Verification mechanism:** Operator signature, optimistic challenge, ZK proof, or light client
@@ -60,7 +61,7 @@ Move assets between chains while preserving privacy on the destination by mintin
 ## Guarantees
 
 - **Recipient privacy:** Destination recipient not revealed on source chain (commitment hides identity)
-- **Sender privacy:** Destination observers cannot link recipient to source depositor (requires relayer that doesn't leak depositor, timing obfuscation)
+- **Sender privacy:** Destination observers cannot link recipient to source depositor (requires relayer that doesn't leak depositor, timing obfuscation). In custodial model, source deposit goes to operator address (like a CEX deposit), so the operator knows the depositor but the destination chain does not.
 - **Amount privacy:** If destination uses confidential amounts or fixed denominations
 - **Integrity:** No double-mint (replay protected by nullifier or nonce tracking); conservation of value across domains
 - **Auditor access:** View keys or compliance proofs can selectively reveal to authorized parties
@@ -75,7 +76,7 @@ Move assets between chains while preserving privacy on the destination by mintin
 
 | Model | What you trust | Latency | Cost | Typical risk |
 |-------|----------------|---------|------|--------------|
-| Custodial | Single operator honesty | Low | Low | Theft, censorship |
+| Custodial | Single operator honesty | Low | Low | Theft (operator receives deposit but doesn't mint), censorship |
 | MPC/TSS | Threshold of signers | Low-Med | Medium | Key compromise if threshold breached |
 | Optimistic | At least one honest watcher | Med-High | Medium | Delayed finality, griefing |
 | ZK (zk-SPV) | Proof system soundness + verifier | Medium | High | Prover DoS, circuit bugs |
