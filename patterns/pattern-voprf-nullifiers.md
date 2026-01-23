@@ -8,7 +8,7 @@ assumptions: Threshold MPC network for vOPRF, client-side blinding, on-chain nul
 last_reviewed: 2026-01-22
 works-best-when:
   - You need deterministic per-scope nullifiers (or pseudonyms) for credentials/signals without revealing the underlying identifier.
-  - You want to reduce the blast radius of client key compromise (avoid offline reconstruction of past nullifiers from a single leaked secret).
+  - You want to limit the damage from client key compromise—without the server key, an attacker cannot reconstruct past nullifiers offline from a leaked client secret alone.
   - You can operate (or rely on) a threshold service with clear governance, uptime, and abuse controls.
 avoid-when:
   - A simple local nullifier (hash of user secret + scope) is sufficient and compromise/linkage is acceptable.
@@ -25,6 +25,8 @@ dependencies:
 Generate deterministic, scope-bound nullifiers for credential and signal mechanisms using a verifiable OPRF (vOPRF),
 optionally thresholdized, so that nullifier generation is not solely determined by a single client secret and can be
 verified for correctness.
+
+On public networks, deterministic nullifiers derived solely from client secrets create a linkability risk: the same nullifier for a given scope reveals the same underlying user, and a leaked client secret allows offline reconstruction of all past nullifiers. A vOPRF adds a server-side component that breaks this offline linkability while preserving determinism for legitimate use.
 
 This pattern is about "nullifier generation as a service" that preserves privacy of the input while allowing a
 deterministic output that can be used for one-per-scope limits, anti-replay, or persistent pseudonyms.
