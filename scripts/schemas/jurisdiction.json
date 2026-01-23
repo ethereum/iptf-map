@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://iptf-map.ethereum.org/schemas/jurisdiction.json",
+  "title": "IPTF Jurisdiction Frontmatter",
+  "description": "Schema for jurisdiction document frontmatter in IPTF Map",
+  "type": "object",
+  "required": ["title", "status", "region"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "pattern": "^Jurisdiction:",
+      "description": "Jurisdiction title, must start with 'Jurisdiction:'"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "ready"],
+      "description": "Document status"
+    },
+    "region": {
+      "type": "string",
+      "enum": ["EU", "US", "APAC", "LATAM", "MEA", "Global"],
+      "description": "Geographic region"
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "entities": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Regulated entity types"
+        },
+        "activities": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Regulated activities"
+        }
+      },
+      "description": "Regulatory scope"
+    },
+    "key-regulations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Key regulatory references"
+    },
+    "last_reviewed": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Last review date in YYYY-MM-DD format"
+    }
+  },
+  "additionalProperties": false
+}

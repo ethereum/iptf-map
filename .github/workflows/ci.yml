@@ -32,6 +32,13 @@ jobs:
         env:
           CI_MODE: strict
 
+      - name: Check terminology consistency
+        run: |
+          node scripts/check-terminology.js
+        env:
+          CI_MODE: strict
+        continue-on-error: true
+
       - name: Check markdown links
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
@@ -119,6 +126,55 @@ jobs:
               fi
             fi
           done
+
+  prose-lint:
+    runs-on: ubuntu-latest
+    name: Prose Quality (Vale)
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Vale
+        run: |
+          wget -qO- https://github.com/errata-ai/vale/releases/download/v3.9.3/vale_3.9.3_Linux_64-bit.tar.gz | tar xz -C /usr/local/bin vale
+
+      - name: Download write-good style
+        run: |
+          mkdir -p .vale/styles
+          cd .vale/styles
+          wget -qO- https://github.com/errata-ai/write-good/releases/download/v1.0.2/write-good.zip | busybox unzip -
+
+      - name: Run Vale
+        run: |
+          echo "## Prose Quality Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Run Vale on all content directories
+          vale --output=line patterns/ vendors/ approaches/ use-cases/ jurisdictions/ domains/ 2>&1 | tee vale-output.txt || true
+
+          # Count issues by severity
+          ERRORS=$(grep -c " error " vale-output.txt 2>/dev/null || echo "0")
+          WARNINGS=$(grep -c " warning " vale-output.txt 2>/dev/null || echo "0")
+          SUGGESTIONS=$(grep -c " suggestion " vale-output.txt 2>/dev/null || echo "0")
+
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "::error::Vale found $ERRORS error(s)"
+            echo "### Vale found issues" >> $GITHUB_STEP_SUMMARY
+            echo "- Errors: $ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- Warnings: $WARNINGS" >> $GITHUB_STEP_SUMMARY
+            echo "- Suggestions: $SUGGESTIONS" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          elif [ "$WARNINGS" -gt 0 ]; then
+            echo "::warning::Vale found $WARNINGS warning(s)"
+            echo "### Vale found minor issues" >> $GITHUB_STEP_SUMMARY
+            echo "- Warnings: $WARNINGS" >> $GITHUB_STEP_SUMMARY
+            echo "- Suggestions: $SUGGESTIONS" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### Vale passed" >> $GITHUB_STEP_SUMMARY
+            echo "No significant prose issues found." >> $GITHUB_STEP_SUMMARY
+          fi
+        continue-on-error: true
 
   validate-changelog:
     runs-on: ubuntu-latest

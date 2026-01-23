@@ -1,0 +1,76 @@
+# IPTF Terminology Consistency
+# Enforces canonical spellings from GLOSSARY.md
+# See also: scripts/check-terminology.js for programmatic checking
+
+extends: substitution
+message: "Use '%s' instead of '%s' for consistency with GLOSSARY.md."
+level: warning
+ignorecase: false
+swap:
+  # Institutional finance terms - enforce canonical case
+  DVP: DvP
+  Dvp: DvP
+  dvp: DvP
+  PVP: PvP
+  Pvp: PvP
+  pvp: PvP
+  TCA: TCA
+  AOR: AoR
+  Aor: AoR
+  aor: AoR
+  RFQ: RFQ
+
+  # Zero-knowledge terminology
+  zkSNARK: zk-SNARK
+  zkSnark: zk-SNARK
+  zk-snark: zk-SNARK
+  zkSTARK: zk-STARK
+  zkStark: zk-STARK
+  zk-stark: zk-STARK
+  zk proof: zero-knowledge proof
+  zk-proof: zero-knowledge proof
+  ZKP: zero-knowledge proof
+  zkp: zero-knowledge proof
+
+  # Ethereum/blockchain terms
+  layer 1: Layer 1
+  layer 2: Layer 2
+  layer-1: Layer 1
+  layer-2: Layer 2
+  L-1: L1
+  L-2: L2
+
+  # Standard references - use full form on first mention
+  erc-3643: ERC-3643
+  ERC3643: ERC-3643
+  erc3643: ERC-3643
+  erc-7573: ERC-7573
+  ERC7573: ERC-7573
+  erc7573: ERC-7573
+  eip-6123: EIP-6123
+  EIP6123: EIP-6123
+  eip6123: EIP-6123
+  eip-5564: EIP-5564
+  EIP5564: EIP-5564
+  eip5564: EIP-5564
+
+  # Cryptographic terms
+  multiparty computation: multi-party computation
+  Multi-Party Computation: multi-party computation
+  fully homomorphic encryption: Fully Homomorphic Encryption
+  trusted execution environment: Trusted Execution Environment
+
+  # Infrastructure terms
+  data availability: Data Availability
+  DA layer: DA Layer
+  da layer: DA Layer
+
+  # German regulation
+  ewpg: eWpG
+  EWPG: eWpG
+  eWPG: eWpG
+
+  # EU regulation
+  mica: MiCA
+  MICA: MiCA
+  Mica: MiCA

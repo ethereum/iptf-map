@@ -5,9 +5,13 @@
   "main": "validate-patterns.js",
   "scripts": {
     "validate": "node validate-patterns.js",
-    "validate:ci": "CI_MODE=strict node validate-patterns.js"
+    "validate:ci": "CI_MODE=strict node validate-patterns.js",
+    "check-terms": "node check-terminology.js",
+    "check-terms:ci": "CI_MODE=strict node check-terminology.js"
   },
   "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "js-yaml": "^4.1.0"
   },
   "engines": {

@@ -1,0 +1,68 @@
+# IPTF Marketing Language Detector
+# Catches promotional/marketing language that should not appear in technical docs
+# Mirrors patterns from .marketing-exceptions.txt
+
+extends: existence
+message: "Avoid marketing language: '%s'. Use neutral, factual terms."
+level: warning
+ignorecase: true
+tokens:
+  # Superlatives and competitive claims
+  - best-in-class
+  - market-leading
+  - industry-leading
+  - world-class
+  - top-tier
+  - premier
+  - leading
+  - superior
+  - unmatched
+  - unrivaled
+  - unparalleled
+
+  # Hyperbolic adjectives
+  - revolutionary
+  - groundbreaking
+  - cutting-edge
+  - bleeding-edge
+  - game-changing
+  - disruptive
+  - state-of-the-art
+  - next-generation
+  - unprecedented
+  - ultimate
+
+  # Marketing buzzwords
+  - seamless
+  - robust
+  - scalable
+  - enterprise-grade
+  - turnkey
+  - holistic
+  - innovative
+  - comprehensive
+  - one-stop
+
+  # Exclusive claims
+  - unique(?! identifier| ID)
+  - only(?! works with| supports| available| if| when)
+  - first(?!-come| step| phase)
+  - fastest
+  - most secure
+
+# Exceptions - these terms are allowed in context
+exceptions:
+  - unique identifier
+  - unique ID
+  - first-come-first-served
+  - end-to-end encryption
+  - end-to-end encrypted
+  - only works with
+  - only supports
+  - only available
+  - only if
+  - only when
+  - first step
+  - first phase
+  - Best Execution
+  - best execution

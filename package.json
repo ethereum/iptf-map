@@ -1,0 +1,35 @@
+{
+  "name": "iptf-map",
+  "version": "1.0.0",
+  "description": "Institutional Privacy Task Force Map - Privacy-preserving solutions for enterprise Ethereum",
+  "private": true,
+  "scripts": {
+    "validate": "node scripts/validate-patterns.js",
+    "validate:ci": "CI_MODE=strict node scripts/validate-patterns.js",
+    "check-terms": "node scripts/check-terminology.js",
+    "check-terms:ci": "CI_MODE=strict node scripts/check-terminology.js",
+    "lint:vale": "vale patterns/ vendors/ approaches/ use-cases/ jurisdictions/ domains/",
+    "lint:staged": "lint-staged",
+    "llm-review": "node scripts/llm-review.js",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0"
+  },
+  "lint-staged": {
+    "patterns/*.md": "node scripts/validate-patterns.js",
+    "vendors/*.md": "node scripts/validate-patterns.js",
+    "approaches/*.md": "node scripts/validate-patterns.js",
+    "use-cases/*.md": "node scripts/validate-patterns.js",
+    "jurisdictions/*.md": "node scripts/validate-patterns.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "CC0-1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ethereum/iptf-map.git"
+  }
+}
