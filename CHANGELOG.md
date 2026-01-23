@@ -13,10 +13,12 @@ All notable changes to the IPTF Map are documented here.
 - feat(pattern): [TEE-based privacy](patterns/pattern-tee-based-privacy.md) ([#44](https://github.com/ethereum/iptf-map/pull/44))
 - feat(pattern): [Threshold encrypted mempool](patterns/pattern-threshold-encrypted-mempool.md) ([#45](https://github.com/ethereum/iptf-map/pull/45))
 - feat(vendor): [Fhenix](vendors/fhenix.md) - FHE privacy ([#32](https://github.com/ethereum/iptf-map/pull/32))
+- feat(vendor): [Space and Time](vendors/space-and-time.md) ([#46](https://github.com/ethereum/iptf-map/pull/46))
 - feat(ci): Pattern validation workflow ([#40](https://github.com/ethereum/iptf-map/pull/40))
 - feat(approach): [Private bond PoC](approaches/approach-private-bonds.md) updates ([#47](https://github.com/ethereum/iptf-map/pull/47))
 - docs: [Q1 2026 PRD](PRD-IPTF-PUBLIC-Q1-2026.md) with sprint planning ([#39](https://github.com/ethereum/iptf-map/pull/39))
 - docs: [CHANGELOG.md](CHANGELOG.md) and weekly summary script ([#49](https://github.com/ethereum/iptf-map/pull/49))
+- docs: [weekly-updates](weekly-updates/) directory ([#59](https://github.com/ethereum/iptf-map/pull/59))
 - docs(prd): Sprint 6 for client-side proving and compliance
 - docs(prd): Source citations for accuracy verification findings
 - docs(prd): Sprint 1 completion and accuracy findings
