@@ -5,6 +5,18 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Added
+- feat(use-case): [Private Read](use-cases/private-read.md) - blockchain query privacy (stub)
+- feat(use-case): [Private Corporate Bonds](use-cases/private-corporate-bonds.md) - capital formation privacy (stub)
+- feat(use-case): [Private Government Debt](use-cases/private-government-debt.md) - sovereign/municipal bonds (stub)
+- feat(use-case): [Private FX](use-cases/private-fx.md) - cross-border settlement privacy (stub)
+- feat(use-case): [Private Stocks](use-cases/private-stocks.md) - tokenized equity (stub)
+- feat(use-case): [Private Commodities](use-cases/private-commodities.md) - commodity trading (stub)
+- feat(use-case): [Private Repo](use-cases/private-repo.md) - repurchase agreements (stub)
+- feat(use-case): [Private Money Market Funds](use-cases/private-money-market-funds.md) - yield-bearing funds (stub)
+- feat(use-case): [Private Treasuries](use-cases/private-treasuries.md) - corporate treasury (stub)
+- feat(use-case): [Private Payments](use-cases/private-payments.md) - payment rails (stub)
+- feat(use-case): [Private Oracles](use-cases/private-oracles.md) - data feed privacy (stub)
+- feat(use-case): [Private Messaging](use-cases/private-messaging.md) - interbank communication (stub)
 - feat(pattern): [vOPRF Nullifiers](patterns/pattern-voprf-nullifiers.md) - Threshold vOPRF-based nullifier generation for credentials/signals ([#61](https://github.com/ethereum/iptf-map/pull/61))
 - feat(ci): Enhanced AI content quality guardrails ([#58](https://github.com/ethereum/iptf-map/issues/58))
   - Vale prose linter with custom IPTF styles for marketing language, hedging, and terminology
