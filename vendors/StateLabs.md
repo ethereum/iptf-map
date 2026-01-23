@@ -135,7 +135,9 @@ Collab-Key:
 
 ## Links
 Official Website: [TX-SHIELD](https://tx-shield.com) | [BenPay|Privacy Wallet](https://www.benpay.com/wallet?type=privacy)
+
 Contact: [ZYX Research](mailto:zyxresearch@gmail.com) | [haiyangxue@smu.edu.sg](mailto:haiyangxue@smu.edu.sg)
+
 Papers:  
 - [USENIX Security 2025 – Guo et al.](https://www.usenix.org/system/files/usenixsecurity25-guo-hao-improved.pdf)  
 - [USENIX Security 2025 – Liang et al.](https://www.usenix.org/system/files/usenixsecurity25-liang-achilles.pdf)
