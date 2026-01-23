@@ -1,17 +1,17 @@
 ---
-title: "Vendor: State Labs"
-status: draft
+title: "Vendor: TX-SHIELD"
+status: published
 ---
 
-# State Labs – Privacy-Preserving Infrastructure
+# TX-SHIELD – Institutional Privacy Infrastructure
 
-State Labs develops regulated privacy-preserving infrastructure for institutional payments (TX-SHIELD), private AI collaboration (OpenTMP LLM), and MPC-TSS key management (Collab-Key). 
-State Labs’ three core solutions — **TX-SHIELD**, **OpenTMP LLM**, and **Collab-Key** — address compliance, compute, and custody privacy challenges faced by regulated institutions.
+TX-SHIELD develops regulated privacy-preserving infrastructure for institutional payments (TX-SHIELD), private AI collaboration (OpenTMP LLM), and MPC-TSS key management (Collab-Key). 
+TX-SHIELD’s three core solutions — **TX-SHIELD**, **OpenTMP LLM**, and **Collab-Key** — address compliance, compute, and custody privacy challenges faced by regulated institutions.
 
 ---
 
 ## What it is
-State Labs builds modular privacy layers/solutions for institutional finance and AI systems:
+TX-SHIELD builds modular privacy layers/solutions for institutional finance and AI systems:
 - **TX-SHIELD** — a regulated private payment layer/solution built on MPC-based encryption and threshold key control.  
 It enables confidential settlement for stablecoins, RWAs, and bonds while ensuring regulator-auditable transparency.  
 Transactions are visible only to stakeholders, while regulators can access details through granted audit keys.
@@ -67,7 +67,7 @@ Only sender, receiver i.e. stakers, and authorized regulators can access encrypt
 Optimized MPC execution enables high performance (~10k TPS).
 
 ### OpenTMP LLM
-Distributed AI architecture using federated learning and multi-party computation （MPC-FL) with threshold-secure aggregation.  
+Distributed AI architecture using federated learning and multi-party computation (MPC-FL) with threshold-secure aggregation.  
 Supports edge acceleration, model distillation, quantization, and joint model governance.  
 
 ### Collab-Key
