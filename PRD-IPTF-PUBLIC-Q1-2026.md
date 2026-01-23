@@ -207,12 +207,13 @@ References: GitHub Issue #24
 
 ### Sprint 3: Documentation & Analysis [Week 3]
 
-**PR-011: L2 Privacy Comparison**
+**PR-011: L2 Privacy Comparison** ⏳ WIP (awaiting L2 vendor feedback, [Issue #62](https://github.com/ethereum/iptf-map/issues/62))
 ```
 File: domains/layer2-privacy-comparison.md
 DoD: Tabular comparison, performance ranges with sources
 Size: ~300 lines
 Covers: Aztec, Polygon Miden, Scroll, Taiko, Linea
+References: GitHub Issue #27 (research), #62 (deliverable tracking)
 ```
 
 **PR-012: Standards Survey**
@@ -476,7 +477,7 @@ iptf-map/
 > - PR-002b → Issue #41 (frontmatter remediation)
 > - PR-004 → Issue #28 (TEE patterns)
 > - PR-010b → Issue #24 (vOPRF solutions)
-> - PR-011 → Issue #27 (L2 privacy comparison)
+> - PR-011 → Issue #27 (research), Issue #62 (deliverable tracking)
 
 ### PR-001: CI Quality Gates [DAY 1]
 **Objective**: Block all future PRs that don't meet quality standards
