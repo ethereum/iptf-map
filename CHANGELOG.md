@@ -5,6 +5,7 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Added
+- feat(pattern): [vOPRF Nullifiers](patterns/pattern-voprf-nullifiers.md) - Threshold vOPRF-based nullifier generation for credentials/signals ([#61](https://github.com/ethereum/iptf-map/pull/61))
 - feat(ci): Enhanced AI content quality guardrails ([#58](https://github.com/ethereum/iptf-map/issues/58))
   - Vale prose linter with custom IPTF styles for marketing language, hedging, and terminology
   - GLOSSARY.md term consistency checker (`scripts/check-terminology.js`)

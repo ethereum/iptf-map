@@ -93,6 +93,10 @@ A dedicated network or service that publishes and stores the data required for D
 
 **MPC (Multi-Party Computation)**: Cryptographic technique for joint computation without revealing inputs
 
+**OPRF (Oblivious Pseudorandom Function)**: Cryptographic protocol where a server evaluates a pseudorandom function on a client's input without learning the input, and the client learns the output without learning the server's key. Used for private set intersection, password-hardening, and privacy-preserving authentication.
+
+**vOPRF (Verifiable OPRF)**: Extension of OPRF where the server provides a proof that the output was computed correctly using a committed key, preventing malicious servers from returning arbitrary values. See [RFC 9497](https://www.rfc-editor.org/rfc/rfc9497.html) for the IETF standard.
+
 ### Identity & Compliance
 
 **ONCHAINID**: Decentralized identity system used by ERC-3643 for KYC/eligibility verification
