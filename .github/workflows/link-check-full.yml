@@ -1,0 +1,29 @@
+name: Full Link Check
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6am UTC
+  workflow_dispatch:      # Manual trigger from Actions tab
+
+jobs:
+  full-link-check:
+    runs-on: ubuntu-latest
+    name: Check All Links
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check all markdown links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'no'
+          config-file: '.github/markdown-link-check-config.json'
+        # No continue-on-error - failures should be visible
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Full Link Check Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Checked all markdown files in the repository." >> $GITHUB_STEP_SUMMARY
