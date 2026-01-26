@@ -1,0 +1,12 @@
+# Pre-commit hook for IPTF Map
+# Runs validation checks on staged markdown files
+
+# Run lint-staged for markdown validation
+npx lint-staged
+
+# Run terminology check on all staged .md files
+STAGED_MD=$(git diff --cached --name-only --diff-filter=ACM | grep '\.md$' || true)
+if [ -n "$STAGED_MD" ]; then
+  echo "Checking terminology consistency..."
+  node scripts/check-terminology.js $STAGED_MD
+fi

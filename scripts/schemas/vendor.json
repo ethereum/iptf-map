@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://iptf-map.ethereum.org/schemas/vendor.json",
+  "title": "IPTF Vendor Frontmatter",
+  "description": "Schema for vendor document frontmatter in IPTF Map",
+  "type": "object",
+  "required": ["title", "status"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "pattern": "^Vendor:",
+      "description": "Vendor title, must start with 'Vendor:'"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "ready"],
+      "description": "Document status"
+    },
+    "website": {
+      "type": "string",
+      "format": "uri",
+      "description": "Official vendor website"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "privacy-layer",
+        "infrastructure",
+        "custody",
+        "identity",
+        "data-availability",
+        "compliance",
+        "oracle",
+        "mev-protection"
+      ],
+      "description": "Primary vendor category"
+    },
+    "ethereum_aligned": {
+      "type": "boolean",
+      "description": "Whether vendor is Ethereum-aligned"
+    },
+    "last_reviewed": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Last review date in YYYY-MM-DD format"
+    },
+    "maturity": {
+      "type": "string",
+      "enum": ["experimental", "PoC", "pilot", "production", "prod"],
+      "description": "Product maturity level"
+    }
+  },
+  "additionalProperties": false
+}

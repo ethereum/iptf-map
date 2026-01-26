@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://iptf-map.ethereum.org/schemas/use-case.json",
+  "title": "IPTF Use Case Frontmatter",
+  "description": "Schema for use case document frontmatter in IPTF Map",
+  "type": "object",
+  "required": ["title"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Use case title"
+    },
+    "primary_domain": {
+      "type": "string",
+      "enum": [
+        "payments",
+        "trading",
+        "custody",
+        "identity",
+        "compliance",
+        "settlement",
+        "tokenization",
+        "derivatives",
+        "lending"
+      ],
+      "description": "Primary business domain"
+    },
+    "secondary_domain": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
+      ],
+      "description": "Secondary business domains"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "ready"],
+      "description": "Document status"
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Business priority"
+    }
+  },
+  "additionalProperties": false
+}

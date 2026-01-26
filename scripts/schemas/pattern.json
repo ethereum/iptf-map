@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://iptf-map.ethereum.org/schemas/pattern.json",
+  "title": "IPTF Pattern Frontmatter",
+  "description": "Schema for pattern document frontmatter in IPTF Map",
+  "type": "object",
+  "required": ["title", "status", "maturity"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "pattern": "^Pattern:",
+      "description": "Pattern title, must start with 'Pattern:'"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "ready"],
+      "description": "Document status"
+    },
+    "maturity": {
+      "type": "string",
+      "enum": ["experimental", "PoC", "pilot", "production", "prod"],
+      "description": "Technology maturity level"
+    },
+    "layer": {
+      "type": "string",
+      "enum": ["L1", "L2", "offchain", "hybrid"],
+      "description": "Primary architectural layer"
+    },
+    "privacy_goal": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "One-line description of privacy goal"
+    },
+    "assumptions": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
+      ],
+      "description": "Key trust/infrastructure assumptions"
+    },
+    "last_reviewed": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Last review date in YYYY-MM-DD format"
+    },
+    "works-best-when": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
+      ],
+      "description": "Conditions when this pattern is optimal"
+    },
+    "avoid-when": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
+      ],
+      "description": "Conditions when to avoid this pattern"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Required standards/infrastructure"
+    },
+    "rollout-plan": {
+      "type": "string",
+      "description": "Optional rollout plan or timeline"
+    }
+  },
+  "additionalProperties": false
+}

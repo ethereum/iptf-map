@@ -1,0 +1,77 @@
+# IPTF Accepted Vocabulary
+# Technical terms from GLOSSARY.md and blockchain domain
+
+# Core privacy concepts
+nullifier
+nullifiers
+commitments
+JoinSplit
+stealth address
+stealth addresses
+shielded pool
+shielded pools
+view key
+view keys
+
+# Blockchain terms
+L1
+L2
+DA
+sequencer
+prover
+verifier
+relayer
+paymaster
+validium
+volition
+rollup
+rollups
+
+# Cryptographic terms
+zk-SNARK
+zk-STARK
+SNARK
+STARK
+FHE
+TEE
+MPC
+Groth16
+PLONK
+Circom
+Co-SNARK
+
+# Standards
+ERC-3643
+ERC-7573
+EIP-6123
+EIP-5564
+ERC-4337
+ONCHAINID
+ISO 20022
+ICMA BDT
+
+# Institutional terms
+DvP
+PvP
+TCA
+AoR
+RFQ
+KYC
+AML
+
+# Regulations
+eWpG
+MiCA
+GENIUS Act
+
+# Projects/Vendors
+Aztec
+Paladin
+ZKsync
+Scroll
+Ethereum
+
+# Technical abbreviations
+frontmatter
+kebab-case
+merkle

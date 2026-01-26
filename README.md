@@ -43,6 +43,29 @@ When adding new content:
 - Cross-reference related patterns, approaches, and use cases
 - Ensure no confidential business information is included
 
+## Development
+
+### Content Validation
+
+This repo includes automated checks to ensure content quality:
+
+```bash
+# Install dependencies
+npm install && cd scripts && npm install && cd ..
+
+# Run all validations
+npm run validate        # Frontmatter schemas, required sections, word limits
+npm run check-terms     # GLOSSARY.md term consistency
+npm run lint:vale       # Prose quality (requires: brew install vale)
+
+# On-demand LLM review (requires API key)
+ANTHROPIC_API_KEY=sk-... npm run llm-review patterns/pattern-foo.md
+```
+
+Pre-commit hooks run automatically via Husky on `git commit`.
+
+**CI runs:** validate, check-terms, Vale prose linting on every push.
+
 ## Copyright
 
 Copyright and related rights waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).

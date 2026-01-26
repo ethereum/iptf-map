@@ -5,6 +5,13 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Added
+- feat(ci): Enhanced AI content quality guardrails ([#58](https://github.com/ethereum/iptf-map/issues/58))
+  - Vale prose linter with custom IPTF styles for marketing language, hedging, and terminology
+  - GLOSSARY.md term consistency checker (`scripts/check-terminology.js`)
+  - Extended validation to all content types (vendors, use-cases, approaches, jurisdictions)
+  - JSON Schema validation for frontmatter
+  - Husky pre-commit hooks with lint-staged
+  - LLM-based content review tool (`scripts/llm-review.js`)
 - feat(approach): [White-label infrastructure deployment](approaches/approach-white-label-deployment.md) ([#55](https://github.com/ethereum/iptf-map/pull/55))
 - feat(approach): [Atomic DvP Settlement](approaches/approach-dvp-atomic-settlement.md) ([#56](https://github.com/ethereum/iptf-map/pull/56))
 - feat(pattern): [Modular Privacy Stack](patterns/pattern-modular-privacy-stack.md) - Four-layer privacy architecture ([#54](https://github.com/ethereum/iptf-map/pull/54))

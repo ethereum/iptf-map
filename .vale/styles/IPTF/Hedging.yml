@@ -1,0 +1,77 @@
+# IPTF AI Hedging Language Detector
+# Catches non-committal language often produced by LLMs
+# Technical docs should be precise and confident
+
+extends: existence
+message: "Avoid hedging language: '%s'. Be precise and direct."
+level: suggestion
+ignorecase: true
+tokens:
+  # Modal hedging
+  - might be
+  - could be
+  - could potentially
+  - may potentially
+  - might potentially
+  - would potentially
+  - possibly be
+  - potentially be
+
+  # Uncertainty phrases
+  - it is possible that
+  - it may be possible
+  - there is a possibility
+  - there might be
+  - there could be
+
+  # Vague generalizations
+  - in some cases
+  - in certain cases
+  - in many cases
+  - in most cases
+  - generally speaking
+  - broadly speaking
+  - for the most part
+  - to some extent
+  - to a certain extent
+  - to some degree
+
+  # Non-committal qualifiers
+  - arguably
+  - seemingly
+  - supposedly
+  - presumably
+  - theoretically
+  - ostensibly
+
+  # AI-typical hedging
+  - it's worth noting that
+  - it should be noted that
+  - it is important to note
+  - it bears mentioning
+  - one might argue
+  - some would say
+  - it could be argued
+  - depending on various factors
+
+  # Vague quantifiers (when not needed)
+  - various different
+  - several different
+  - numerous different
+  - a number of different
+  - a variety of different
+  - multiple different
+
+# Allow these in specific contexts
+exceptions:
+  # Technical uncertainty is okay
+  - may fail
+  - may timeout
+  - could fail
+  - might fail
+  - may be rejected
+  - could be rejected
+  # Conditional behavior descriptions
+  - depending on configuration
+  - depending on the implementation
+  - depending on network conditions

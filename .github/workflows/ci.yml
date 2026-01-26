@@ -32,6 +32,13 @@ jobs:
         env:
           CI_MODE: strict
 
+      - name: Check terminology consistency
+        run: |
+          node scripts/check-terminology.js
+        env:
+          CI_MODE: strict
+        continue-on-error: true
+
       - name: Check markdown links
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
@@ -119,6 +126,22 @@ jobs:
               fi
             fi
           done
+
+  prose-lint:
+    runs-on: ubuntu-latest
+    name: Prose Quality (Vale)
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Vale linter
+        uses: errata-ai/vale-action@v2
+        with:
+          files: patterns/ vendors/ approaches/ use-cases/ jurisdictions/ domains/
+          fail_on_error: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   validate-changelog:
     runs-on: ubuntu-latest

@@ -7,6 +7,31 @@
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
+const Ajv = require('ajv');
+const addFormats = require('ajv-formats');
+
+// Initialize JSON Schema validator
+const ajv = new Ajv({ allErrors: true, strict: false });
+addFormats(ajv);
+
+// Load schemas
+const SCHEMAS_DIR = path.join(__dirname, 'schemas');
+let patternSchema, vendorSchema, useCaseSchema, jurisdictionSchema;
+
+try {
+  patternSchema = JSON.parse(fs.readFileSync(path.join(SCHEMAS_DIR, 'pattern.json'), 'utf8'));
+  vendorSchema = JSON.parse(fs.readFileSync(path.join(SCHEMAS_DIR, 'vendor.json'), 'utf8'));
+  useCaseSchema = JSON.parse(fs.readFileSync(path.join(SCHEMAS_DIR, 'use-case.json'), 'utf8'));
+  jurisdictionSchema = JSON.parse(fs.readFileSync(path.join(SCHEMAS_DIR, 'jurisdiction.json'), 'utf8'));
+} catch (e) {
+  console.warn('Warning: Could not load JSON schemas:', e.message);
+}
+
+// Compile validators
+const validatePatternSchema = patternSchema ? ajv.compile(patternSchema) : null;
+const validateVendorSchema = vendorSchema ? ajv.compile(vendorSchema) : null;
+const validateUseCaseSchema = useCaseSchema ? ajv.compile(useCaseSchema) : null;
+const validateJurisdictionSchema = jurisdictionSchema ? ajv.compile(jurisdictionSchema) : null;
 
 // Configuration
 const PATTERNS_DIR = path.join(__dirname, '..', 'patterns');
@@ -49,6 +74,73 @@ const REQUIRED_PATTERN_SECTIONS = [
   '## See also'
 ];
 
+// Required sections for vendor documents
+const REQUIRED_VENDOR_SECTIONS = [
+  '## What it is',
+  '## Fits with patterns',
+  '## Architecture',
+  '## Links'
+];
+
+// Recommended sections for vendor documents (warnings only)
+const RECOMMENDED_VENDOR_SECTIONS = [
+  '## Not a substitute for',
+  '## Privacy domains',
+  '## Enterprise demand',
+  '## Technical details',
+  '## Strengths',
+  '## Risks'
+];
+
+// Required sections for use case documents
+const REQUIRED_USE_CASE_SECTIONS = [
+  '## 1) Use Case',
+  '## 3) Actors',
+  '## 4) Problems',
+  '## 5) Recommended Approaches'
+];
+
+// Recommended sections for use case documents
+const RECOMMENDED_USE_CASE_SECTIONS = [
+  '## 6) Open Questions',
+  '## 7) Notes'
+];
+
+// Required sections for approach documents
+const REQUIRED_APPROACH_SECTIONS = [
+  '## Overview',
+  '## Architecture'
+];
+
+// Recommended sections for approach documents
+const RECOMMENDED_APPROACH_SECTIONS = [
+  '## More details',
+  '## Links'
+];
+
+// Required sections for jurisdiction documents
+const REQUIRED_JURISDICTION_SECTIONS = [
+  '## At a Glance',
+  '## Core Compliance Expectations',
+  '## Actionable Best Practices'
+];
+
+// Recommended sections for jurisdiction documents
+const RECOMMENDED_JURISDICTION_SECTIONS = [
+  '## Key Risks to Watch',
+  '## Enterprise Opportunities',
+  '## See also'
+];
+
+// Required frontmatter for vendors
+const REQUIRED_VENDOR_FRONTMATTER = ['title', 'status'];
+
+// Required frontmatter for use cases
+const REQUIRED_USE_CASE_FRONTMATTER = ['title', 'primary_domain'];
+
+// Required frontmatter for jurisdictions
+const REQUIRED_JURISDICTION_FRONTMATTER = ['title', 'status', 'region'];
+
 // Validation results
 let errors = [];
 let warnings = [];
@@ -75,6 +167,12 @@ function parseMarkdown(filePath) {
       inFrontmatter = false;
       try {
         frontmatter = yaml.load(frontmatterLines.join('\n')) || {};
+        // Convert Date objects to strings for schema validation
+        for (const key of Object.keys(frontmatter)) {
+          if (frontmatter[key] instanceof Date) {
+            frontmatter[key] = frontmatter[key].toISOString().split('T')[0];
+          }
+        }
       } catch (e) {
         errors.push(`${filePath}: Invalid YAML frontmatter - ${e.message}`);
       }
@@ -206,6 +304,24 @@ function validatePattern(filePath) {
     }
   }
 
+  // JSON Schema validation (if available)
+  if (validatePatternSchema && Object.keys(frontmatter).length > 0) {
+    const valid = validatePatternSchema(frontmatter);
+    if (!valid) {
+      for (const error of validatePatternSchema.errors) {
+        const path = error.instancePath || 'frontmatter';
+        const msg = error.message;
+        if (error.keyword === 'additionalProperties') {
+          fileWarnings.push(`Schema: unexpected field '${error.params.additionalProperty}' in frontmatter`);
+        } else if (error.keyword === 'enum') {
+          fileWarnings.push(`Schema: ${path} ${msg}. Allowed: ${error.params.allowedValues.join(', ')}`);
+        } else {
+          fileWarnings.push(`Schema: ${path} ${msg}`);
+        }
+      }
+    }
+  }
+
   // Validate frontmatter values
   if (frontmatter.status && !['draft', 'ready'].includes(frontmatter.status)) {
     fileErrors.push(`Invalid status value: ${frontmatter.status} (must be 'draft' or 'ready')`);
@@ -254,6 +370,294 @@ function validatePattern(filePath) {
 }
 
 /**
+ * Validate a single vendor file
+ */
+function validateVendor(filePath) {
+  const fileName = path.basename(filePath);
+  const { frontmatter, content } = parseMarkdown(filePath);
+  const fileErrors = [];
+  const fileWarnings = [];
+
+  // Skip template and README
+  if (fileName === '_template.md' || fileName === 'README.md') {
+    return;
+  }
+
+  // Validate required frontmatter
+  for (const field of REQUIRED_VENDOR_FRONTMATTER) {
+    if (!frontmatter[field]) {
+      fileErrors.push(`Missing required frontmatter field: ${field}`);
+    }
+  }
+
+  // JSON Schema validation (if available)
+  if (validateVendorSchema && Object.keys(frontmatter).length > 0) {
+    const valid = validateVendorSchema(frontmatter);
+    if (!valid) {
+      for (const error of validateVendorSchema.errors) {
+        const path = error.instancePath || 'frontmatter';
+        if (error.keyword === 'additionalProperties') {
+          fileWarnings.push(`Schema: unexpected field '${error.params.additionalProperty}'`);
+        } else if (error.keyword === 'enum') {
+          fileWarnings.push(`Schema: ${path} ${error.message}. Allowed: ${error.params.allowedValues.join(', ')}`);
+        } else {
+          fileWarnings.push(`Schema: ${path} ${error.message}`);
+        }
+      }
+    }
+  }
+
+  // Validate required sections
+  for (const section of REQUIRED_VENDOR_SECTIONS) {
+    if (!content.includes(section)) {
+      fileWarnings.push(`Missing required section: ${section}`);
+    }
+  }
+
+  // Check recommended sections
+  for (const section of RECOMMENDED_VENDOR_SECTIONS) {
+    // Match partial section names (e.g., "## Risks" matches "## Risks and open questions")
+    const sectionStart = section.replace('##', '').trim();
+    const hasSection = content.split('\n').some(line =>
+      line.startsWith('## ') && line.toLowerCase().includes(sectionStart.toLowerCase())
+    );
+    if (!hasSection) {
+      fileWarnings.push(`Consider adding section: ${section}`);
+    }
+  }
+
+  // Check word count
+  const wordCount = countWords(content);
+  const limits = WORD_LIMITS.vendors;
+  if (wordCount > limits.error) {
+    fileErrors.push(`Content too long: ${wordCount} words (max ${limits.error})`);
+  } else if (wordCount > limits.warn) {
+    fileWarnings.push(`Content length: ${wordCount} words (recommended max ${limits.warn})`);
+  }
+
+  // Validate internal links
+  const linkErrors = validateInternalLinks(filePath, content);
+  if (linkErrors.length > 0) {
+    fileWarnings.push(...linkErrors);
+  }
+
+  // Report errors and warnings
+  if (fileErrors.length > 0) {
+    errors.push(`\n❌ ${fileName}:\n  ${fileErrors.join('\n  ')}`);
+  }
+
+  if (fileWarnings.length > 0) {
+    warnings.push(`\n⚠️  ${fileName}:\n  ${fileWarnings.join('\n  ')}`);
+  }
+}
+
+/**
+ * Validate a single use case file
+ */
+function validateUseCase(filePath) {
+  const fileName = path.basename(filePath);
+  const { frontmatter, content } = parseMarkdown(filePath);
+  const fileErrors = [];
+  const fileWarnings = [];
+
+  // Skip template and README
+  if (fileName === '_template.md' || fileName === 'README.md') {
+    return;
+  }
+
+  // Validate required frontmatter
+  for (const field of REQUIRED_USE_CASE_FRONTMATTER) {
+    if (!frontmatter[field]) {
+      fileWarnings.push(`Missing recommended frontmatter field: ${field}`);
+    }
+  }
+
+  // JSON Schema validation (if available)
+  if (validateUseCaseSchema && Object.keys(frontmatter).length > 0) {
+    const valid = validateUseCaseSchema(frontmatter);
+    if (!valid) {
+      for (const error of validateUseCaseSchema.errors) {
+        const path = error.instancePath || 'frontmatter';
+        if (error.keyword === 'additionalProperties') {
+          fileWarnings.push(`Schema: unexpected field '${error.params.additionalProperty}'`);
+        } else if (error.keyword === 'enum') {
+          fileWarnings.push(`Schema: ${path} ${error.message}. Allowed: ${error.params.allowedValues.join(', ')}`);
+        } else {
+          fileWarnings.push(`Schema: ${path} ${error.message}`);
+        }
+      }
+    }
+  }
+
+  // Validate required sections
+  for (const section of REQUIRED_USE_CASE_SECTIONS) {
+    if (!content.includes(section)) {
+      fileWarnings.push(`Missing required section: ${section}`);
+    }
+  }
+
+  // Check recommended sections
+  for (const section of RECOMMENDED_USE_CASE_SECTIONS) {
+    const sectionStart = section.replace('##', '').trim();
+    const hasSection = content.split('\n').some(line =>
+      line.startsWith('## ') && line.toLowerCase().includes(sectionStart.toLowerCase())
+    );
+    if (!hasSection) {
+      fileWarnings.push(`Consider adding section: ${section}`);
+    }
+  }
+
+  // Validate internal links
+  const linkErrors = validateInternalLinks(filePath, content);
+  if (linkErrors.length > 0) {
+    fileWarnings.push(...linkErrors);
+  }
+
+  // Report errors and warnings
+  if (fileErrors.length > 0) {
+    errors.push(`\n❌ ${fileName}:\n  ${fileErrors.join('\n  ')}`);
+  }
+
+  if (fileWarnings.length > 0) {
+    warnings.push(`\n⚠️  ${fileName}:\n  ${fileWarnings.join('\n  ')}`);
+  }
+}
+
+/**
+ * Validate a single approach file
+ */
+function validateApproach(filePath) {
+  const fileName = path.basename(filePath);
+  const { frontmatter, content } = parseMarkdown(filePath);
+  const fileErrors = [];
+  const fileWarnings = [];
+
+  // Skip template and README
+  if (fileName === '_template.md' || fileName === 'README.md') {
+    return;
+  }
+
+  // Validate approach file naming
+  if (!fileName.startsWith('approach-')) {
+    fileWarnings.push('Approach files should start with "approach-"');
+  }
+
+  // Validate required sections
+  for (const section of REQUIRED_APPROACH_SECTIONS) {
+    if (!content.includes(section)) {
+      fileWarnings.push(`Missing required section: ${section}`);
+    }
+  }
+
+  // Check recommended sections
+  for (const section of RECOMMENDED_APPROACH_SECTIONS) {
+    const sectionStart = section.replace('##', '').trim();
+    const hasSection = content.split('\n').some(line =>
+      line.startsWith('## ') && line.toLowerCase().includes(sectionStart.toLowerCase())
+    );
+    if (!hasSection) {
+      fileWarnings.push(`Consider adding section: ${section}`);
+    }
+  }
+
+  // Check word count
+  const wordCount = countWords(content);
+  const limits = WORD_LIMITS.approaches;
+  if (wordCount > limits.error) {
+    fileErrors.push(`Content too long: ${wordCount} words (max ${limits.error})`);
+  } else if (wordCount > limits.warn) {
+    fileWarnings.push(`Content length: ${wordCount} words (recommended max ${limits.warn})`);
+  }
+
+  // Validate internal links
+  const linkErrors = validateInternalLinks(filePath, content);
+  if (linkErrors.length > 0) {
+    fileWarnings.push(...linkErrors);
+  }
+
+  // Report errors and warnings
+  if (fileErrors.length > 0) {
+    errors.push(`\n❌ ${fileName}:\n  ${fileErrors.join('\n  ')}`);
+  }
+
+  if (fileWarnings.length > 0) {
+    warnings.push(`\n⚠️  ${fileName}:\n  ${fileWarnings.join('\n  ')}`);
+  }
+}
+
+/**
+ * Validate a single jurisdiction file
+ */
+function validateJurisdiction(filePath) {
+  const fileName = path.basename(filePath);
+  const { frontmatter, content } = parseMarkdown(filePath);
+  const fileErrors = [];
+  const fileWarnings = [];
+
+  // Skip template and README
+  if (fileName === '_template.md' || fileName === 'README.md') {
+    return;
+  }
+
+  // Validate required frontmatter
+  for (const field of REQUIRED_JURISDICTION_FRONTMATTER) {
+    if (!frontmatter[field]) {
+      fileWarnings.push(`Missing recommended frontmatter field: ${field}`);
+    }
+  }
+
+  // JSON Schema validation (if available)
+  if (validateJurisdictionSchema && Object.keys(frontmatter).length > 0) {
+    const valid = validateJurisdictionSchema(frontmatter);
+    if (!valid) {
+      for (const error of validateJurisdictionSchema.errors) {
+        const path = error.instancePath || 'frontmatter';
+        if (error.keyword === 'additionalProperties') {
+          fileWarnings.push(`Schema: unexpected field '${error.params.additionalProperty}'`);
+        } else if (error.keyword === 'enum') {
+          fileWarnings.push(`Schema: ${path} ${error.message}. Allowed: ${error.params.allowedValues.join(', ')}`);
+        } else {
+          fileWarnings.push(`Schema: ${path} ${error.message}`);
+        }
+      }
+    }
+  }
+
+  // Validate required sections
+  for (const section of REQUIRED_JURISDICTION_SECTIONS) {
+    if (!content.includes(section)) {
+      fileWarnings.push(`Missing required section: ${section}`);
+    }
+  }
+
+  // Check recommended sections
+  for (const section of RECOMMENDED_JURISDICTION_SECTIONS) {
+    const sectionStart = section.replace('##', '').trim();
+    const hasSection = content.split('\n').some(line =>
+      line.startsWith('## ') && line.toLowerCase().includes(sectionStart.toLowerCase())
+    );
+    if (!hasSection) {
+      fileWarnings.push(`Consider adding section: ${section}`);
+    }
+  }
+
+  // Validate internal links
+  const linkErrors = validateInternalLinks(filePath, content);
+  if (linkErrors.length > 0) {
+    fileWarnings.push(...linkErrors);
+  }
+
+  // Report errors and warnings
+  if (fileErrors.length > 0) {
+    errors.push(`\n❌ ${fileName}:\n  ${fileErrors.join('\n  ')}`);
+  }
+
+  if (fileWarnings.length > 0) {
+    warnings.push(`\n⚠️  ${fileName}:\n  ${fileWarnings.join('\n  ')}`);
+  }
+}
+
+/**
  * Validate all patterns in the patterns directory
  */
 function validateAllPatterns() {
@@ -265,6 +669,75 @@ function validateAllPatterns() {
   for (const file of patternFiles) {
     const filePath = path.join(PATTERNS_DIR, file);
     validatePattern(filePath);
+  }
+}
+
+/**
+ * Validate all vendors
+ */
+function validateAllVendors() {
+  console.log('🔍 Validating vendor documents...\n');
+
+  if (!fs.existsSync(VENDORS_DIR)) return;
+
+  const files = fs.readdirSync(VENDORS_DIR);
+  const vendorFiles = files.filter(f => f.endsWith('.md'));
+
+  for (const file of vendorFiles) {
+    const filePath = path.join(VENDORS_DIR, file);
+    validateVendor(filePath);
+  }
+}
+
+/**
+ * Validate all use cases
+ */
+function validateAllUseCases() {
+  console.log('🔍 Validating use case documents...\n');
+
+  if (!fs.existsSync(USE_CASES_DIR)) return;
+
+  const files = fs.readdirSync(USE_CASES_DIR);
+  const useCaseFiles = files.filter(f => f.endsWith('.md'));
+
+  for (const file of useCaseFiles) {
+    const filePath = path.join(USE_CASES_DIR, file);
+    validateUseCase(filePath);
+  }
+}
+
+/**
+ * Validate all approaches
+ */
+function validateAllApproaches() {
+  console.log('🔍 Validating approach documents...\n');
+
+  if (!fs.existsSync(APPROACHES_DIR)) return;
+
+  const files = fs.readdirSync(APPROACHES_DIR);
+  const approachFiles = files.filter(f => f.endsWith('.md'));
+
+  for (const file of approachFiles) {
+    const filePath = path.join(APPROACHES_DIR, file);
+    validateApproach(filePath);
+  }
+}
+
+/**
+ * Validate all jurisdictions
+ */
+function validateAllJurisdictions() {
+  console.log('🔍 Validating jurisdiction documents...\n');
+
+  const jurisdictionsDir = path.join(ROOT_DIR, 'jurisdictions');
+  if (!fs.existsSync(jurisdictionsDir)) return;
+
+  const files = fs.readdirSync(jurisdictionsDir);
+  const jurisdictionFiles = files.filter(f => f.endsWith('.md'));
+
+  for (const file of jurisdictionFiles) {
+    const filePath = path.join(jurisdictionsDir, file);
+    validateJurisdiction(filePath);
   }
 }
 
@@ -300,11 +773,56 @@ function generateReport() {
 }
 
 /**
+ * Validate specific files passed as arguments
+ */
+function validateSpecificFiles(files) {
+  for (const filePath of files) {
+    const absPath = path.resolve(filePath);
+    if (!fs.existsSync(absPath)) {
+      console.warn(`Warning: File not found: ${filePath}`);
+      continue;
+    }
+
+    // Determine file type by directory
+    if (absPath.includes('/patterns/')) {
+      validatePattern(absPath);
+    } else if (absPath.includes('/vendors/')) {
+      validateVendor(absPath);
+    } else if (absPath.includes('/use-cases/')) {
+      validateUseCase(absPath);
+    } else if (absPath.includes('/approaches/')) {
+      validateApproach(absPath);
+    } else if (absPath.includes('/jurisdictions/')) {
+      validateJurisdiction(absPath);
+    } else {
+      console.log(`Skipping ${filePath} (not in a content directory)`);
+    }
+  }
+}
+
+/**
  * Main execution
  */
 function main() {
   try {
-    validateAllPatterns();
+    // Check for file arguments (used by lint-staged)
+    const args = process.argv.slice(2);
+    const fileArgs = args.filter(arg => arg.endsWith('.md') && !arg.startsWith('--'));
+    const hasFileFlag = args.includes('--file') || args.includes('-f');
+
+    if (fileArgs.length > 0 || hasFileFlag) {
+      // Validate only specified files
+      console.log(`🔍 Validating ${fileArgs.length} file(s)...\n`);
+      validateSpecificFiles(fileArgs);
+    } else {
+      // Validate all files in all directories
+      validateAllPatterns();
+      validateAllVendors();
+      validateAllUseCases();
+      validateAllApproaches();
+      validateAllJurisdictions();
+    }
+
     generateReport();
 
     // Exit with error if there are validation errors in CI mode
