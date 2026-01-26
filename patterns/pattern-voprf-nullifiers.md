@@ -23,18 +23,18 @@ dependencies:
 ## Intent
 
 Generate deterministic, scope-bound nullifiers for credential and signal mechanisms using a verifiable OPRF (vOPRF),
-optionally thresholdized, so that nullifier generation is not solely determined by a single client secret and can be
-verified for correctness.
+optionally thresholdized, so that nullifier generation does not depend on a single client secret alone and the client can
+verify correctness.
 
 On public networks, deterministic nullifiers derived solely from client secrets create a linkability risk: the same nullifier for a given scope reveals the same underlying user, and a leaked client secret allows offline reconstruction of all past nullifiers. A vOPRF adds a server-side component that breaks this offline linkability while preserving determinism for legitimate use.
 
-This pattern is about "nullifier generation as a service" that preserves privacy of the input while allowing a
-deterministic output that can be used for one-per-scope limits, anti-replay, or persistent pseudonyms.
+This pattern describes "nullifier generation as a service" that preserves privacy of the input while allowing a
+deterministic output for one-per-scope limits, anti-replay, or persistent pseudonyms.
 
 ## Ingredients
 
 - Client-side input framing:
-  - A stable identifier: credential_id, membership secret, device key, or issuer-provided handle.
+  - A stable identifier: credential_id, membership secret, device key, or an issuer-provided handle.
   - A scope/context: service_id, action_id, epoch/time-bucket, chain_id, contract_id.
   - Domain separation: explicit tags to prevent cross-protocol reuse.
 - vOPRF service:
@@ -49,33 +49,33 @@ deterministic output that can be used for one-per-scope limits, anti-replay, or 
   - Signals: "same user across sessions" (persistent pseudonym) without revealing the base identifier.
 - Optional verification packaging:
   - Include a proof that the output corresponds to the advertised server public key.
-  - Optionally include a ZK proof that the vOPRF input was well-formed (e.g., derived from a valid credential)
+  - Optionally include a ZK proof that the vOPRF input follows correct formatting (e.g., derived from a valid credential)
     without revealing the credential_id.
 
 ## Protocol
 
 1. Define scope and input x:
    - x = Hash(tag || base_id || scope || epoch || chain_context)
-   - Choose scope so outputs are linkable only where intended (service-specific, action-specific, or epoch-specific).
+   - Choose scope so outputs link where intended (service-specific, action-specific, or epoch-specific) and nowhere else.
 2. Blind:
    - Client hashes x to a curve point and blinds it with a random scalar r.
    - Client sends the blinded point plus any required metadata (scope, epoch, rate-limit token) to the service.
 3. Threshold evaluation (service side):
    - Each committee node evaluates its share on the blinded input.
-   - Responses are combined once t shares are available; the client receives the combined blinded evaluation.
+   - The client combines responses once t shares arrive and receives the combined blinded evaluation.
 4. Verifiability check (client side):
    - Client verifies the service proof that the evaluation corresponds to the service public key.
    - If verification fails, the client discards the result.
 5. Unblind and derive seed:
-   - Client unblinds using r to obtain y = vOPRF(k, x).
+   - Client unblinds using r to get y = vOPRF(k, x).
    - Client derives a seed: seed = Hash(tag2 || y || scope || chain_context).
 6. Derive the nullifier:
    - nullifier = Hash(tag3 || seed)
-   - Optionally derive multiple values: (nullifier, pseudonym, encryption_key) by domain-separated hashing.
+   - Optionally derive more values (nullifier, pseudonym, encryption_key) by domain-separated hashing.
 7. Register / use:
    - Submit nullifier to a registry (on-chain or off-chain) to prevent double-use, or attach it to a proof/credential
      presentation as the anti-replay handle.
-   - If required, prove in ZK that nullifier was derived from a valid credential and the correct scope.
+   - If required, prove in ZK that the nullifier came from a valid credential and the correct scope.
 
 ## Guarantees
 
@@ -86,12 +86,12 @@ deterministic output that can be used for one-per-scope limits, anti-replay, or 
 - Output correctness (verifiable):
   - The client can verify the response corresponds to the service public key (reduces "malicious server returns junk").
 - Reduced offline linkage from client compromise (qualified):
-  - If only the client secret/base_id is leaked, an attacker cannot reconstruct vOPRF outputs offline without access to
+  - If an attacker leaks the client secret/base_id, they still cannot reconstruct vOPRF outputs offline without access to
     the service and the full input framing.
 - Not guaranteed:
   - If an attacker who compromises the client can also query the service with the same inputs, they can regenerate the
     same nullifiers (determinism is the feature). Mitigate with scoped epochs, access controls, and/or proof-of-eligibility.
-  - If the threshold committee is fully compromised (>= t colluding), outputs can be computed by the adversary.
+  - If the threshold committee becomes fully compromised (>= t colluding), the adversary can compute outputs.
 
 ## Trade-offs
 
@@ -119,7 +119,7 @@ A KYC issuer provides users a credential with an internal credential_id. A servi
   - x = Hash(tag || credential_id || scope || chain_id || contract_id)
   - Client runs vOPRF with the service committee and derives nullifier.
 - Enforcement:
-  - The contract (or API) checks the nullifier has not been seen for that day_bucket and registers it.
+  - The contract (or API) checks whether it has seen the nullifier for that day_bucket and registers it.
 
 Common mappings (examples):
 
