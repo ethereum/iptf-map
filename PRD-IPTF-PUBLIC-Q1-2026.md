@@ -1,6 +1,6 @@
 # Product Requirements Document: IPTF Q1 2026 Documentation Initiative
-**Version:** 2.0 (Revised based on adversarial review)
-**Date:** January 2026
+**Version:** 3.0 (Restructured based on LLM-Council feedback)
+**Date:** January 23, 2026
 **Status:** For Implementation
 **Scope:** Documentation, Patterns, Vendor Evaluation
 **License:** CC0
@@ -11,12 +11,19 @@
 
 This PRD outlines verifiable, PR-sized documentation tasks for the Institutional Privacy Task Force Q1 2026. The focus is on creating machine-checkable, production-ready documentation for privacy-preserving patterns on Ethereum.
 
-### Key Changes from v1.0
-- **CI-first approach** with automated quality gates
-- **Generic pattern names** with vendor examples in separate files
-- **PR-sized atomic tickets** for ralph-loop execution
-- **Existing folder structure** (no new top-level directories)
-- **Objective prioritization metrics** replacing subjective HIGH/MEDIUM/LOW
+### Key Changes from v2.0
+- **Stream-based organization** replacing fixed-week sprints
+- **External Dependency Policy** with 14-day timeouts and provisional publication
+- **Regulatory Criticality metric** (1.2x multiplier for compliance patterns)
+- **Split DoD** into [MUST] (CI-verifiable) and [SHOULD] (human-reviewable)
+- **Progress Dashboard** with real-time completion tracking
+- **Structured task metadata** for AI agent execution
+
+### Key Changes from v1.0 (retained)
+- CI-first approach with automated quality gates
+- Generic pattern names with vendor examples in separate files
+- PR-sized atomic tickets for ralph-loop execution
+- Existing folder structure (no new top-level directories)
 
 ### Success Criteria
 - All patterns pass automated Definition of Done checks
@@ -24,9 +31,61 @@ This PRD outlines verifiable, PR-sized documentation tasks for the Institutional
 - No confidential business information
 - Each PR is independently mergeable and valuable
 
+### Progress Dashboard (Updated January 23, 2026)
+
+#### Baseline Scope (v1.0 Goals)
+
+| Stream | Total PRs | Done | In Review | Blocked | Pending | Completion |
+|--------|-----------|------|-----------|---------|---------|------------|
+| **A: Core Patterns** | 9 | 9 | 0 | 0 | 0 | **100%** |
+| **B: Compliance & CSP** | 5 | 0 | 0 | 0 | 5 | **0%** |
+| **C: Analysis** | 8 | 0 | 4 | 1 | 3 | **0%** |
+| **D: Use Cases** | 11 | 0 | 0 | 0 | 11 | **0%** |
+| **Total Baseline** | **33** | **9** | **4** | **1** | **19** | **27%** |
+
+#### Open Pull Requests
+- **#65**: feat(use-cases): add 12 use case stubs *(Extended Scope - Deferred)*
+- **#64**: feat(approach): Privacy Standards Survey (PR-012)
+- **#63**: Update StateLabs.md *(External Contribution)*
+- **#61**: feat(pattern): vOPRF Nullifiers (PR-010b)
+- **#60**: feat(pattern): Cross-chain Privacy Bridge (PR-010)
+
+#### Extended Scope (Backlog)
+| Item | Status | Notes |
+|------|--------|-------|
+| Nullifier Set Scalability (PR-033) | Backlog | Unprioritized |
+| 12 Additional Use Case Stubs (PR #65) | Deferred | Review after baseline use cases complete |
+
+#### Known Technical Debt
+- 7 patterns exceed 800-word recommendation (need trimming)
+- 2 broken internal links pending fix
+- Intel SGX deprecation warning needed in TEE pattern
+
 ---
 
 ## 1. Definition of Done & CI Gates [P0 - IMPLEMENT FIRST]
+
+### Task Schema for AI Agents
+
+Each task in Section 3 uses structured YAML metadata for machine-readability:
+
+```yaml
+task_id: PR-XXX
+file: <path/to/file.md>
+status: pending|in_progress|in_review|blocked|done
+dod:
+  must: [CI-verifiable requirements]    # Blocks merge if unmet
+  should: [Human-reviewable quality]    # Best effort, reviewer discretion
+blocked_by: [PR-XXX, PR-YYY]            # Cannot start until these complete
+blocks: [PR-ZZZ]                        # These wait on this task
+external_dependency: "<description>"     # If blocked on non-PR work
+timeout_date: YYYY-MM-DD                # For external dependencies
+regulatory_critical: true|false         # 1.2x priority multiplier
+```
+
+**DoD Categories:**
+- **[MUST]**: CI-verifiable. Automated checks block merge. Examples: required sections present, no broken links, passes markdown lint.
+- **[SHOULD]**: Human-reviewable. Improves quality but not enforced automatically. Examples: clear examples, good cross-references, appropriate detail level.
 
 ### Pattern Document Requirements
 
@@ -34,16 +93,20 @@ This PRD outlines verifiable, PR-sized documentation tasks for the Institutional
 ```yaml
 ---
 title: "Pattern: <descriptive name>"
-status: draft|ready
+status: draft|ready|provisional
 maturity: experimental|pilot|production
 layer: L1|L2|offchain|hybrid
 privacy_goal: <one line description>
 assumptions: <key trust/infrastructure assumptions>
 last_reviewed: YYYY-MM-DD
+# Optional for provisional documents:
+provisional_reason: "<what is pending>"
+provisional_since: YYYY-MM-DD
+follow_up_issue: "#XX"
 ---
 ```
 
-**Required Sections (enforced by CI):**
+**Required Sections (enforced by CI) [MUST]:**
 1. **Intent** - Problem this pattern solves (1 paragraph)
 2. **Ingredients** - Standards, infrastructure, services needed
 3. **Protocol** - 5-8 numbered steps maximum
@@ -52,7 +115,13 @@ last_reviewed: YYYY-MM-DD
 6. **Example** - Concrete scenario with generic institutions
 7. **See also** - Cross-links to related patterns/vendors
 
-**CI Validation Checks:**
+**Quality Guidelines [SHOULD]:**
+- Under 800 words (1-2 screens)
+- 3+ cross-references in See Also
+- Concrete, actionable protocol steps
+- Sources cited for performance claims
+
+**CI Validation Checks [MUST]:**
 - [ ] Markdown lint (consistent formatting)
 - [ ] Required sections present
 - [ ] Valid frontmatter fields
@@ -79,267 +148,464 @@ last_reviewed: YYYY-MM-DD
 
 ---
 
+## 1.5 External Dependency & Timeout Policy
+
+Tasks requiring external input (vendor feedback, regulatory clarification, third-party review) follow a structured timeout protocol to prevent indefinite blocking.
+
+### Timeout Rules
+
+| Dependency Type | Default Timeout | Extension Policy |
+|----------------|-----------------|------------------|
+| Vendor feedback | 14 days | +7 days if vendor confirms engagement |
+| Regulatory clarification | 21 days | Case-by-case based on agency |
+| External review | 14 days | +7 days with documented progress |
+| Third-party data | 14 days | Proceed without if unavailable |
+
+### State Transitions
+
+```
+Planning → Active → [Timeout OR Complete]
+              ↓
+         Provisional
+              ↓
+     [Input Received → Complete]
+     [No Input → Finalize as-is]
+```
+
+### Provisional Publication Protocol
+
+When a task times out awaiting external input:
+
+1. **Mark as Provisional**: Add `⚠️ Provisional` badge to document frontmatter
+2. **Document Gap**: Clearly state what information is pending
+3. **Publish**: Merge with provisional status
+4. **Track**: Create follow-up issue for when input arrives
+5. **Update**: Remove provisional badge once input incorporated
+
+**Frontmatter for Provisional Documents:**
+```yaml
+---
+status: provisional
+provisional_reason: "Awaiting L2 vendor performance benchmarks"
+provisional_since: 2026-01-23
+follow_up_issue: "#62"
+---
+```
+
+### Current Blocked Tasks
+
+| Task | Blocked On | Timeout Date | Fallback |
+|------|-----------|--------------|----------|
+| PR-011 (L2 Privacy Comparison) | Vendor feedback (Issue #62) | 2026-02-06 | Publish with public benchmarks only |
+
+---
+
 ## 2. Objective Prioritization Framework
 
 Each deliverable scored on:
 
 | Metric | Weight | Measurement |
 |--------|--------|-------------|
-| **Request Frequency** | 40% | Times asked in IPTF discussions |
-| **Dependency Count** | 30% | Number of other docs that reference it |
+| **Request Frequency** | 35% | Times asked in IPTF discussions |
+| **Dependency Count** | 25% | Number of other docs that reference it |
 | **Tech Change Rate** | 20% | Monthly updates needed (inverse score) |
 | **Verifiability** | 10% | Can cite sources and bound claims |
+| **Regulatory Criticality** | 10% | Required for institutional compliance (1.2x multiplier) |
 
-**Current Top 10 by Score:**
-1. CI Infrastructure (blocks everything else)
-2. Private Transaction Broadcasting (high request frequency)
-3. TEE Privacy Patterns (high dependency count)
-4. Hybrid Privacy Architecture (high request frequency)
-5. DvP Atomic Settlement (high dependency count)
-6. L2 Privacy Comparison (high verifiability)
-7. Identity Attestation Survey (stable tech)
-8. Vendor Capability Matrix (high request frequency)
-9. Cross-chain Privacy (emerging need)
-10. Migration Guides (stable content)
+> **Regulatory Criticality Multiplier:** Tasks marked `regulatory_critical: true` receive a 1.2x score multiplier. This reflects institutional adoption requirements where compliance patterns are prerequisites for production deployment.
+
+**Current Top 10 by Score (Updated January 2026):**
+
+| Rank | Task | Stream | Rationale | Status |
+|------|------|--------|-----------|--------|
+| 1 | Compliance Monitoring Pattern (PR-030) | B | High regulatory criticality (1.2x), blocks adoption | Pending |
+| 2 | Payment Policy Enforcement (PR-031) | B | High regulatory criticality (1.2x), institution requirement | Pending |
+| 3 | Client-Side Proving Pattern (PR-027) | B | High dependency count (blocks PR-028, PR-032) | Pending |
+| 4 | L2 Privacy Comparison (PR-011) | C | High verifiability, frequently requested | Blocked |
+| 5 | Cross-chain Privacy Bridge (PR-010) | C | Emerging need, in review | In Review |
+| 6 | Standards Survey (PR-012) | C | Stable tech, high verifiability | In Review |
+| 7 | vOPRF Nullifiers (PR-010b) | C | Research request (Issue #24) | In Review |
+| 8 | Vendor Capability Matrix (PR-013) | C | High request frequency | Pending |
+| 9 | Proof Delegation Pattern (PR-028) | B | Dependency of CSP, trust decisions | Pending |
+| 10 | Stub Pattern Completion (PR-016-021) | D | Blocks use cases | Pending |
+
+*Note: Stream A (Core Patterns) items removed from Top 10 as all are complete.*
 
 ---
 
-## 3. PR-Sized Deliverables (Ralph-Loopable)
+## 3. Work Streams & Deliverables
 
-### Sprint 0: Infrastructure [Week 1, Days 1-2]
+Tasks are organized into parallel work streams based on logical dependencies rather than fixed timelines. Each stream can progress independently once its blockers are resolved.
 
-**PR-001: CI Quality Gates** ✅ DONE ([PR #40](https://github.com/ethereum/iptf-map/pull/40))
-```
-Files: .github/workflows/ci.yml, scripts/validate-patterns.js
-DoD: Runs on every PR, blocks merge if checks fail
-Size: ~200 lines
-```
+### Stream A: Core Patterns [Priority 1] ✅ COMPLETE
 
-**PR-002: Pattern Validation Script** ✅ DONE ([PR #40](https://github.com/ethereum/iptf-map/pull/40))
-```
-Files: scripts/check-frontmatter.py, scripts/check-sections.py
-DoD: Validates all required fields and sections
-Size: ~150 lines
-```
+Foundation patterns that other streams depend on. All completed.
 
-**PR-002b: Remediate Existing Pattern Warnings** ✅ DONE ([PR #42](https://github.com/ethereum/iptf-map/pull/42))
-```
-Files: 34 pattern files with CI warnings (see GitHub Issue #41)
-DoD: All patterns have required frontmatter fields, missing sections added, maturity values standardized
-Size: ~10-20 lines per file
-Fixes:
-- Add `layer`, `privacy_goal`, `assumptions`, `last_reviewed` fields to all patterns
-- Add missing sections to: pattern-focil-eip7805.md, pattern-privacy-l2s.md, pattern-shielding.md, pattern-zk-derivative-delta.md
-- Standardize maturity values in: pattern-eil.md, pattern-focil-eip7805.md, pattern-lean-ethereum.md, pattern-oif.md, pattern-private-iso20022.md, pattern-zk-spv.md
-References: GitHub Issue #41
+---
+
+**PR-001: CI Quality Gates** ✅ DONE
+```yaml
+file: .github/workflows/ci.yml, scripts/validate-patterns.js
+pr: "#40"
+dod:
+  must: [CI runs on every PR, blocks merge if checks fail]
+  should: [Clear error messages for failures]
+blocks: [PR-002, PR-003, PR-004, PR-005]
 ```
 
-### Sprint 1: Core Patterns [Week 1, Days 3-5]
-
-**PR-003: Private Transaction Broadcasting Pattern** ✅ DONE ([PR #43](https://github.com/ethereum/iptf-map/pull/43))
-```
-File: patterns/pattern-private-transaction-broadcasting.md
-DoD: All sections complete, 3+ vendor examples in See Also
-Size: ~150 lines
-Related vendors: Flashbots, Shutter, SUAVE
-```
-
-**PR-004: TEE Privacy Pattern** ✅ DONE ([PR #44](https://github.com/ethereum/iptf-map/pull/44))
-```
-File: patterns/pattern-tee-based-privacy.md
-DoD: Trust model explicit, failure modes documented
-Size: ~150 lines
-Covers: Intel SGX, AMD SEV, AWS Nitro approaches
+**PR-002: Pattern Validation Script** ✅ DONE
+```yaml
+file: scripts/check-frontmatter.py, scripts/check-sections.py
+pr: "#40"
+dod:
+  must: [Validates all required fields and sections]
+  should: [Reports line numbers for issues]
+blocked_by: [PR-001]
+blocks: [PR-002b]
 ```
 
-**PR-005: Threshold Encrypted Mempool Pattern** ✅ DONE ([PR #45](https://github.com/ethereum/iptf-map/pull/45))
-```
-File: patterns/pattern-threshold-encrypted-mempool.md
-DoD: Protocol steps clear, committee assumptions stated
-Size: ~150 lines
-```
-
-### Sprint 2: Architectural Patterns [Week 2]
-
-**PR-006: Hybrid Privacy Architecture** ✅ DONE ([PR #51](https://github.com/ethereum/iptf-map/pull/51))
-```
-File: patterns/pattern-hybrid-public-private-modes.md
-DoD: Mode switching mechanics, compliance hooks documented
-Size: ~175 lines
+**PR-002b: Remediate Existing Pattern Warnings** ✅ DONE
+```yaml
+files: 34 pattern files (see Issue #41)
+pr: "#42"
+dod:
+  must: [All patterns have required frontmatter, missing sections added]
+  should: [Maturity values standardized]
+blocked_by: [PR-002]
 ```
 
-**PR-007: Modular Privacy Layers Pattern** ✅ DONE ([PR #54](https://github.com/ethereum/iptf-map/pull/54))
-```
-File: patterns/pattern-modular-privacy-stack.md
-DoD: Layer boundaries defined, composability explained
-Size: ~150 lines
-```
-
-**PR-008: White-label Infrastructure Pattern** ✅ DONE ([PR #55](https://github.com/ethereum/iptf-map/pull/55))
-```
-File: patterns/pattern-white-label-deployment.md
-DoD: Governance model, upgrade paths documented
-Size: ~150 lines
+**PR-003: Private Transaction Broadcasting Pattern** ✅ DONE
+```yaml
+file: patterns/pattern-private-transaction-broadcasting.md
+pr: "#43"
+dod:
+  must: [All sections complete, passes CI]
+  should: [3+ vendor examples in See Also]
+blocked_by: [PR-001]
 ```
 
-**PR-009: Enhanced DvP Approach** ✅ DONE ([PR #56](https://github.com/ethereum/iptf-map/pull/56))
-```
-File: approaches/approach-dvp-atomic-settlement.md
-DoD: Payment locking mechanics, escrow conditions clear
-Size: ~175 lines
-References: ERC-7573, EIP-6123
-```
-
-**PR-010: Cross-chain Privacy Bridge Pattern**
-```
-File: patterns/pattern-cross-chain-privacy-bridge.md
-DoD: Trust assumptions explicit, verification steps detailed
-Size: ~150 lines
+**PR-004: TEE Privacy Pattern** ✅ DONE
+```yaml
+file: patterns/pattern-tee-based-privacy.md
+pr: "#44"
+dod:
+  must: [Trust model explicit, failure modes documented]
+  should: [SGX deprecation warning included]
+blocked_by: [PR-001]
 ```
 
-**PR-010b: vOPRF Privacy Pattern**
-```
-File: patterns/pattern-voprf-nullifiers.md
-DoD: Pattern card with intent, ingredients, protocol steps; maps to credential/signal mechanisms; vendor examples in See Also if applicable
-Size: ~150 lines
-References: GitHub Issue #24
-```
-
-### Sprint 3: Documentation & Analysis [Week 3]
-
-**PR-011: L2 Privacy Comparison** ⏳ WIP (awaiting L2 vendor feedback, [Issue #62](https://github.com/ethereum/iptf-map/issues/62))
-```
-File: domains/layer2-privacy-comparison.md
-DoD: Tabular comparison, performance ranges with sources
-Size: ~300 lines
-Covers: Aztec, Polygon Miden, Scroll, Taiko, Linea
-References: GitHub Issue #27 (research), #62 (deliverable tracking)
+**PR-005: Threshold Encrypted Mempool Pattern** ✅ DONE
+```yaml
+file: patterns/pattern-threshold-encrypted-mempool.md
+pr: "#45"
+dod:
+  must: [Protocol steps clear, committee assumptions stated]
+  should: [References Shutter implementation]
+blocked_by: [PR-001]
 ```
 
-**PR-012: Standards Survey**
-```
-File: approaches/approach-privacy-standards-survey.md
-DoD: Existing EIPs mapped, gaps identified, no new standards created
-Size: ~250 lines
-Covers: ERC-3643, ERC-7573, EIP-5564, EIP-6123, EIP-78, ERC-7945, ERC-8065
-```
-
-**PR-013: Vendor Capability Matrix**
-```
-File: vendors/README.md (enhancement)
-DoD: 15+ vendors evaluated, capabilities mapped to patterns
-Size: ~400 lines
+**PR-006: Hybrid Privacy Architecture** ✅ DONE
+```yaml
+file: patterns/pattern-hybrid-public-private-modes.md
+pr: "#51"
+dod:
+  must: [Mode switching mechanics documented, passes CI]
+  should: [Compliance hooks documented]
+blocked_by: [PR-003, PR-004, PR-005]
 ```
 
-**PR-014: MEV Protection Guide**
-```
-File: approaches/approach-mev-protection-institutional.md
-DoD: Multiple strategies compared, integration steps provided
-Size: ~200 lines
-```
-
-**PR-015: Migration from Enterprise Chains**
-```
-File: approaches/approach-enterprise-to-ethereum-migration.md
-DoD: Decision tree, common pitfalls, case studies (anonymized)
-Size: ~250 lines
+**PR-007: Modular Privacy Layers Pattern** ✅ DONE
+```yaml
+file: patterns/pattern-modular-privacy-stack.md
+pr: "#54"
+dod:
+  must: [Layer boundaries defined, passes CI]
+  should: [Composability explained with examples]
+blocked_by: [PR-006]
 ```
 
-### Sprint 4: Pattern Completion [Week 4]
-
-**PR-016 through PR-021: Complete Stub Patterns**
-```
-Files:
-- patterns/pattern-secondary-market-rfq-batching.md
-- patterns/pattern-key-management-threshold.md
-- patterns/pattern-cash-leg-tokenization.md
-- patterns/pattern-derivative-settlement.md
-- patterns/pattern-performance-optimization.md
-- patterns/pattern-eligibility-attestation.md
-DoD: Each passes CI checks
-Size: ~150 lines each
+**PR-008: White-label Infrastructure Pattern** ✅ DONE
+```yaml
+file: patterns/pattern-white-label-deployment.md
+pr: "#55"
+dod:
+  must: [Governance model documented, passes CI]
+  should: [Upgrade paths documented]
+blocked_by: [PR-007]
 ```
 
-### Sprint 5: Use Cases [Week 4-5]
-
-**PR-022 through PR-026: Core Use Cases**
-```
-Files:
-- use-cases/private-payments.md
-- use-cases/tokenized-deposits.md
-- use-cases/private-lending.md
-- use-cases/liquidity-management.md
-- use-cases/money-market-funds.md
-DoD: References 2+ patterns each, includes recommended approach
-Size: ~200 lines each
+**PR-009: Enhanced DvP Approach** ✅ DONE
+```yaml
+file: approaches/approach-dvp-atomic-settlement.md
+pr: "#56"
+dod:
+  must: [Payment locking mechanics clear, escrow conditions documented]
+  should: [References ERC-7573, EIP-6123]
+blocked_by: [PR-006]
 ```
 
-### Sprint 6: Client-Side Proving & Compliance [Week 5-6]
+---
 
-> **Problem Context:** Private payments require both (1) efficient ZK proving on user devices for maximum privacy, and (2) compliance infrastructure for institutional adoption. Current gaps identified via IPTF discussions and PSE roadmap alignment.
+### Stream B: Compliance & Client-Side Proving [Priority 1]
+
+Critical for institutional adoption. Can proceed in parallel with Stream C.
+
+> **Problem Context:** Private payments require both (1) efficient ZK proving on user devices for maximum privacy, and (2) compliance infrastructure for institutional adoption.
+
+---
 
 **PR-027: Client-Side Proving Pattern**
-```
-File: patterns/pattern-client-side-proving.md
-Problem: Users need to generate ZK proofs locally (mobile, browser) to avoid trusting servers with private data, but device constraints (RAM, CPU, battery) limit proving feasibility.
-DoD: Mobile/browser proving strategies, device constraints table, delegation fallback options
-Size: ~175 lines
-References: PSE Roadmap (Mopro, Noir acceleration), Aztec PXE, Miden edge execution
+```yaml
+file: patterns/pattern-client-side-proving.md
+status: pending
+dod:
+  must: [Mobile/browser proving strategies, device constraints table]
+  should: [Delegation fallback options, PSE roadmap alignment]
+blocked_by: []
+blocks: [PR-028, PR-032]
+size: ~175 lines
+references: [PSE Roadmap (Mopro, Noir acceleration), Aztec PXE, Miden edge execution]
 ```
 
 **PR-028: Proof Delegation Pattern**
-```
-File: patterns/pattern-proof-delegation.md
-Problem: When client-side proving exceeds device capabilities, users need privacy-preserving delegation options with clear trust trade-offs.
-DoD: Delegation approaches (trusted, TEE, MPC), trust model comparison, when to delegate vs prove locally
-Size: ~150 lines
-Cross-refs: pattern-client-side-proving.md, pattern-tee-key-manager.md
-```
-
-**PR-029: Proving Infrastructure Comparison**
-```
-File: domains/proving-infrastructure-comparison.md
-Problem: No centralized comparison of ZK proving systems (Barretenberg, Winterfell, Halo2, etc.) with benchmarks for institutional decision-making.
-DoD: Prover comparison matrix, resource requirements, proving time benchmarks with sources
-Size: ~250 lines
-Covers: Barretenberg, Winterfell, Halo2, SnarkJS, RISC Zero
+```yaml
+file: patterns/pattern-proof-delegation.md
+status: pending
+dod:
+  must: [Delegation approaches (trusted, TEE, MPC), trust model comparison]
+  should: [When to delegate vs prove locally decision tree]
+blocked_by: [PR-027]
+blocks: [PR-032]
+size: ~150 lines
+cross_refs: [pattern-client-side-proving.md, pattern-tee-key-manager.md]
 ```
 
 **PR-030: Compliance Monitoring Pattern**
-```
-File: patterns/pattern-compliance-monitoring.md
-Problem: Institutions need transaction monitoring and alerting for AML/CFT compliance, but this conflicts with privacy goals. No pattern documents the trade-offs.
-DoD: Transaction screening approaches, alert thresholds, escalation procedures, privacy vs auditability trade-offs
-Size: ~175 lines
-Cross-refs: pattern-regulatory-disclosure-keys-proofs.md, pattern-verifiable-attestation.md
+```yaml
+file: patterns/pattern-compliance-monitoring.md
+status: pending
+regulatory_critical: true
+dod:
+  must: [Transaction screening approaches, privacy vs auditability trade-offs]
+  should: [Alert thresholds, escalation procedures]
+blocked_by: []
+blocks: [PR-031, PR-032]
+size: ~175 lines
+cross_refs: [pattern-regulatory-disclosure-keys-proofs.md, pattern-verifiable-attestation.md]
 ```
 
 **PR-031: Payment Policy Enforcement Pattern**
-```
-File: patterns/pattern-payment-policy-enforcement.md
-Problem: Private payments need policy controls (who can pay whom, limits, approval workflows) but existing patterns (MPC, TEE) mention this only tangentially.
-DoD: Policy specification templates, approval workflows, limit escalation, cross-border restrictions
-Size: ~150 lines
-Cross-refs: pattern-mpc-custody.md, pattern-erc3643-rwa.md
+```yaml
+file: patterns/pattern-payment-policy-enforcement.md
+status: pending
+regulatory_critical: true
+dod:
+  must: [Policy specification templates, approval workflows]
+  should: [Limit escalation, cross-border restrictions]
+blocked_by: [PR-030]
+blocks: [PR-032]
+size: ~150 lines
+cross_refs: [pattern-mpc-custody.md, pattern-erc3643-rwa.md]
 ```
 
 **PR-032: Private Payments Approach Enhancement**
-```
-File: approaches/approach-private-payments.md (enhancement)
-Problem: Current approach lacks CSP considerations and compliance requirements matrix.
-DoD: Add client-side proving section, compliance requirements matrix linking to new patterns
-Size: +100 lines enhancement
+```yaml
+file: approaches/approach-private-payments.md
+status: pending
+type: enhancement
+dod:
+  must: [Client-side proving section added, compliance requirements matrix]
+  should: [Links to all new patterns in this stream]
+blocked_by: [PR-027, PR-028, PR-030, PR-031]
+blocks: []
+size: +100 lines
 ```
 
-### Backlog: Scalability & Sync [Unprioritized]
+---
+
+### Stream C: Analysis & Comparisons [Priority 2]
+
+Research and documentation deliverables. Some have external dependencies.
+
+---
+
+**PR-010: Cross-chain Privacy Bridge Pattern**
+```yaml
+file: patterns/pattern-cross-chain-privacy-bridge.md
+status: in_review
+pr: "#60"
+dod:
+  must: [Trust assumptions explicit, verification steps detailed]
+  should: [Multi-chain examples]
+blocked_by: []
+blocks: []
+size: ~150 lines
+```
+
+**PR-010b: vOPRF Privacy Pattern**
+```yaml
+file: patterns/pattern-voprf-nullifiers.md
+status: in_review
+pr: "#61"
+dod:
+  must: [Intent, ingredients, protocol steps complete]
+  should: [Maps to credential/signal mechanisms, vendor examples]
+blocked_by: []
+blocks: []
+size: ~150 lines
+references: [Issue #24]
+```
+
+**PR-011: L2 Privacy Comparison** ⏳ BLOCKED
+```yaml
+file: domains/layer2-privacy-comparison.md
+status: blocked
+external_dependency: "Vendor feedback (Issue #62)"
+timeout_date: 2026-02-06
+fallback: "Publish with public benchmarks only, mark provisional"
+dod:
+  must: [Tabular comparison, performance ranges with sources]
+  should: [All 5 L2s covered: Aztec, Polygon Miden, Scroll, Taiko, Linea]
+blocked_by: [external: vendor feedback]
+blocks: []
+size: ~300 lines
+references: [Issue #27 (research), Issue #62 (tracking)]
+```
+
+**PR-012: Standards Survey**
+```yaml
+file: approaches/approach-privacy-standards-survey.md
+status: in_review
+pr: "#64"
+dod:
+  must: [Existing EIPs mapped, gaps identified]
+  should: [No new standards created, clear status for each]
+blocked_by: []
+blocks: []
+size: ~250 lines
+covers: [ERC-3643, ERC-7573, EIP-5564, EIP-6123, ERC-7945, ERC-8065]
+```
+
+**PR-013: Vendor Capability Matrix**
+```yaml
+file: vendors/README.md
+status: pending
+type: enhancement
+dod:
+  must: [15+ vendors evaluated, capabilities mapped to patterns]
+  should: [Sortable/filterable format]
+blocked_by: [PR-010, PR-010b]
+blocks: []
+size: ~400 lines
+```
+
+**PR-014: MEV Protection Guide**
+```yaml
+file: approaches/approach-mev-protection-institutional.md
+status: pending
+dod:
+  must: [Multiple strategies compared, integration steps]
+  should: [Cost/benefit analysis per strategy]
+blocked_by: [PR-003]
+blocks: []
+size: ~200 lines
+```
+
+**PR-015: Migration from Enterprise Chains**
+```yaml
+file: approaches/approach-enterprise-to-ethereum-migration.md
+status: pending
+dod:
+  must: [Decision tree, common pitfalls documented]
+  should: [Anonymized case studies]
+blocked_by: []
+blocks: []
+size: ~250 lines
+```
+
+**PR-029: Proving Infrastructure Comparison**
+```yaml
+file: domains/proving-infrastructure-comparison.md
+status: pending
+dod:
+  must: [Prover comparison matrix, resource requirements]
+  should: [Proving time benchmarks with sources]
+blocked_by: [PR-027]
+blocks: []
+size: ~250 lines
+covers: [Barretenberg, Winterfell, Halo2, SnarkJS, RISC Zero]
+```
+
+---
+
+### Stream D: Use Case Synthesis [Priority 3]
+
+Depends on patterns being complete. Can begin once core patterns are done.
+
+---
+
+**PR-016 through PR-021: Complete Stub Patterns**
+```yaml
+files:
+  - patterns/pattern-secondary-market-rfq-batching.md
+  - patterns/pattern-key-management-threshold.md
+  - patterns/pattern-cash-leg-tokenization.md
+  - patterns/pattern-derivative-settlement.md
+  - patterns/pattern-performance-optimization.md
+  - patterns/pattern-eligibility-attestation.md
+status: pending
+dod:
+  must: [Each passes CI checks, all required sections present]
+  should: [Cross-references to related patterns]
+blocked_by: [PR-002b]
+blocks: [PR-022 through PR-026]
+size: ~150 lines each
+```
+
+**PR-022 through PR-026: Core Use Cases**
+```yaml
+files:
+  - use-cases/private-payments.md
+  - use-cases/tokenized-deposits.md
+  - use-cases/private-lending.md
+  - use-cases/liquidity-management.md
+  - use-cases/money-market-funds.md
+status: pending
+dod:
+  must: [References 2+ patterns each, includes recommended approach]
+  should: [Clear actor definitions, problem statements]
+blocked_by: [PR-016 through PR-021]
+blocks: []
+size: ~200 lines each
+```
+
+---
+
+### Backlog [Unprioritized]
+
+Items not scheduled for current scope. May be promoted based on demand.
+
+---
 
 **PR-033: Nullifier Set Scalability Pattern**
+```yaml
+file: patterns/pattern-nullifier-set-scalability.md
+status: backlog
+dod:
+  must: [Nullifier bloat problem documented, sync approaches compared]
+  should: [Institutional deployment trade-offs]
+blocked_by: []
+blocks: []
+size: ~150 lines
+references: [Zcash Tachyon project, oblivious message retrieval research]
 ```
-File: patterns/pattern-nullifier-set-scalability.md
-Problem: Shielded pools using commitment/nullifier models face unbounded nullifier set growth, creating sync and storage challenges for light clients.
-DoD: Document nullifier bloat problem, oblivious sync approaches (Zcash Tachyon, OMR), trade-offs for institutional deployments
-Size: ~150 lines
-References: Zcash Tachyon project, oblivious message retrieval research
+
+**Extended Scope: Use Case Stubs (PR #65)**
+```yaml
+status: deferred
+pr: "#65"
+note: "12 additional use case stubs beyond baseline scope. Review after core use cases complete."
+files: [See PR #65 for full list]
 ```
 
 ---
@@ -369,39 +635,38 @@ Example format:
 
 ---
 
-## 5. Realistic Timeline
+## 5. Stream Execution Order
 
-### Week 1: Foundation & Infrastructure
-- **Days 1-2**: CI infrastructure (PR-001, PR-002)
-- **Days 3-5**: Core privacy patterns (PR-003 through PR-005)
-- **Review checkpoint**: All patterns pass CI
+Work proceeds by stream priority, with parallel execution where dependencies allow.
 
-### Week 2: Architecture & Standards
-- **Days 1-3**: Architectural patterns (PR-006 through PR-008)
-- **Days 4-5**: DvP and cross-chain patterns (PR-009, PR-010)
-- **Review checkpoint**: Cross-references validated
+### Phase 1: Foundation ✅ COMPLETE
+- **Stream A**: All core patterns complete (PR-001 through PR-009)
+- **Checkpoint**: CI infrastructure operational, core patterns pass validation
 
-### Week 3: Analysis & Documentation
-- **Days 1-2**: L2 comparison and standards survey (PR-011, PR-012)
-- **Days 3-4**: Vendor matrix and guides (PR-013, PR-014)
-- **Day 5**: Migration documentation (PR-015)
-- **Review checkpoint**: External sources verified
+### Phase 2: Parallel Execution (Current)
 
-### Week 4: Completion & Use Cases
-- **Days 1-3**: Complete stub patterns (PR-016 through PR-021)
-- **Days 4-5**: Begin use cases (PR-022, PR-023)
-- **Review checkpoint**: All patterns complete
+| Stream | Focus | Parallelizable? | Blockers |
+|--------|-------|-----------------|----------|
+| **B** | Compliance & Client-Side | Yes | None |
+| **C** | Analysis & Comparisons | Yes | PR-011 awaiting vendor feedback |
+| **D** | Use Case Synthesis | Partial | Blocked on stub completion (PR-016-021) |
 
-### Week 5: Finalization
-- **Days 1-3**: Remaining use cases (PR-024 through PR-026)
-- **Days 4-5**: Cross-reference validation, final review
-- **Review checkpoint**: All CI checks green
+**Current Priorities:**
+1. Merge open PRs (#60, #61, #64) to unblock Stream C
+2. Begin Stream B compliance patterns (PR-030, PR-031) - regulatory critical
+3. Begin Stream B client-side proving (PR-027) - high dependency count
+4. Complete Stream D stub patterns once bandwidth available
 
-### Week 6: Client-Side Proving & Compliance
-- **Days 1-2**: CSP patterns (PR-027, PR-028)
-- **Days 3-4**: Proving comparison and compliance monitoring (PR-029, PR-030)
-- **Day 5**: Policy enforcement and approach enhancement (PR-031, PR-032)
-- **Final checkpoint**: All Sprint 6 patterns pass CI, cross-refs validated
+### Phase 3: Synthesis
+- Complete use cases (PR-022 through PR-026)
+- Finalize approach enhancements (PR-032)
+- Cross-reference validation across all streams
+- **Checkpoint**: All baseline scope complete
+
+### External Dependency Checkpoints
+| Task | Timeout | Fallback Action |
+|------|---------|-----------------|
+| PR-011 (L2 Comparison) | 2026-02-06 | Publish provisional with public data only |
 
 ---
 
@@ -471,38 +736,45 @@ iptf-map/
 
 ---
 
-## 9. Top 5 Initial PRs (Start Immediately)
+## 9. Current Priority Actions
 
 > **GitHub Issue Traceability:**
-> - PR-002b → Issue #41 (frontmatter remediation)
-> - PR-004 → Issue #28 (TEE patterns)
 > - PR-010b → Issue #24 (vOPRF solutions)
 > - PR-011 → Issue #27 (research), Issue #62 (deliverable tracking)
 
-### PR-001: CI Quality Gates [DAY 1]
-**Objective**: Block all future PRs that don't meet quality standards
-**Files**: `.github/workflows/ci.yml`
-**Validation**: Run on this PR itself, must pass
+### Immediate: Merge Open PRs
+Review and merge pending PRs to unblock downstream work:
+- **#60** (PR-010): Cross-chain Privacy Bridge
+- **#61** (PR-010b): vOPRF Nullifiers
+- **#64** (PR-012): Standards Survey
 
-### PR-002: Pattern Validation Script [DAY 1]
-**Objective**: Automated checking of required sections
-**Files**: `scripts/validate-patterns.js`
-**Success**: Validates existing patterns, reports issues
+### Next: Stream B - Regulatory Critical
+Start compliance patterns (1.2x priority multiplier):
 
-### PR-003: Private Transaction Broadcasting Pattern [DAY 2]
-**Objective**: Document MEV protection approaches
-**File**: `patterns/pattern-private-transaction-broadcasting.md`
-**Success**: First pattern passing all CI checks
+**PR-030: Compliance Monitoring Pattern**
+- **Objective**: Document transaction screening vs privacy trade-offs
+- **File**: `patterns/pattern-compliance-monitoring.md`
+- **Why Now**: Blocks institutional adoption, regulatory requirement
 
-### PR-004: TEE Privacy Pattern [DAY 3]
-**Objective**: Trust models and failure modes for TEE approaches
-**File**: `patterns/pattern-tee-based-privacy.md`
-**Success**: Explicit trust assumptions, vendor-neutral
+**PR-031: Payment Policy Enforcement Pattern**
+- **Objective**: Policy controls for private payments
+- **File**: `patterns/pattern-payment-policy-enforcement.md`
+- **Blocked By**: PR-030
 
-### PR-005: Threshold Encrypted Mempool Pattern [DAY 3]
-**Objective**: Document k-of-n threshold encryption for MEV protection
-**File**: `patterns/pattern-threshold-encrypted-mempool.md`
-**Success**: Protocol steps clear, committee assumptions stated
+### Next: Stream B - Client-Side Proving
+High dependency count patterns:
+
+**PR-027: Client-Side Proving Pattern**
+- **Objective**: Mobile/browser ZK proving strategies
+- **File**: `patterns/pattern-client-side-proving.md`
+- **Blocks**: PR-028, PR-029, PR-032
+
+### Parallel: Stream D Prep
+Begin stub pattern completion to unblock use cases:
+
+**PR-016-021: Complete 6 Stub Patterns**
+- **Files**: See Stream D in Section 3
+- **Blocks**: All use cases (PR-022 through PR-026)
 
 ---
 
@@ -596,7 +868,18 @@ External research conducted via web search to verify claims in repository docume
 
 ---
 
-**Document Status**: Ready for Implementation (Sprint 6 added January 2026)
-**Next Action**: Continue Sprint 2 (PR-006: Hybrid Privacy Architecture), then proceed through Sprint 6
-**Success Criteria**: All PRs pass automated checks, ralph-loop operational
-**Sprint 6 Context**: CSP (Client-Side Proving) and compliance patterns added per IPTF discussions and PSE roadmap alignment
+**Document Status**: v3.0 - Restructured based on LLM-Council feedback (January 23, 2026)
+**Key Changes in v3.0**:
+- Replaced sprint-based timeline with parallel work streams (A, B, C, D)
+- Added External Dependency & Timeout Policy (Section 1.5)
+- Added Regulatory Criticality metric (1.2x priority multiplier)
+- Split DoD into [MUST] (CI-verifiable) and [SHOULD] (human-reviewable)
+- Added Progress Dashboard to Executive Summary
+- Updated prioritization to reflect completed work and compliance priorities
+
+**Next Actions**:
+1. Merge open PRs (#60, #61, #64)
+2. Begin Stream B regulatory-critical patterns (PR-030, PR-031)
+3. Begin Stream B client-side proving (PR-027)
+
+**Success Criteria**: All baseline scope PRs pass automated checks, AI agent execution operational
