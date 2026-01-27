@@ -158,7 +158,7 @@ Regardless of architecture, compliance can be layered via:
 
 ## Links and Notes
 
-- **Reference Implementation:** [Private Tokenised Bonds PoC](https://github.com/Meyanis95/private-tokenised-bonds) - UTXO shielded bond issuance with JoinSplit circuits
+- **Reference Implementation:** [Private Bond PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-bond) — Custom UTXO + Privacy L2 approaches
 - **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ICMA BDT](https://www.icmagroup.org/market-practice-and-regulatory-policy/repo-and-collateral-markets/legal-documentation/global-master-repurchase-agreement-gmra/)
 - **Research:** [Private Tokenized Securities with UTXO Model](https://eprint.iacr.org/2025/1715.pdf) - UTXO-style privacy for ERC-3643 compliant securities
 - **Regulations:** [eWpG](../jurisdictions/de-eWpG.md), [MiCA](../jurisdictions/eu-MiCA.md)
