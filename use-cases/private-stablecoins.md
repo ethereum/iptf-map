@@ -24,6 +24,10 @@ Payer/Payee (banks, dealers, buy-side) · Stablecoin Issuer/Admin · Execution V
 
 Public-by-default ledgers leak strategy and order flow and conflict with institutional confidentiality and compliance obligations. Institutions need stakeholder-only visibility with selective disclosure and atomic settlement with assets.
 
+### Problem 2: User Onboarding & Fiat Integration
+
+Institutions need practical paths to onboard their users (corporates, funds, counterparties) onto private stablecoin infrastructure. This includes integrating with existing fiat rails, compliance workflows, and ensuring users can move between fiat and private tokens seamlessly.
+
 **Requirements:**
 
 - **Must hide:** transfer **amounts**, **payer/payee identities to non-participants**, and **memos/workflow metadata**; optionally timing/ordering leakage minimised
@@ -71,10 +75,9 @@ See detailed solution architecture and trade-offs in [**Approach: Private Paymen
 
 ### Related patterns
 
-- `../../patterns/pattern-dvp-erc7573.md`
-- `../../patterns/pattern-l2-encrypted-offchain-audit.md`
-- `../../patterns/pattern-aztec-privacy-l2-erc7573.md`
-- `../../patterns/pattern-confidential-erc20-fhe-l2-erc7573.md`
-- `../../patterns/pattern-private-stablecoin-shielded-payments.md`
-- `../../patterns/pattern-private-pvp-stablecoins-erc7573.md`
-- `../../patterns/pattern-iso20022.md`
+- [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md) — Onboarding privacy via client-side proving
+- [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md) — Issuer-side private minting
+- [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
+- [Private PvP Settlement](../patterns/pattern-private-pvp-stablecoins-erc7573.md)
+- [DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md)
+- [L2 Encrypted Offchain Audit](../patterns/pattern-l2-encrypted-offchain-audit.md)
