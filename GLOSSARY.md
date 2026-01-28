@@ -67,6 +67,12 @@ A dedicated network or service that publishes and stores the data required for D
 
 **[EIP-5564](https://eips.ethereum.org/EIPS/eip-5564)**: Stealth address standard for unlinkable payments
 
+**[EIP-7805](https://eips.ethereum.org/EIPS/eip-7805)**: Fork Choice Inclusion Lists (FOCIL) standard for censorship resistance through committee-enforced transaction inclusion
+
+**[ERC-7945](https://ercs.ethereum.org/ERCS/erc-7945)**: Standard for confidential token transfers using cryptographic commitments to hide balances and amounts
+
+**[ERC-8065](https://ercs.ethereum.org/ERCS/erc-8065)**: ZK token wrapper standard enabling privacy for existing ERC-20 tokens through shielded wrapping
+
 **[ISO 20022](https://www.iso20022.org/)**: International messaging standard for financial services communication
 
 **[ICMA BDT](https://www.icmagroup.org/market-practice-and-regulatory-policy/repo-and-collateral-markets/legal-documentation/global-master-repurchase-agreement-gmra/)**: International Capital Market Association Bond Data Taxonomy for standardized bond information

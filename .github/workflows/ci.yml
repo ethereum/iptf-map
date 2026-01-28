@@ -147,7 +147,13 @@ jobs:
       - name: Vale linter
         uses: errata-ai/vale-action@v2
         with:
-          files: patterns/ vendors/ approaches/ use-cases/ jurisdictions/ domains/
+          files: |
+            patterns/
+            vendors/
+            approaches/
+            use-cases/
+            jurisdictions/
+            domains/
           fail_on_error: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
