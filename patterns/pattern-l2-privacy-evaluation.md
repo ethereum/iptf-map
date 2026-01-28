@@ -1,13 +1,11 @@
 ---
 title: "Pattern: L2 Privacy Evaluation Framework"
-status: provisional
+status: draft
 maturity: PoC
 layer: L2
 privacy_goal: Structured methodology for institutions to compare privacy-preserving L2 solutions
 assumptions: L2 teams provide self-reported metrics with sources; independent verification where possible
 last_reviewed: 2026-01-27
-provisional_reason: "Awaiting L2 vendor self-reported metrics"
-provisional_since: 2026-01-27
 works-best-when:
   - Evaluating multiple privacy L2s for institutional deployment
   - Comparing throughput, security, and censorship-resistance across systems
@@ -149,7 +147,7 @@ _AppChain SDKs have deployment-dependent assumptions (sequencer, DA, governance)
 
 <sup>1</sup> Both Aztec and Miden let the developer choose to store assets in Public (Account model) or in Private (UTXO note).
 
-<sup>2</sup> The "predicate" (validation logic) is public, but the inputs and balances are stateless/hidden. Intmax only performs value transfers and does not enable sophisticated logic.
+<sup>2</sup> Predicate is public; inputs/balances are stateless/hidden. Intmax only performs value transfers.
 
 ### Security & Governance
 
@@ -162,7 +160,7 @@ _AppChain SDKs have deployment-dependent assumptions (sequencer, DA, governance)
 | **Scroll Cloak** | Permissioned (Owner)        | Force Exit to host    |  No (prover service)   | Operator-controlled |
 | **EY Nightfall** | TBD                         | TBD                   |          Yes           | TBD                 |
 
-**Client Proving Note**: "Yes (heavy)" = user device generates ZK proof (seconds/minutes). "No (server)" = user signs, server proves (instant UX, higher trust).
+**Client Proving**: "Yes (heavy)" = client-side ZK proof. "No (server)" = server proves (instant UX, higher trust).
 
 ### Compliance Features
 
@@ -178,7 +176,7 @@ _Sources: Protocol documentation, L2Beat, academic papers. Last updated: 2026-01
 
 ## Related: Privacy App Layers
 
-The following solutions add privacy to existing chains. They have different architectures than Privacy L2s (no separate L2 state/sequencer) but are valuable for specific use cases:
+Privacy solutions for existing chains (no separate L2 state/sequencer):
 
 | Solution              | Type             | Description                                            |
 | :-------------------- | :--------------- | :----------------------------------------------------- |
@@ -186,9 +184,13 @@ The following solutions add privacy to existing chains. They have different arch
 | **Kaleido (Paladin)** | L1 Privacy Layer | Enterprise privacy layer on Ethereum L1                |
 | **Zama fhEVM**        | Coprocessor      | FHE confidentiality layer added to any EVM chain       |
 
-These are included in the [RFP: Living Benchmark Dashboard](../rfps/rfp-benchmark-dashboard.md) for performance benchmarking.
+These are included in the [RFP: Living Benchmark Dashboard](../rfps/rfp-benchmark-dashboard.md).
 
-## See Also
+## Example
+
+Institutional OTC settlement evaluation: filter by Cryptographic privacy model, require Viewing Keys for audit, compare Client Proving burden vs trust, validate Censorship Resistance meets SLAs.
+
+## See also
 
 - [RFP: Living Benchmark Dashboard](../rfps/rfp-benchmark-dashboard.md) - Automated benchmark pipeline
 - [L2Beat](https://l2beat.com/) - Independent L2 risk analysis
