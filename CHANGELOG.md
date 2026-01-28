@@ -5,6 +5,7 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Added
+
 - feat(use-case): [Private Read](use-cases/private-read.md) - blockchain query privacy (stub)
 - feat(use-case): [Private Corporate Bonds](use-cases/private-corporate-bonds.md) - capital formation privacy (stub)
 - feat(use-case): [Private Government Debt](use-cases/private-government-debt.md) - sovereign/municipal bonds (stub)
@@ -17,6 +18,7 @@ All notable changes to the IPTF Map are documented here.
 - feat(use-case): [Private Payments](use-cases/private-payments.md) - payment rails (stub)
 - feat(use-case): [Private Oracles](use-cases/private-oracles.md) - data feed privacy (stub)
 - feat(use-case): [Private Messaging](use-cases/private-messaging.md) - interbank communication (stub)
+- feat(pattern): [L2 Privacy Evaluation Framework](patterns/pattern-l2-privacy-evaluation.md) - Methodology for institutions to compare privacy L2s (PR-011)
 - feat(pattern): [vOPRF Nullifiers](patterns/pattern-voprf-nullifiers.md) - Threshold vOPRF-based nullifier generation for credentials/signals ([#61](https://github.com/ethereum/iptf-map/pull/61))
 - feat(ci): Enhanced AI content quality guardrails ([#58](https://github.com/ethereum/iptf-map/issues/58))
   - Vale prose linter with custom IPTF styles for marketing language, hedging, and terminology
@@ -46,11 +48,13 @@ All notable changes to the IPTF Map are documented here.
 - chore: Claude Code project configuration ([#36](https://github.com/ethereum/iptf-map/pull/36))
 
 ### Fixed
+
 - fix(pattern): Required frontmatter fields across all patterns ([#42](https://github.com/ethereum/iptf-map/pull/42))
 
 ## [0.2.0] - 2025-12-19 (End of Year)
 
 ### Added
+
 - feat(pattern): [TEE key manager](patterns/pattern-tee-key-manager.md) ([#33](https://github.com/ethereum/iptf-map/pull/33))
 - feat(pattern): [EIL](patterns/pattern-eil.md) - Encrypted Inline Ledger ([#26](https://github.com/ethereum/iptf-map/pull/26))
 - feat(pattern): [FOCIL-EIP7805](patterns/pattern-focil-eip7805.md) ([#26](https://github.com/ethereum/iptf-map/pull/26))
@@ -67,9 +71,11 @@ All notable changes to the IPTF Map are documented here.
 - docs: [GLOSSARY.md](GLOSSARY.md) - privacy terminology ([#5](https://github.com/ethereum/iptf-map/pull/5))
 
 ### Changed
+
 - refactor: Split patterns directory into patterns + approaches ([#2](https://github.com/ethereum/iptf-map/pull/2))
 
 ### Fixed
+
 - fix(pattern): [DvP ERC-7573](patterns/pattern-dvp-erc7573.md) updates ([#31](https://github.com/ethereum/iptf-map/pull/31))
 - fix(use-case): [Private-auth](use-cases/private-auth.md) - revocation, zk-TLS mechanism
 - fix(docs): Glossary - clarified core privacy concepts ([#29](https://github.com/ethereum/iptf-map/pull/29))
@@ -78,6 +84,7 @@ All notable changes to the IPTF Map are documented here.
 ## [0.1.0] - 2025-10-06 (MVP)
 
 ### Added
+
 - feat: Initial repository import with 62 files
 - feat(pattern): 20+ privacy patterns (ZK, MPC, TEE, stealth addresses, etc.)
 - feat(use-case): [private-auth](use-cases/private-auth.md)
