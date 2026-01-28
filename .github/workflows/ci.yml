@@ -155,6 +155,7 @@ jobs:
             jurisdictions/
             domains/
           fail_on_error: false
+          reporter: github-check
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
