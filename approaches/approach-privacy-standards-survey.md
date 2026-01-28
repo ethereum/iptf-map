@@ -183,7 +183,7 @@ The Ethereum ecosystem has developed multiple standards addressing institutional
 |----------|------|------------|
 | **EIP-5564** | Stagnant development; limited adoption | Monitor for revival; consider vendor alternatives |
 | **EIP-6123** | Complex; low current adoption | Pilot implementations needed; simplification proposals |
-| **ERC-7945** | Draft; may change significantly | Track EIP discussions; design for adapter patterns |
+| **ERC-7945** | Draft; interface may evolve | Track EIP discussions; design for adapter patterns |
 
 ---
 
@@ -216,7 +216,7 @@ Need privacy-preserving institutional transactions?
 
 | Architecture | Standards | Complexity |
 |--------------|-----------|------------|
-| **Simple compliant security** | ERC-3643 only | Low |
+| **Simple compliant security** | ERC-3643 alone | Low |
 | **Private payments** | EIP-5564 + ERC-7945 | Medium |
 | **Cross-network securities DvP** | ERC-3643 + ERC-7573 | Medium |
 | **Full privacy + compliance** | ERC-3643 + ERC-7945 + custom compliance oracle | High |
