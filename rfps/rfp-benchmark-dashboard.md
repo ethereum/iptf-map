@@ -29,14 +29,18 @@ Privacy L2 vendors claim 25k+ TPS, but institutions have no way to verify these 
   - Batch operations (10, 100, 1000 txs)
   - Compliance proof generation
 - Target systems (public testnets where available):
-  - Aztec
-  - Fhenix (FHE)
-  - Scroll/Cloak (when available)
-  - Railgun (L1 privacy)
-- Metrics per system:
-  - Throughput (median, p95, p99)
-  - Latency (time to finality)
-  - Cost (gas, prover cost estimates)
+  - **Privacy L2s** (see [L2 Privacy Evaluation Pattern](../patterns/pattern-l2-privacy-evaluation.md)):
+    - *Public L2*: Aztec, Miden, Intmax
+    - *AppChain SDK*: Prividium, EY Nightfall, Scroll Cloak
+  - **Privacy App Layers**:
+    - Zama fhEVM (coprocessor)
+    - Kaleido/Paladin (L1 privacy)
+    - Railgun (L1 shielded pool)
+- Metrics per system (see [L2 Privacy Evaluation Pattern](../patterns/pattern-l2-privacy-evaluation.md) for full criteria):
+  - **Performance**: Throughput (TPS<sub>Public</sub>/TPS<sub>Private</sub>), latency, finality
+  - **Cost**: Gas usage, bridging costs, forced exit costs
+  - **Privacy**: What is hidden, from whom, trust model
+  - **Security**: Sequencer decentralization, censorship resistance, upgrade process
   - Trust dimensions (from [Trust Assurance](rfp-trust-assurance.md))
 - Dockerized reproduction: anyone can run `docker-compose up` to verify
 
