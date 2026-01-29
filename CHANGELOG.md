@@ -17,6 +17,7 @@ All notable changes to the IPTF Map are documented here.
 - feat(use-case): [Private Payments](use-cases/private-payments.md) - payment rails (stub)
 - feat(use-case): [Private Oracles](use-cases/private-oracles.md) - data feed privacy (stub)
 - feat(use-case): [Private Messaging](use-cases/private-messaging.md) - interbank communication (stub)
+- feat(pattern): [Cross-chain Privacy Bridge](patterns/pattern-cross-chain-privacy-bridge.md) - Bridge assets between chains while preserving privacy
 - feat(pattern): [vOPRF Nullifiers](patterns/pattern-voprf-nullifiers.md) - Threshold vOPRF-based nullifier generation for credentials/signals ([#61](https://github.com/ethereum/iptf-map/pull/61))
 - feat(ci): Enhanced AI content quality guardrails ([#58](https://github.com/ethereum/iptf-map/issues/58))
   - Vale prose linter with custom IPTF styles for marketing language, hedging, and terminology
