@@ -160,7 +160,7 @@ _AppChain SDKs have deployment-dependent assumptions (sequencer, DA, governance)
 | **Scroll Cloak** | Permissioned (Owner)        | Force Exit to host    |  No (prover service)   | Operator-controlled |
 | **EY Nightfall** | TBD                         | TBD                   |          Yes           | TBD                 |
 
-**Client Proving**: "Yes (heavy)" = client-side ZK proof. "No (server)" = server proves (instant UX, higher trust).
+**Client Proving**: "Yes (heavy)" = client-side ZK proof. "No (server)" = server proves.
 
 ### Compliance Features
 
@@ -172,23 +172,25 @@ _AppChain SDKs have deployment-dependent assumptions (sequencer, DA, governance)
 | **Scroll Cloak** |     Yes      |    Access control    | Operator + regulator access |
 | **EY Nightfall** |     Yes      |         Yes          | Enterprise audit trail      |
 
-_Sources: Protocol documentation, L2Beat, academic papers. Last updated: 2026-01-27_
+_Tables generated via LLM synthesis of sources below. Last updated: 2026-01-27_
+
+**Sources**: [L2Beat](https://l2beat.com/), [Aztec Docs](https://docs.aztec.network/), [Miden VM](https://0xmiden.github.io/miden-vm/), [Intmax](https://intmax.io/), [Intmax2 Paper](https://eprint.iacr.org/2023/1082.pdf), [Prividium Docs](https://docs.zksync.io/zk-stack/prividium), [Cloak Docs](https://scroll-tech.github.io/cloak-documentation/), [Nightfall_4](https://github.com/EYBlockchain/nightfall_4_CE)
 
 ## Related: Privacy App Layers
 
 Privacy solutions for existing chains (no separate L2 state/sequencer):
 
-| Solution              | Type             | Description                                            |
-| :-------------------- | :--------------- | :----------------------------------------------------- |
-| **Railgun**           | L1 Shielded Pool | Privacy system on Ethereum L1 using shielded transfers |
-| **Kaleido (Paladin)** | L1 Privacy Layer | Enterprise privacy layer on Ethereum L1                |
-| **Zama fhEVM**        | Coprocessor      | FHE confidentiality layer added to any EVM chain       |
+| Solution              | Type             | Description                              |
+| :-------------------- | :--------------- | :--------------------------------------- |
+| **Railgun**           | L1 Shielded Pool | Shielded transfers on Ethereum L1        |
+| **Kaleido (Paladin)** | L1 Privacy Layer | Enterprise privacy on Ethereum L1        |
+| **Zama fhEVM**        | Coprocessor      | FHE confidentiality for any EVM chain    |
 
-These are included in the [RFP: Living Benchmark Dashboard](../rfps/rfp-benchmark-dashboard.md).
+See [RFP: Living Benchmark Dashboard](../rfps/rfp-benchmark-dashboard.md).
 
 ## Example
 
-Institutional OTC settlement evaluation: filter by Cryptographic privacy model, require Viewing Keys for audit, compare Client Proving burden vs trust, validate Censorship Resistance meets SLAs.
+OTC settlement: filter by Cryptographic privacy, require Viewing Keys for audit, compare Client Proving vs trust, check Censorship Resistance SLAs.
 
 ## See also
 
