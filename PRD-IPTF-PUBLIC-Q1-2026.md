@@ -39,9 +39,9 @@ This PRD outlines verifiable, PR-sized documentation tasks for the Institutional
 |--------|-----------|------|-----------|---------|---------|------------|
 | **A: Core Patterns** | 9 | 9 | 0 | 0 | 0 | **100%** |
 | **B: Compliance & CSP** | 5 | 0 | 0 | 0 | 5 | **0%** |
-| **C: Analysis** | 8 | 0 | 4 | 1 | 3 | **0%** |
+| **C: Analysis** | 8 | 0 | 5 | 0 | 3 | **0%** |
 | **D: Use Cases** | 11 | 0 | 0 | 0 | 11 | **0%** |
-| **Total Baseline** | **33** | **9** | **4** | **1** | **19** | **27%** |
+| **Total Baseline** | **33** | **9** | **5** | **0** | **19** | **27%** |
 
 #### Open Pull Requests
 - **#65**: feat(use-cases): add 12 use case stubs *(Extended Scope - Deferred)*
@@ -196,7 +196,7 @@ follow_up_issue: "#62"
 
 | Task | Blocked On | Timeout Date | Fallback |
 |------|-----------|--------------|----------|
-| PR-011 (L2 Privacy Comparison) | Vendor feedback (Issue #62) | 2026-02-06 | Publish with public benchmarks only |
+| *(none)* | - | - | - |
 
 ---
 
@@ -221,7 +221,7 @@ Each deliverable scored on:
 | 1 | Compliance Monitoring Pattern (PR-030) | B | High regulatory criticality (1.2x), blocks adoption | Pending |
 | 2 | Payment Policy Enforcement (PR-031) | B | High regulatory criticality (1.2x), institution requirement | Pending |
 | 3 | Client-Side Proving Pattern (PR-027) | B | High dependency count (blocks PR-028, PR-032) | Pending |
-| 4 | L2 Privacy Comparison (PR-011) | C | High verifiability, frequently requested | Blocked |
+| 4 | L2 Privacy Comparison (PR-011) | C | High verifiability, frequently requested | In Review |
 | 5 | Cross-chain Privacy Bridge (PR-010) | C | Emerging need, in review | In Review |
 | 6 | Standards Survey (PR-012) | C | Stable tech, high verifiability | In Review |
 | 7 | vOPRF Nullifiers (PR-010b) | C | Research request (Issue #24) | In Review |
@@ -456,20 +456,18 @@ size: ~150 lines
 references: [Issue #24]
 ```
 
-**PR-011: L2 Privacy Comparison** ⏳ BLOCKED
+**PR-011: L2 Privacy Evaluation Framework** 📝 IN REVIEW
 ```yaml
-file: domains/layer2-privacy-comparison.md
-status: blocked
-external_dependency: "Vendor feedback (Issue #62)"
-timeout_date: 2026-02-06
-fallback: "Publish with public benchmarks only, mark provisional"
+file: patterns/pattern-l2-privacy-evaluation.md
+status: in_review
+note: "Published as provisional - awaiting L2 vendor self-reported metrics"
 dod:
-  must: [Tabular comparison, performance ranges with sources]
-  should: [All 5 L2s covered: Aztec, Polygon Miden, Scroll, Taiko, Linea]
-blocked_by: [external: vendor feedback]
+  must: [Tabular comparison criteria, evaluation methodology]
+  should: [Aztec, Miden, Intmax, Prividium, Scroll Cloak, EY Nightfall]
+blocked_by: []
 blocks: []
 size: ~300 lines
-references: [Issue #27 (research), Issue #62 (tracking)]
+references: [Issue #27 (research), rfps/rfp-benchmark-dashboard.md]
 ```
 
 **PR-012: Standards Survey**
@@ -648,7 +646,7 @@ Work proceeds by stream priority, with parallel execution where dependencies all
 | Stream | Focus | Parallelizable? | Blockers |
 |--------|-------|-----------------|----------|
 | **B** | Compliance & Client-Side | Yes | None |
-| **C** | Analysis & Comparisons | Yes | PR-011 awaiting vendor feedback |
+| **C** | Analysis & Comparisons | Yes | None |
 | **D** | Use Case Synthesis | Partial | Blocked on stub completion (PR-016-021) |
 
 **Current Priorities:**
@@ -666,7 +664,7 @@ Work proceeds by stream priority, with parallel execution where dependencies all
 ### External Dependency Checkpoints
 | Task | Timeout | Fallback Action |
 |------|---------|-----------------|
-| PR-011 (L2 Comparison) | 2026-02-06 | Publish provisional with public data only |
+| *(none active)* | - | - |
 
 ---
 
@@ -722,7 +720,6 @@ iptf-map/
 │   ├── *.md                          # Vendor-specific details
 │   └── README.md                     # UPDATE: Add capability matrix
 ├── domains/
-│   ├── layer2-privacy-comparison.md  # NEW: L2 comparison table
 │   └── *.md                          # Domain overviews
 ├── jurisdictions/
 │   └── *.md                          # Regulatory frameworks
