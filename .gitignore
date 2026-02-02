@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# npm
+package-lock.json
+
+# OS files
+.DS_Store
+
+# Editor directories
+.idea/
+*.swp
+*.swo
+
+# Artifacts
+validation-report.md
