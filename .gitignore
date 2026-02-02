@@ -12,8 +12,5 @@ package-lock.json
 *.swp
 *.swo
 
-# Vale cache
-.vale-styles/
-
 # Artifacts
 validation-report.md
