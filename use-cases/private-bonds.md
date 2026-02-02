@@ -41,7 +41,7 @@ Public chains expose volumes, prices, and positions by default, enabling front-r
 
 See detailed solution architecture and trade-offs in [**Approach: Private Bonds**](../approaches/approach-private-bonds.md).
 
-**PoC Implementation:** [Private Tokenised Bonds](https://github.com/Meyanis95/private-tokenised-bonds) — UTXO shielded bond issuance with JoinSplit circuits.
+**PoC Implementation:** [Private Bond PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-bond) — Two approaches: Custom UTXO (EVM) and Privacy L2 (Aztec).
 
 ## 6) Open Questions
 

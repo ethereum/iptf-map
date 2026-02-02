@@ -20,6 +20,9 @@ All notable changes to the IPTF Map are documented here.
 - feat(use-case): [Private Messaging](use-cases/private-messaging.md) - interbank communication (stub)
 - feat(pattern): [L2 Privacy Evaluation Framework](patterns/pattern-l2-privacy-evaluation.md) - Methodology for institutions to compare privacy L2s (PR-011)
 - feat(pattern): [Cross-chain Privacy Bridge](patterns/pattern-cross-chain-privacy-bridge.md) - Bridge assets between chains while preserving privacy
+- feat(pattern): [Stateless Plasma Privacy](patterns/pattern-plasma-stateless-privacy.md) - Client-side proving with minimal on-chain footprint (Intmax-style)
+- feat(approach): Expanded [Private Payments](approaches/approach-private-payments.md) with Plasma and TEE approaches
+- feat(use-case): Added user onboarding problem to [Private Stablecoins](use-cases/private-stablecoins.md)
 - feat(pattern): [vOPRF Nullifiers](patterns/pattern-voprf-nullifiers.md) - Threshold vOPRF-based nullifier generation for credentials/signals ([#61](https://github.com/ethereum/iptf-map/pull/61))
 - feat(ci): Enhanced AI content quality guardrails ([#58](https://github.com/ethereum/iptf-map/issues/58))
   - Vale prose linter with custom IPTF styles for marketing language, hedging, and terminology
@@ -50,6 +53,12 @@ All notable changes to the IPTF Map are documented here.
 
 ### Fixed
 
+<<<<<<< HEAD
+
+=======
+
+- fix(refs): Updated [Private Bonds](use-cases/private-bonds.md) PoC links to ethereum/iptf-pocs
+  > > > > > > > 1bd31b9 (feat(chore): updated changelog)
 - fix(pattern): Required frontmatter fields across all patterns ([#42](https://github.com/ethereum/iptf-map/pull/42))
 
 ## [0.2.0] - 2025-12-19 (End of Year)

@@ -8,11 +8,12 @@
 
 ### Problem Interaction
 
-Private payment systems address three interconnected challenges:
+Private payment systems address four interconnected challenges:
 
 1. **Operational Privacy**: Treasury operations, payment flows, and settlement patterns reveal competitive intelligence when visible on-chain
 2. **Security vs Cost Trade-offs**: L1 provides maximum security but higher costs, while L2s offer efficiency but different trust assumptions
 3. **Regulatory Compliance**: Financial institutions require auditability and selective disclosure capabilities across varying jurisdictions
+4. **User Onboarding**: Institutions need practical paths to onboard their users (corporates, funds, counterparties) onto private stablecoin infrastructure while integrating with existing fiat rails and compliance workflows
 
 These problems interact because traditional payment transparency conflicts with institutional confidentiality needs, while privacy solutions must maintain regulatory compliance and operational efficiency.
 
@@ -32,7 +33,7 @@ These problems interact because traditional payment transparency conflicts with 
 
 ## Architecture and Design Choices
 
-### Two Primary Approaches
+### Privacy Approaches
 
 **L1 Shielded Payments:**
 
@@ -41,12 +42,28 @@ These problems interact because traditional payment transparency conflicts with 
 - [Shielded ERC-20 Transfers](../patterns/pattern-shielding.md) with commitment/nullifier schemes
 - Higher per-transaction costs but battle-tested infrastructure
 
-**Privacy L2 Payments:**
+**Privacy L2 (Aztec, etc.):**
 
 - Full **privacy** with hidden state and confidential transfers
 - Lower costs and higher throughput for frequent operations
 - [Private L2s](../patterns/pattern-privacy-l2s.md) with privacy-native stablecoin implementations
 - Complete transaction confidentiality including amounts, counterparties, and patterns
+
+**Stateless Plasma (Intmax-style):**
+
+- Client-side proving with minimal on-chain data (only Merkle roots)
+- Users custody their own transaction data; chain observers see only commitments
+- [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md) pattern
+- Best for: High-volume flows, minimal on-chain footprint
+- Trade-off: Exit delays, user data custody responsibility
+
+**TEE-Based Privacy:**
+
+- Trusted Execution Environment handles sensitive computation privately
+- Can enable private matching, settlement, or custody operations
+- [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md) pattern
+- Best for: Near-term deployment, institutional trust model acceptable
+- Trade-off: Hardware trust assumptions, vendor dependency
 
 ### Recommended Architecture: Hybrid L1/L2 Model
 
@@ -89,11 +106,13 @@ These problems interact because traditional payment transparency conflicts with 
 
 - **L1 Shielding:** [Railgun](../vendors/railgun.md) for mature UTXO-style privacy pools
 - **Privacy L2:** [Aztec Network](../vendors/aztec-l2.md) for native confidential transfers, [Fhenix](../vendors/fhenix.md) for FHE-based payments
+- **Stateless Plasma:** [Intmax](https://www.intmax.io/) for client-side proving with minimal on-chain footprint
 - **Traditional Integration:** SWIFT network adapters, ISO20022 processors
 
 **Alternative Approaches:**
 
 - **FHE Approach:** [Zama](../vendors/zama.md) fhEVM for homomorphic stablecoin operations
+- **TEE Approach:** AWS Nitro Enclaves, Azure Confidential Computing for issuer-side privacy
 
 ### Implementation Strategy
 
@@ -170,6 +189,7 @@ These problems interact because traditional payment transparency conflicts with 
 ## Links and Notes
 
 - **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573), [ISO 20022](https://www.iso20022.org/), [ERC-20](https://ercs.ethereum.org/ERCS/erc-20)
-- **Infrastructure:** [Railgun](https://railgun.org/), [Aztec Network](https://docs.aztec.network/), [Zama fhEVM](https://docs.zama.ai/fhevm)
+- **Infrastructure:** [Railgun](https://railgun.org/), [Aztec Network](https://docs.aztec.network/), [Zama fhEVM](https://docs.zama.ai/fhevm), [Intmax](https://www.intmax.io/)
+- **Patterns:** [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
 - **Regulatory:** [MiCA Framework](../jurisdictions/eu-MiCA.md), [SEC - GENIUS Act](../jurisdictions/us-SEC.md)
 - **Related Approaches:** [Private Trade Settlement](../approaches/approach-private-trade-settlement.md), [Private Derivatives](../approaches/approach-private-derivatives.md)
