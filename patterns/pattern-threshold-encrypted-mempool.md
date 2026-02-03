@@ -140,5 +140,5 @@ Prevent MEV extraction by encrypting transaction content before mempool submissi
 
 - Shutter Network: https://shutter.network/
 - Shutter docs: https://docs.shutter.network/
-- Threshold encryption primer: https://blog.shutter.network/threshold-encryption-for-ethereum/
+- Threshold encryption primer: https://blog.shutter.network/introducing-shutter-network-combating-frontrunning-and-malicious-mev-using-threshold-cryptography/
 - Gnosis Shutter integration: https://docs.gnosischain.com/about/specs/shutter/

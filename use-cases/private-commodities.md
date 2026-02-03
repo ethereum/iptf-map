@@ -11,7 +11,7 @@ Tokenized commodity trading where position sizes, trading strategies, and physic
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-commodities.md](../../context/use-cases/context-private-commodities.md)
+**Confidential context:** Available in private IPTF repo
 
 ## 3) Actors
 

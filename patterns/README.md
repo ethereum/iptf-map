@@ -2,7 +2,7 @@
 
 **What this is.** Short, reusable solution cards for common architectures (e.g., confidential ERC-20 on L2, atomic DvP). Each card is 1–2 screens using a consistent structure so teams can compare options fast.
 
-**TODO: This folder needs to be refactored, deduped and populated more** See [PR #46](https://github.com/ethereum/iptf-pm/pull/46) for some work
+**TODO: This folder needs to be refactored, deduped and populated more**
 
 **How to use.** When a design is repeatable, add `pattern-*.md` using the template below. Keep it concise: intent → protocol → guarantees → trade-offs. Cross-link related patterns and any live PoCs.
 - Template: [`_template.md`](./_template.md)

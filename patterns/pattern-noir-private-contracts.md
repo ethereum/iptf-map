@@ -113,7 +113,7 @@ Noir is the DSL developed by Aztec, enable developers to write Ethereum-compatib
 ## See also
 
 - [Pattern: Privacy L2s](pattern-privacy-l2s.md) - General privacy rollup architectures
-- [Pattern: ZK Shielded Balances](pattern-zk-shielded-balance.md) - Balance privacy for derivatives
+- [Pattern: ZK Shielded Balances](pattern-zk-shielded-balances.md) - Balance privacy for derivatives
 - [Pattern: Co-SNARK](pattern-co-snark.md) - Multi-party ZK proofs for compliance
 - [Vendor: Aztec Network](../vendors/aztec.md) - Aztec protocol details
 - [Approach: Private Bonds](../approaches/approach-private-bonds.md) - Tokenized securities with privacy

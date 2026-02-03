@@ -105,7 +105,7 @@ These problems interact because traditional payment transparency conflicts with 
 **Primary Infrastructure:**
 
 - **L1 Shielding:** [Railgun](../vendors/railgun.md) for mature UTXO-style privacy pools
-- **Privacy L2:** [Aztec Network](../vendors/aztec-l2.md) for native confidential transfers, [Fhenix](../vendors/fhenix.md) for FHE-based payments
+- **Privacy L2:** [Aztec Network](../vendors/aztec.md) for native confidential transfers, [Fhenix](../vendors/fhenix.md) for FHE-based payments
 - **Stateless Plasma:** [Intmax](https://www.intmax.io/) for client-side proving with minimal on-chain footprint
 - **Traditional Integration:** SWIFT network adapters, ISO20022 processors
 
@@ -189,7 +189,7 @@ These problems interact because traditional payment transparency conflicts with 
 ## Links and Notes
 
 - **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573), [ISO 20022](https://www.iso20022.org/), [ERC-20](https://ercs.ethereum.org/ERCS/erc-20)
-- **Infrastructure:** [Railgun](https://railgun.org/), [Aztec Network](https://docs.aztec.network/), [Zama fhEVM](https://docs.zama.ai/fhevm), [Intmax](https://www.intmax.io/)
+- **Infrastructure:** [Railgun](https://railgun.org/), [Aztec Network](https://docs.aztec.network/), [Zama fhEVM](https://docs.zama.org/fhevm), [Intmax](https://www.intmax.io/)
 - **Patterns:** [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
 - **Regulatory:** [MiCA Framework](../jurisdictions/eu-MiCA.md), [SEC - GENIUS Act](../jurisdictions/us-SEC.md)
 - **Related Approaches:** [Private Trade Settlement](../approaches/approach-private-trade-settlement.md), [Private Derivatives](../approaches/approach-private-derivatives.md)

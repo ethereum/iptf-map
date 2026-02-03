@@ -13,7 +13,7 @@ See [private-stablecoins.md](private-stablecoins.md) for stablecoin-specific pri
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-payments.md](../../context/use-cases/context-private-payments.md)
+**Confidential context:** Available in private IPTF repo
 
 ## 3) Actors
 
