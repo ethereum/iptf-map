@@ -23,9 +23,9 @@ The Ethereum ecosystem has developed multiple standards addressing institutional
 |----------|---------|--------|-------------------|
 | **ERC-3643** | Permissioned tokenized securities | Final | High |
 | **ERC-7573** | Cross-chain DvP coordination | Draft | High |
-| **EIP-5564** | Stealth addresses | Draft | Medium |
-| **EIP-6123** | Derivatives lifecycle | Draft | High |
-| **EIP-7805** | Fork Choice Inclusion Lists (FOCIL) | Draft | Medium |
+| **EIP-5564** | Stealth addresses | Final | Medium |
+| **EIP-6123** | Derivatives lifecycle | Final | High |
+| **EIP-7805** | Fork Choice Inclusion Lists (FOCIL) | Draft (Glamsterdam) | Medium |
 | **ERC-7945** | Confidential token transfers | Draft | High |
 | **ERC-8065** | ZK token wrapper | Draft | High |
 
@@ -35,13 +35,13 @@ The Ethereum ecosystem has developed multiple standards addressing institutional
 
 | Aspect | Details |
 |--------|---------|
-| **Purpose** | Standard for permissioned tokens with built-in compliance (KYC, transfer restrictions, eligibility rules) |
+| **Purpose** | Standard facilitating compliance by enforcing transfer rules on ERC-20 functions (KYC, transfer restrictions, eligibility) |
 | **Status** | Final |
 | **Key Features** | On-chain identity (ONCHAINID), modular compliance rules, transfer agent controls, forced transfers for recovery |
 | **Institutional Fit** | High - designed specifically for regulated securities |
-| **Vendor Support** | [Tokeny](../vendors/tokeny.md), multiple custodians |
+| **Vendor Support** | Tokeny, multiple custodians |
 | **Pattern Support** | [ERC-3643 RWA Tokenization](../patterns/pattern-erc3643-rwa.md) |
-| **Limitations** | Privacy limited to access control (not cryptographic); all transactions visible to permissioned parties |
+| **Limitations** | Privacy limited to access control (not cryptographic); all transactions visible to permissioned parties; limited DeFi interoperability—requires dedicated protocol deployments (e.g., [Aave Horizon](https://aave.com/docs/aave-v3/horizon)) |
 
 **When to use**: Tokenized securities requiring regulatory compliance, transfer restrictions, and corporate actions support.
 
@@ -68,7 +68,7 @@ The Ethereum ecosystem has developed multiple standards addressing institutional
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Enable unlinkable payments by generating fresh addresses per transaction |
-| **Status** | Draft |
+| **Status** | Final |
 | **Key Features** | Meta-address publishing, ephemeral key generation, recipient scanning |
 | **Institutional Fit** | Medium - useful for payments privacy, but scanning overhead at scale |
 | **Vendor Support** | [Railgun](../vendors/railgun.md) implements similar concepts |
@@ -84,7 +84,7 @@ The Ethereum ecosystem has developed multiple standards addressing institutional
 | Aspect | Details |
 |--------|---------|
 | **Purpose** | Standardize derivatives lifecycle management on-chain (confirmation, valuation, margin, settlement) |
-| **Status** | Draft |
+| **Status** | Final |
 | **Key Features** | Trade state machine, margin management, event callbacks, termination handling |
 | **Institutional Fit** | High - models institutional derivatives workflows |
 | **Vendor Support** | Limited current implementations |
@@ -102,7 +102,7 @@ The Ethereum ecosystem has developed multiple standards addressing institutional
 | **Purpose** | Censorship resistance through inclusion lists that proposers must respect |
 | **Status** | Draft |
 | **Key Features** | Committee-based inclusion lists, forced transaction inclusion, censorship detection |
-| **Institutional Fit** | Medium - addresses censorship concerns for compliant transactions |
+| **Institutional Fit** | Medium-High - provides banking risk assessment confidence by guaranteeing contract state integrity; addresses censorship concerns for compliant transactions |
 | **Vendor Support** | Protocol-level; no vendor implementation required |
 | **Pattern Support** | [FOCIL Pattern](../patterns/pattern-focil-eip7805.md) |
 | **Limitations** | L1-focused; L2 censorship resistance requires separate mechanisms |
@@ -181,9 +181,8 @@ The Ethereum ecosystem has developed multiple standards addressing institutional
 
 | Standard | Risk | Mitigation |
 |----------|------|------------|
-| **EIP-5564** | Stagnant development; limited adoption | Monitor for revival; consider vendor alternatives |
-| **EIP-6123** | Complex; low current adoption | Pilot implementations needed; simplification proposals |
 | **ERC-7945** | Draft; interface may evolve | Track EIP discussions; design for adapter patterns |
+| **ERC-8065** | Draft; wrapping semantics may change | Monitor discussions; plan for migration paths |
 
 ---
 
@@ -249,6 +248,7 @@ Standards not in primary scope but relevant for context:
 | Standard | Status | Potential Impact |
 |----------|--------|------------------|
 | **ERC-6551** | Final | Token-bound accounts could enable per-asset privacy policies |
+| **EIP-7701** | Draft | Native account abstraction enables institutional key management with custom account rules, ZK-based privacy systems, and new private transfer constructions on L1 |
 | **EIP-7702** | Draft | EOA code delegation may simplify privacy wallet implementations |
 
 ---

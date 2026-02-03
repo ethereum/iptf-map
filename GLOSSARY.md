@@ -69,6 +69,8 @@ A dedicated network or service that publishes and stores the data required for D
 
 **[EIP-7805](https://eips.ethereum.org/EIPS/eip-7805)**: Fork Choice Inclusion Lists (FOCIL) standard for censorship resistance through committee-enforced transaction inclusion
 
+**[EIP-7701](https://eips.ethereum.org/EIPS/eip-7701)**: Native account abstraction standard enabling custom account validation logic, institutional key management, and ZK-based privacy systems
+
 **[ERC-7945](https://ercs.ethereum.org/ERCS/erc-7945)**: Standard for confidential token transfers using cryptographic commitments to hide balances and amounts
 
 **[ERC-8065](https://ercs.ethereum.org/ERCS/erc-8065)**: ZK token wrapper standard enabling privacy for existing ERC-20 tokens through shielded wrapping
