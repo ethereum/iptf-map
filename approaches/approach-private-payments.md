@@ -65,6 +65,14 @@ These problems interact because traditional payment transparency conflicts with 
 - Best for: Near-term deployment, institutional trust model acceptable
 - Trade-off: Hardware trust assumptions, vendor dependency
 
+**MPC-Based Privacy:**
+
+- Multi-party computation nodes jointly process transactions without any single party seeing plaintext
+- Combines MPC with ZK proofs (co-SNARKs) for on-chain verification of private state transitions
+- [co-SNARKs (Collaborative Proving)](../patterns/pattern-co-snark.md) pattern
+- Best for: Amount confidentiality where counterparty relationships are already known (e.g., bilateral settlement)
+- Trade-off: No sender/receiver anonymity; addresses remain public on-chain
+
 ### Recommended Architecture: Hybrid L1/L2 Model
 
 **Primary Patterns:**
@@ -113,6 +121,7 @@ These problems interact because traditional payment transparency conflicts with 
 
 - **FHE Approach:** [Zama](../vendors/zama.md) fhEVM for homomorphic stablecoin operations
 - **TEE Approach:** AWS Nitro Enclaves, Azure Confidential Computing for issuer-side privacy
+- **MPC + ZK Approach:** [TACEO Merces](../vendors/taceo-merces.md) uses MPC + ZK for private stablecoin transfers, counterparty relationship is public
 
 ### Implementation Strategy
 
