@@ -5,6 +5,7 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Added
+- chore(vendors|approaches): add taceo merces and update private payments approach: [TACEO Merces](vendors/taceo-merces.md) - MPC + ZK approach for private stablecoin transfers
 - feat(approach): [Privacy Standards Survey](approaches/approach-privacy-standards-survey.md) - Standards catalog, gap analysis, and decision guidance ([#64](https://github.com/ethereum/iptf-map/pull/64))
 - feat(use-case): [Private Read](use-cases/private-read.md) - blockchain query privacy (stub)
 - feat(use-case): [Private Corporate Bonds](use-cases/private-corporate-bonds.md) - capital formation privacy (stub)
