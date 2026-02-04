@@ -54,8 +54,9 @@ See [Private Bonds](../approaches/approach-private-bonds.md) and [Private Paymen
 ## 7) Notes And Links
 
 - **Patterns:**
-  - [pattern-aztec-privacy-l2-erc7573.md](../../patterns/pattern-aztec-privacy-l2-erc7573.md)
-  - [pattern-l2-encrypted-offchain-audit.md](../../patterns/pattern-l2-encrypted-offchain-audit.md)
-  - [pattern-zk-kyc-ml-id-erc734-735.md](../../patterns/pattern-zk-kyc-ml-id-erc734-735.md)
-  - [pattern-co-snark-compliance-check.md](../../patterns/pattern-co-snark-compliance-check.md)
+  - [pattern-private-pvp-stablecoins-erc7573.md](../patterns/pattern-private-pvp-stablecoins-erc7573.md)
+  - [pattern-erc3643-rwa.md](../patterns/pattern-erc3643-rwa.md)
+  - [pattern-l2-encrypted-offchain-audit.md](../patterns/pattern-l2-encrypted-offchain-audit.md)
+  - [pattern-zk-kyc-ml-id-erc734-735.md](../patterns/pattern-zk-kyc-ml-id-erc734-735.md)
+  - [pattern-co-snark.md](../patterns/pattern-co-snark.md)
 - **Standards:** ERC-3643, ERC-7943

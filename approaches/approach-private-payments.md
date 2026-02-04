@@ -69,7 +69,7 @@ These problems interact because traditional payment transparency conflicts with 
 
 - Multi-party computation nodes jointly process transactions without any single party seeing plaintext
 - Combines MPC with ZK proofs (co-SNARKs) for on-chain verification of private state transitions
-- [co-SNARKs (Collaborative Proving)](../patterns/pattern-co-snark.md) pattern
+- [co-SNARKs (Collaborative Proving)](../patterns/pattern-co-snark.md) pattern, See also [TACEO Merces](../vendors/taceo-merces.md)
 - Best for: Amount confidentiality where counterparty relationships are already known (e.g., bilateral settlement)
 - Trade-off: No sender/receiver anonymity; addresses remain public on-chain
 

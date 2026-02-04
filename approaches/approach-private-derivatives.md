@@ -139,7 +139,7 @@ These problems interact because traditional privacy solutions (like simple encry
 
 - Use case: Multi-asset baskets, structured products
 - Trade-off: Higher complexity, better privacy for proprietary strategies
-- Pattern: [Co-SNARK](../patterns/pattern-co-snark.md)
+- Pattern: [Co-SNARK](../patterns/pattern-co-snark.md), Vendor: [TACEO Merces](../vendors/taceo-merces.md)
 
 ## Links and Notes
 
