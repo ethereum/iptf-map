@@ -10,7 +10,7 @@ Institutions that interact with client EOAs must verify identity and key control
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-auth.md](../../context/use-cases/context-private-auth.md)
+**Confidential context:** Available in private IPTF repo
 
 ## 3) Actors
 

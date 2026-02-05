@@ -11,7 +11,7 @@ Price feeds and data sources that protect query privacy - hiding which instituti
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-oracles.md](../../context/use-cases/context-private-oracles.md)
+**Confidential context:** Available in private IPTF repo
 
 ## 3) Actors
 

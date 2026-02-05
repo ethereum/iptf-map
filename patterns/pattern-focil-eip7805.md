@@ -69,7 +69,7 @@ FOCIL (Fork-Choice Enforced Inclusion Lists) is an EIP that enables a committee 
 
 ## See also
 
-- [Pre-trade Privacy (Shutter/SUAVE)](./pattern-pretrade-privacy-shutter-suave.md) — complementary pattern for hiding transaction content before inclusion
+- [Pre-trade Privacy (Shutter/SUAVE)](./pattern-pretrade-privacy-encryption.md) — complementary pattern for hiding transaction content before inclusion
 - [EIP-7547](https://eips.ethereum.org/EIPS/eip-7547) — forward inclusion lists (1-slot delay vs same-slot in FOCIL)
 - [Private Payments Approach](../approaches/approach-private-payments.md) — FOCIL ensures inclusion; private payments hide content
 - [Verifiable Attestation](./pattern-verifiable-attestation.md) — attesters validate IL satisfaction before attesting

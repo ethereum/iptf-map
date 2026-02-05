@@ -11,7 +11,7 @@ Tokenized money market funds providing yield-bearing treasury management for ins
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-money-market-funds.md](../../context/use-cases/context-private-money-market-funds.md)
+**Confidential context:** Available in private IPTF repo
 
 ## 3) Actors
 

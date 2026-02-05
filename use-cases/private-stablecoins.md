@@ -12,7 +12,7 @@ Institutions want to use stablecoins as settlement cash without exposing amounts
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-stablecoins.md](../../context/use-cases/context-private-stablecoins.md)
+**Confidential context:** Available in private IPTF repo
 
 ## 3) Actors
 

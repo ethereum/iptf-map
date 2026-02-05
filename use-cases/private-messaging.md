@@ -11,7 +11,7 @@ Encrypted communication channels for financial institutions conducting blockchai
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-messaging.md](../../context/use-cases/context-private-messaging.md)
+**Confidential context:** Available in private IPTF repo
 
 ## 3) Actors
 

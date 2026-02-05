@@ -11,7 +11,7 @@ Tokenized repurchase agreements where counterparties and transaction amounts mus
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-repo.md](../../context/use-cases/context-private-repo.md)
+**Confidential context:** Available in private IPTF repo
 
 ## 3) Actors
 

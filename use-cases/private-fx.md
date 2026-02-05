@@ -11,7 +11,7 @@ Cross-border foreign exchange settlement on blockchain where trading intent, pos
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-fx.md](../../context/use-cases/context-private-fx.md)
+**Confidential context:** Available in private IPTF repo
 
 ## 3) Actors
 

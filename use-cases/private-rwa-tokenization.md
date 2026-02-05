@@ -10,7 +10,7 @@ Regulated real-world assets (RWAs) are tokenized on-chain to enable permissioned
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-rwa-tokenization.md](../../context/use-cases/context-private-rwa-tokenization.md)
+**Confidential context:** Available in private IPTF repo
 
 ### Market Signals
 
