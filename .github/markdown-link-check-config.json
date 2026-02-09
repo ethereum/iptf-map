@@ -5,6 +5,21 @@
     },
     {
       "pattern": "^https?://127\\.0\\.0\\.1"
+    },
+    {
+      "pattern": "^https://www\\.intel\\.com"
+    },
+    {
+      "pattern": "^https://www\\.npmjs\\.com"
+    },
+    {
+      "pattern": "^https://www\\.fireblocks\\.com"
+    },
+    {
+      "pattern": "^https://www\\.w3\\.org"
+    },
+    {
+      "pattern": "^https://www\\.bafin\\.de"
     }
   ],
   "httpHeaders": [

@@ -13,7 +13,7 @@ See [private-bonds.md](private-bonds.md) for general bond patterns. Government d
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-government-debt.md](../../context/use-cases/context-private-government-debt.md)
+**Confidential context:** Available in private IPTF repo
 
 ## 3) Actors
 

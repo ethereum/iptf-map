@@ -38,8 +38,8 @@ These problems interact because traditional broadcasting requires public visibil
 
 **Intent Signaling Protection:**
 
-- [Shutter Network](../patterns/pattern-pretrade-privacy-shutter-suave.md) for encrypted mempools
-- [SUAVE](../patterns/pattern-pretrade-privacy-shutter-suave.md) for private intent expression
+- [Shutter Network](../patterns/pattern-pretrade-privacy-encryption.md) for encrypted mempools
+- [SUAVE](../patterns/pattern-pretrade-privacy-encryption.md) for private intent expression
 - Encrypted mempool solutions with threshold decryption
 
 **Private Rollups:**
@@ -76,5 +76,5 @@ These problems interact because traditional broadcasting requires public visibil
 
 ## Links and Notes
 
-- **Patterns:** [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-shutter-suave.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md)
+- **Patterns:** [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-encryption.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md)
 - **Vendors:** [Renegade](../vendors/renegade.md), [Flashbots](../vendors/flashbots.md), [Shutter](../vendors/shutter.md)

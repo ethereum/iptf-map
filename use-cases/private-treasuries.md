@@ -13,7 +13,7 @@ Note: This is corporate treasury management, NOT government securities (treasuri
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-treasuries.md](../../context/use-cases/context-private-treasuries.md)
+**Confidential context:** Available in private IPTF repo
 
 ## 3) Actors
 

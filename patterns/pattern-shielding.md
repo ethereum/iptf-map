@@ -58,4 +58,4 @@ Enable **confidential ERC-20 transfers** by shielding balances and transfer meta
 
 - Railgun: https://docs.railgun.org/wiki
 - Aztec docs: https://docs.aztec.network/
-- Zama fhEVM: https://zama.ai/fhevm
+- Zama fhEVM: https://docs.zama.org/protocol/protocol/overview

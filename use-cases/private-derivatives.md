@@ -10,7 +10,7 @@ Banks need to run ERC-6123 interest-rate swaps on public chains without leaking 
 
 ## 2) Additional Business Context
 
-**See confidential context:** [context/use-cases/context-private-derivatives.md](../../context/use-cases/context-private-derivatives.md)
+**Confidential context:** Available in private IPTF repo
 
 ## 3) Actors
 
