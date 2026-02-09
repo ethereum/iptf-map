@@ -15,7 +15,7 @@ status: draft
 - [Private Smart Derivatives (ERC-6123)](../use-cases/private-derivatives.md)
 
 ## Shortest-path patterns
-- [Confidential ERC-20 on privacy L2 (FHE) + ERC-7573](../patterns/pattern-confidential-erc20-fhe-l2-erc7573.md)
+- [Confidential ERC-20 on privacy L2 (FHE) + ERC-7573](../patterns/pattern-shielding.md)
 - [L1 ZK commitment pool](../patterns/pattern-l1-zk-commitment-pool.md)
 - [Crypto-registry bridge (eWpG) + EAS](../patterns/pattern-crypto-registry-bridge-ewpg-eas.md)
 - [ICMA Bond Data Taxonomy](../patterns/pattern-icma-bdt-data-model.md)

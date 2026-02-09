@@ -61,5 +61,5 @@ Use a **privacy-native rollup** (ZK or FHE-based) to execute financial logic wit
 
 - Aztec docs: https://docs.aztec.network/
 - Aleo: https://aleo.org/
-- Zama fhEVM: https://docs.zama.org/fhevm
+- Zama fhEVM: https://docs.zama.org/protocol/protocol/overview
 - Miden: https://miden.xyz/
