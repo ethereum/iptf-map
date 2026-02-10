@@ -7,6 +7,7 @@ All notable changes to the IPTF Map are documented here.
 ### Added
 - chore(vendors|approaches): add taceo merces and update private payments approach: [TACEO Merces](vendors/taceo-merces.md) - MPC + ZK approach for private stablecoin transfers
 - feat(approach): [Privacy Standards Survey](approaches/approach-privacy-standards-survey.md) - Standards catalog, gap analysis, and decision guidance ([#64](https://github.com/ethereum/iptf-map/pull/64))
+- feat(pattern): [Compliance Monitoring](patterns/pattern-compliance-monitoring.md) - Transaction screening with privacy-preserving audit trails ([#73](https://github.com/ethereum/iptf-map/pull/73))
 - feat(use-case): [Private Read](use-cases/private-read.md) - blockchain query privacy (stub)
 - feat(use-case): [Private Corporate Bonds](use-cases/private-corporate-bonds.md) - capital formation privacy (stub)
 - feat(use-case): [Private Government Debt](use-cases/private-government-debt.md) - sovereign/municipal bonds (stub)
@@ -54,12 +55,7 @@ All notable changes to the IPTF Map are documented here.
 
 ### Fixed
 
-<<<<<<< HEAD
-
-=======
-
 - fix(refs): Updated [Private Bonds](use-cases/private-bonds.md) PoC links to ethereum/iptf-pocs
-  > > > > > > > 1bd31b9 (feat(chore): updated changelog)
 - fix(pattern): Required frontmatter fields across all patterns ([#42](https://github.com/ethereum/iptf-map/pull/42))
 
 ## [0.2.0] - 2025-12-19 (End of Year)
