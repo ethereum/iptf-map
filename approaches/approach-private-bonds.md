@@ -119,7 +119,7 @@ _FHE-Based:_
 
 - Whitelist enforcement (KYC-approved addresses)
 - Attestations
-- [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643) integration
+- [Proof of Innocence](https://www.sciencedirect.com/science/article/pii/S2096720923000519)
 - Crypto-registry verification for eWpG/MiCA
 
 **Key Differences:**
@@ -134,15 +134,15 @@ _FHE-Based:_
 
 **Architecture Comparison:**
 
-| Dimension              | UTXO Shielding         | Privacy L2s              | co-SNARKs (MPC)           | FHE                                    |
-| ---------------------- | ---------------------- | ------------------------ | ------------------------- | -------------------------------------- |
-| **Trust Model**        | Minimal (self-custody) | Minimal (client-side ZK) | Delegated (3-of-3 honest) | Delegated (threshold decrypt)          |
-| **Privacy Strength**   | Amounts + addresses    | Amounts + addresses      | Amounts only              | Amounts only                           |
-| **Cost per Transfer**  | High                   | Low (L2-internal)        | Low (batched)             | Medium                                 |
+| Dimension              | UTXO Shielding         | Privacy L2s              | co-SNARKs (MPC)           | FHE                                   |
+| ---------------------- | ---------------------- | ------------------------ | ------------------------- | ------------------------------------- |
+| **Trust Model**        | Minimal (self-custody) | Minimal (client-side ZK) | Delegated (3-of-3 honest) | Delegated (threshold decrypt)         |
+| **Privacy Strength**   | Amounts + addresses    | Amounts + addresses      | Amounts only              | Amounts only                          |
+| **Cost per Transfer**  | High                   | Low (L2-internal)        | Low (batched)             | Medium                                |
 | **Throughput**         | Chain-dependent        | Unknown (2026)           | ~200 TPS                  | 500-1000 TPS (shared across all apps) |
-| **Maturity**           | Production             | Testnet/2026             | Testnet                   | Testnet                                |
-| **Ops Infrastructure** | Standard EVM           | Bridge/L2 node           | MPC network               | Threshold network                      |
-| **Vendor Ecosystem**   | Paladin, Railgun       | Aztec, Miden             | TACEO                     | Zama, Fhenix                           |
+| **Maturity**           | Production             | Testnet/2026             | Testnet                   | Testnet                               |
+| **Ops Infrastructure** | Standard EVM           | Bridge/L2 node           | MPC network               | Threshold network                     |
+| **Vendor Ecosystem**   | Paladin, Railgun       | Aztec, Miden             | TACEO                     | Zama, Fhenix                          |
 
 ### Open Questions
 
@@ -194,7 +194,7 @@ _FHE-Based:_
 
 - **Reference Implementation:** [Private Bond PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-bond) — Three implementations: Custom UTXO, Aztec L2, Zama FHE
 - **Maturity Status (Feb 2026):** UTXO (Production: Railgun), Privacy L2s (Testnet/2026: Aztec Ignition, Miden), co-SNARKs (Testnet: TACEO Base/Arc), FHE (Testnet: Zama, Fhenix)
-- **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ICMA BDT](https://www.icmagroup.org/market-practice-and-regulatory-policy/repo-and-collateral-markets/legal-documentation/global-master-repurchase-agreement-gmra/)
+- **Standards:** [ICMA BDT](https://www.icmagroup.org/market-practice-and-regulatory-policy/repo-and-collateral-markets/legal-documentation/global-master-repurchase-agreement-gmra/)
 - **Research:** [Private Tokenized Securities with UTXO Model](https://eprint.iacr.org/2025/1715.pdf) - UTXO-style privacy for ERC-3643 compliant securities
 - **Regulations:** [eWpG](../jurisdictions/de-eWpG.md), [MiCA](../jurisdictions/eu-MiCA.md)
 - **Vendor Solutions:**
