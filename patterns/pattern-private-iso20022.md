@@ -31,7 +31,8 @@ ISO messages are linked to the cash leg, while the **cash leg itself settles pri
 - **Standards**:
   - [ISO 20022 schema](https://www.iso20022.org/iso-20022-message-definitions) (pacs.008/009/002, camt.\*)
   - [ERC-20](https://eips.ethereum.org/EIPS/eip-20) / [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643) (tokenized cash/RWA)
-  - (Optional)[ERC-7573](https://eips.ethereum.org/EIPS/eip-7573) (conditional settlement / atomic coupling)
+  - (Optional) [ERC-7573](https://eips.ethereum.org/EIPS/eip-7573) (conditional settlement / atomic coupling)
+  - [`<SplmtryData>`](https://www.iso20022.org/supplementary_data.page) extension mechanism (proof/commitment carrier within ISO messages)
 - **Infra**
   - Privacy settlement rail: **shielded pool** (e.g., Aztec/Railgun/Penumbra) **or** **confidential token** (e.g., fhEVM-style)
   - Rollup/validium for anchoring minimal metadata (msg type, status, coarse time bucket)
@@ -63,6 +64,14 @@ ISO messages are linked to the cash leg, while the **cash leg itself settles pri
 2. Perform a **single-tx shielded DvP/PvP** referencing `C_msg`.
 3. Bridge assets back to their origin chains as needed.
 
+### Proof Transport via `<SplmtryData>`
+
+`C_msg` (and an optional ZK proof) can be embedded in the ISO message using `<SplmtryData>/<Envlp>`, with `<PlcAndNm>` pointing to the extended element (e.g., `/Document/FIToFICstmrCdtTrf/CdtTrfTxInf`).
+
+This leverages ISO 20022's **"can ignore" semantics**: intermediaries that do not support the extension process the message normally, only endpoints that understand the extension verify the proof. This enables **incremental adoption** across correspondent chains.
+
+To formalize, institutions can submit a **Change Request (CR)** to the relevant SEG to register an Extension `MessageDefinition` carrying proof data (commitments, ZK proofs, verification keys) as first-class ISO 20022 components.
+
 ---
 
 ## Guarantees
@@ -79,6 +88,7 @@ ISO messages are linked to the cash leg, while the **cash leg itself settles pri
 - Privacy rails (B1/B2) introduce **infra complexity** (shielded circuits or confidential VM) and **key governance**.
 - **Signing convention** (algorithm, PKI) must be agreed (full ISO hash vs reduced settlement tuple) for on-chain authorization.
 - **Cross-chain atomicity** (if the two legs span different chains) requires [**zk-SPV**](../patterns/pattern-zk-spv.md) or **single-domain execution** (B3).
+- **Incremental rollout**: `<SplmtryData>` "can ignore" semantics mean non-participating intermediaries pass messages through unchanged, but they also cannot verify proofs in transit.
 
 ---
 
@@ -95,6 +105,6 @@ ISO messages are linked to the cash leg, while the **cash leg itself settles pri
 
 ## See also
 
-- pattern-aztec-privacy-l2-erc7573.md / pattern-confidential-erc20-fhe-l2-erc7573.md (privacy rails)
-- pattern-dvp-erc7573.md (conditional coupling)
-- pattern-zk-spv.md (strong cross-chain atomicity)
+- [Pattern: DvP using ERC-7573](./pattern-dvp-erc7573.md): conditional coupling
+- [Pattern: ZK SPV](./pattern-zk-spv.md): strong cross-chain atomicity
+- [Pattern: Privacy L2](./pattern-privacy-l2s.md): privacy rails
