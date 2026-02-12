@@ -54,6 +54,7 @@ Enable compliant tokenization of real-world assets with built-in identity manage
 - **Permissioned Nature**: Not suitable for permissionless DeFi applications
 - **Regulatory Dependency**: Compliance rules must be maintained and updated
 - **Privacy Limitation**: Identity verification may conflict with transaction privacy needs
+- **Limited support for Stock Split events**: Stock split events mint new tokens, which is infeasible for larger amounts of token holders. Reverse stock splits introduce uncertainties around burning/transferring tokens which are not modelled. [ERC-8056](https://eips.ethereum.org/EIPS/eip-8056) proposes an extension to ERC-20 tokens that enables issuers to apply an updatable multiplier to the UI, efficiently handling stock splits and reverse stock splits.
 
 ## Example
 
