@@ -55,6 +55,7 @@ All notable changes to the IPTF Map are documented here.
 
 ### Fixed
 
+- fix(pattern): include tradeoff around handling of stock splits in erc-3643 ([#81](https://github.com/ethereum/iptf-map/pull/81))
 - fix(refs): Updated [Private Bonds](use-cases/private-bonds.md) PoC links to ethereum/iptf-pocs
 - fix(pattern): Required frontmatter fields across all patterns ([#42](https://github.com/ethereum/iptf-map/pull/42))
 
