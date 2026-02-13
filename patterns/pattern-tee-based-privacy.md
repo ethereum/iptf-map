@@ -5,7 +5,7 @@ maturity: pilot
 layer: offchain
 privacy_goal: Protect computation and data confidentiality via hardware-isolated execution
 assumptions: Hardware vendor trust, attestation infrastructure, physical security of deployment environment
-last_reviewed: 2026-01-14
+last_reviewed: 2026-02-13
 works-best-when:
   - Confidential computation needed with lower latency than ZK proofs
   - Parties accept hardware trust assumptions over cryptographic-only solutions
@@ -25,11 +25,13 @@ This is a foundational pattern describing TEE trust models and failure modes. Sp
 
 ## Ingredients
 
-- **Hardware Platforms**:
-  - **Intel SGX**: Process-level enclaves with memory encryption (SGX1, SGX2, SGX3)
-  - **AMD SEV-SNP**: VM-level isolation with memory encryption and integrity
-  - **AWS Nitro Enclaves**: Isolated VMs with no persistent storage, no network access
-  - **Azure Confidential Computing**: SGX and SEV-SNP offerings with attestation services
+- **Hardware Platforms** (two categories with different trust models):
+  - _CPU-encrypted (hardware TEEs)_: Memory encrypted by the CPU itself; protects data even from the host OS and hypervisor
+    - **Intel SGX**: Process-level enclaves, 90–128 MB encrypted memory (EPC). Attestation rooted in Intel signing keys
+    - **AMD SEV-SNP**: VM-level isolation with full memory encryption and integrity. Attestation rooted in AMD signing keys
+  - _Hypervisor-isolated (VM TEEs)_: Isolation enforced by a minimal hypervisor; no CPU-level memory encryption
+    - **AWS Nitro Enclaves**: Isolated VMs with no persistent storage, no network access. Attestation signed by AWS root CA
+    - **Azure Confidential Computing**: Offers both SGX and SEV-SNP; also provides attestation-as-a-service
   - **ARM TrustZone**: Mobile/embedded TEE (less common in institutional settings)
 
 - **Attestation Infrastructure**:
@@ -54,6 +56,19 @@ This is a foundational pattern describing TEE trust models and failure modes. Sp
 | **Cloud Provider** | Physical security, correct hypervisor | Contractual obligations, attestation, multi-cloud |
 | **Operator** | Correct deployment, no tampering | Remote attestation, sealed secrets, audit logs |
 | **Code Author** | Correct enclave logic | Open source, audits, formal verification |
+
+### Platform Threat Model Comparison
+
+| | CPU-encrypted (SGX, SEV) | Hypervisor-isolated (Nitro) |
+|---|---|---|
+| **Protects from** | Host OS, hypervisor, cloud provider | Parent instance, other tenants |
+| **Does NOT protect from** | CPU manufacturer (holds master keys) | Cloud provider (controls hypervisor) |
+| **Memory encryption** | CPU silicon | None (hypervisor boundary only) |
+| **Attestation root** | CPU manufacturer signing keys | Cloud provider root CA |
+| **Side-channel exposure** | High (CPU-level: Spectre, cache timing) | Lower (VM boundary) |
+| **Institutional analogy** | "HSM that can run programs" | "Locked-down VM you can't SSH into" |
+
+For institutions already trusting a cloud provider with their infrastructure, hypervisor-isolated TEEs are operationally simpler. When protection *from* the cloud provider is needed, CPU-encrypted TEEs are required.
 
 ### What TEEs Protect
 
