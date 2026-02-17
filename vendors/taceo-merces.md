@@ -15,6 +15,7 @@ TACEO Merces is an implementation of **Private Shared State (PSS)** for confiden
 - [co-SNARKs (Collaborative Proving)](../patterns/pattern-co-snark.md): Core proving mechanism; MPC nodes jointly generate Groth16 proofs
 - [ZK Shielded Balances](../patterns/pattern-zk-shielded-balances.md): Balances stored as Pedersen commitments; amounts hidden from observers
 - [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md): Confidential transfer amounts (partial fit; see limitations below)
+- [Private Shared State](../patterns/pattern-private-shared-state.md)
 
 ## Not a substitute for
 
