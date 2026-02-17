@@ -21,7 +21,7 @@ Institutional trade settlement requires balancing:
 3. **Cross-Domain Coordination**: Assets and cash may reside on different networks optimized for different purposes (liquidity vs privacy)
 4. **Compliance**: Cross-border regulatory requirements with varying privacy and disclosure rules
 
-The core tension: on a single network, atomicity is trivial (one transaction settles both legs). Across networks, atomicity and privacy become competing constraints — revealing state to coordinate settlement undermines the privacy that motivated using separate networks.
+On a single network, atomicity is trivial (one transaction settles both legs). Across networks, atomicity and privacy become competing constraints — revealing state to coordinate settlement undermines the privacy that motivated using separate networks.
 
 ### Key Constraints
 
