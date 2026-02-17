@@ -42,7 +42,7 @@ On a single network, atomicity is trivial (one transaction settles both legs). A
 
 On a single network, a smart contract can execute both legs in one transaction — atomicity is an inherent blockchain property, so the challenge is purely about privacy.
 
-Privacy strength scales with anonymity set size: larger pools make individual transactions harder to distinguish. Institutions, however, need KYC'd and regulated counterparties, which restricts who can enter the pool and shrinks the set. An open permissionless pool maximizes privacy but mixes compliant and non-compliant actors; a permissioned-only pool satisfies compliance but may be too small for meaningful anonymity. [Privacy Pools](../vendors/privacypools.md) explore a middle path through association sets — participants transact in a shared pool but prove membership in a compliant subset without revealing their identity within it. The right balance remains jurisdiction-, asset-class-, and risk-appetite-dependent.
+Privacy strength scales with anonymity set size: larger pools make individual transactions harder to distinguish. Institutions, however, need KYC'd and regulated counterparties, which restricts who can enter the pool and shrinks the set. An open permissionless pool maximizes privacy but mixes compliant and non-compliant actors; a permissioned-only pool satisfies compliance but may be too small for meaningful anonymity. [Privacy Pools](../vendors/privacypools.md) explore a middle path through association sets — participants transact in a shared pool but prove membership in a compliant subset without revealing their identity within it. The right balance remains jurisdiction, asset-class, and risk-appetite-dependent.
 
 #### Approach A: UTXO Shielded Pool DvP
 
