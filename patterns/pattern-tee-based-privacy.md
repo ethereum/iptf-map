@@ -70,7 +70,7 @@ This is a foundational pattern describing TEE trust models and failure modes. Sp
 
 For institutions already trusting a cloud provider with their infrastructure, hypervisor-isolated TEEs are operationally simpler. When protection *from* the cloud provider is needed, CPU-encrypted TEEs are required.
 
-> **TEE ≠ HSM.** Institutional familiarity with HSMs does not transfer directly to TEEs. HSMs provide physical tamper resistance (typically EAL5–7 certified), dedicated silicon, and a minimal firmware surface. TEEs offer general-purpose computation with logical isolation but share the CPU die, lack physical tamper resistance (typically EAL2–4), and have a larger attack surface with documented side-channel history. In institutional settings, contractual controls (NDA, audit rights, SLAs with TEE operators and cloud providers) partially mitigate this gap but do not close it. Treat TEEs as complementary to HSMs, not replacements.
+> **TEE ≠ HSM.** HSMs provide physical tamper resistance (EAL5–7), dedicated silicon, and minimal firmware surface. TEEs offer general-purpose computation with logical isolation but share the CPU die, lack physical tamper resistance (EAL2–4), and have a larger attack surface with documented side-channel history. Contractual controls (NDA, audit rights, SLAs) partially mitigate this gap but do not close it. Treat TEEs as complementary to HSMs, not replacements.
 
 ### What TEEs Protect
 
@@ -81,8 +81,8 @@ For institutions already trusting a cloud provider with their infrastructure, hy
 ### What TEEs Do NOT Protect
 
 - **Availability**: Host can deny service, power off, or refuse to schedule enclave
-- **I/O Channel Control**: The host operator controls all communication in and out of the enclave (e.g., vsock). They can intercept, reorder, delay, drop, replay, and inject messages — even though they cannot read enclave memory. This makes the operator an active adversary on the communication path, not just an availability risk
-- **Communication Metadata**: Packet sizes, processing duration, and connection patterns remain visible even when payloads are encrypted. This metadata can leak operation types and magnitudes to the host
+- **I/O Channel Control**: The host operator controls all enclave communication (e.g., vsock) and can intercept, reorder, delay, drop, replay, and inject messages — even without reading enclave memory. The operator is an active adversary on the communication path
+- **Communication Metadata**: Packet sizes, processing duration, and connection patterns remain visible even with encrypted payloads, potentially leaking operation types and magnitudes
 - **Side Channels**: Timing, cache, power, and speculative execution leaks remain possible without constant-time cryptography and platform-specific mitigations
 - **Physical Attacks**: Sophisticated attackers with hardware access may extract secrets
 - **Supply Chain**: Compromised hardware from manufacturing may have backdoors
