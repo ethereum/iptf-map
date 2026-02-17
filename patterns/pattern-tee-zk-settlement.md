@@ -7,9 +7,9 @@ privacy_goal: Private settlement coordination inside TEEs with zero-knowledge pr
 assumptions: Attested TEE infrastructure, ZK prover backend, attestation registry, participants accept hardware trust
 last_reviewed: 2026-02-13
 works-best-when:
-  - Participants already accept hardware trust assumptions (HSMs, custodians)
+  - Counterparty risk is the primary concern and atomicity of settlement is the goal
+  - Privacy breach (operator/manufacturer sees trade details) is an acceptable residual risk manageable through contractual controls
   - Settlement coordination requires low latency that client-side ZK cannot meet
-  - Cross-chain or multi-asset settlement needs a trusted coordinator with verifiable outputs
 avoid-when:
   - Trustless guarantees are required (client-side ZK is preferable)
   - Regulators reject opaque enclaves without additional compliance layers
@@ -22,7 +22,9 @@ dependencies:
 
 ## Intent
 
-Coordinate private settlement inside TEEs, with zero-knowledge proofs attesting correct execution to smart contracts on-chain. The TEE acts as a confidential coordinator — matching orders, managing escrow state, and producing verifiable proofs — while hiding counterparties, amounts, and matching logic from all external observers. This pattern is not a replacement for client-side ZK but fills a niche where hardware trust is already accepted (institutional HSM environments) and coordination latency matters.
+Coordinate private settlement inside TEEs, with zero-knowledge proofs attesting correct execution to smart contracts on-chain. The TEE acts as a neutral synchronization layer between parties who do not trust each other — matching orders, managing escrow state, and producing verifiable proofs — while hiding counterparties, amounts, and matching logic from all external observers.
+
+The key property of this construction is the separation of financial risk from privacy risk. The ZK proof guarantees correct, atomic settlement on-chain regardless of TEE integrity: counterparty risk is eliminated by the protocol, not by trusting the hardware. If the TEE is compromised (operator or manufacturer observes plaintext), the worst case is a privacy breach — trade details are exposed — but no funds are lost and settlement correctness is unaffected. In institutional settings, this residual privacy risk is manageable through contractual controls (NDA, audit rights, penalties) with TEE operators, making it a legal/commercial matter rather than a protocol failure.
 
 ## Ingredients
 
@@ -55,12 +57,14 @@ Attestation verification: check hardware signature is from known manufacturer, c
 
 ## Trust Framework
 
+> For the general TEE threat model, failure modes, and defense layers, see [TEE-Based Privacy](pattern-tee-based-privacy.md). This section covers only what is specific to the settlement protocol.
+
 **Who sees what:**
 
 | Actor | Sees | Does not see |
 |-------|------|-------------|
 | Users | Own order details, own settlement outcome | Other parties' orders, matching logic |
-| TEE operator | Nothing (encrypted memory) | All plaintext data (isolated by hardware) |
+| TEE operator | Communication metadata (packet sizes, timing, connection patterns), I/O channel control (can reorder, delay, drop messages) | Enclave memory contents (isolated by hardware) |
 | Hardware vendor | Everything during execution (master keys) | Nothing after enclave destroyed |
 | Network observers | Commitments, proofs, stealth address outputs | Amounts, counterparties, order flow |
 | Auditors | Selectively disclosed data via viewing keys | Full state unless explicitly granted |
@@ -74,6 +78,8 @@ Attestation verification: check hardware signature is from known manufacturer, c
 | Rollback / replay attacks | Double-spend, stale state processing | Nonce monotonicity enforced in zero-knowledge proof, on-chain state root anchoring |
 | Single TEE failure | Service unavailability, locked funds | Multiple TEE nodes, timeout refund escape hatch in stealth note circuits |
 | Fake TEE (no attestation verification) | Operator steals all data | Mandatory attestation verification before encrypting orders |
+| Operator metadata leakage | Communication metadata (packet sizes, timing) can reveal trade magnitudes and enable front-running, even though the ZK proof guarantees correct execution | Constant-size message padding, constant-time processing, multi-operator coordination |
+| Operator selective delay | Operator stalls settlement to lock counterparty capital while market conditions change (timeout griefing) | Appropriate timeout calibration, operator reputation/staking, multi-operator threshold |
 | Supply chain tampering | Compromised hardware from manufacturing | Attestation checks, multi-vendor sourcing |
 
 ## Guarantees
@@ -99,7 +105,7 @@ Attestation verification: check hardware signature is from known manufacturer, c
 
 **Core limitations:**
 
-- **Hardware trust is irreducible**: The TEE hardware vendor can observe plaintext during execution. This is the fundamental tradeoff versus client-side ZK.
+- **Privacy depends on TEE integrity, financial correctness does not**: The ZK proof guarantees settlement correctness on-chain regardless of TEE compromise. However, the TEE hardware vendor can observe plaintext during execution — a privacy breach, not a financial one. This separation is the core design tradeoff versus client-side ZK (which provides both).
 - **Cross-chain atomicity is timeout-based, not cryptographic**: When coordinating across independent networks, one leg can succeed while the other fails. The timeout refund mechanism provides safety but not true atomicity. Same-network settlement remains the most practical path to atomic DvP.
 - **Performance**: 10–50% overhead versus native execution. Enclave memory limits constrain batch sizes on SGX.
 
@@ -110,7 +116,7 @@ Attestation verification: check hardware signature is from known manufacturer, c
 | Simple private transfers | Overkill | Preferred | Insufficient |
 | Cross-chain coordination | Good fit | Cannot coordinate | No verifiability |
 | High-frequency matching | Good fit | Too slow | No auditability |
-| Institutional custody (HSM context) | Natural fit | May suffice | Acceptable |
+| Institutional coordination (contractual trust) | Good fit | May suffice | Acceptable with audit layers |
 
 ## Example
 

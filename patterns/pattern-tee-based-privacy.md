@@ -66,9 +66,11 @@ This is a foundational pattern describing TEE trust models and failure modes. Sp
 | **Memory encryption** | CPU silicon | None (hypervisor boundary only) |
 | **Attestation root** | CPU manufacturer signing keys | Cloud provider root CA |
 | **Side-channel exposure** | High (CPU-level: Spectre, cache timing) | Lower (VM boundary) |
-| **Institutional analogy** | "HSM that can run programs" | "Locked-down VM you can't SSH into" |
+| **Institutional analogy** | "Programmable enclave" (weaker than HSM — see note below) | "Locked-down VM you can't SSH into" |
 
 For institutions already trusting a cloud provider with their infrastructure, hypervisor-isolated TEEs are operationally simpler. When protection *from* the cloud provider is needed, CPU-encrypted TEEs are required.
+
+> **TEE ≠ HSM.** Institutional familiarity with HSMs does not transfer directly to TEEs. HSMs provide physical tamper resistance (typically EAL5–7 certified), dedicated silicon, and a minimal firmware surface. TEEs offer general-purpose computation with logical isolation but share the CPU die, lack physical tamper resistance (typically EAL2–4), and have a larger attack surface with documented side-channel history. In institutional settings, contractual controls (NDA, audit rights, SLAs with TEE operators and cloud providers) partially mitigate this gap but do not close it. Treat TEEs as complementary to HSMs, not replacements.
 
 ### What TEEs Protect
 
@@ -79,7 +81,9 @@ For institutions already trusting a cloud provider with their infrastructure, hy
 ### What TEEs Do NOT Protect
 
 - **Availability**: Host can deny service, power off, or refuse to schedule enclave
-- **Side Channels**: Timing, cache, power, and speculative execution leaks possible
+- **I/O Channel Control**: The host operator controls all communication in and out of the enclave (e.g., vsock). They can intercept, reorder, delay, drop, replay, and inject messages — even though they cannot read enclave memory. This makes the operator an active adversary on the communication path, not just an availability risk
+- **Communication Metadata**: Packet sizes, processing duration, and connection patterns remain visible even when payloads are encrypted. This metadata can leak operation types and magnitudes to the host
+- **Side Channels**: Timing, cache, power, and speculative execution leaks remain possible without constant-time cryptography and platform-specific mitigations
 - **Physical Attacks**: Sophisticated attackers with hardware access may extract secrets
 - **Supply Chain**: Compromised hardware from manufacturing may have backdoors
 
@@ -101,6 +105,8 @@ For institutions already trusting a cloud provider with their infrastructure, hy
 | **Side-Channel Attack** | Cache timing, Spectre/Meltdown variants | Partial secret leakage | Constant-time code, partitioning, updates |
 | **Rollback Attack** | Replay of old sealed state | Policy bypass, double-spend | Monotonic counters, external anchoring |
 | **Denial of Service** | Host refuses to run enclave | Availability loss | Redundancy, fallback procedures, SLAs |
+| **I/O Manipulation** | Operator intercepts, reorders, delays, or injects messages on the communication channel | Data corruption, front-running, selective censorship | Authenticated channels with sequence numbers, ZK proofs of correct execution (see Upgrade Paths), multi-operator setups |
+| **Incomplete Attestation Verification** | Client verifies only the image hash or skips certificate chain validation | Code substitution while attestation appears valid | Verify all platform configuration registers, validate certificate chain to hardware vendor root CA, use nonce-based freshness |
 | **Key Exfiltration** | Bug in enclave code leaks secrets | Complete compromise | Audits, formal verification, minimal TCB |
 
 ## Guarantees
@@ -128,14 +134,18 @@ For institutions already trusting a cloud provider with their infrastructure, hy
 | Long-term custody | Poor | Prefer MPC or cold storage for years-long secrets |
 | Regulatory-critical audit | Uncertain | Depends on regulator acceptance |
 
-## Upgrade Paths
+## Defense Layers
 
-TEEs should be viewed as a transitional technology when pure cryptographic solutions are impractical:
+A TEE alone is insufficient for high-value production workloads. Each layer reduces the trust surface:
 
-1. **TEE → MPC**: Migrate key management to threshold schemes as MPC performance improves
-2. **TEE → ZK**: Replace confidential computation with ZK proofs when circuits become practical
-3. **TEE + ZK Hybrid**: Use TEE for execution, ZK for verifiable output (see pattern-tee-zk-settlement)
-4. **Multi-TEE**: Distribute across vendors/platforms to reduce single-vendor risk
+| Layer | Composition | What it adds |
+|-------|------------|--------------|
+| **TEE only** | Single enclave, single operator | Memory isolation. Vulnerable to operator I/O manipulation, side-channels, single point of compromise. Suitable for pilots and low-value operations only |
+| **TEE + Threshold Keys** | Key material distributed across multiple TEE instances operated by independent parties | No single compromise yields full key. Minimum viable for production custody and coordination |
+| **TEE + ZK** | TEE executes, produces ZK proof verified on-chain | Mitigates operator I/O manipulation: even if the operator tampers with inputs/outputs, the ZK proof will not verify unless execution was correct. Removes dependency on attestation infrastructure for verifiability (see [Hybrid TEE + ZK Settlement](pattern-tee-zk-settlement.md)) |
+| **TEE + Threshold + ZK** | Full defense in depth | Threshold trust, cryptographic verifiability, hardware isolation as complementary layers |
+
+> **GPU TEEs**: For compute-intensive workloads offloaded to GPU (ZK proving, ML inference), GPU confidential computing (e.g., NVIDIA H100) extends the TEE boundary to accelerators. GPU attestation should be verified within the CPU TEE before offloading sensitive data.
 
 ## Example
 
