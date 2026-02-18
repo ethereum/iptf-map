@@ -61,6 +61,7 @@ Enable **N parties to jointly read and write shared on-chain state**; balances, 
 - No approach hides sender/receiver addresses by default; combine with stealth addresses ([EIP-5564](https://eips.ethereum.org/EIPS/eip-5564)), and other primitives listed in [patterns](./patterns) to improve privacy guarantees.
 - FHE and MPC introduce batch latency; TEE trades latency for hardware trust.
 - All approaches are PoC/testnet as of Feb 2026; UTXO shielding is production-ready but covers single-party privacy, not shared state.
+- **Liveness**: FHE requires the threshold decryption committee to be online for any state read; MPC halts if fewer than the required quorum of nodes respond; TEE depends on the host continuing to schedule the enclave. All three degrade to unavailability, not to privacy loss, on liveness failure.
 
 ## Example
 
