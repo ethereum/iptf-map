@@ -5,7 +5,13 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Added
+
+- feat(pattern): [Network-Level Anonymity](patterns/pattern-network-anonymity.md) - Umbrella pattern for transport-layer sender anonymity (Tor, mixnets, private RPC, TEE-assisted, VPN)
+- feat(pattern): [TEE-Assisted Network Anonymity](patterns/pattern-tee-network-anonymity.md) - TEE+secret-sharing approach for low-latency sender anonymity (Flashbots Flashnet)
 - feat(pattern): [Private Shared State](patterns/pattern-private-shared-state.md) - Umbrella pattern for multi-party private state (FHE, MPC+ZK, TEE comparison)
+- feat(approach): Restructured [Private Trade Settlement](approaches/approach-private-trade-settlement.md) — separated single-chain and cross-chain approaches, added TEE+ZK, MPC, and intent-based settlement with trade-off matrices ([#77](https://github.com/ethereum/iptf-map/issues/77))
+- feat(pattern): Enhanced [Hybrid TEE + ZK Settlement](patterns/pattern-tee-zk-settlement.md) with trust framework, TEE API surface, stealth address design, anti-pattern table, and PoC learnings ([#79](https://github.com/ethereum/iptf-map/issues/79))
+- fix(pattern): Refreshed [TEE-Based Privacy](patterns/pattern-tee-based-privacy.md) — added CPU-encrypted vs hypervisor-isolated platform classification and threat model comparison
 - feat(approach): Enhanced [Private Bonds](approaches/approach-private-bonds.md) with PoC learnings, coprocessor model analysis (co-SNARKs vs FHE), comparison matrix, and implementation guidance
 - chore(vendors|approaches): add taceo merces and update private payments approach: [TACEO Merces](vendors/taceo-merces.md) - MPC + ZK approach for private stablecoin transfers
 - feat(approach): [Privacy Standards Survey](approaches/approach-privacy-standards-survey.md) - Standards catalog, gap analysis, and decision guidance ([#64](https://github.com/ethereum/iptf-map/pull/64))

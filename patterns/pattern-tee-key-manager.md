@@ -93,8 +93,9 @@ External systems bind the signer public key and policy hash to an approved attes
 ## Trade-offs
 
 - **Trust surface**
-  - Security depends on the TEE vendor (silicon, microcode, attestation roots/keys), the operator (physical security, provisioning, availability), and TEE code (correct, non-malicious policy logic), plus the attestation verifier and registry.
+  - Security depends on the TEE vendor (silicon, microcode, attestation roots/keys), the operator (physical security, provisioning, availability, and I/O channel control), and TEE code (correct, non-malicious policy logic), plus the attestation verifier and registry.
   - These are stronger trust assumptions than fully trust-minimised custody (for example, MPC without hardware trust anchors) and must be reflected in risk assessments.
+  - TEE key isolation provides weaker guarantees than HSM custody (no physical tamper resistance, larger attack surface, documented side-channel history). In institutional settings, contractual controls with TEE operators partially mitigate this gap. Treat TEE key managers as complementary to HSMs, not replacements.
 
 - **Attack and failure modes**
   - Supply-chain or firmware compromise can break TEE isolation or allow forged/meaningless attestation.
@@ -106,9 +107,9 @@ External systems bind the signer public key and policy hash to an approved attes
   - Secure provisioning, protected-state handling, monitoring, re-attestation, key rotation, and incident response runbooks are required; loss or corruption of protected state without a recovery plan can render keys unusable.
   - TEE execution and policy checks add latency and cap throughput, making this pattern better suited to treasury, validator, and institutional flows than very high-frequency trading.
 
-- **Lifecycle and upgrade path**
-  - TEEs offer a short- to medium-term way to improve key isolation where pure software custody is insufficient and MPC or threshold schemes are not yet practical at the required scale.
-  - Over time, long-lived custody keys can migrate to MPC or threshold schemes that reduce reliance on a single hardware trust anchor, with the TEE reduced to a control-plane component or phased out.
+- **Single-TEE limitation**
+  - A single TEE instance is a single point of compromise. For production custody, threshold key distribution across multiple TEE instances operated by independent parties is recommended. Single-TEE deployments are acceptable for pilot use or warm/operational keys with limited exposure.
+  - See [TEE-Based Privacy — Defense Layers](pattern-tee-based-privacy.md#defense-layers) for the layered security model.
 
 ## Example
 
