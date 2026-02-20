@@ -1,0 +1,4 @@
+node_modules/
+dist/
+src/data/graph.json
+.astro/

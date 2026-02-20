@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Galaxy } from '../components/Galaxy';
+import graphData from '../data/graph.json';
+---
+<Layout title="IPTF Privacy Map - Galaxy View">
+  <Galaxy client:load graph={graphData} />
+  <script define:vars={{ nodeCount: graphData.meta.node_count, edgeCount: graphData.meta.edge_count }}>
+    document.getElementById('nav-galaxy')?.classList.add('active');
+    const stats = document.getElementById('nav-stats');
+    if (stats) stats.textContent = `${nodeCount} nodes · ${edgeCount} edges`;
+  </script>
+</Layout>

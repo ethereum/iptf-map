@@ -1,0 +1,13 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { BrowseGrid } from '../components/BrowseGrid';
+import graphData from '../data/graph.json';
+---
+<Layout title="IPTF Privacy Map - Browse">
+  <BrowseGrid client:load graph={graphData} />
+  <script define:vars={{ nodeCount: graphData.meta.node_count, edgeCount: graphData.meta.edge_count }}>
+    document.getElementById('nav-browse')?.classList.add('active');
+    const stats = document.getElementById('nav-stats');
+    if (stats) stats.textContent = `${nodeCount} nodes · ${edgeCount} edges`;
+  </script>
+</Layout>

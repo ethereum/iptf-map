@@ -1,0 +1,110 @@
+---
+interface Props {
+  title?: string;
+}
+const { title = 'IPTF Privacy Map' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <style is:global>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg: #0F172A;
+        --bg-panel: #1E293B;
+        --bg-card: #334155;
+        --text: #F1F5F9;
+        --text-dim: #94A3B8;
+        --border: #475569;
+        --accent: #8B5CF6;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        overflow: hidden;
+        height: 100vh;
+      }
+
+      /* Navigation */
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.5rem 1rem;
+        background: var(--bg-panel);
+        border-bottom: 1px solid var(--border);
+        height: 48px;
+        z-index: 100;
+      }
+      .nav-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        color: var(--accent);
+        text-decoration: none;
+      }
+      .nav-links { display: flex; gap: 0.25rem; }
+      .nav-link {
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.8125rem;
+        color: var(--text-dim);
+        text-decoration: none;
+        transition: background 0.15s, color 0.15s;
+      }
+      .nav-link:hover, .nav-link.active {
+        background: var(--bg-card);
+        color: var(--text);
+      }
+      .nav-stats {
+        margin-left: auto;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+      }
+
+      /* Badge */
+      .badge {
+        display: inline-block;
+        padding: 0.125rem 0.5rem;
+        border-radius: 9999px;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+
+      /* Main content area */
+      .main {
+        height: calc(100vh - 48px);
+        position: relative;
+      }
+      /* Ensure Astro island wrappers fill the main area */
+      .main > astro-island,
+      .main > astro-island > * {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="/" class="nav-title">IPTF PRIVACY MAP</a>
+      <div class="nav-links">
+        <a href="/" class="nav-link" id="nav-galaxy">Galaxy</a>
+        <a href="/tree" class="nav-link" id="nav-tree">Tree</a>
+        <a href="/browse" class="nav-link" id="nav-browse">Browse</a>
+      </div>
+      <div class="nav-stats" id="nav-stats"></div>
+    </nav>
+    <main class="main">
+      <slot />
+    </main>
+  </body>
+</html>
