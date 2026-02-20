@@ -82,8 +82,8 @@ For institutions already trusting a cloud provider with their infrastructure, hy
 ### What TEEs Do NOT Protect
 
 - **Availability**: Host can deny service, power off, or refuse to schedule enclave
-- **I/O Channel Control**: The host operator controls all enclave communication (e.g., vsock) and can intercept, reorder, delay, drop, replay, and inject messages — even without reading enclave memory. The operator is an active adversary on the communication path
-- **Communication Metadata**: Packet sizes, processing duration, and connection patterns remain visible even with encrypted payloads, potentially leaking operation types and magnitudes
+- **I/O Channel Control**: Host operator controls all enclave communication (e.g., vsock) and can intercept, reorder, drop, replay, and inject messages — even without reading enclave memory
+- **Communication Metadata**: Packet sizes, processing duration, and connection patterns remain visible even with encrypted payloads, leaking operation types
 - **Side Channels**: Timing, cache, power, and speculative execution leaks remain possible without constant-time cryptography and platform-specific mitigations
 - **Physical Attacks**: Sophisticated attackers with hardware access may extract secrets
 - **Supply Chain**: Compromised hardware from manufacturing may have backdoors
@@ -106,8 +106,8 @@ For institutions already trusting a cloud provider with their infrastructure, hy
 | **Side-Channel Attack**                 | Cache timing, Spectre/Meltdown variants                                                 | Partial secret leakage                               | Constant-time code, partitioning, updates                                                                                     |
 | **Rollback Attack**                     | Replay of old sealed state                                                              | Policy bypass, double-spend                          | Monotonic counters, external anchoring                                                                                        |
 | **Denial of Service**                   | Host refuses to run enclave                                                             | Availability loss                                    | Redundancy, fallback procedures, SLAs                                                                                         |
-| **I/O Manipulation**                    | Operator intercepts, reorders, delays, or injects messages on the communication channel | Data corruption, front-running, selective censorship | Authenticated channels with sequence numbers, ZK proofs of correct execution (see Upgrade Paths), multi-operator setups       |
-| **Incomplete Attestation Verification** | Client verifies only the image hash or skips certificate chain validation               | Code substitution while attestation appears valid    | Verify all platform configuration registers, validate certificate chain to hardware vendor root CA, use nonce-based freshness |
+| **I/O Manipulation**                    | Operator intercepts, reorders, or injects messages on the channel | Data corruption, front-running, censorship | Authenticated channels with sequence numbers, ZK proofs of execution, multi-operator setups |
+| **Incomplete Attestation Verification** | Client skips certificate chain or platform register validation    | Code substitution while attestation appears valid | Validate full certificate chain to vendor root CA, check all platform registers, use nonce freshness |
 | **Key Exfiltration**                    | Bug in enclave code leaks secrets                                                       | Complete compromise                                  | Audits, formal verification, minimal TCB                                                                                      |
 
 ## Guarantees

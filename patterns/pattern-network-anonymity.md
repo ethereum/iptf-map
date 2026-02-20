@@ -23,6 +23,20 @@ Hide *who* is sending transactions or querying state at the network layer. Conte
 
 This is an umbrella pattern. Multiple approaches exist, each with different trade-offs along the **anonymity trilemma**: anonymity set size, latency, and bandwidth overhead. No single approach dominates; the right choice depends on the institution's latency tolerance, threat model, and infrastructure constraints.
 
+## Ingredients
+
+- Cryptographic: onion encryption, mix-and-shuffle, secret sharing, cover traffic
+- Hardware: client-side TEE (for TEE-assisted approach only)
+- Infra: relay/mix network or anonymity server cluster, private RPC endpoint
+
+## Protocol (concise)
+
+1. Client prepares transaction or RPC query for submission.
+2. Client routes message through chosen anonymity layer (relay network, mixnet, TEE cluster, or proxy).
+3. Anonymity layer strips or obscures sender metadata (IP, timing, query pattern).
+4. Message reaches destination (RPC node, mempool) without attribution to sender.
+5. Response returns through the same or separate anonymous channel.
+
 ## Anonymity Trilemma
 
 Any network anonymity system must trade off between three properties:
