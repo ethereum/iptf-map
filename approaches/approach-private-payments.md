@@ -73,6 +73,13 @@ These problems interact because traditional payment transparency conflicts with 
 - Best for: Amount confidentiality where counterparty relationships are already known (e.g., bilateral settlement)
 - Trade-off: No sender/receiver anonymity; addresses remain public on-chain
 
+**Purpose-Built Confidential Layer:**
+
+- Confidential balances and transfers for existing EVM assets via escrow and cross-chain messaging to an encrypted layer (ZK-verified)
+- Amount and balance confidentiality with selective disclosure
+- Best for: Amount confidentiality when counterparties are already known (treasury ops, payroll, vendor payouts, B2B settlement)
+- Trade-off: No sender/receiver anonymity by default
+
 ### Recommended Architecture: Hybrid L1/L2 Model
 
 **Primary Patterns:**
@@ -84,26 +91,22 @@ These problems interact because traditional payment transparency conflicts with 
 #### Core Components:
 
 1. **Multi-Tier Payment Infrastructure**
-
    - L1 Shielding: High-value transfers using shielded pools (Railgun-style commitment/nullifier)
    - Privacy L2: Frequent operations on privacy-native rollups (Aztec, Fhenix)
    - Cross-tier bridges: Secure movement between L1 and L2 privacy domains
 
 2. **Selective Disclosure Layer**
-
    - Regulator viewing keys for scoped audit access
    - Time-bound, threshold-controlled disclosure mechanisms
    - [Attestation logging](../patterns/pattern-verifiable-attestation.md) for compliance trails (EAS, W3C VC, or ONCHAINID)
    - Encrypted audit logs with selective decryption
 
 3. **Traditional Rail Integration**
-
    - ISO20022 message interpreters for SWIFT compatibility
    - Privacy-preserving bridges to traditional payment systems
    - Encrypted metadata for regulatory reporting
 
 4. **Multi-Asset Support**
-
    - Support for multiple stablecoins (USDC, EURC, etc.)
    - Cross-currency private transfers and conversions
    - Integration with existing stablecoin compliance frameworks
@@ -122,6 +125,7 @@ These problems interact because traditional payment transparency conflicts with 
 - **FHE Approach:** [Zama](../vendors/zama.md) fhEVM for homomorphic stablecoin operations
 - **TEE Approach:** AWS Nitro Enclaves, Azure Confidential Computing for issuer-side privacy
 - **MPC + ZK Approach:** [TACEO Merces](../vendors/taceo-merces.md) uses MPC + ZK for private stablecoin transfers, counterparty relationship is public
+- **HE + ZK + IBE Approach:** [Fairblock](../vendors/fairblock.md) connects EVM escrowed assets to an encrypted layer and ZK-verified confidential transfers, with scoped selective disclosure for audits and compliance.
 
 ### Implementation Strategy
 
