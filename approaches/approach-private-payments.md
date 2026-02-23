@@ -73,13 +73,6 @@ These problems interact because traditional payment transparency conflicts with 
 - Best for: Amount confidentiality where counterparty relationships are already known (e.g., bilateral settlement)
 - Trade-off: No sender/receiver anonymity; addresses remain public on-chain
 
-**Purpose-Built Confidential Layer:**
-
-- Confidential balances and transfers for existing EVM assets via escrow and cross-chain messaging to an encrypted layer (ZK-verified)
-- Amount and balance confidentiality with selective disclosure
-- Best for: Amount confidentiality when counterparties are already known (treasury ops, payroll, vendor payouts, B2B settlement)
-- Trade-off: No sender/receiver anonymity by default
-
 ### Recommended Architecture: Hybrid L1/L2 Model
 
 **Primary Patterns:**
