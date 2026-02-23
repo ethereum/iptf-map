@@ -42,6 +42,15 @@ These problems interact because traditional payment transparency conflicts with 
 - [Shielded ERC-20 Transfers](../patterns/pattern-shielding.md) with commitment/nullifier schemes
 - Higher per-transaction costs but battle-tested infrastructure
 
+**L1 Compliance-Friendly Shielding (Privacy Pools):**
+
+- Extends the shielded pool model with association set proofs for regulatory compliance signaling
+- Users prove their withdrawal is not linked to sanctioned or flagged deposits
+- Only production L1 shielded pool with built-in compliance mechanism
+- [Privacy Pools](../vendors/privacypools.md) vendor documentation
+- Best for: Compliance-sensitive ETH transfers where L1 security is required
+- Trade-off: ETH only (v1), higher gas costs (~2M)
+
 **Privacy L2 (Aztec, etc.):**
 
 - Full **privacy** with hidden state and confidential transfers
@@ -113,6 +122,7 @@ These problems interact because traditional payment transparency conflicts with 
 **Primary Infrastructure:**
 
 - **L1 Shielding:** [Railgun](../vendors/railgun.md) for mature UTXO-style privacy pools
+- **L1 Compliant Shielding:** [Privacy Pools](../vendors/privacypools.md) for compliance-friendly shielded ETH (association set proofs)
 - **Privacy L2:** [Aztec Network](../vendors/aztec.md) for native confidential transfers, [Fhenix](../vendors/fhenix.md) for FHE-based payments
 - **Stateless Plasma:** [Intmax](https://www.intmax.io/) for client-side proving with minimal on-chain footprint
 - **Traditional Integration:** SWIFT network adapters, ISO20022 processors
@@ -198,7 +208,7 @@ These problems interact because traditional payment transparency conflicts with 
 ## Links and Notes
 
 - **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573), [ISO 20022](https://www.iso20022.org/), [ERC-20](https://ercs.ethereum.org/ERCS/erc-20)
-- **Infrastructure:** [Railgun](https://railgun.org/), [Aztec Network](https://docs.aztec.network/), [Zama fhEVM](https://docs.zama.org/fhevm), [Intmax](https://www.intmax.io/)
+- **Infrastructure:** [Railgun](https://railgun.org/), [Aztec Network](https://docs.aztec.network/), [Zama fhEVM](https://docs.zama.org/fhevm), [Intmax](https://www.intmax.io/), [Privacy Pools](https://privacypools.com)
 - **Patterns:** [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
 - **Regulatory:** [MiCA Framework](../jurisdictions/eu-MiCA.md), [SEC - GENIUS Act](../jurisdictions/us-SEC.md)
 - **Related Approaches:** [Private Trade Settlement](../approaches/approach-private-trade-settlement.md), [Private Derivatives](../approaches/approach-private-derivatives.md)
