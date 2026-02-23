@@ -33,7 +33,7 @@ The protocol is developed and operated by [0xbow](https://0xbow.io), with the v1
   - Mainnet Entrypoint (Proxy): `0x6818809EefCe719E480a7526D76bD3e561526b46`
   - Mainnet ETH Pool: `0xF241d57C6DebAe225c0F2e6eA1529373C9A9C9fB`
 - **Association sets**: Subsets of deposits defined by a Merkle root; users prove membership of their deposit in both the global deposit tree and the association set tree.
-- **Proof system**: zkSNARKs (Groth16) — double Merkle-branch check (global root + association set root).
+- **Proof system**: zk-SNARKs (Groth16) — double Merkle-branch check (global root + association set root).
 - **Association Set Providers (ASPs)**: Off-chain entities (currently 0xbow on Ethereum and Brevis on BNB Chain) that define, compute, and publish association sets. Sets are constructed by screening deposits against sanctions lists, chain analytics, and configurable compliance policies.
 - **Relayer**: Third parties operate relayers that submit withdrawal transactions on behalf of users, preventing the withdrawal address from being linked to the depositor's gas-paying address.
 - **Data availability**: Commitments and proofs recorded on-chain; association set roots published on-chain; full set data available off-chain.
@@ -53,7 +53,7 @@ The protocol is developed and operated by [0xbow](https://0xbow.io), with the v1
 - **Institutional custody providers**: Private vendor payments, private treasury movements (move funds between operational wallets without exposing internal structure), private cross-entity settlements, private payroll, and yield on shielded reserves. Enterprise features include MPC/multisig compatibility, inverted authorisation model (spending keys held by custodian, view keys shared with compliance), hardware wallet support, key rotation and recovery, and ragequit non-custodial guarantee.
 - **Compliance and audit**: View keys enable compliance teams to verify the full transaction history of a shielded account without requiring spending authority. Planned standalone auditor portal (audit.privacypools.com) for view-key-based read-only access to shielded balances and transaction graphs.
 - **OTC desks**: Private settlement of large block trades without broadcasting trade direction, size, or counterparty information on-chain.
-- **Policy pilots**: Cited in the Buterin, Soleimani, Schär et al. 2023 paper as the canonical model for aligning on-chain privacy with AML compliance. The v1 mainnet deployment is the first production implementation of this model.
+- **Policy pilots**: Cited in the Buterin, Soleimani, Schär et al. 2023 paper as the canonical model for aligning on-chain privacy with AML compliance. The v1 mainnet deployment is the production implementation of this model.
 
 ## Technical details
 
@@ -70,7 +70,7 @@ The protocol is developed and operated by [0xbow](https://0xbow.io), with the v1
 
 ## Strengths
 
-- **Only production L1 compliance-friendly shielded pool**: First and currently only live implementation of the association set model on Ethereum mainnet.
+- **Production L1 compliance-friendly shielded pool**: Sole live implementation of the association set model on Ethereum mainnet.
 - **Separating equilibrium**: Honest users can prove compliance; dishonest users cannot forge association set membership proofs.
 - **Flexible compliance**: Different ASPs can define different sets for different jurisdictions or policies, without requiring protocol changes.
 - **Voluntary proofs**: No mandatory global allowlisting, no centralized backdoors. Users choose when and to whom they prove compliance, including optional viewing key sharing for audit purposes.
@@ -82,7 +82,7 @@ The protocol is developed and operated by [0xbow](https://0xbow.io), with the v1
 - **ETH only in v1**: No ERC-20 support yet; ERC-20 shielding planned for v2.
 - **No native cross-chain support**: L1 only; no bridging to L2 shielded pools.
 - **Relayer trust**: The relayer can observe the withdrawal request (though it cannot link to the deposit without the user's secret). Relayer decentralization is a future goal.
-- **Groth16 trusted setup**: Requires a ceremony for zkSNARK parameters; the security of the proof system depends on at least one honest participant in the setup ceremony.
+- **Groth16 trusted setup**: Requires a ceremony for zk-SNARK parameters; the security of the proof system depends on at least one honest participant in the setup ceremony.
 
 ## Links
 

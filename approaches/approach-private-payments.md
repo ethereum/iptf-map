@@ -46,7 +46,7 @@ These problems interact because traditional payment transparency conflicts with 
 
 - Extends the shielded pool model with association set proofs for regulatory compliance signaling
 - Users prove their withdrawal is not linked to sanctioned or flagged deposits
-- Only production L1 shielded pool with built-in compliance mechanism
+- Production L1 shielded pool with built-in compliance mechanism
 - [Privacy Pools](../vendors/privacypools.md) vendor documentation
 - Best for: Compliance-sensitive ETH transfers where L1 security is required
 - Trade-off: ETH only (v1), higher gas costs (~2M)
