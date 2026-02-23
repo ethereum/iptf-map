@@ -5,7 +5,7 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Added
-- feat(pattern): [EY: Starlight](vendors/ey-starlight.md) - Solidity transpiler for private on-chain state
+- feat(pattern): [EY: Starlight](vendors/ey.md#starlight) - Solidity transpiler for private on-chain state. Consolidated EY products into a single vendor file.
 - feat(pattern): [Private Shared State](patterns/pattern-private-shared-state.md) - Umbrella pattern for multi-party private state (FHE, MPC+ZK, TEE comparison)
 - feat(approach): Enhanced [Private Bonds](approaches/approach-private-bonds.md) with PoC learnings, coprocessor model analysis (co-SNARKs vs FHE), comparison matrix, and implementation guidance
 - chore(vendors|approaches): add taceo merces and update private payments approach: [TACEO Merces](vendors/taceo-merces.md) - MPC + ZK approach for private stablecoin transfers
