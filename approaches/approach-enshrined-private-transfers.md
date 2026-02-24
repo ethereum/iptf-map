@@ -150,7 +150,7 @@ Both mechanisms are opt-out. A user who wants unconditional privacy simply doesn
 
 ## Links and Notes
 
-- **Article:** [Ethereum Should Enshrine Private Transfers](https://x.com/dumbnamenumbers/article/1924905579419476125)
+- **Article:** [Ethereum Should Enshrine Private Transfers](https://x.com/dumbnamenumbers/status/2026112985215758547)
 - **Spec:** [Enshrined Privacy Pool EIP (draft)](https://hackmd.io/@tomlehman/enshrined-privacy-pool-eip)
 - **Demo:** [private.facet.org](https://private.facet.org/)
 - **Code:** [0xFacet/facet-private-demo](https://github.com/0xFacet/facet-private-demo)
