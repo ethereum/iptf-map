@@ -5,7 +5,7 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Added
-- feat(pattern): [EY: Starlight](vendors/ey.md#starlight) - Solidity transpiler for private on-chain state. Consolidated EY products into a single vendor file.
+
 - feat(pattern): [Network-Level Anonymity](patterns/pattern-network-anonymity.md) - Umbrella pattern for transport-layer sender anonymity (Tor, mixnets, private RPC, TEE-assisted, VPN)
 - feat(pattern): [TEE-Assisted Network Anonymity](patterns/pattern-tee-network-anonymity.md) - TEE+secret-sharing approach for low-latency sender anonymity (Flashbots Flashnet)
 - feat(pattern): [Private Shared State](patterns/pattern-private-shared-state.md) - Umbrella pattern for multi-party private state (FHE, MPC+ZK, TEE comparison)

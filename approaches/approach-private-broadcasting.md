@@ -47,7 +47,7 @@ These problems interact because traditional broadcasting requires public visibil
 - Hidden state with encrypted mempool
 - 2 categories:
   - Shared [Private Rollups](../patterns/pattern-privacy-l2s.md) (Aztec, Fhenix)
-  - Enterprise Rollups: [ZKsync Prividium](../vendors/zksync-prividium.md), [EY Nightfall](../vendors/ey.md#nightfall-v4)
+  - Enterprise Rollups: [ZKsync Prividium](../vendors/zksync-prividium.md), [EY Nightfall](../vendors/ey-nightfall.md)
 
 ### Recommended Architecture
 
