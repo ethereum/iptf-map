@@ -24,7 +24,7 @@ Enable **confidential ERC-20 transfers** by shielding balances and transfer meta
 
 - **Standards**: ERC-20 base; optional ERC-5564 (stealth addresses)
 - **Implementations**:
-  - **L1/L2 contracts** (e.g., Railgun-style shielded pools).
+  - **L1/L2 contracts** (e.g., Railgun-style shielded pools, Privacy Pools with compliance-friendly association sets).
   - **Privacy L2/app-chains** (e.g., Aztec, Zama fhEVM, Fhenix) with native shielding.
 - **Wallet/KMS**: Management of shielded keys and optional viewing keys.
 
@@ -52,10 +52,11 @@ Enable **confidential ERC-20 transfers** by shielding balances and transfer meta
 
 ## Example
 
-- Alice shields USDC into Railgun; transfers to Bob privately; regulator later verifies the transfer via Bob’s viewing key.
+- Alice shields USDC into Railgun; transfers to Bob privately; regulator later verifies the transfer via Bob's viewing key.
 
 ## See also
 
 - Railgun: https://docs.railgun.org/wiki
 - Aztec docs: https://docs.aztec.network/
 - Zama fhEVM: https://docs.zama.org/protocol/protocol/overview
+- Privacy Pools: https://privacypools.com (compliance-friendly shielded pool with association set proofs)
