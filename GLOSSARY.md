@@ -127,6 +127,10 @@ A dedicated network or service that publishes and stores the data required for D
 
 **GENIUS Act**: US legislative framework for digital asset regulation
 
+**SEC Rule 2a-7**: US Securities and Exchange Commission rule governing money market funds, specifying liquidity requirements, portfolio quality, maturity limits, and conditions for liquidity fees and redemption gates
+
+**ESMA MMFR (Money Market Fund Regulation)**: EU regulation establishing rules for money market funds including daily/weekly maturity limits, stress testing obligations, and reporting to national competent authorities
+
 ### Infrastructure
 
 **Oracle**: External data provider for blockchain smart contracts
