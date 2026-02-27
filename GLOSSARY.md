@@ -57,6 +57,8 @@ A dedicated network or service that publishes and stores the data required for D
 
 **Best Execution**: Obligation to obtain most favorable terms when executing client orders
 
+**NAV (Net Asset Value)**: Total value of a fund's assets minus liabilities. Per-share NAV = total NAV / shares outstanding.
+
 ### Standards & Protocols
 
 **[ERC-3643](https://eips.ethereum.org/EIPS/eip-3643)**: Ethereum standard for permissioned tokenized securities with built-in compliance framework
