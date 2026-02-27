@@ -98,7 +98,6 @@ Enable institutions to monitor private transactions for regulatory compliance (A
 - [Verifiable Attestation](pattern-verifiable-attestation.md) - On-chain credential verification
 - [ERC-3643 RWA](pattern-erc3643-rwa.md) - Permissioned tokens with identity
 - [ZK KYC/ML ID](pattern-zk-kyc-ml-id-erc734-735.md) - Zero-knowledge identity verification
-- [Payment Policy Enforcement](pattern-payment-policy-enforcement.md) - Policy controls for payments
 - [Approach: Private Bonds](../approaches/approach-private-bonds.md) - End-to-end compliant bond issuance
 
 ## External References
