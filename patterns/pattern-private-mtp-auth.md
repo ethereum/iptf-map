@@ -58,3 +58,10 @@ Enable institutions to authenticate client EOAs in a way that satisfies regulato
 - Regulator can later audit the registry root and inclusion proof.
 
 ## See also
+
+- [Approach: Private Authentication & Identity Verification](../approaches/approach-private-auth.md)
+- [Verifiable Attestation](pattern-verifiable-attestation.md)
+- [vOPRF Nullifiers](pattern-voprf-nullifiers.md)
+- [Selective Disclosure](pattern-regulatory-disclosure-keys-proofs.md)
+- [ZK-KYC/ML + ONCHAINID](pattern-zk-kyc-ml-id-erc734-735.md)
+- [zk-TLS](pattern-zk-tls.md)

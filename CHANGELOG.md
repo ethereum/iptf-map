@@ -4,6 +4,10 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
+### Changed
+- feat(use-case): Broadened [Private Authentication](use-cases/private-auth.md) beyond institutional KYC to cover governance and national identity use cases
+- feat(approach): Restructured [Private Authentication Approach](approaches/approach-private-auth.md) with credential-source taxonomy and validated deployment references
+
 ### Added
 - feat(pattern): [EY: Starlight](vendors/ey.md#starlight) - Solidity transpiler for private on-chain state. Consolidated EY products into a single vendor file.
 - feat(pattern): [Network-Level Anonymity](patterns/pattern-network-anonymity.md) - Umbrella pattern for transport-layer sender anonymity (Tor, mixnets, private RPC, TEE-assisted, VPN)
