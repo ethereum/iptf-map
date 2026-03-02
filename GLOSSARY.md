@@ -107,6 +107,12 @@ A dedicated network or service that publishes and stores the data required for D
 
 ### Identity & Compliance
 
+**PCD (Proof-Carrying Data)**: Data bundled with a cryptographic proof of its own correctness, enabling portable and composable verifiable credentials. 
+
+**Sybil Resistance**: Preventing a single actor from creating multiple fake identities to gain disproportionate influence in systems that distribute value, votes, or access.
+
+**DKIM (DomainKeys Identified Mail)**: Email authentication standard where mail servers sign outgoing messages.
+
 **ONCHAINID**: Decentralized identity system used by ERC-3643 for KYC/eligibility verification
 
 **KYC/AML**: Know Your Customer/Anti-Money Laundering regulatory compliance requirements
