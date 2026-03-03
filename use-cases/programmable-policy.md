@@ -52,4 +52,4 @@ In both cases, the application calls the policy platform, which returns a crypto
   - [Private stablecoins](https://github.com/ethereum/iptf-map/blob/master/use-cases/private-stablecoins.md)  
   - [Private RWA Tokenization](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-vaults.md)  
   - [Private Bonds](https://github.com/ethereum/iptf-map/blob/master/use-cases/private-bonds.md)  
-- Predicate programmable policy platform [docs](https://docs.predicate.io/essentials/introduction)
+- Predicate programmable policy platform [docs](https://docs.predicate.io/v2/essentials/overview)
