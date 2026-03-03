@@ -12,7 +12,7 @@ As a result, institutions using privacy-enhanced protocols and chains (e.g. priv
 
 ## 2\) Additional Business Context
 
-See confidential context: context/use-cases/compliant-privacy.md
+
 
 ## 3\) Actors
 
