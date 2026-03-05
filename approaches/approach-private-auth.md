@@ -104,9 +104,11 @@ Document-based ZK proofs read cryptographic data from government-issued identity
 
 On-chain attestation systems ([EAS](https://attest.org/), [ONCHAINID](https://www.erc3643.org/) (ERC-734/735), W3C Verifiable Credentials) allow trusted issuers to publish signed claims about subjects. These claims can be verified on-chain with minimal gas cost. When combined with ZK wrappers, attestations support selective disclosure: prove you hold a valid attestation of type X from issuer Y without revealing the specific attestation content.
 
-**When to use:** Permissioned token compliance (ERC-3643), cross-institutional credential sharing, regulatory registry mirroring (e.g., [eWpG bridge](../patterns/pattern-crypto-registry-bridge-ewpg-eas.md)).
-**Deployment:** EAS is production-grade across multiple chains.
-**Limitations:** Issuer linkage: the issuer knows which attestations they signed, creating a linkability vector unless combined with ZK membership proofs over the attestation set.
+[OpenAC](https://eprint.iacr.org/2026/251) adds unlinkable presentations over existing VCs (SD-JWT, mDL) using transparent ZK proofs, no issuer changes or trusted setup. PoC with mobile benchmarks; EUDI ARF compatible; moving to pilot.
+
+**When to use:** Permissioned token compliance (ERC-3643), cross-institutional credential sharing, regulatory registry mirroring (e.g., [eWpG bridge](../patterns/pattern-crypto-registry-bridge-ewpg-eas.md)). Add OpenAC when cross-verifier unlinkability is required.
+**Deployment:** EAS is production-grade across multiple chains. OpenAC is PoC (moving to pilot).
+**Limitations:** Without a ZK presentation layer, issuer linkage remains: the issuer knows which attestations they signed, creating a linkability vector.
 
 ### E. Anti-Collusion Voting
 
