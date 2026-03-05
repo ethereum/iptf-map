@@ -57,6 +57,8 @@ A dedicated network or service that publishes and stores the data required for D
 
 **Best Execution**: Obligation to obtain most favorable terms when executing client orders
 
+**NAV (Net Asset Value)**: Total value of a fund's assets minus liabilities. Per-share NAV = total NAV / shares outstanding.
+
 ### Standards & Protocols
 
 **[ERC-3643](https://eips.ethereum.org/EIPS/eip-3643)**: Ethereum standard for permissioned tokenized securities with built-in compliance framework
@@ -126,6 +128,10 @@ A dedicated network or service that publishes and stores the data required for D
 **MiCA**: EU Markets in Crypto-Assets regulation
 
 **GENIUS Act**: US legislative framework for digital asset regulation
+
+**SEC Rule 2a-7**: US Securities and Exchange Commission rule governing money market funds, specifying liquidity requirements, portfolio quality, maturity limits, and conditions for liquidity fees and redemption gates
+
+**ESMA MMFR (Money Market Fund Regulation)**: EU regulation establishing rules for money market funds including daily/weekly maturity limits, stress testing obligations, and reporting to national competent authorities
 
 ### Infrastructure
 
