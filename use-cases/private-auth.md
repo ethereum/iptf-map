@@ -16,7 +16,7 @@ Prove membership, eligibility, or attribute possession on-chain without revealin
 
 - **National identity:** ZKPassport used in Aztec token sale (120+ country passports, NFC + Noir circuits); Anon Aadhaar
 - **Governance:** NounsDAO Private Voting (Aztec + Noir storage proofs); MACI deployed at ETHDam, ETHMexico, ETH Tegucigalpa (anti-collusion)
-- **Community/sybil:** Zupass PCD framework (Zuzalu, Devcon); World ID (25M+ registrations)
+- **Community/sybil:** [POD2](https://github.com/0xPARC/pod2) (0xPARC); World ID (25M+ registrations)
 - **Email identity:** zkEmail (DKIM proofs, email wallets on Arbitrum)
 
 ## 3) Actors
@@ -71,7 +71,7 @@ Systems that distribute value (governance votes, token distributions) must preve
 | Email | DKIM signature proofs | zkEmail / Arbitrum wallets |
 | Web2 data source | TLS transcript proofs | TLSNotary |
 | Biometric enrollment | Iris/face hash + membership proof | World ID |
-| Event/community | PCD framework | Zupass / Devcon |
+| Event/community | POD2 | [POD2](https://github.com/0xPARC/pod2) (0xPARC) |
 | Multi-party private inputs | Collaborative proving (co-SNARK) | TACEO |
 | On-chain attestation | EAS / ONCHAINID / W3C VC | Tokeny, EAS |
 
@@ -84,11 +84,12 @@ See detailed architecture and trade-offs in [**Approach: Private Authentication*
 3. How to establish cross-credential interoperability, e.g., combine a ZKPassport proof with an institutional attestation in a single transaction?
 4. What trust models are acceptable for biometric enrollment systems in different regulatory contexts?
 5. How to handle credential revocation across heterogeneous issuers without a central revocation authority?
+6. How do these building blocks map onto existing and emerging compliance frameworks (EUDI ARF, eIDAS 2.0, MiCA) across jurisdictions?
 
 ## 7) Notes And Links
 
 - **Standards:** [ERC-3643 ONCHAINID](https://www.erc3643.org/), [EAS](https://attest.org/), W3C Verifiable Credentials, [EIP-5564](https://eips.ethereum.org/EIPS/eip-5564)
 - **ZK Frameworks:** [Semaphore](https://semaphore.pse.dev/), [Noir/Barretenberg](https://docs.aztec.network/), [Circom/Groth16](https://docs.circom.io/)
-- **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Anon Aadhaar](https://github.com/anon-aadhaar), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [Zupass](https://zupass.org/), [MACI](https://maci.pse.dev/)
+- **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Rarimo](https://rarimo.com/), [Anon Aadhaar](https://github.com/anon-aadhaar), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [POD2](https://github.com/0xPARC/pod2), [OpenAC](https://eprint.iacr.org/2026/251)
 - **Validated Deployments:** [WFP Building Blocks](https://www.wfp.org/building-blocks), [OpenCerts](https://www.opencerts.io/)
 - **Related Patterns:** [Private MTP Auth](../patterns/pattern-private-mtp-auth.md), [zk-TLS](../patterns/pattern-zk-tls.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md), [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [co-SNARK](../patterns/pattern-co-snark.md)

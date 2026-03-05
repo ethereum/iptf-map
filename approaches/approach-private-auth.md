@@ -11,7 +11,7 @@
 Private authentication addresses four interconnected challenges:
 
 1. **Identity Verification Without Disclosure**: The fundamental problem across all domains. Proving "I am eligible" without revealing "I am Alice." Traditional authentication (message signatures) satisfies verifiers but exposes identities and creates trackable on-chain patterns.
-2. **Credential Source Heterogeneity**: No single identity system covers all use cases. Passports, KYC registries, biometric enrollment, email ownership, event attendance, and on-chain history are all valid credential sources with different trust assumptions.
+2. **Credential Source Heterogeneity**: No universal identity system exists. Passports, KYC registries, biometric enrollment, email ownership, event attendance, and on-chain history are all valid credential sources, each with different trust assumptions, coverage, and proof costs.
 3. **Sybil Resistance**: Systems that distribute value (votes, tokens) need "one per person" guarantees without building identity databases. Requires deterministic, scope-bound nullifiers.
 4. **Regulatory & Audit Compliance**: Financial use cases require selective disclosure and audit trails. All domains need scoped visibility without full identity exposure.
 
@@ -21,7 +21,10 @@ These problems interact because the same cryptographic primitives (membership pr
 
 **Universal:**
 
-- Must not require a single canonical identity provider or central registry
+- **Unlinkability:** presentations must not be correlatable across verifiers or sessions
+- **Openness:** proof systems and verification logic must be open source and auditable
+- **Interoperability:** must work across credential formats, chains, and verifier implementations
+- **Decentralization:** must not require a single canonical identity provider or central registry
 - Must support credential revocation without re-identifying holders
 - Proof generation must be practical on consumer hardware
 
@@ -51,8 +54,7 @@ These problems interact because the same cryptographic primitives (membership pr
 | [Document ZK](#b-document-zk-proofs) | Government ID (NFC/signature) | Document issuer | Medium | Pilot | ZKPassport, Anon Aadhaar |
 | [zk-TLS](#c-tls-transcript-proofs) | Web2 data source | Notary + TLS server | Medium | PoC | TLSNotary |
 | [On-chain attestation](#d-on-chain-attestation) | Trusted issuer | Issuer signing key | Low | Production | EAS, ONCHAINID |
-| [Anti-collusion voting](#e-anti-collusion-voting) | Encrypted vote + ZK tally | Coordinator (decentralizing) | Medium | Pilot | MACI / ETHDam |
-| [PCD framework](#f-pcd-proof-carrying-data) | Event/community | Attestation issuer | Low | Pilot | Zupass / Devcon |
+| [POD2](#e-pod2) | Event/community | Attestation issuer | Low | Pilot | [POD2](https://github.com/0xPARC/pod2) (0xPARC) |
 | DKIM proofs (email) | Email provider | Email provider DKIM key | Low | Pilot | zkEmail / Arbitrum |
 | Biometric enrollment | Enrollment operator | Enrollment device | High (enrollment) | Pilot | World ID (25M users) |
 
@@ -64,6 +66,8 @@ These problems interact because the same cryptographic primitives (membership pr
 **Supporting Patterns:** [ZK-KYC/ML + ONCHAINID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md)
 
 A registry operator (institution, DAO) maintains a Merkle tree of approved members. Provers generate ZK membership proofs demonstrating inclusion in the tree and exclusion from a revocation tree, without revealing which leaf they correspond to. [Semaphore](https://semaphore.pse.dev/) is the most established implementation, using identity commitments as leaves and nullifiers to prevent proof reuse.
+
+**Operator trust assumptions:** The registry operator controls membership (who is added/removed) and can censor by omission (refusing to add legitimate members) or by selective revocation. The operator sees the identity of each member at enrollment time, though not at proof-presentation time. Multi-operator or federated registries can mitigate single-operator risk.
 
 **Core components:**
 
@@ -110,21 +114,12 @@ On-chain attestation systems ([EAS](https://attest.org/), [ONCHAINID](https://ww
 **Deployment:** EAS is production-grade across multiple chains. OpenAC is PoC (moving to pilot).
 **Limitations:** Without a ZK presentation layer, issuer linkage remains: the issuer knows which attestations they signed, creating a linkability vector.
 
-### E. Anti-Collusion Voting
+### E. POD2
 
-[MACI](https://maci.pse.dev/) (Minimal Anti-Collusion Infrastructure) combines encrypted vote submission with ZK tallying. Voters submit encrypted votes; a coordinator decrypts and tallies them, then publishes a ZK proof that the tally is correct. Voters cannot prove how they voted to a third party, preventing vote buying and coercion.
-
-**When to use:** DAO governance, grant allocation, any voting scenario where bribery or coercion resistance matters.
-**Deployment:** ETHDam, ETHMexico, ETH Tegucigalpa. Aragon integration. Currently relies on a trusted coordinator; threshold encryption decentralization is in progress.
-**Limitations:** Coordinator trust (being decentralized via threshold encryption); not a general-purpose authentication primitive, specialized for voting.
-
-### F. PCD (Proof-Carrying Data)
-
-[Zupass](https://zupass.org/) implements the Proof-Carrying Data framework: any piece of data can be bundled with a cryptographic proof of its own correctness. PCDs are composable: event tickets, community badges, poll responses, and access tokens all follow the same format. Identity is Semaphore-based, but the framework is credential-source-agnostic.
+[POD2](https://github.com/0xPARC/pod2) (0xPARC) implements Provable Object Data: any piece of data bundled with a cryptographic proof of its correctness. PODs are composable: event tickets, community badges, poll responses, and access tokens follow the same format, enabling credential-source-agnostic identity.
 
 **When to use:** Event gating, community membership, anonymous polls, composable credential ecosystems, sybil-resistant access control.
-**Deployment:** Zuzalu community (2023), Devcon (NFC-based PCD stamp distribution), various [0xPARC](https://0xparc.org/) events.
-**Limitations:** Community-driven tooling; less mature than institutional-grade systems; requires Zupass client adoption.
+**Limitations:** Community-driven tooling; less mature than institutional-grade systems.
 
 ---
 
@@ -133,11 +128,11 @@ On-chain attestation systems ([EAS](https://attest.org/), [ONCHAINID](https://ww
 | Category | Vendors / Frameworks | Status |
 | --- | --- | --- |
 | Merkle membership | [Semaphore](https://semaphore.pse.dev/) (PSE), [Iden3](https://github.com/iden3) | Pilot |
-| Document ZK | [ZKPassport](https://zkpassport.id/) (Noir/Barretenberg), [Anon Aadhaar](https://github.com/anon-aadhaar) (Circom) | Pilot/PoC |
+| Document ZK | [ZKPassport](https://zkpassport.id/) (Noir/Barretenberg), [Anon Aadhaar](https://github.com/anon-aadhaar) (Circom), [Self](https://self.xyz/), [Rarimo](https://rarimo.com/) | Pilot/PoC |
 | TLS proofs | [TLSNotary](https://tlsnotary.org/) | PoC |
 | On-chain attestation | [EAS](https://attest.org/), [ONCHAINID](https://www.erc3643.org/) (Tokeny), W3C VC | Production |
-| Anti-collusion voting | [MACI](https://maci.pse.dev/) (PSE) | Pilot |
-| PCD framework | [Zupass](https://zupass.org/) (0xPARC) | Pilot |
+| Anonymous credentials | [OpenAC](https://eprint.iacr.org/2026/251) (EF/PSE) | PoC |
+| POD2 | [POD2](https://github.com/0xPARC/pod2) (0xPARC) | Pilot |
 | Email ZK | [zkEmail](https://prove.email/) | Pilot |
 
 ### Implementation Strategy
@@ -176,7 +171,7 @@ On-chain attestation systems ([EAS](https://attest.org/), [ONCHAINID](https://ww
 | zk-TLS | Medium (notary sees session) | Notary | Medium | Any web2 source |
 | Biometric | High (one-per-person) | Enrollment operator | High (enrollment) | Limited enrollment locations |
 | On-chain attestation | Low-medium (issuer linkage) | Issuer | Low | Depends on issuer network |
-| PCD | High (Semaphore-based) | Attestation issuer | Low | Community adoption |
+| POD2 | High | Attestation issuer | Low | Community adoption |
 
 **ZK Membership vs Traditional Whitelists:**
 
@@ -264,7 +259,7 @@ On-chain attestation systems ([EAS](https://attest.org/), [ONCHAINID](https://ww
 
 - **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-734/735](https://eips.ethereum.org/EIPS/eip-734), [EAS](https://attest.org/), W3C Verifiable Credentials, [EIP-5564](https://eips.ethereum.org/EIPS/eip-5564)
 - **ZK Frameworks:** [Semaphore](https://github.com/semaphore-protocol), [Noir/Barretenberg](https://docs.aztec.network/), [Circom/Groth16](https://docs.circom.io/), [Iden3](https://github.com/iden3)
-- **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Anon Aadhaar](https://github.com/anon-aadhaar), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [Zupass](https://zupass.org/), [MACI](https://maci.pse.dev/)
-- **Validated Deployments:** ZKPassport Aztec sale (120+ countries), Anon Aadhaar, MACI, Zupass (Zuzalu, Devcon), World ID (25M registrations), [OpenCerts](https://www.opencerts.io/) (2M+ certs)
+- **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Rarimo](https://rarimo.com/), [Anon Aadhaar](https://github.com/anon-aadhaar), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [POD2](https://github.com/0xPARC/pod2), [OpenAC](https://eprint.iacr.org/2026/251)
+- **Validated Deployments:** ZKPassport Aztec sale (120+ countries), Anon Aadhaar, World ID (25M registrations), [OpenCerts](https://www.opencerts.io/) (2M+ certs)
 - **Related Patterns:** [Private MTP Auth](../patterns/pattern-private-mtp-auth.md), [ZK-KYC/ML + ONCHAINID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md), [zk-TLS](../patterns/pattern-zk-tls.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [co-SNARK](../patterns/pattern-co-snark.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md), [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md), [Stealth Addresses](../patterns/pattern-stealth-addresses.md), [ERC-3643 RWA](../patterns/pattern-erc3643-rwa.md), [Compliance Monitoring](../patterns/pattern-compliance-monitoring.md), [Network Anonymity](../patterns/pattern-network-anonymity.md), [Noir Private Contracts](../patterns/pattern-noir-private-contracts.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md)
 - **Vendors:** [Aztec](../vendors/aztec.md), [Miden](../vendors/miden.md), [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md), [TACEO](../vendors/taceo-merces.md), [Privacy Pools](../vendors/privacypools.md), [Chainlink ACE](../vendors/chainlink-ace.md), [EY](../vendors/ey.md)
