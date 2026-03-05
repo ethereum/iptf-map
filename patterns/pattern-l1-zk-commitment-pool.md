@@ -42,6 +42,7 @@ Keep amounts/positions private on **Ethereum L1** via a **shielded pool** (commi
 
 ## See also
 - pattern-dvp-erc7573.md · pattern-regulatory-disclosure-keys-proofs.md
+- Privacy Pools (vendor): ../vendors/privacypools.md — production L1 implementation of this pattern with compliance extensions
 
 ## See also (external)
 - ERC-7573 spec: https://ercs.ethereum.org/ERCS/erc-7573

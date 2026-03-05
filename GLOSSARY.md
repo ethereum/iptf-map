@@ -2,11 +2,15 @@
 
 ### Core Privacy Concepts
 
+**Association Set**: A defined subset of deposits in a shielded pool, constructed by an Association Set Provider (ASP) according to compliance policies (e.g., excluding sanctioned addresses). Users prove membership or exclusion in an association set during withdrawal to signal compliance without revealing their specific deposit.
+
+**Association Set Provider (ASP)**: An entity that defines, computes, and publishes association sets for a shielded pool. ASPs apply screening rules (sanctions lists, chain analytics, KYC credentials) to classify deposits and publish the resulting set as a Merkle root that users can prove against.
+
 **Commitment**: Cryptographic value computed from hidden data (for example, amount and secrets). It lets others later verify that revealed data is consistent, without learning the data from the commitment itself.
 
 **Note**: Private record that represents ownership of some value plus the secrets needed to prove it. The note is usually stored off-chain or encrypted; on-chain you only see commitments, nullifiers and proofs.
 
-**Nullifier**: Unique value derived from a note’s secret and revealed when the note is spent. The system stores used nullifiers to prevent double-spending without exposing which note belonged to which party.
+**Nullifier**: Unique value derived from a note's secret and revealed when the note is spent. The system stores used nullifiers to prevent double-spending without exposing which note belonged to which party.
 
 **Stealth Address**: is an address generated per transaction so that multiple payments to the same party cannot be easily linked on-chain. The recipient publishes some public information once; senders use it to derive fresh, unlinkable addresses.
 
