@@ -64,8 +64,8 @@ Core components include PoCo (Proof-of-Contribution), TEE-enabled worker nodes (
 
 - Reliance on hardware security assumptions (Intel SGX trust model)
 - Centralization considerations around TEE hardware supply
-- Performance constraints for heavy workloads
-- Evolving regulatory landscape for confidential compute
+- Workloads requiring GPUs or specialized hardware accelerators cannot run inside SGX enclaves
+- Very large memory workloads are constrained by enclave memory limits
 
 ## Links
 
