@@ -4,6 +4,10 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
+### Changed
+- feat(use-case): Broadened [Private Authentication](use-cases/private-auth.md) beyond institutional KYC to cover governance and national identity use cases
+- feat(approach): Restructured [Private Authentication Approach](approaches/approach-private-auth.md) with credential-source taxonomy and validated deployment references
+
 ### Added
 - feat(approach): [Private Money Market Funds](approaches/approach-private-money-market-funds.md) - Privacy-preserving MMF operations with ZK NAV proofs
 - feat(pattern): [EY: Starlight](vendors/ey.md#starlight) - Solidity transpiler for private on-chain state. Consolidated EY products into a single vendor file.
