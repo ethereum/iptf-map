@@ -30,7 +30,7 @@ iExec provides privacy-preserving computation, data governance, and trusted exec
 
 Smart contracts emit task requests that are matched via the iExec marketplace. A worker node executes the task inside a **Trusted Execution Environment**. A cryptographic attestation proves the expected code was executed inside a genuine secure enclave; the verified result is returned on-chain.
 
-Core components include PoCo (Proof-of-Contribution), TEE-enabled worker nodes (Intel SGX), a decentralized marketplace for compute, data, and applications, on-chain verification, and the RLC token used for payments and staking.
+Core components include PoCo (Proof-of-Contribution), TEE-enabled worker nodes (Intel SGX), a decentralized marketplace for compute, data, and applications, on-chain verification.
 
 ## Privacy domains
 
