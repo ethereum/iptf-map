@@ -50,7 +50,7 @@ Core components include PoCo (Proof-of-Contribution), TEE-enabled worker nodes (
 - Ethereum-compatible, live on mainnet
 - Intel SGX-based TEE infrastructure
 - JavaScript / TypeScript SDKs and smart contract integration tooling
-- Decentralized task marketplace with RLC utility token
+- Decentralized task marketplace
 
 ## Strengths
 
