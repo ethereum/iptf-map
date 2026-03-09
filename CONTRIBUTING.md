@@ -39,6 +39,7 @@ When adding new patterns, vendors, or significant changes:
 3. Reference the PR number: `(#123)`
 
 Example entry:
+
 ```markdown
 - [New pattern name](patterns/pattern-slug.md) (#123)
 ```
@@ -46,6 +47,7 @@ Example entry:
 ### Weekly Summaries
 
 Generate a weekly summary for sharing:
+
 ```bash
 ./scripts/weekly-summary.sh           # Last 7 days
 ./scripts/weekly-summary.sh 2026-01-08 2026-01-15  # Custom range
@@ -53,7 +55,7 @@ Generate a weekly summary for sharing:
 
 ## CROPS Evaluation
 
-CROPS is the four non-negotiable properties defined by the Ethereum Foundation. They are indivisible: a solution that satisfies three out of four is not CROPS-aligned.
+CROPS are the four non-negotiable properties defined by the Ethereum Foundation. They are indivisible: a solution that satisfies three out of four is not CROPS-aligned.
 
 | Letter | Property                  | Definition                                                           |
 | ------ | ------------------------- | -------------------------------------------------------------------- |
@@ -64,14 +66,24 @@ CROPS is the four non-negotiable properties defined by the Ethereum Foundation. 
 
 ### Censorship Resistance (CR)
 
-| Score      | Meaning                                                                                                                                                       |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `high`     | Permissionless access; no single party can exclude a user; forced-inclusion guarantees exist                                                                  |
-| `medium`   | Access is gated but with meaningful alternatives or an L1 exit path                                                                                           |
-| `low`      | Gated access with limited exit options; censorship is possible but visible                                                                                    |
-| `negative` | The pattern _introduces_ a censorship vector (e.g., issuer freeze, account blacklist, eligibility gate that denies voting or KYC, admin key over user access) |
+| Score      | Meaning                                                                                                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `high`     | Permissionless access; no single party can exclude a user; inclusion or exit is guaranteed at the protocol level                                       |
+| `medium`   | Access is gated, but users retain a credible independent path to participate or exit without institutional approval                                    |
+| `low`      | Access is gated and exclusion is feasible in practice; user exits exist but are weak, delayed, or operationally constrained                            |
+| `negative` | The pattern introduces a direct censorship vector (e.g., freeze, blacklist, approval gate, revocation power, or admin control over user participation) |
 
-In I2U contexts, `medium` requires a concrete user exit path (forced withdrawal, portable credential, L1 escape hatch). Without it, the institution is the single point of failure for user participation — whether financial, civic, or identity-based.
+In I2U contexts, `medium` requires a concrete user escape path such as forced withdrawal, credential portability, or an L1 exit. Without that, the institution is the effective point of control over user participation.
+
+If the answer to the first two bellow questions is “yes” and the fallback is not independently enforceable, the score should usually be `low` or `negative`.
+
+Use these to justify the score in one or two lines:
+
+- Can one identifiable actor stop the user from participating?
+- Can one identifiable actor stop the user from exiting?
+- Is there a non-custodial or protocol-enforced fallback?
+- Does the fallback work without institutional/operator approval?
+- Is exclusion exceptional and transparent, or built into normal operation?
 
 ### Open source (OS)
 
@@ -81,7 +93,7 @@ In I2U contexts, `medium` requires a concrete user exit path (forced withdrawal,
 | `partial` | Core logic is open; some components (prover, oracle, bridge) are proprietary or source-available but not forkable |
 | `no`      | Closed source or significant proprietary components in the critical path                                          |
 
-In I2U contexts, ask whether the _end user_ can verify what code the institution runs on their behalf. "Open source" does not guarantee user-side auditability if the institution deploys opaque modifications.
+In I2U contexts, ask whether the _end user_ can verify what code the institution runs on their behalf. "Open source" does not guarantee user-side auditability if the institution deploys opaque modifications. Requires an explicit open license (e.g., MIT, Apache 2.0, GPL, CC0); source-available or proprietary licenses do not qualify.
 
 ### Privacy (P)
 
