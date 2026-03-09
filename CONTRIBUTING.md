@@ -51,6 +51,62 @@ Generate a weekly summary for sharing:
 ./scripts/weekly-summary.sh 2026-01-08 2026-01-15  # Custom range
 ```
 
+## CROPS Evaluation
+
+CROPS is the four non-negotiable properties defined by the Ethereum Foundation. They are indivisible: a solution that satisfies three out of four is not CROPS-aligned.
+
+| Letter | Property                  | Definition                                                           |
+| ------ | ------------------------- | -------------------------------------------------------------------- |
+| **CR** | **Censorship Resistance** | No actor can selectively exclude valid use or break functionality    |
+| **O**  | **Open source**           | No privileged code or hidden specifications                          |
+| **P**  | **Privacy**               | User data is not exposed beyond necessity or against their interests |
+| **S**  | **Security**              | Things do what they claim to do, no more and no less                 |
+
+### Censorship Resistance (CR)
+
+| Score      | Meaning                                                                                                                                                       |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `high`     | Permissionless access; no single party can exclude a user; forced-inclusion guarantees exist                                                                  |
+| `medium`   | Access is gated but with meaningful alternatives or an L1 exit path                                                                                           |
+| `low`      | Gated access with limited exit options; censorship is possible but visible                                                                                    |
+| `negative` | The pattern _introduces_ a censorship vector (e.g., issuer freeze, account blacklist, eligibility gate that denies voting or KYC, admin key over user access) |
+
+In I2U contexts, `medium` requires a concrete user exit path (forced withdrawal, portable credential, L1 escape hatch). Without it, the institution is the single point of failure for user participation — whether financial, civic, or identity-based.
+
+### Open source (OS)
+
+| Score     | Meaning                                                                                                           |
+| --------- | ----------------------------------------------------------------------------------------------------------------- |
+| `yes`     | Fully open source, publicly auditable, forkable; no proprietary black boxes in the critical path                  |
+| `partial` | Core logic is open; some components (prover, oracle, bridge) are proprietary or source-available but not forkable |
+| `no`      | Closed source or significant proprietary components in the critical path                                          |
+
+In I2U contexts, ask whether the _end user_ can verify what code the institution runs on their behalf. "Open source" does not guarantee user-side auditability if the institution deploys opaque modifications.
+
+### Privacy (P)
+
+| Score    | Meaning                                                                                                      |
+| -------- | ------------------------------------------------------------------------------------------------------------ |
+| `high`   | Strong cryptographic guarantees; privacy holds under honest-but-curious operators; minimal trust assumptions |
+| `medium` | Privacy preserved against external observers; the operator or institution can see user data                  |
+| `low`    | Privacy is primarily marketing; meaningful data is visible to the institution or infrastructure operators    |
+
+In I2U contexts, privacy from public observers is the baseline. Ask separately whether user data (financial activity, identity claims, voting choices, KYC records) is hidden from the institution operating the system, and under what conditions the institution can access it.
+
+### Security (S)
+
+| Score    | Meaning                                                                                                                                                 |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `high`   | Well-established cryptographic assumptions or protocol-level decentralization; no single point of failure; no privileged upgrade path                   |
+| `medium` | Security relies on operational trust assumptions (e.g., honest-majority MPC, TEE attestation, trusted setup) or has upgrade risk; not yet battle-tested |
+| `low`    | Weak or deprecated cryptographic assumptions; centralized trust; significant upgrade or key management risk                                             |
+
+For **patterns**: the score reflects the nature and strength of the underlying security guarantees — cryptographic assumptions, decentralization model, and known weaknesses. Document the specific assumptions (e.g., discrete log hardness, SGX attestation trust, honest-majority threshold, formal verification) in the pattern body under Trade-offs.
+
+For **vendors/products**: the score combines the cryptographic assumptions of the underlying primitives with operational factors — formal audit status, upgrade key controls, admin key scope, incident history, and bug bounty program.
+
+In I2U contexts, security also covers what the institution cannot do to the user unilaterally — not just what the system does correctly.
+
 ## Getting Help
 
 - Open an issue for questions

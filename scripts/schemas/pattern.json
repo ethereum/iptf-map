@@ -87,8 +87,8 @@
         },
         "security": {
           "type": "string",
-          "enum": ["audited", "reviewed", "unreviewed"],
-          "description": "Security review status"
+          "enum": ["high", "medium", "low"],
+          "description": "Strength of security guarantees (cryptographic assumptions, decentralization, trust model)"
         },
         "context": {
           "type": "string",

@@ -44,7 +44,7 @@ status: draft
 
 | Product | CR | OS | Privacy | Security | Context |
 |---------|----|----|---------|----------|---------|
-| [Product A] | high\|medium\|low\|negative | yes\|partial\|no | high\|medium\|low | audited\|reviewed\|unreviewed | i2i\|i2u\|both |
+| [Product A] | high\|medium\|low\|negative | yes\|partial\|no | high\|medium\|low | high\|medium\|low | i2i\|i2u\|both |
 
 ## Risks and open questions
 

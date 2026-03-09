@@ -2,7 +2,7 @@
 
 ### IPTF Evaluation Frameworks
 
-**CROPS (Censorship Resistance, Open source, Privacy, Security)**: Four non-negotiable properties for Ethereum defined by the Ethereum Foundation. The IPTF Map should evaluate solutions against all four dimensions independently.
+**CROPS (Censorship Resistance, Open source, Privacy, Security)**: Four non-negotiable properties for Ethereum defined by the Ethereum Foundation. The IPTF Map evaluates solutions against all four dimensions independently. See [CONTRIBUTING.md § CROPS Evaluation](CONTRIBUTING.md#crops-evaluation) for full scoring rubrics.
 
 **I2I (Institution-to-Institution)**: Interaction model where both counterparties are regulated entities (e.g., bank-to-bank settlement). Symmetric power dynamic; both parties have legal teams, vendor choice, and contractual recourse.
 
