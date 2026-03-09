@@ -9,6 +9,7 @@ All notable changes to the IPTF Map are documented here.
 - feat(approach): Restructured [Private Authentication Approach](approaches/approach-private-auth.md) with credential-source taxonomy and validated deployment references
 
 ### Added
+- feat(template): [crops_profile](patterns/_template.md) frontmatter block added to pattern template for CROPS dimension indexing ([#101](https://github.com/ethereum/iptf-map/issues/101))
 - docs(glossary): [CROPS, I2I, I2U](GLOSSARY.md#iptf-evaluation-frameworks) evaluation framework definitions ([#100](https://github.com/ethereum/iptf-map/issues/100))
 - docs(readme): [Evaluation Framework](README.md#evaluation-framework) section with CROPS alignment statement ([#100](https://github.com/ethereum/iptf-map/issues/100))
 - feat(approach): [Private Money Market Funds](approaches/approach-private-money-market-funds.md) - Privacy-preserving MMF operations with ZK NAV proofs

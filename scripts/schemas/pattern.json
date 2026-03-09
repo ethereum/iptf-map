@@ -65,6 +65,38 @@
     "rollout-plan": {
       "type": "string",
       "description": "Optional rollout plan or timeline"
+    },
+    "crops_profile": {
+      "type": "object",
+      "description": "CROPS dimension assessment for this pattern",
+      "properties": {
+        "cr": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "negative"],
+          "description": "Censorship resistance impact"
+        },
+        "os": {
+          "type": "string",
+          "enum": ["yes", "partial", "no"],
+          "description": "Open source status"
+        },
+        "privacy": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "description": "Privacy guarantees"
+        },
+        "security": {
+          "type": "string",
+          "enum": ["audited", "reviewed", "unreviewed"],
+          "description": "Security review status"
+        },
+        "context": {
+          "type": "string",
+          "enum": ["i2i", "i2u", "both"],
+          "description": "Applicable relationship type"
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false
