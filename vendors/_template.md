@@ -40,6 +40,12 @@ status: draft
 
 [Key advantages and differentiators]
 
+## CROPS profile
+
+| Product | CR | OS | Privacy | Security | Context |
+|---------|----|----|---------|----------|---------|
+| [Product A] | high\|medium\|low\|negative | yes\|partial\|no | high\|medium\|low | audited\|reviewed\|unreviewed | i2i\|i2u\|both |
+
 ## Risks and open questions
 
 [Limitations, trust assumptions, open technical questions]
