@@ -5,10 +5,17 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Changed
+- feat(use-case): Enriched [Private Payments](use-cases/private-payments.md) with conditional & programmable payment privacy (grant disbursement, milestone-based releases) — see also [EPIC map](https://epic-webapp.vercel.app/)
+- feat(use-case): Enriched [Private Government Debt](use-cases/private-government-debt.md) with fiscal transparency vs operational privacy tension — see also [EPIC map](https://epic-webapp.vercel.app/)
+- feat(use-case): Enriched [Private Authentication](use-cases/private-auth.md) with credential portability & reuse problem, government credential sources — see also [EPIC map](https://epic-webapp.vercel.app/)
+- feat(use-case): Enriched [Private Oracles](use-cases/private-oracles.md) with data provenance & consent angle — see also [EPIC map](https://epic-webapp.vercel.app/)
 - feat(use-case): Broadened [Private Authentication](use-cases/private-auth.md) beyond institutional KYC to cover governance and national identity use cases
 - feat(approach): Restructured [Private Authentication Approach](approaches/approach-private-auth.md) with credential-source taxonomy and validated deployment references
 
 ### Added
+- feat(use-case): [Private Supply Chain](use-cases/private-supply-chain.md) — supply chain provenance with privacy (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
+- feat(use-case): [Private Procurement](use-cases/private-procurement.md) — sealed bids, invoice privacy, audit trails (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
+- feat(use-case): [Private Registry](use-cases/private-registry.md) — privacy-preserving on-chain registries (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
 - feat(approach): [Private Money Market Funds](approaches/approach-private-money-market-funds.md) - Privacy-preserving MMF operations with ZK NAV proofs
 - feat(pattern): [EY: Starlight](vendors/ey.md#starlight) - Solidity transpiler for private on-chain state. Consolidated EY products into a single vendor file.
 - feat(pattern): [Network-Level Anonymity](patterns/pattern-network-anonymity.md) - Umbrella pattern for transport-layer sender anonymity (Tor, mixnets, private RPC, TEE-assisted, VPN)
