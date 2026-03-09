@@ -131,6 +131,7 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 - **Dual-key architecture** (spending + viewing) works in both models, confirming selective disclosure is practical without granting transfer authority
 - **Attestation-gated entry** via ZK proof of Merkle tree inclusion is feasible (MAX_ATTESTATION_TREE_DEPTH=20, supporting ~1M participants)
 - **Network timing correlation** is unmitigated in both approaches; see [Network-Level Anonymity](../patterns/pattern-network-anonymity.md) for mitigation patterns
+- **Withdrawal to fresh addresses** requires a gas relayer since the recipient address has no ETH for gas; this adds a counterparty-risk dependency to the shielding model
 - **Multi-token transfers** require same-token constraints in circuits, confirming per-token shielded pools and liquidity fragmentation concerns
 - **PlasmaBlind** (folding-scheme-based stateless plasma) is an emerging alternative to Plonky2 recursive proofs; see [PSE research](https://pse.dev/mastermap/ptr)
 
@@ -207,7 +208,7 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 
 2. **Liquidity Fragmentation:** Multi-token transfers require same-token constraints in circuits, confirming per-token shielded pools. Remaining: cross-pool atomic swaps and multi-asset circuit designs.
 
-3. **Operational Recovery:** Dual-key architecture (spending + viewing) provides viewing-key-based balance inspection for recovery scenarios. Remaining: full business continuity workflows and key rotation under shielding.
+3. **Operational Recovery (key loss, business continuity):** Dual-key architecture (spending + viewing) enables balance inspection via viewing key even when spending key is in cold storage or lost. Remaining: full business continuity workflows and key rotation under shielding.
 
 **Unresolved:**
 

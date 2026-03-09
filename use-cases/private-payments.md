@@ -56,8 +56,6 @@ Retail payments on public ledgers expose personal spending patterns, location da
 
 See [Approach: Private Payments](../approaches/approach-private-payments.md) for detailed solution architecture covering L1 shielded pools, Plasma/Intmax2 stateless rollups, privacy L2s, TEE, and MPC approaches with quantitative comparison from PoC validation.
 
-**PoC Implementation:** [Private Payment PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment). Two approaches validated: L1 Shielded Pool and Plasma/Intmax2.
-
 See also [private-stablecoins.md](private-stablecoins.md) for stablecoin-specific privacy patterns. Additional considerations:
 
 - CBDC privacy models (government-issued with privacy guarantees)
@@ -66,7 +64,7 @@ See also [private-stablecoins.md](private-stablecoins.md) for stablecoin-specifi
 
 ## 6) Open Questions
 
-- Where is the line between payment privacy and AML/CFT obligations? PoC approach: attestation-gated entry (ZK proof of KYC) demonstrates privacy-preserving compliance gating.
+- How can payment privacy coexist with AML/CFT obligations? Attestation-gated entry is one approach; what are the trade-offs across jurisdictions?
 - How do CBDCs with privacy compare to private stablecoins?
 - What's the migration path from traditional payment systems?
 - Network timing correlation: both L1 and L2 privacy approaches leak metadata; see [Network-Level Anonymity](../patterns/pattern-network-anonymity.md)
