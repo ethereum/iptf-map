@@ -78,7 +78,7 @@
         "os": {
           "type": "string",
           "enum": ["yes", "partial", "no"],
-          "description": "Open source status"
+          "description": "Open Source and Free: source availability, forkability, exit paths"
         },
         "privacy": {
           "type": "string",

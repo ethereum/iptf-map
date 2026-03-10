@@ -15,7 +15,7 @@ This folder contains public-facing documentation for IPTF, including technical p
 
 ## Evaluation Framework
 
-This map evaluates solutions against **CROPS** — four properties the Ethereum Foundation considers non-negotiable: Censorship Resistance, Open source, Privacy, and Security.
+This map evaluates solutions against **CROPS** — four properties the Ethereum Foundation considers non-negotiable: Censorship Resistance, Open Source and Free, Privacy, and Security.
 
 Patterns and approaches distinguish between **I2I** (Institution-to-Institution) and **I2U** (Institution-to-End-User) contexts because CROPS requirements differ based on the power dynamic between counterparties. See [GLOSSARY.md](GLOSSARY.md) for full definitions.
 

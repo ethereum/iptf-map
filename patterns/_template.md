@@ -7,7 +7,7 @@ avoid-when: <bulleted, 1–3 lines>
 dependencies: [ERC-3643, EIP-7573, EAS, ...]
 crops_profile:
   cr: high|medium|low|negative   # censorship resistance impact
-  os: yes|partial|no             # open source
+  os: yes|partial|no             # open source and free (source availability, forkability, exit paths)
   privacy: high|medium|low       # privacy guarantees
   security: high|medium|low       # strength of security guarantees (see CROPS.md)
   context: i2i|i2u|both          # applicable relationship type

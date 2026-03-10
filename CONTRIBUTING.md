@@ -60,7 +60,7 @@ CROPS are the four non-negotiable properties defined by the Ethereum Foundation.
 | Letter | Property                  | Definition                                                           |
 | ------ | ------------------------- | -------------------------------------------------------------------- |
 | **CR** | **Censorship Resistance** | No actor can selectively exclude valid use or break functionality    |
-| **O**  | **Open source**           | No privileged code or hidden specifications                          |
+| **O**  | **Open Source and Free**   | No privileged code or hidden specifications; forkable with predictable exit paths |
 | **P**  | **Privacy**               | User data is not exposed beyond necessity or against their interests |
 | **S**  | **Security**              | Things do what they claim to do, no more and no less                 |
 
@@ -85,15 +85,17 @@ Use these to justify the score in one or two lines:
 - Does the fallback work without institutional/operator approval?
 - Is exclusion exceptional and transparent, or built into normal operation?
 
-### Open source (OS)
+### Open Source and Free (O)
 
-| Score     | Meaning                                                                                                           |
-| --------- | ----------------------------------------------------------------------------------------------------------------- |
-| `yes`     | Fully open source, publicly auditable, forkable; no proprietary black boxes in the critical path                  |
-| `partial` | Core logic is open; some components (prover, oracle, bridge) are proprietary or source-available but not forkable |
-| `no`      | Closed source or significant proprietary components in the critical path                                          |
+| Score     | Meaning                                                                                                                                         |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `yes`     | Fully open source, publicly auditable, and forkable; predictable exit paths; no proprietary black boxes in the critical path                    |
+| `partial` | Core logic is open; some components (prover, oracle, bridge) are proprietary or source-available but not forkable; exit paths exist but are constrained |
+| `no`      | Closed source or significant proprietary components in the critical path; no credible exit or fork path                                         |
 
-In I2U contexts, ask whether the _end user_ can verify what code the institution runs on their behalf. "Open source" does not guarantee user-side auditability if the institution deploys opaque modifications. Requires an explicit open license (e.g., MIT, Apache 2.0, GPL, CC0); source-available or proprietary licenses do not qualify.
+"Open Source and Free" goes beyond source availability. It requires that systems are forkable with credible exit paths — users and builders must be able to leave without permission. Requires an explicit open license: copyleft (GPL, AGPL) is preferred, permissive (MIT, Apache 2.0, CC0) is accepted, source-available or proprietary licenses do not qualify.
+
+In I2U contexts, ask whether the _end user_ can verify what code the institution runs on their behalf, and whether they can exit the system without the institution's cooperation. Source availability alone does not guarantee user-side auditability if the institution deploys opaque modifications.
 
 ### Privacy (P)
 
