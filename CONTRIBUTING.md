@@ -62,7 +62,7 @@ CROPS are the four non-negotiable properties defined by the Ethereum Foundation.
 | **CR** | **Censorship Resistance** | No actor can selectively exclude valid use or break functionality    |
 | **O**  | **Open Source and Free**   | No privileged code or hidden specifications; forkable with predictable exit paths |
 | **P**  | **Privacy**               | User data is not exposed beyond necessity or against their interests |
-| **S**  | **Security**              | Things do what they claim to do, no more and no less                 |
+| **S**  | **Security**              | Things must do what they claim to do, no more and no less            |
 
 ### Censorship Resistance (CR)
 
@@ -71,11 +71,11 @@ CROPS are the four non-negotiable properties defined by the Ethereum Foundation.
 | `high`     | Permissionless access; no single party can exclude a user; inclusion or exit is guaranteed at the protocol level                                       |
 | `medium`   | Access is gated, but users retain a credible independent path to participate or exit without institutional approval                                    |
 | `low`      | Access is gated and exclusion is feasible in practice; user exits exist but are weak, delayed, or operationally constrained                            |
-| `negative` | The pattern introduces a direct censorship vector (e.g., freeze, blacklist, approval gate, revocation power, or admin control over user participation) |
+| `none`     | The system itself is the censorship vector: freeze, blacklist, approval gate, revocation power, or admin control over user participation               |
 
 In I2U contexts, `medium` requires a concrete user escape path such as forced withdrawal, credential portability, or an L1 exit. Without that, the institution is the effective point of control over user participation.
 
-If the answer to the first two bellow questions is “yes” and the fallback is not independently enforceable, the score should usually be `low` or `negative`.
+If the answer to the first two bellow questions is “yes” and the fallback is not independently enforceable, the score should usually be `low` or `none`.
 
 Use these to justify the score in one or two lines:
 
@@ -93,19 +93,24 @@ Use these to justify the score in one or two lines:
 | `partial` | Core logic is open; some components (prover, oracle, bridge) are proprietary or source-available but not forkable; exit paths exist but are constrained |
 | `no`      | Closed source or significant proprietary components in the critical path; no credible exit or fork path                                         |
 
-"Open Source and Free" goes beyond source availability. It requires that systems are forkable with credible exit paths — users and builders must be able to leave without permission. Requires an explicit open license: copyleft (GPL, AGPL) is preferred, permissive (MIT, Apache 2.0, CC0) is accepted, source-available or proprietary licenses do not qualify.
+"Open Source and Free" goes beyond source availability. It requires that systems are forkable with credible exit paths — users and builders must be able to leave without permission. Requires an explicit open license: copyleft (GPL, AGPL) is preferred, permissive (MIT, Apache 2.0, CC0) is accepted, source-available or proprietary licenses do not qualify. Projects should commit to not relicensing away from open source or copyleft in the future.
 
-In I2U contexts, ask whether the _end user_ can verify what code the institution runs on their behalf, and whether they can exit the system without the institution's cooperation. Source availability alone does not guarantee user-side auditability if the institution deploys opaque modifications.
+In I2U contexts, the tools provided by institutions to users must be public and auditable, with open specifications. Source availability alone does not count if the institution deploys opaque modifications and users have no way to check.
 
 ### Privacy (P)
 
-| Score    | Meaning                                                                                                      |
-| -------- | ------------------------------------------------------------------------------------------------------------ |
-| `high`   | Strong cryptographic guarantees; privacy holds under honest-but-curious operators; minimal trust assumptions |
-| `medium` | Privacy preserved against external observers; the operator or institution can see user data                  |
-| `low`    | Privacy is primarily marketing; meaningful data is visible to the institution or infrastructure operators    |
+| Score     | Meaning |
+| --------- | ------- |
+| `full`    | Privacy by default. No party learns more than the protocol requires. Users don't need to prove anything or opt in. |
+| `partial` | Private by default, but structured disclosure is required for specific parties (e.g., regulator audit, counterparty identity). Disclosure is scoped and always downstream of default privacy. |
+| `none`    | Data is public on-chain, or the operator sees all user operations. Also applies when privacy exists but is opt-in rather than default. |
 
-In I2U contexts, privacy from public observers is the baseline. Ask separately whether user data (financial activity, identity claims, voting choices, KYC records) is hidden from the institution operating the system, and under what conditions the institution can access it.
+Examples:
+- Shielded pool, no party can observe user activity → `full`
+- Shielded pool with viewing keys where the user controls disclosure → `full` (viewing keys are a tool, not a disclosure requirement)
+- Users must disclose activity to a regulator or counterparty to participate → `partial`
+- I2I trade: amounts and asset hidden, counterparty identities known → `partial`
+- I2U system where the operator sees all user operations → `none`
 
 ### Security (S)
 

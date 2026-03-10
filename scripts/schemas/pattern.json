@@ -72,7 +72,7 @@
       "properties": {
         "cr": {
           "type": "string",
-          "enum": ["high", "medium", "low", "negative"],
+          "enum": ["high", "medium", "low", "none"],
           "description": "Censorship resistance impact"
         },
         "os": {
@@ -82,8 +82,8 @@
         },
         "privacy": {
           "type": "string",
-          "enum": ["high", "medium", "low"],
-          "description": "Privacy guarantees"
+          "enum": ["full", "partial", "none"],
+          "description": "Privacy guarantees: full (private from everyone), partial (selective disclosure required), none (public or institution sees all)"
         },
         "security": {
           "type": "string",
