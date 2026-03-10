@@ -12,7 +12,7 @@ works-best-when:
   - Want to avoid single-TEE trust models, MPC honest-majority assumptions, or off-chain coprocessor dependency.
 avoid-when:
   - Need default anonymity/identity encryption or large anonymity sets.
-  - Need single-domain only designs where all logic and settlement must occur on Ethereum L1/L2.
+  - Need single-domain designs where all logic and settlement must occur on Ethereum L1/L2.
 dependencies: ERC-20, Verifiable cross-chain messaging, Selective disclosure (view keys / proofs)
 ---
 
@@ -50,7 +50,7 @@ This differs from a privacy bridge and from privacy L2s. Here, the “confidenti
 - **Encrypts:** Amounts and balances from the public.
 - **Preserves asset reality:** Underlying ERC-20 issuance and liquidity stay on the origin chain (no wrapped token required; no fund bridge).
 - **Limits failure blast radius:** Cross-chain messaging issues primarily impact **availability/UX** (e.g. delayed withdrawals), while custody remains governed by the origin locking contract.
-- **Supports auditability:** Selective disclosure can reveal only what’s required, when required.
+- **Supports auditability:** Selective disclosure can reveal what is required, when required.
 
 ## Trade-offs
 
