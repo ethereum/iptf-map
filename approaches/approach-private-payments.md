@@ -106,7 +106,7 @@ These problems interact because traditional payment transparency conflicts with 
 
 ### PoC Validation
 
-Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO model with Noir/UltraHonk) and a Plasma/Intmax2 stateless rollup (Plonky2). Both use dual-key architecture (spending + viewing) and attestation-gated entry via ZK proof of KYC.
+Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO model with Noir/[UltraHonk](https://github.com/AztecProtocol/barretenberg)) and a Plasma/Intmax2 stateless rollup ([Plonky2](https://github.com/0xPolygonZero/plonky2)). Both use dual-key architecture (spending + viewing) and attestation-gated entry via ZK proof of KYC.
 
 > **Note:** Benchmarks below are indicative measurements from PoC testing, not production reference numbers. Implementers should run their own benchmarks with domain-specific configuration.
 
@@ -119,8 +119,8 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 | **Proving system** | UltraHonk | Plonky2 |
 | **Trusted setup** | No  | No |
 | **Gas: deposit** | ~155K | ~137K (user) |
-| **Gas: transfer** | ~181K + ~2.6M verification | Off-chain (0 per transfer) |
-| **Gas: withdraw** | ~47K + ~2.6M verification | Via withdrawal server |
+| **Gas: transfer** | ~181K + ~2.6M verification | Off-chain (configurable fee by operator) |
+| **Gas: withdraw** | ~47K + ~2.6M verification | ~343k (operator, amortized across senders) |
 | **Gas: batch** | N/A | ~255K (operator, amortized across senders) |
 | **Proof gen (client)** | 410-991ms | 5.9-9.8s (user) |
 | **Proof gen (operator)** | N/A | 42-49s |
@@ -129,7 +129,7 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 #### Cross-Cutting Findings
 
 - **Dual-key architecture** (spending + viewing) works in both models, confirming selective disclosure is practical without granting transfer authority
-- **Attestation-gated entry** via ZK proof of Merkle tree inclusion is feasible (MAX_ATTESTATION_TREE_DEPTH=20, supporting ~1M participants)
+- **Attestation-gated entry** via ZK proof of Merkle tree inclusion is feasible (MAX_ATTESTATION_TREE_DEPTH=20, supporting ~1M participants, configurable for larger participtants, but increases proving time)
 - **Network timing correlation** is unmitigated in both approaches; see [Network-Level Anonymity](../patterns/pattern-network-anonymity.md) for mitigation patterns
 - **Withdrawal to fresh addresses** requires a gas relayer since the recipient address has no ETH for gas; this adds a counterparty-risk dependency to the shielding model
 - **Multi-token transfers** require same-token constraints in circuits, confirming per-token shielded pools and liquidity fragmentation concerns
