@@ -131,7 +131,7 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 - **Dual-key architecture** (spending + viewing) works in both models, confirming selective disclosure is practical without granting transfer authority
 - **Attestation-gated entry** via ZK proof of Merkle tree inclusion is feasible (MAX_ATTESTATION_TREE_DEPTH=20, supporting ~1M participants, configurable for larger participtants, but increases proving time)
 - **Network timing correlation** is unmitigated in both approaches; see [Network-Level Anonymity](../patterns/pattern-network-anonymity.md) for mitigation patterns
-- **Withdrawal to fresh addresses** requires a gas relayer since the recipient address has no ETH for gas; this adds a counterparty-risk dependency to the shielding model
+- **Withdrawal to fresh addresses** requires a gas relayer since the recipient address may not have ETH for gas. Users can always withdraw directly (sacrificing privacy), but private withdrawal depends on relayer liveness and willingness to relay
 - **Multi-token transfers** require same-token constraints in circuits, confirming per-token shielded pools and liquidity fragmentation concerns
 - **PlasmaBlind** (folding-scheme-based stateless plasma) is an emerging alternative to Plonky2 recursive proofs; see [PSE research](https://pse.dev/mastermap/ptr)
 
@@ -196,7 +196,7 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 
 **Operator Complexity:**
 
-- **Shielded Pool:** No operator needed; users interact directly with L1 contracts
+- **Shielded Pool:** No protocol-level operator needed; users interact directly with L1 contracts. Private transactions depend on a first/third-party gas relayer to avoid linking the sender's funded address
 - **Plasma/Intmax2:** Requires operator infrastructure for block building, proving, and withdrawal processing
 - **Consideration:** Operator economics and liveness guarantees must be addressed for production deployment
 
