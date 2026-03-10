@@ -59,7 +59,7 @@ Enable institutions to authenticate client EOAs in a way that satisfies regulato
 
 ## See also
 
-- [Approach: Private Authentication & Identity Verification](../approaches/approach-private-auth.md)
+- [Approach: Private Identity](../approaches/approach-private-identity.md)
 - [Verifiable Attestation](pattern-verifiable-attestation.md)
 - [vOPRF Nullifiers](pattern-voprf-nullifiers.md)
 - [Selective Disclosure](pattern-regulatory-disclosure-keys-proofs.md)

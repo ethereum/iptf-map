@@ -5,12 +5,13 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Changed
+- refactor(use-case): Renamed Private Authentication → [Private Identity](use-cases/private-identity.md) — authentication reframed as one application of private identity (also renamed approach)
 - feat(use-case): Enriched [Private Payments](use-cases/private-payments.md) with conditional & programmable payment privacy (grant disbursement, milestone-based releases) — see also [EPIC map](https://epic-webapp.vercel.app/)
 - feat(use-case): Enriched [Private Government Debt](use-cases/private-government-debt.md) with fiscal transparency vs operational privacy tension — see also [EPIC map](https://epic-webapp.vercel.app/)
-- feat(use-case): Enriched [Private Authentication](use-cases/private-auth.md) with credential portability & reuse problem, government credential sources — see also [EPIC map](https://epic-webapp.vercel.app/)
+- feat(use-case): Enriched [Private Identity](use-cases/private-identity.md) with credential portability & reuse problem, government credential sources — see also [EPIC map](https://epic-webapp.vercel.app/)
 - feat(use-case): Enriched [Private Oracles](use-cases/private-oracles.md) with data provenance & consent angle — see also [EPIC map](https://epic-webapp.vercel.app/)
-- feat(use-case): Broadened [Private Authentication](use-cases/private-auth.md) beyond institutional KYC to cover governance and national identity use cases
-- feat(approach): Restructured [Private Authentication Approach](approaches/approach-private-auth.md) with credential-source taxonomy and validated deployment references
+- feat(use-case): Broadened [Private Identity](use-cases/private-identity.md) beyond institutional KYC to cover governance and national identity use cases
+- feat(approach): Restructured [Private Identity Approach](approaches/approach-private-identity.md) with credential-source taxonomy and validated deployment references
 
 ### Added
 - feat(use-case): [Private Supply Chain](use-cases/private-supply-chain.md) — supply chain provenance with privacy (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
@@ -105,7 +106,7 @@ All notable changes to the IPTF Map are documented here.
 ### Fixed
 
 - fix(pattern): [DvP ERC-7573](patterns/pattern-dvp-erc7573.md) updates ([#31](https://github.com/ethereum/iptf-map/pull/31))
-- fix(use-case): [Private-auth](use-cases/private-auth.md) - revocation, zk-TLS mechanism
+- fix(use-case): [Private Identity](use-cases/private-identity.md) - revocation, zk-TLS mechanism
 - fix(docs): Glossary - clarified core privacy concepts ([#29](https://github.com/ethereum/iptf-map/pull/29))
 - fix(docs): ZKsync naming standardization ([#20](https://github.com/ethereum/iptf-map/pull/20))
 
@@ -115,7 +116,7 @@ All notable changes to the IPTF Map are documented here.
 
 - feat: Initial repository import with 62 files
 - feat(pattern): 20+ privacy patterns (ZK, MPC, TEE, stealth addresses, etc.)
-- feat(use-case): [private-auth](use-cases/private-auth.md)
+- feat(use-case): [private-identity](use-cases/private-identity.md)
 - feat(use-case): [private-bonds](use-cases/private-bonds.md)
 - feat(use-case): [private-derivatives](use-cases/private-derivatives.md)
 - feat(use-case): [private-rwa-tokenization](use-cases/private-rwa-tokenization.md)

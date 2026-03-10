@@ -85,5 +85,5 @@ Approach TBD. Key architectural considerations:
 ## 7) Notes And Links
 
 - Related patterns: [Crypto-Registry Bridge (eWpG/EAS)](../patterns/pattern-crypto-registry-bridge-ewpg-eas.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md), [Private MTP Auth](../patterns/pattern-private-mtp-auth.md)
-- Related use cases: [private-auth.md](private-auth.md) (consuming registries for authentication — this use case is about operating them)
-- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team) — business registry, land registry, environmental registries, licensing
+- Related use cases: [private-identity.md](private-identity.md) (consuming registries for authentication — this use case is about operating them)
+- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team, demo data) — business registry, land registry, environmental registries, licensing
