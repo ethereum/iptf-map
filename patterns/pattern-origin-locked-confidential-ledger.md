@@ -63,7 +63,7 @@ This differs from a privacy bridge and from privacy L2s. Here, the “confidenti
   - Locks USDC into the origin contract, receives an encrypted balance.
   - Executes private vendor payouts (amounts encrypted; counterparties known).
   - When a vendor wants liquidity, they withdraw back to underlying transparent USDC on the origin chain.
-  - If audited, the treasury discloses only the relevant invoices or transactions.
+  - If audited, the treasury discloses the relevant invoices or transactions.
 
 ## References
 
