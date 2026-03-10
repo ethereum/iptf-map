@@ -66,6 +66,11 @@
       "type": "string",
       "description": "Optional rollout plan or timeline"
     },
+    "context": {
+      "type": "string",
+      "enum": ["i2i", "i2u", "both"],
+      "description": "Applicable relationship type"
+    },
     "crops_profile": {
       "type": "object",
       "description": "CROPS dimension assessment for this pattern",
@@ -89,11 +94,6 @@
           "type": "string",
           "enum": ["high", "medium", "low"],
           "description": "Strength of security guarantees (cryptographic assumptions, decentralization, trust model)"
-        },
-        "context": {
-          "type": "string",
-          "enum": ["i2i", "i2u", "both"],
-          "description": "Applicable relationship type"
         }
       },
       "additionalProperties": false

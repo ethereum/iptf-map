@@ -75,7 +75,7 @@ CROPS are the four non-negotiable properties defined by the Ethereum Foundation.
 
 In I2U contexts, `medium` requires a concrete user escape path such as forced withdrawal, credential portability, or an L1 exit. Without that, the institution is the effective point of control over user participation.
 
-If the answer to the first two bellow questions is “yes” and the fallback is not independently enforceable, the score should usually be `low` or `none`.
+If the answer to the first two below questions is “yes” and the fallback is not independently enforceable, the score should usually be `low` or `none`.
 
 Use these to justify the score in one or two lines:
 
@@ -116,11 +116,11 @@ Examples:
 
 | Score    | Meaning                                                                                                                                                 |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `high`   | Well-established cryptographic assumptions or protocol-level decentralization; no single point of failure; no privileged upgrade path                   |
-| `medium` | Security relies on operational trust assumptions (e.g., honest-majority MPC, TEE attestation, trusted setup) or has upgrade risk; not yet battle-tested |
-| `low`    | Weak or deprecated cryptographic assumptions; centralized trust; significant upgrade or key management risk                                             |
+| `high`   | Well-established cryptographic assumptions; no single point of failure; no privileged upgrade path; passes the walkaway test (keeps working if the team disappears) |
+| `medium` | Security relies on operational trust assumptions (e.g., honest-majority MPC, TEE attestation, trusted setup) or has upgrade risk; depends on active team maintenance |
+| `low`    | Weak or deprecated cryptographic assumptions; centralized trust; significant upgrade or key management risk; high operational complexity that concentrates risk      |
 
-For **patterns**: the score reflects the nature and strength of the underlying security guarantees — cryptographic assumptions, decentralization model, and known weaknesses. Document the specific assumptions (e.g., discrete log hardness, SGX attestation trust, honest-majority threshold, formal verification) in the pattern body under Trade-offs.
+Complexity is a risk in itself. Prefer simple, verifiable designs over elaborate ones. Document specific assumptions (e.g., discrete log hardness, SGX attestation trust, honest-majority threshold) in the pattern body under Trade-offs.
 
 For **vendors/products**: the score combines the cryptographic assumptions of the underlying primitives with operational factors — formal audit status, upgrade key controls, admin key scope, incident history, and bug bounty program.
 

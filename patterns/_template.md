@@ -5,12 +5,12 @@ maturity: PoC|pilot|prod
 works-best-when: <bulleted, 1–3 lines>
 avoid-when: <bulleted, 1–3 lines>
 dependencies: [ERC-3643, EIP-7573, EAS, ...]
+context: i2i|i2u|both              # applicable relationship type
 crops_profile:
   cr: high|medium|low|none       # censorship resistance impact
   os: yes|partial|no             # open source and free (source availability, forkability, exit paths)
   privacy: full|partial|none     # privacy guarantees (who sees what — see CONTRIBUTING.md § Privacy)
-  security: high|medium|low       # strength of security guarantees (see CROPS.md)
-  context: i2i|i2u|both          # applicable relationship type
+  security: high|medium|low       # strength of security guarantees (see CONTRIBUTING.md § Security)
 ---
 
 ## Intent
@@ -28,6 +28,7 @@ Numbered steps (5–8 max) from intent → settlement/audit.
 - What it hides / proves
 - Atomicity / finality
 - Audit & ops signal
+- How guarantees differ in I2I vs I2U contexts (if applicable)
 
 ## Trade-offs
 - Performance / cost / DX notes
