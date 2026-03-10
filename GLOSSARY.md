@@ -6,7 +6,7 @@
 
 **I2I (Institution-to-Institution)**: Interaction model where both counterparties are regulated entities (e.g., bank-to-bank settlement). Symmetric power dynamic; both parties have legal teams, vendor choice, and contractual recourse.
 
-**I2U (Institution-to-End-User)**: Interaction model where one counterparty is a regulated entity and the other is an individual (e.g., retail payment). Asymmetric power dynamic; CROPS must protect the user from the institution. Institutions should be transparent to regulators and end users; end users should have the right to keep their private lives private.
+**I2U (Institution-to-End-User)**: Interaction model where one counterparty is a regulated entity and the other is an individual (e.g., retail payment). Asymmetric power dynamic; CROPS must protect the user from the institution. Institutions should be transparent to regulators and end users; end users should have the right to protect their private lives.
 
 ### Core Privacy Concepts
 
