@@ -16,6 +16,11 @@ dependencies:
   - ERC-20
   - ERC-4337 (optional, account abstraction for wallet UX)
   - EIP-5564 (Ethereum Stealth Addresses draft)
+crops_profile:
+  cr: medium
+  os: yes
+  privacy: partial
+  security: high
 ---
 
 ## Intent
@@ -61,6 +66,7 @@ Observers see the transfer to a fresh address, but only the receiver can detect 
 - **Amount leakage**: visible amounts still expose competitive data.
 - **Regulatory fit**: no built-in scoped regulator access; relies on voluntary disclosure.
 - **Interoperability**: limited unless EIP-5564 or similar standards are widely adopted.
+- **CROPS context (both)**: CR reaches `high` if user can self-relay and pay own gas from stealth address — could become practical after EIP-8141. Drops to `low` if relayer/paymaster dependency is unavoidable and centralized. In I2U, end-users are more likely to depend on relayers provided by institutions.
 
 ---
 

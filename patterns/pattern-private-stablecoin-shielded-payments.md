@@ -12,6 +12,11 @@ works-best-when:
 avoid-when:
   - Public transparency is required by design, or batch netting off‑chain suffices.
 dependencies: [ERC-20, ERC-3643, ERC-7573, Attestations]
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -43,6 +48,7 @@ Provide **stakeholder‑only** stablecoin transfers on Ethereum (L2/app‑chain 
 - **DX:** Non‑EVM L2s (e.g., Aztec) require new tooling (Noir); FHE stacks may rely on co‑processors/oracles.
 - **Leakage:** Timing/ordering metadata may persist; mitigate with batching/delayed anchors.
 - **Non‑fit:** **Stealth addresses** ([ERC‑5564](https://eips.ethereum.org/EIPS/eip-5564)) hide recipients but **do not** provide issuer‑level policy or full cash‑flow privacy alone.
+- **CROPS context (both)**: In I2U, CR drops to `low` if issuer freeze/blacklist is unconstrained and user has no L1 exit path. Privacy reaches `full` if regulator disclosure is opt-in (user controls viewing keys) rather than mandatory. In I2I, banks negotiate issuer controls contractually.
 
 ## Example
 - A dealer pays weekend margin in a **private USDC‑like** token on a privacy L2; the venue receives funds without public leakage; the regulator gets read‑only access via a time‑bound viewing key; the payment leg participates in an **ERC‑7573** PvP with EUR stablecoin or DvP with tokenized UST collateral.

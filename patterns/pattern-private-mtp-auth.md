@@ -14,6 +14,11 @@ avoid-when:
   - Regulators require explicit PII disclosure onchain.
   - Institutions lack capacity to manage ZK infrastructure or Merkle registry.
 dependencies: [ERC-3643, EIP-7573, EAS, Semaphore, MTP, ZK-Proofs]
+crops_profile:
+  cr: low
+  os: yes
+  privacy: full
+  security: high
 ---
 
 ## Intent
@@ -48,6 +53,7 @@ Enable institutions to authenticate client EOAs in a way that satisfies regulato
 - **Performance/cost**: ZK proof generation adds latency; tree updates must be frequent.
 - **DX**: client wallets need Semaphore/ZK integration.
 - **Limitations**: current Semaphore-style MT proofs don’t support efficient multi-ownership (same seed, many EOAs).
+- **CROPS context (both)**: CR could reach `high` if Merkle membership is managed by a decentralized registry or DAO rather than a single institution. In I2U, CR risk is acute: institution is sole gatekeeper of client inclusion with no user escape path. In I2I, peers can negotiate mutual inclusion terms.
 
 ## Example
 

@@ -46,7 +46,7 @@ Privacy strength scales with anonymity set size: larger pools make individual tr
 
 #### Approach A: UTXO Shielded Pool DvP
 
-**Primary Pattern:** [Shielding](../patterns/pattern-shielding.md) with [ZK Shielded Balances](../patterns/pattern-zk-shielded-balances.md)
+**Primary Pattern:** [Shielding](../patterns/pattern-shielding.md)
 
 Both counterparties hold assets in a shielded pool (Railgun, Privacy Pools). Settlement executes as coordinated JoinSplit operations within the pool — consuming input notes and producing output notes in a single atomic transaction.
 
@@ -187,7 +187,7 @@ These approaches are not production-ready but may reshape cross-chain private se
 ## Links and Notes
 
 - **Standards:** [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573) (cross-network DvP, draft), [EIP-7683](https://eips.ethereum.org/EIPS/eip-7683) (cross-chain intents), [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643) (permissioned tokens), [EIP-5564](https://eips.ethereum.org/EIPS/eip-5564) (stealth addresses)
-- **Patterns:** [Hybrid TEE + ZK Settlement](../patterns/pattern-tee-zk-settlement.md), [DvP ERC-7573](../patterns/pattern-dvp-erc7573.md), [Shielding](../patterns/pattern-shielding.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md), [Cross-Chain Privacy Bridge](../patterns/pattern-cross-chain-privacy-bridge.md), [ZK-SPV Verification](../patterns/pattern-zk-spv.md)
+- **Patterns:** [Hybrid TEE + ZK Settlement](../patterns/pattern-tee-zk-settlement.md), [DvP ERC-7573](../patterns/pattern-dvp-erc7573.md), [Shielding](../patterns/pattern-shielding.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md), [Cross-Chain Privacy Bridge](../patterns/pattern-cross-chain-privacy-bridge.md)
 - **Related Approaches:** [Atomic DvP Settlement](approach-dvp-atomic-settlement.md) (atomicity mechanisms), [Private Payments](approach-private-payments.md), [Private Bonds](approach-private-bonds.md)
 - **Research:** [Synchronous composability via realtime proving](https://ethresear.ch/t/synchronous-composability-between-rollups-via-realtime-proving/23998)
 - **Regulatory:** [eWpG Compliance](../jurisdictions/de-eWpG.md), [MiCA Framework](../jurisdictions/eu-MiCA.md)

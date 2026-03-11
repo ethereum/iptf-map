@@ -47,7 +47,6 @@ These problems interact because traditional bond trading requires transparent pr
 **Primary Pattern:** [Shielding](../patterns/pattern-shielding.md) with zero-knowledge circuits
 **Supporting Patterns:**
 
-- [ZK Shielded Balances](../patterns/pattern-zk-shielded-balances.md)
 - [Privacy L2s](../patterns/pattern-privacy-l2s.md)
 - [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
 - [ICMA BDT Data Model](../patterns/pattern-icma-bdt-data-model.md)

@@ -12,6 +12,11 @@ works-best-when:
 avoid-when:
   - Bilateral netting/off‑chain wires suffice; or HTLC timeouts are acceptable.
 dependencies: [ERC-7573, EAS, Chainlink Data Feeds, optional CCIP]
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -41,6 +46,7 @@ Enable **atomic PvP (cash↔cash)** between two stablecoins while preserving **s
 - **Oracle trust:** FX checks rely on oracle security and update cadence.
 - **Complexity:** Cross‑L2 finality sensing and failure handling add ops overhead.
 - **Liquidity:** Fragmentation across issuers/L2s; consider market‑making facilities.
+- **CROPS context (I2I)**: CR depends on oracle and relayer availability. ERC-7573 is an open standard; oracle/finality infrastructure (e.g. Chainlink) is proprietary.
 
 ## Example
 - **USDc(L2‑A)** ↔ **EURc(L2‑B)**: Bank A pays USDc; Bank B pays EURc. **ERC‑7573** escrows on both sides reference **EUR/USD** price feed. When A's transfer finalizes and oracle confirms rate within tolerance, B's leg releases atomically; selective disclosure granted to auditor for both legs.

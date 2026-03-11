@@ -13,6 +13,11 @@ avoid-when:
   - No trusted issuer available or issuer centralization is unacceptable
   - Simple token gating is sufficient (attestations add complexity for basic access control)
 dependencies: [EAS, ONCHAINID, W3C-VC]
+crops_profile:
+  cr: low
+  os: yes
+  privacy: partial
+  security: high
 ---
 
 ## Intent
@@ -60,6 +65,7 @@ Enable smart contracts to verify claims about identities, credentials, or off-ch
 - Infrastructure: Relies on trusted issuers for attestation quality. Issuers' keys needs to be mapped (e.g., on-chain PKI).
 - Privacy: On-chain verification reveals which contracts user interacts with and transaction timing. Mitigate using privacy L2s or ZK proofs.
 - Standards: Multiple competing standards (EAS, W3C VC, ONCHAINID) limit cross-chain portability. Use adapters or multi-standard support.
+- **CROPS context (both)**: In I2U, CR is especially constrained — user cannot self-attest and depends on issuer willingness. CR improves if multiple competing issuers exist and credential portability is supported (W3C VC). In I2I, peers can cross-attest or use mutual recognition frameworks.
 
 ## Example
 

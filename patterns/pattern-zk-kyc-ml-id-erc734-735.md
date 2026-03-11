@@ -11,6 +11,11 @@ works-best-when:
 avoid-when:
 - can do whitelisting based on signatures of authorized parties
 dependencies: [ERC-734, ERC-735]
+crops_profile:
+  cr: low
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -29,7 +34,8 @@ Allows onboarding identities such as ERC-734/735 in a public verfiable manner fo
 - Instant settlement (even with public sample it automates the settlement)
 
 ## Trade-offs
-- 
+- **CROPS context (I2U)**: Institution/issuer controls identity onboarding and can refuse claims. ERC-734/735 is open; EZKL is partially open; zk-TLS notary infrastructure varies.
+
 
 ## Example
 - Bank issues an id for an investor, needs to generate a proof of KYC/AML of the investor;

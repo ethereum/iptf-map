@@ -14,6 +14,11 @@ avoid-when:
 dependencies:
   - ERC-20
   - Optional: ERC-5564 (stealth addresses), ERC-3643 (eligibility gating), [Attestations](pattern-verifiable-attestation.md) for audit
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: full
+  security: medium
 ---
 
 ## Intent
@@ -49,6 +54,7 @@ Enable **confidential ERC-20 transfers** by shielding balances and transfer meta
 - Cost/latency of ZK/FHE proofs.
 - Metadata leakage possible (timing, gas payer).
 - Tooling immaturity compared to ERC-20.
+- **CROPS context (both)**: CR reaches `high` on L1 shielded pools (Railgun) where users can deposit/withdraw permissionlessly. Drops to `low` on permissioned L2s with operator-controlled exit. Relies on relayer and paymaster for transaction submission, both of which can censor. In I2U, the exit path guarantee is critical — without forced withdrawal, CR is effectively `low`.
 
 ## Example
 

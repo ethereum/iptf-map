@@ -5,6 +5,7 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Changed
+
 - chore(approach|use-case): Updated [Private Payments](approaches/approach-private-payments.md) approach and [use case](use-cases/private-payments.md) with PoC validation data
 - refactor(use-case): Renamed Private Authentication → [Private Identity](use-cases/private-identity.md) — authentication reframed as one application of private identity (also renamed approach)
 - feat(use-case): Enriched [Private Payments](use-cases/private-payments.md) with conditional & programmable payment privacy (grant disbursement, milestone-based releases) — see also [EPIC map](https://epic-webapp.vercel.app/)
@@ -13,8 +14,37 @@ All notable changes to the IPTF Map are documented here.
 - feat(use-case): Enriched [Private Oracles](use-cases/private-oracles.md) with data provenance & consent angle — see also [EPIC map](https://epic-webapp.vercel.app/)
 - feat(use-case): Broadened [Private Identity](use-cases/private-identity.md) beyond institutional KYC to cover governance and national identity use cases
 - feat(approach): Restructured [Private Identity Approach](approaches/approach-private-identity.md) with credential-source taxonomy and validated deployment references
+- feat(patterns): CROPS-aligned 18 patterns with `crops_profile` frontmatter and deployment-context Trade-offs notes ([#104](https://github.com/ethereum/iptf-map/issues/104)):
+  [Private ISO 20022](patterns/pattern-private-iso20022.md),
+  [Private MTP Auth](patterns/pattern-private-mtp-auth.md),
+  [Private PvP Stablecoins](patterns/pattern-private-pvp-stablecoins-erc7573.md),
+  [Private Stablecoin Shielded Payments](patterns/pattern-private-stablecoin-shielded-payments.md),
+  [Private Transaction Broadcasting](patterns/pattern-private-transaction-broadcasting.md),
+  [Private Vaults](patterns/pattern-private-vaults.md),
+  [Regulatory Disclosure Keys/Proofs](patterns/pattern-regulatory-disclosure-keys-proofs.md),
+  [Shielding](patterns/pattern-shielding.md),
+  [Stealth Addresses](patterns/pattern-stealth-addresses.md),
+  [TEE-Based Privacy](patterns/pattern-tee-based-privacy.md),
+  [TEE Key Manager](patterns/pattern-tee-key-manager.md),
+  [TEE Network Anonymity](patterns/pattern-tee-network-anonymity.md),
+  [TEE+ZK Settlement](patterns/pattern-tee-zk-settlement.md),
+  [Threshold Encrypted Mempool](patterns/pattern-threshold-encrypted-mempool.md),
+  [Verifiable Attestation](patterns/pattern-verifiable-attestation.md),
+  [vOPRF Nullifiers](patterns/pattern-voprf-nullifiers.md),
+  [ZK KYC/ML ID (ERC-734/735)](patterns/pattern-zk-kyc-ml-id-erc734-735.md),
+  [zk-TLS](patterns/pattern-zk-tls.md)
+
+### Removed
+
+- refactor(patterns): Deleted 4 redundant patterns ([#104](https://github.com/ethereum/iptf-map/issues/104)):
+  `pattern-zk-derivative-delta.md` (covered by shielding + co-SNARKs),
+  `pattern-zk-htlc.md` (covered by cross-chain privacy bridge + shielding),
+  `pattern-zk-shielded-balances.md` (merged into [Shielding](patterns/pattern-shielding.md)),
+  `pattern-zk-spv.md` (removed from map)
+- refactor(patterns): Deleted original `pattern-private-shared-state.md`, replaced by 3 trust-model-specific cards ([#104](https://github.com/ethereum/iptf-map/issues/104))
 
 ### Added
+
 - feat(use-case): [Private Supply Chain](use-cases/private-supply-chain.md) — supply chain provenance with privacy (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
 - feat(use-case): [Private Procurement](use-cases/private-procurement.md) — sealed bids, invoice privacy, audit trails (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
 - feat(use-case): [Private Registry](use-cases/private-registry.md) — privacy-preserving on-chain registries (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
@@ -26,7 +56,7 @@ All notable changes to the IPTF Map are documented here.
 - feat(pattern): [EY: Starlight](vendors/ey.md#starlight) - Solidity transpiler for private on-chain state. Consolidated EY products into a single vendor file.
 - feat(pattern): [Network-Level Anonymity](patterns/pattern-network-anonymity.md) - Umbrella pattern for transport-layer sender anonymity (Tor, mixnets, private RPC, TEE-assisted, VPN)
 - feat(pattern): [TEE-Assisted Network Anonymity](patterns/pattern-tee-network-anonymity.md) - TEE+secret-sharing approach for low-latency sender anonymity (Flashbots Flashnet)
-- feat(pattern): [Private Shared State](patterns/pattern-private-shared-state.md) - Umbrella pattern for multi-party private state (FHE, MPC+ZK, TEE comparison)
+- feat(pattern): Private Shared State split into [co-SNARKs](patterns/pattern-private-shared-state-cosnark.md), [FHE](patterns/pattern-private-shared-state-fhe.md), [TEE](patterns/pattern-private-shared-state-tee.md) — each with distinct CROPS profile and trust model ([#104](https://github.com/ethereum/iptf-map/issues/104))
 - feat(approach): Restructured [Private Trade Settlement](approaches/approach-private-trade-settlement.md) — separated single-chain and cross-chain approaches, added TEE+ZK, MPC, and intent-based settlement with trade-off matrices ([#77](https://github.com/ethereum/iptf-map/issues/77))
 - feat(pattern): Enhanced [Hybrid TEE + ZK Settlement](patterns/pattern-tee-zk-settlement.md) with trust framework, TEE API surface, stealth address design, anti-pattern table, and PoC learnings ([#79](https://github.com/ethereum/iptf-map/issues/79))
 - fix(pattern): Refreshed [TEE-Based Privacy](patterns/pattern-tee-based-privacy.md) — added CPU-encrypted vs hypervisor-isolated platform classification and threat model comparison

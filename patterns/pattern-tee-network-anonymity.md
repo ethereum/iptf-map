@@ -15,6 +15,11 @@ avoid-when:
   - Running own node eliminates RPC provider trust
   - High-latency anonymity networks (Tor, Nym) are acceptable
 dependencies: [TEE (client-side), Secret sharing, Additive homomorphic commitments]
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: full
+  security: medium
 ---
 
 ## Intent
@@ -49,6 +54,7 @@ Hide *who* is sending transactions or querying state at the network layer. Exist
 - Client TEEs required for liveness; hardware trust for availability only, not privacy.
 - Requires semi-honest majority among servers; colluding majority can break liveness.
 - Research-stage (Flashbots Flashnet); no production deployment yet.
+- **CROPS context (both)**: In I2U, end-users leak identity to RPC providers operated by institutions without this layer. In I2I, institutions may already run their own nodes, reducing the need.
 
 ## Example
 

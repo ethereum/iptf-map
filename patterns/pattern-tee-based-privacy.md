@@ -16,6 +16,11 @@ avoid-when:
   - Long-term secrets that outlive hardware security lifecycle
 dependencies:
   [Intel SGX, AMD SEV-SNP, AWS Nitro Enclaves, Azure Confidential Computing]
+crops_profile:
+  cr: low
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -124,6 +129,7 @@ For institutions already trusting a cloud provider with their infrastructure, hy
 - **Performance**: Fast execution but limited memory (SGX); context switches have overhead
 - **Lifecycle**: Hardware security erodes over time as attacks improve; plan for migration
 - **Regulatory Uncertainty**: Some regulators may not accept "black box" execution for audit purposes
+- **CROPS context (both)**: In I2U, the institution operates the TEE — user has no independent verification of enclave integrity, making privacy dependent on institutional trust. CR improves with multi-operator/multi-vendor TEE setups. Security improves with TEE+ZK combination (removes attestation dependency for verifiability).
 
 ## When TEEs Are Appropriate
 
@@ -146,8 +152,6 @@ A TEE alone is insufficient for high-value production workloads. Each layer redu
 | **TEE + ZK**             | TEE executes, produces ZK proof verified on-chain                                      | Mitigates operator I/O manipulation: even if the operator tampers with inputs/outputs, the ZK proof will not verify unless execution was correct. Removes dependency on attestation infrastructure for verifiability (see [Hybrid TEE + ZK Settlement](pattern-tee-zk-settlement.md)) |
 | **TEE + Threshold + ZK** | Full defense in depth                                                                  | Threshold trust, cryptographic verifiability, hardware isolation as complementary layers                                                                                                                                                                                              |
 
-> **GPU TEEs**: For compute-intensive workloads offloaded to GPU (ZK proving, ML inference), GPU confidential computing (e.g., NVIDIA H100) extends the TEE boundary to accelerators. GPU attestation should be verified within the CPU TEE before offloading sensitive data.
-
 ## Example
 
 **Confidential Order Matching**
@@ -169,6 +173,5 @@ A TEE alone is insufficient for high-value production workloads. Each layer redu
 ## See also (external)
 
 - Bluethroat Labs TEE Security Handbook: https://docs.bluethroatlabs.com/
-- Confidential Computing Consortium (Linux Foundation): https://confidentialcomputing.io/
-- awesome-tee-blockchain (curated resource list): https://github.com/dineshpinto/awesome-tee-blockchain
-- TEE security research: https://tee.dev/
+- Confidential Computing Consortium: https://confidentialcomputing.io/
+- awesome-tee-blockchain: https://github.com/dineshpinto/awesome-tee-blockchain
