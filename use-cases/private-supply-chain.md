@@ -81,6 +81,7 @@ Approach TBD. Key architectural considerations:
 - How do existing serialization mandates (EU FMD, US DSCSA) interact with privacy-preserving provenance systems?
 - What is the minimum viable attestation standard for cross-jurisdictional supply chain privacy?
 - How to handle dispute resolution when provenance data is privacy-protected?
+- Should each supply chain step be cryptographically verifiable through hardware/software provenance (e.g., [Content Authenticity Initiative](https://contentauthenticity.org/how-it-works)), and what are the trade-offs?
 
 ## 7) Notes And Links
 

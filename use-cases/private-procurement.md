@@ -78,7 +78,7 @@ Approach TBD. Key architectural considerations:
 ## 6) Open Questions
 
 - How do public procurement transparency requirements interact with on-chain bid privacy?
-- What commitment schemes best balance bid integrity with gas efficiency at scale?
+- What commitment schemes best balance bid integrity with operational overhead (two-phase interactions, on-chain storage) at scale?
 - How to handle multi-round negotiated procurement with iterative privacy requirements?
 - What selective disclosure models satisfy procurement auditors across jurisdictions?
 

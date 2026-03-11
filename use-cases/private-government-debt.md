@@ -55,7 +55,7 @@ While debt terms are public, individual holder positions reveal investment strat
 
 ### Problem 3: Fiscal Transparency vs Operational Privacy
 
-Government treasuries face a unique tension between public accountability (taxpayers' right to know how public funds are managed) and market-sensitive operational timing. Debt operations, reserve management decisions, and funding strategies can move markets if disclosed prematurely, yet democratic accountability demands eventual transparency.
+Government treasuries face a unique tension between public accountability (taxpayers' right to know how public funds are managed) and market-sensitive operational timing. Debt operations, reserve management decisions, and funding strategies can move markets if disclosed prematurely, but democratic accountability demands eventual transparency.
 
 **Requirements:**
 
@@ -66,7 +66,7 @@ Government treasuries face a unique tension between public accountability (taxpa
 **Constraints:**
 
 - Public accountability frameworks and freedom of information requirements
-- Commitment-and-reveal schemes must support ex-post audit without real-time market exposure
+- Commit-and-reveal schemes must support ex-post audit without real-time market exposure
 - Different jurisdictions have different disclosure timelines (e.g., auction results vs. debt management strategy)
 
 ## 5) Recommended Approaches
@@ -76,14 +76,14 @@ See [approach-private-bonds.md](../approaches/approach-private-bonds.md) for gen
 - Sealed-bid auction mechanisms
 - Post-auction disclosure requirements
 - Balancing public accountability with participant privacy
-- Commitment-and-reveal schemes for fiscal operations: commit to a decision on-chain, reveal after market-sensitive window closes
+- Commit-and-reveal schemes for fiscal operations: commit to a decision on-chain, reveal after market-sensitive window closes
 
 ## 6) Open Questions
 
 - How to balance public accountability (government operations) with participant privacy?
 - What auction mechanisms best prevent collusion while maintaining efficiency?
 - How do municipal debt requirements differ from sovereign debt?
-- What selective disclosure models satisfy both public accountability and government operational security?
+- What ex-post disclosure models satisfy both public accountability and government operational security?
 
 ## 7) Notes And Links
 
