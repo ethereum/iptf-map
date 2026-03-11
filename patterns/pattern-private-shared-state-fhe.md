@@ -15,6 +15,7 @@ avoid-when:
   - Sub-second latency is critical (FHE computation overhead is high)
   - No tolerance for threshold decryption committee trust
 dependencies: [FHE schemes (TFHE/BFV), threshold decryption network, Ethereum L1/L2]
+context: both
 crops_profile:
   cr: medium
   os: partial

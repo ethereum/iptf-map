@@ -18,6 +18,7 @@ dependencies:
   - Attested TEEs (Intel SGX, AMD SEV, AWS Nitro)
   - zero-knowledge proof system (Groth16/PLONK)
   - Stealth address support (EIP-5564)
+context: i2i
 crops_profile:
   cr: medium
   os: partial

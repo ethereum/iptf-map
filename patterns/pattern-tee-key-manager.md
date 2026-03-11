@@ -14,6 +14,7 @@ avoid-when:
   - The threat model includes strong physical or microarchitectural side-channel attackers against the TEE.
 dependencies:
   - Attested TEEs (Intel SGX/AMD SEV)
+context: both
 crops_profile:
   cr: low
   os: partial

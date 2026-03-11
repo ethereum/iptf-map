@@ -14,6 +14,7 @@ avoid-when:
 dependencies:
   - ERC-20
   - Optional: ERC-5564 (stealth addresses), ERC-3643 (eligibility gating), [Attestations](pattern-verifiable-attestation.md) for audit
+context: both
 crops_profile:
   cr: medium
   os: partial

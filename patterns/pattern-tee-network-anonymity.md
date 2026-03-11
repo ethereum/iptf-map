@@ -15,6 +15,7 @@ avoid-when:
   - Running own node eliminates RPC provider trust
   - High-latency anonymity networks (Tor, Nym) are acceptable
 dependencies: [TEE (client-side), Secret sharing, Additive homomorphic commitments]
+context: both
 crops_profile:
   cr: medium
   os: partial

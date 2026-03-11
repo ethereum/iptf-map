@@ -15,6 +15,7 @@ avoid-when:
   - Threat model includes nation-state physical access or supply-chain compromise
   - Full trustlessness required (prefer co-SNARKs or FHE alternatives)
 dependencies: [TEE platforms (SGX/SEV-SNP/Nitro), attestation infrastructure, Ethereum L1/L2]
+context: both
 crops_profile:
   cr: low
   os: partial

@@ -14,6 +14,7 @@ dependencies:
   - EAS
   - Threshold-crypto/KMS
   - ZK predicate circuits
+context: both
 crops_profile:
   cr: medium
   os: partial

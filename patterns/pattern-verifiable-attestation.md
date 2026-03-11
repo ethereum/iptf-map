@@ -13,6 +13,7 @@ avoid-when:
   - No trusted issuer available or issuer centralization is unacceptable
   - Simple token gating is sufficient (attestations add complexity for basic access control)
 dependencies: [EAS, ONCHAINID, W3C-VC]
+context: both
 crops_profile:
   cr: low
   os: yes

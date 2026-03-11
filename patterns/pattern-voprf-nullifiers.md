@@ -18,6 +18,7 @@ dependencies:
   - vOPRF implementation (e.g., IETF OPRF/VOPRF constructions in prime-order groups).
   - Threshold/MPC or threshold signature infrastructure (t-of-n) to hold the server key without a single custodian.
   - A nullifier registry / replay protection mechanism in the target system (contract or service).
+context: both
 crops_profile:
   cr: medium
   os: partial

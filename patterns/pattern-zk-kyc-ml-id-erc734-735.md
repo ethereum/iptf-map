@@ -11,6 +11,7 @@ works-best-when:
 avoid-when:
 - can do whitelisting based on signatures of authorized parties
 dependencies: [ERC-734, ERC-735]
+context: both
 crops_profile:
   cr: low
   os: partial

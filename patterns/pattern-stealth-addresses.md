@@ -16,6 +16,7 @@ dependencies:
   - ERC-20
   - ERC-4337 (optional, account abstraction for wallet UX)
   - EIP-5564 (Ethereum Stealth Addresses draft)
+context: both
 crops_profile:
   cr: medium
   os: yes

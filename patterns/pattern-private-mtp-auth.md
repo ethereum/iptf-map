@@ -14,6 +14,7 @@ avoid-when:
   - Regulators require explicit PII disclosure onchain.
   - Institutions lack capacity to manage ZK infrastructure or Merkle registry.
 dependencies: [ERC-3643, EIP-7573, EAS, Semaphore, MTP, ZK-Proofs]
+context: both
 crops_profile:
   cr: low
   os: yes

@@ -14,6 +14,7 @@ avoid-when:
   - Public transparency is required by policy or regulation
   - Immediate inclusion guarantees are critical (private routes may have lower priority)
 dependencies: [Flashbots Protect, Shutter Network, SUAVE]
+context: both
 crops_profile:
   cr: medium
   os: partial

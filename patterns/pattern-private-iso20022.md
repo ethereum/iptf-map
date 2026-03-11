@@ -17,6 +17,7 @@ dependencies:
   - ISO 20022 schema (pacs.008/009/002, camt.\*)
   - ERC-20 / ERC-3643 (tokenized cash/RWA)
   - Optional: ERC-7573 (conditional settlement), ZK proof system
+context: i2i
 crops_profile:
   cr: medium
   os: partial

@@ -16,6 +16,7 @@ avoid-when:
   - Long-term secrets that outlive hardware security lifecycle
 dependencies:
   [Intel SGX, AMD SEV-SNP, AWS Nitro Enclaves, Azure Confidential Computing]
+context: both
 crops_profile:
   cr: low
   os: partial

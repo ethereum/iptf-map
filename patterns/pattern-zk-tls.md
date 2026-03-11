@@ -11,6 +11,7 @@ works-best-when:
 avoid-when:
   - data can be exported using API
 dependencies:
+context: both
 crops_profile:
   cr: low
   os: partial

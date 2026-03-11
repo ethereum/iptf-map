@@ -12,6 +12,7 @@ works-best-when:
 avoid-when:
   - Public transparency is required by design, or batch netting off‑chain suffices.
 dependencies: [ERC-20, ERC-3643, ERC-7573, Attestations]
+context: both
 crops_profile:
   cr: medium
   os: partial

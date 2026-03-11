@@ -15,6 +15,7 @@ avoid-when:
   - Decryption latency incompatible with use case
   - Single trusted party acceptable (simpler private relay)
 dependencies: [Threshold cryptography, Distributed key generation, Block builder integration]
+context: both
 crops_profile:
   cr: high
   os: partial

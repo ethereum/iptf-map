@@ -12,6 +12,7 @@ works-best-when:
 avoid-when:
   - Bilateral netting/off‑chain wires suffice; or HTLC timeouts are acceptable.
 dependencies: [ERC-7573, EAS, Chainlink Data Feeds, optional CCIP]
+context: i2i
 crops_profile:
   cr: medium
   os: partial

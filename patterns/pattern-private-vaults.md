@@ -13,6 +13,7 @@ avoid-when:
   - Full on-chain transparency of strategy or yield composition is a regulatory requirement.
   - Low gas environments or limited privacy infra availability.
 dependencies: [ERC-20, ERC-7573, EAS, Zama FHE SDK, Oracles]
+context: both
 crops_profile:
   cr: low
   os: partial

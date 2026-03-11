@@ -15,6 +15,7 @@ avoid-when:
   - Sub-second latency is critical (MPC rounds + proving add batch latency)
   - Fully trustless client-side proving with no external infrastructure dependency is required
 dependencies: [co-SNARK protocols (e.g. TACEO), threshold cryptography, Groth16/STARK verifier]
+context: both
 crops_profile:
   cr: medium
   os: yes
