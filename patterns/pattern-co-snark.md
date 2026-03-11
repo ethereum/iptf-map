@@ -12,6 +12,12 @@ avoid-when:
   - A single party can generate the proof without external data.
 dependencies:
   - co-SNARK protocols (e.g. TACEO)
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: full
+  security: medium
 ---
 
 ## Intent
@@ -43,6 +49,8 @@ Co-SNARKs let institutions, investors, or service providers jointly prove proper
 - Heavy communication and coordination overhead (scales with number of parties).
 - Requires new infra (MPC nodes, co-prover setup).
 - Delegated proving possible, but introduces new trust assumptions.
+- Honest-majority assumption: if a majority of proving parties collude, proof integrity is compromised.
+- **CROPS improvement path**: CR → high by adding economic incentives (bond-backed provers with slashing for Byzantine behavior); OS → yes by open-sourcing the full co-SNARK implementation (TACEO/ABY3 primitives); Security → high by replacing trusted setup with universal setup.
 
 ## Examples
 

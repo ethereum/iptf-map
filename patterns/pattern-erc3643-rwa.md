@@ -14,6 +14,12 @@ avoid-when:
   - Full ERC-20 interoperability is needed (unrestricted transfers)
   - High-frequency trading with minimal compliance checks
 dependencies: [ERC-3643, ONCHAINID, ERC-734, ERC-735]
+context: both
+crops_profile:
+  cr: none
+  os: partial
+  privacy: none
+  security: medium
 ---
 
 ## Intent
@@ -52,9 +58,11 @@ Enable compliant tokenization of real-world assets with built-in identity manage
 - **Complexity**: More complex than simple ERC-20 tokens, requires identity infrastructure
 - **Gas Costs**: Additional compliance checks increase transaction costs
 - **Permissioned Nature**: Not suitable for permissionless DeFi applications
+- **Centralized Control**: Token agents can freeze, force-transfer, and blacklist addresses; admin key compromise affects all holders
 - **Regulatory Dependency**: Compliance rules must be maintained and updated
 - **Privacy Limitation**: Identity verification may conflict with transaction privacy needs
 - **Limited support for Stock Split events**: Stock split events mint new tokens, which is infeasible for larger amounts of token holders. Reverse stock splits introduce uncertainties around burning/transferring tokens which are not modelled. [ERC-8056](https://eips.ethereum.org/EIPS/eip-8056) proposes an extension to ERC-20 tokens that enables issuers to apply an updatable multiplier to the UI, efficiently handling stock splits and reverse stock splits.
+- **CROPS improvement path**: CR → medium by decentralizing claim issuers via permissionless attestation (EAS-based, removing institutional gatekeeping); OS → yes by requiring all compliance modules use copyleft licensing with transparent on-chain registry of approved issuers; Privacy → full by replacing on-chain identity checks with ZK proofs of claim validity (transfer validation without exposing PII); Security → high by upgrading to multisig governance with time-locked upgrades.
 
 ## Example
 

@@ -19,6 +19,12 @@ dependencies:
   - Source-domain escrow contract (lock or burn)
   - Destination-domain mint contract integrated with shielded pool
   - Cross-domain verification mechanism (operator/optimistic/ZK/light client)
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -105,6 +111,7 @@ Move assets between chains while preserving privacy on the destination by mintin
 - Threshold key compromise — TSS/MPC signers collude
 - View key misuse — auditors leak or sell data
 - Upgrade attacks — malicious contract upgrades
+- **CROPS improvement path**: CR → high by decentralizing relay infrastructure with permissionless relayer selection; OS → yes by open-sourcing bridge contracts and verification circuits with reproducible builds; Privacy → full by mandating source-side anonymization (deposit through pre-bridge shielded pool before generating commitments); Security → high by replacing custodial/MPC operators with ZK verification of source consensus and economic finality guarantees.
 
 ## Example
 

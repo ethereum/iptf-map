@@ -12,6 +12,12 @@ works-best-when:
 avoid-when:
   - Near-term deployment required (4–5 year horizon)
 dependencies: [Post-quantum signatures, minimal zkVMs, P2P networking upgrades]
+context: both
+crops_profile:
+  cr: high
+  os: yes
+  privacy: none
+  security: medium
 ---
 
 ## Intent
@@ -87,6 +93,7 @@ A long-range redesign of Ethereum’s consensus layer aiming to enter in action 
 - Single large fork: Failure at any component delays entire bundle
 - Research coupling: PQ signatures, zkVMs, and P2P upgrades must all reach production readiness
 - Consensus-only scope: Does not address L1 execution scaling or transaction privacy
+- **CROPS improvement path**: Privacy → full by incorporating post-quantum-safe ZK primitives for private validator participation and confidential state proofs; Security → high by completing formal verification of PQ signature aggregation in Lean 4 and full cryptanalysis of hash-based schemes (expected 2027–2028 milestones).
 
 ## Example (illustrative)
 

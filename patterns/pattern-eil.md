@@ -16,6 +16,12 @@ avoid-when:
   - High-level intent without knowing specific contract calls (solvers better suited)
   - Institutional-scale transfers requiring immediate economic finality
 dependencies: [ERC-4337, EIP-7701, RIP-7859]
+context: both
+crops_profile:
+  cr: high
+  os: yes
+  privacy: none
+  security: high
 ---
 
 ## Intent
@@ -59,6 +65,7 @@ Account-based cross-L2 interoperability where users sign once and execute transa
 - Not suitable for contract-to-contract composability (only account-based)
 - ERC-4337 overhead until EIP-7701 (Native AA) adoption
 - Dispute mechanism adds complexity vs simple bridges
+- **CROPS improvement path**: Privacy → full by integrating encrypted UserOps via threshold encryption (e.g., Shutter-style mechanisms) where cross-L2 intents remain encrypted until XLP ordering is finalized.
 
 ## Example
 

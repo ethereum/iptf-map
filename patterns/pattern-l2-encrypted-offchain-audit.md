@@ -17,6 +17,12 @@ dependencies:
   - ERC-3643
   - EAS
   - Threshold-KMS
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -42,6 +48,8 @@ Run on a low-cost L2; put only **commitments/hashes** on-chain; store full facts
 ## Trade-offs
 - Trust in off-chain availability/retention; mitigate with multi-region + anchors.
 - Key governance overhead (rotation/re-encryption).
+- L2 sequencer can censor transactions; users depend on L1 escape hatch for censorship resistance.
+- **CROPS improvement path**: CR → high by enforcing L1 escape hatch for user withdrawal when sequencer censors (via commitment anchor proofs); OS → yes by releasing threshold KMS implementation as open-source library; Privacy → full by encrypting metadata (access patterns, timing) via threshold proxy re-encryption; Security → high by anchoring audit contracts on L1 to eliminate sequencer control over disclosure logs.
 
 ## Example
 - A sells €5m to B; chain shows `commit` only.

@@ -13,6 +13,12 @@ avoid-when:
   - Use cases demand non-custodial self-sovereign key management
   - Full privacy of transaction metadata is required (MPC does not shield ledger data)
 dependencies: [Threshold ECDSA, EdDSA, HSM/KMS]
+context: both
+crops_profile:
+  cr: low
+  os: partial
+  privacy: none
+  security: medium
 ---
 
 ## Intent
@@ -50,6 +56,8 @@ Provide secure custody and controlled execution of digital asset transactions by
 - **Cost**: requires distributed infra + MPC coordination.
 - **Failure modes**: node outage can block signing if quorum not met.
 - **Trust assumptions**: relies on vendor’s MPC infrastructure and orchestration.
+- **Operator censorship**: MPC operator or policy engine can refuse to co-sign; no unilateral user exit path.
+- **CROPS improvement path**: CR → high by implementing consensus-backed multi-sig with forced exit via L1 timelock and threshold key refresh; OS → yes by open-sourcing core MPC protocol (CMP/TSS); Privacy → full by adding threshold FHE transaction encryption before policy evaluation; Security → high by adopting verifiable threshold signing with proactive key refresh.
 
 ## Example
 

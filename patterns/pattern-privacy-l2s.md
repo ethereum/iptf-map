@@ -15,6 +15,12 @@ avoid-when:
 dependencies:
   - L1 bridge contracts
   - Viewing key infra / off-chain attestations
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: full
+  security: medium
 ---
 
 ## Intent
@@ -51,6 +57,8 @@ Use a **privacy-native rollup** (ZK or FHE-based) to execute financial logic wit
 - **Migration/bridging required**: Assets and apps must move from L1 or other L2s; adds friction.
 - **New attack surfaces**: Viewing key compromise, bridge exploits.
 - **Regulatory auditability uncertain**: While selective disclosure is possible, no standardized frameworks exist yet for regulator access or compliance proofs.
+- **Sequencer centralization**: Most private L2 sequencers are currently centralized; can censor transactions until decentralized sequencing is implemented.
+- **CROPS improvement path**: CR → high by decentralizing sequencer selection via permissionless leader election (e.g., Aztec Fernet protocol); OS → yes by requiring full source publication under copyleft with binding no-proprietary-prover commitments; Security → high by moving to committee-based state attestation with randomly selected validators signing each checkpoint.
 
 ## Example
 

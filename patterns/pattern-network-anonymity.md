@@ -15,6 +15,12 @@ avoid-when:
   - Institution runs its own full node (eliminates RPC provider trust)
   - On-chain content privacy is the only requirement
 dependencies: []
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -136,6 +142,7 @@ Route all blockchain traffic through a VPN. Hides IP from the RPC provider but t
 - Stronger anonymity generally means higher latency — institutional latency requirements constrain the choice.
 - All approaches except mixnets are vulnerable to a sufficiently powerful global passive adversary.
 - Operational complexity varies significantly: VPN is trivial; mixnet integration is non-trivial.
+- **CROPS improvement path**: CR → high by adopting permissionless mix node participation via stake-weighted selection; OS → yes by mandating open-source implementations under copyleft with no proprietary exit nodes; Privacy → full by defaulting to cover-traffic model instead of opt-in anonymity; Security → high by removing TEE dependency and proving security under passive global adversary via anonymity definitions.
 
 ## Example
 

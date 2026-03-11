@@ -14,6 +14,12 @@ dependencies:
   - ERC-3643
   - ZK proof system (commitments/nullifiers)
   - ERC-7573
+context: both
+crops_profile:
+  cr: high
+  os: partial
+  privacy: full
+  security: medium
 ---
 
 ## Intent
@@ -36,6 +42,7 @@ Keep amounts/positions private on **Ethereum L1** via a **shielded pool** (commi
 ## Trade-offs
 - Costly per-transfer proofs; mempool privacy relies on private routing.
 - Operational complexity for proofs.
+- **CROPS improvement path**: OS → yes by open-sourcing prover circuits under a permissive license. Security -> High by using a post-quantum safe zk primitives
 
 ## Example
 - 50 trades/month; regulator requests proof for trade N; scoped reveal provided.

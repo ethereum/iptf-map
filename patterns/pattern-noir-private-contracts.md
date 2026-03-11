@@ -15,6 +15,12 @@ avoid-when:
   - Team lacks capacity to adopt new tooling and non-Solidity development
   - Simple shielding or anonymity is sufficient (lighter alternatives exist)
 dependencies: [Aztec Protocol, Noir, Barretenberg Prover]
+context: both
+crops_profile:
+  cr: medium
+  os: yes
+  privacy: full
+  security: medium
 ---
 
 ## Intent
@@ -99,6 +105,7 @@ Noir is the DSL developed by Aztec, enable developers to write Ethereum-compatib
 - Leverage growing [Awesome Noir](https://github.com/noir-lang/awesome-noir) ecosystem for shared libraries
 - Start with selective privacy layers, expand as tooling matures
 - Optimize circuit design to minimize proving time
+- **CROPS improvement path**: CR → high by shifting to permissionless sequencer election; Security → high by replacing admin keys with DAO-governed upgrade paths.
 
 ## Example
 

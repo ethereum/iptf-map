@@ -13,6 +13,12 @@ avoid-when:
 dependencies:
   - Encrypted mempool (Shutter) or private builders (SUAVE)
   - RFQ service
+context: both
+crops_profile:
+  cr: low
+  os: partial
+  privacy: partial
+  security: low
 ---
 
 ## Intent
@@ -34,6 +40,7 @@ Prevent **front-running and information leakage** by routing quotes/orders via *
 ## Trade-offs
 - Additional infra dependency; fallback path required.
 - Latency/availability tied to privacy routing.
+- **CROPS improvement path**: CR → high by implementing permissionless threshold committee selection via stake-weighted rotation (e.g., Shutter EIP-8105); OS → yes by adopting enshrined protocol rules and open-sourcing all encryption/decryption logic under copyleft; Privacy → full by encrypting quotes end-to-end until settlement confirmation (not just pre-trade); Security → high by hardening collusion resistance via TEE-backed key compartmentalization.
 
 ## Example
 - Three quotes received; best quote settles; unfilled quotes remain undisclosed.

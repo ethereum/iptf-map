@@ -15,6 +15,12 @@ avoid-when:
   - Real-time settlement finality required (Plasma exits have delay)
   - Complex smart contract logic needed (stateless model limits programmability)
 dependencies: [ZK proofs, Merkle commitments, L1 anchor contract]
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: full
+  security: medium
 ---
 
 ## Intent
@@ -52,6 +58,7 @@ Use stateless Plasma architecture to enable private token transfers where transa
 - **Limited Programmability**: Stateless model restricts complex contract interactions
 - **Block Producer Trust**: Liveness depends on block producer; censorship possible (but not theft)
 - **Client Compute**: Proof generation requires client-side resources (acceptable for institutions)
+- **CROPS improvement path**: CR → high by implementing protocol-enforced forced exit via L1 anchor (cryptographic proof-based withdrawal bypassing block producer liveness); OS → yes by publishing all circuit code in a forkable repository under a permissive open-source license; Security → high by adopting post-quantum hash-based ZK primitives.
 
 ## Example
 

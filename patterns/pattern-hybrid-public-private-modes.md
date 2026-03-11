@@ -17,6 +17,12 @@ dependencies:
   - ERC-7573 (DvP settlement)
   - ERC-3643 (compliant tokens with transfer rules)
   - Volition or dual-chain architecture (public/private execution environments)
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -94,6 +100,7 @@ Allow institutions to select **public or private execution mode** on a per-trans
 
 - **Policy drift risk**
   Rules must stay synchronized across systems; misconfigurations can route sensitive transactions to public mode.
+- **CROPS improvement path**: CR → high by decentralizing the policy engine as a permissionless smart contract with DAO governance (no unilateral override); OS → yes by mandating open-source mode-routing logic and requiring privacy L2 provers to remain forkable; Security → high by requiring multi-operator settlement oracle with threshold cryptography and formal audits of coordination-service liveness.
 
 ## Example
 

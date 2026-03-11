@@ -13,6 +13,12 @@ avoid-when:
   - Use cases require fully open participation on public blockchains
   - Applications depend on composability with EVM/ZK ecosystems
 dependencies: [DAML, ISO20022, EAS, custom sync protocols]
+context: i2i
+crops_profile:
+  cr: none
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -49,6 +55,8 @@ Enable atomic transactions and data exchange across distinct permissioned ledger
 - **Complexity**: requires harmonization of governance and protocol standards.
 - **Interoperability limits**: not natively composable with public-chain DeFi.
 - **Failure modes**: stalled domain halts atomic settlement.
+- **Operator censorship**: each ledger operator controls participation; can deny access, freeze assets, or refuse to process transactions.
+- **CROPS improvement path**: CR → medium by decentralizing validator set with permissionless joining (bonded validators, no sponsorship gating) and protocol-enforced exit rights via L1 proof of funds; OS → yes by open-sourcing the sync protocol under copyleft; Privacy → full by encrypting cross-domain messages via TLS 1.3 + scoped view keys with no plaintext at relay boundaries; Security → high by auditing contract semantics for state leakage and proving Byzantine consensus liveness under partition.
 
 ## Example
 

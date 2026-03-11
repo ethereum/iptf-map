@@ -14,6 +14,12 @@ works-best-when:
 avoid-when:
   - Single-chain operations sufficient
   - Transaction privacy required (intents visible to solvers)
+context: both
+crops_profile:
+  cr: high
+  os: yes
+  privacy: none
+  security: medium
 ---
 
 ## Intent
@@ -50,6 +56,7 @@ OIF enables cross-chain intent-based settlement where users express desired outc
 - Cross-chain operations inherently carry higher latency and complexity vs. single-chain flows.
 - Multi-step cross-chain settlement increases attack surface (messaging proofs, oracle delays).
 - Intent visibility
+- **CROPS improvement path**: Privacy → full by adopting encrypted intent encoding (sealed-bid commitments via threshold encryption, revealable only after solver execution and L1 finality); Security → high by requiring independent audits of cross-chain settlement atomicity and oracle assumptions.
 
 ## Example: Cross-Chain Stablecoin Settlement
 

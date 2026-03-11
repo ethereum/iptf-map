@@ -16,6 +16,12 @@ dependencies:
   - ERC-7573 locking contract (asset leg)
   - ERC-7573 decryption contract (payment leg)
   - Stateless decryption oracle on the payment network
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: none
+  security: medium
 ---
 
 ## Intent
@@ -105,8 +111,9 @@ These extensions do not change how ERC-7573 contracts decide outcomes: the asset
 - **Integration effort**  
   Internal systems must handle outcome keys, track trade identifiers, listen to events on both networks, and reconcile them with internal ledgers.
 
-- **Failure and dispute handling**  
+- **Failure and dispute handling**
   Exceptional cases (incorrect parameters, operational errors, regulatory holds) still require documented off-chain procedures.
+- **CROPS improvement path**: CR → high by adopting threshold decryption oracles (k-of-n quorum with no single exclusion point); OS → yes by mandating copyleft licensing for oracle implementations and outcome key services; Privacy → full by layering threshold encrypted mempools so trade details remain encrypted until block inclusion; Security → high by formalizing ZK proofs for outcome key validity and eliminating reliance on operational trust.
 
 ## Example
 

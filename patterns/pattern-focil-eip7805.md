@@ -14,6 +14,12 @@ works-best-when:
 avoid-when:
   - Mempool visibility of transaction details is unacceptableh
 dependencies: [EIP-7805]
+context: both
+crops_profile:
+  cr: high
+  os: yes
+  privacy: none
+  security: high
 ---
 
 ## Intent
@@ -52,6 +58,7 @@ FOCIL (Fork-Choice Enforced Inclusion Lists) is an EIP that enables a committee 
 - **Equivocation Handling:** P2P rule allows forwarding up to 2 ILs per committee member; equivocators ignored but bandwidth can double in worst case
 - **No Direct Incentives:** Relies on altruistic behavior—no explicit rewards for IL committee members
 - **Complexity:** Requires consensus layer fork-choice changes, execution layer validation, and coordinated P2P network updates
+- **CROPS improvement path**: Privacy → full by combining FOCIL with encrypted mempools (EIP-8141 or Shutter), where transactions in inclusion lists remain encrypted until post-commitment, hiding amounts and counterparties while preserving censorship resistance.
 
 ## Example
 
