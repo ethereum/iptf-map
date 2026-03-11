@@ -5,6 +5,7 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Changed
+- chore(approach|use-case): Updated [Private Payments](approaches/approach-private-payments.md) approach and [use case](use-cases/private-payments.md) with PoC validation data
 - feat(use-case): Broadened [Private Authentication](use-cases/private-auth.md) beyond institutional KYC to cover governance and national identity use cases
 - feat(approach): Restructured [Private Authentication Approach](approaches/approach-private-auth.md) with credential-source taxonomy and validated deployment references
 
