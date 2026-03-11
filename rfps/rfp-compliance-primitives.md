@@ -70,7 +70,5 @@ Regulatory frameworks (MiCA, GENIUS Act) are published but lack standardized Eth
 ## See Also
 
 - [Privacy Pools RFP](rfp-privacy-pools.md)
-- [Jurisdiction: EU MiCA](../jurisdictions/eu-mica.md)
-- [Jurisdiction: US GENIUS Act](../jurisdictions/us-genius-act.md)
-- [Pattern: Eligibility Proofs](../patterns/pattern-eligibility-proofs-kyc.md)
+- [Jurisdiction: EU MiCA](../jurisdictions/eu-MiCA.md)
 - [IVMS101 Standard](https://intervasp.org/)

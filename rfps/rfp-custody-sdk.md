@@ -63,6 +63,5 @@ Even the best privacy L2 won't be adopted if institutional custody teams can't o
 
 ## See Also
 
-- [Pattern: Viewing Key Disclosure](../patterns/pattern-viewing-key-disclosure.md)
 - [Pattern: TEE Key Manager](../patterns/pattern-tee-key-manager.md)
 - [Use Case: Private Bonds](../use-cases/private-bonds.md)
