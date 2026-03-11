@@ -40,7 +40,6 @@ These problems interact because traditional payment transparency conflicts with 
 - Maximum security using Ethereum L1 consensus
 - Provides **anonymity** (unlinkable addresses) but limited **privacy** (amounts/patterns may still leak)
 - [Shielded ERC-20 Transfers](../patterns/pattern-shielding.md) with commitment/nullifier schemes
-- Higher per-transaction costs but battle-tested infrastructure
 
 **Privacy L2 (Aztec, etc.):**
 
@@ -54,8 +53,9 @@ These problems interact because traditional payment transparency conflicts with 
 - Client-side proving with minimal on-chain data (only Merkle roots)
 - Users custody their own transaction data; chain observers see only commitments
 - [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md) pattern
+- Requires operator infrastructure for building blocks, aggregating proofs
 - Best for: High-volume flows, minimal on-chain footprint
-- Trade-off: Exit delays, user data custody responsibility
+- Trade-off: Exit delays, user data custody responsibility, operator liveness dependency
 
 **TEE-Based Privacy:**
 
@@ -103,6 +103,37 @@ These problems interact because traditional payment transparency conflicts with 
    - Support for multiple stablecoins (USDC, EURC, etc.)
    - Cross-currency private transfers and conversions
    - Integration with existing stablecoin compliance frameworks
+
+### PoC Validation
+
+Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO model with Noir/[UltraHonk](https://github.com/AztecProtocol/barretenberg)) and a Plasma/Intmax2 stateless rollup ([Plonky2](https://github.com/0xPolygonZero/plonky2)). Both use dual-key architecture (spending + viewing) and attestation-gated entry via ZK proof of KYC.
+
+> **Note:** Benchmarks below are indicative measurements from PoC testing, not production reference numbers. Implementers should run their own benchmarks with domain-specific configuration.
+
+**Reference Implementation:** [Private Payment PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment)
+
+#### Comparison
+
+| Dimension | Shielded Pool (L1) | Plasma/Intmax2 (L2) |
+|---|---|---|
+| **Proving system** | UltraHonk | Plonky2 |
+| **Trusted setup** | No  | No |
+| **Gas: deposit** | ~155K | ~137K (user) |
+| **Gas: transfer** | ~181K + ~2.6M verification | Off-chain (configurable fee by operator) |
+| **Gas: withdraw** | ~47K + ~2.6M verification | ~343k (operator, amortized across senders) |
+| **Gas: batch** | N/A | ~255K (operator, amortized across senders) |
+| **Proof gen (client)** | 410-991ms | 5.9-9.8s (user) |
+| **Proof gen (operator)** | N/A | 42-49s |
+| **Operator required** | No | Yes |
+
+#### Cross-Cutting Findings
+
+- **Dual-key architecture** (spending + viewing) works in both models, confirming selective disclosure is practical without granting transfer authority
+- **Attestation-gated entry** via ZK proof of Merkle tree inclusion is feasible (MAX_ATTESTATION_TREE_DEPTH=20, supporting ~1M participants, configurable for larger participtants, but increases proving time)
+- **Network timing correlation** is unmitigated in both approaches; see [Network-Level Anonymity](../patterns/pattern-network-anonymity.md) for mitigation patterns
+- **Withdrawal to fresh addresses** requires a gas relayer since the recipient address may not have ETH for gas. Users can always withdraw directly (sacrificing privacy), but private withdrawal depends on relayer liveness and willingness to relay
+- **Multi-token transfers** require same-token constraints in circuits, confirming per-token shielded pools and liquidity fragmentation concerns
+- **PlasmaBlind** (folding-scheme-based stateless plasma) is an emerging alternative to Plonky2 recursive proofs; see [PSE research](https://pse.dev/mastermap/ptr)
 
 ### Vendor Recommendations
 
@@ -163,17 +194,31 @@ These problems interact because traditional payment transparency conflicts with 
 - **Native Privacy:** Better performance, requires new stablecoin deployments
 - **Hybrid:** Use both based on operational needs
 
+**Operator Complexity:**
+
+- **Shielded Pool:** No protocol-level operator needed; users interact directly with L1 contracts. Private transactions depend on a first/third-party gas relayer to avoid linking the sender's funded address
+- **Plasma/Intmax2:** Requires operator infrastructure for block building, proving, and withdrawal processing
+- **Consideration:** Operator economics and liveness guarantees must be addressed for production deployment
+
 ### Open Questions
 
-1. **Stablecoin Issuer Integration:** How to maintain compliance with issuer KYC/AML while enabling payment shielding?
+**Partially Resolved by PoC:**
 
-2. **Cross-Jurisdiction Standards:** Standardization of selective disclosure formats across different regulatory regimes?
+1. **Stablecoin Issuer Integration:** Attestation-gated entry (ZK proof of KYC) demonstrates a viable compliance gating mechanism. Remaining: freeze/denylist integration within shielded pools.
 
-3. **Traditional Rail Integration:** Technical standards for SWIFT/ISO20022 integration with privacy infrastructure?
+2. **Liquidity Fragmentation:** Multi-token transfers require same-token constraints in circuits, confirming per-token shielded pools. Remaining: cross-pool atomic swaps and multi-asset circuit designs.
 
-4. **Liquidity Fragmentation:** Impact of privacy requirements on stablecoin liquidity and market making?
+3. **Operational Recovery (key loss, business continuity):** Dual-key architecture (spending + viewing) enables balance inspection via viewing key even when spending key is in cold storage or lost. Remaining: full business continuity workflows and key rotation under shielding.
 
-5. **Operational Recovery:** Key recovery and business continuity for institutional payment operations?
+**Unresolved:**
+
+4. **Cross-Jurisdiction Standards:** Standardization of selective disclosure formats across different regulatory regimes?
+
+5. **Traditional Rail Integration:** Technical standards for SWIFT/ISO20022 integration with privacy infrastructure?
+
+6. **Verification Gas Viability:** At ~2.6M gas per on-chain verification for shielded pools, what payment volume threshold makes L2 amortization necessary?
+
+7. **Network Timing Correlation:** Some approaches leak timing metadata. What is the acceptable latency overhead for [network anonymity](../patterns/pattern-network-anonymity.md) mitigations?
 
 ### Alternative Approaches Considered
 
@@ -196,6 +241,7 @@ These problems interact because traditional payment transparency conflicts with 
 
 - **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573), [ISO 20022](https://www.iso20022.org/), [ERC-20](https://ercs.ethereum.org/ERCS/erc-20)
 - **Infrastructure:** [Railgun](https://railgun.org/), [Aztec Network](https://docs.aztec.network/), [Zama fhEVM](https://docs.zama.org/fhevm), [Intmax](https://www.intmax.io/)
-- **Patterns:** [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
+- **Patterns:** [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md), [Network-Level Anonymity](../patterns/pattern-network-anonymity.md)
 - **Regulatory:** [MiCA Framework](../jurisdictions/eu-MiCA.md), [SEC - GENIUS Act](../jurisdictions/us-SEC.md)
 - **Related Approaches:** [Private Trade Settlement](../approaches/approach-private-trade-settlement.md), [Private Derivatives](../approaches/approach-private-derivatives.md)
+- **Reference Implementation:** [Private Payment PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment)

@@ -1,6 +1,5 @@
 ---
 title: Private Payments
-status: stub
 primary_domain: Payments
 secondary_domain: Identity & Compliance
 ---
@@ -71,7 +70,9 @@ Institutions disbursing grants or payments on the ground (government-to-person t
 
 ## 5) Recommended Approaches
 
-See [private-stablecoins.md](private-stablecoins.md) for stablecoin-based privacy patterns. Additional considerations:
+See [Approach: Private Payments](../approaches/approach-private-payments.md) for detailed solution architecture covering L1 shielded pools, Plasma/Intmax2 stateless rollups, privacy L2s, TEE, and MPC approaches with quantitative comparison from PoC validation.
+
+See also [private-stablecoins.md](private-stablecoins.md) for stablecoin-specific privacy patterns. Additional considerations:
 
 - CBDC privacy models (government-issued with privacy guarantees)
 - Integration with existing payment rails
@@ -80,16 +81,18 @@ See [private-stablecoins.md](private-stablecoins.md) for stablecoin-based privac
 
 ## 6) Open Questions
 
-- Where is the line between payment privacy and AML/CFT obligations?
+- How can payment privacy coexist with AML/CFT obligations? Attestation-gated entry is one approach; what are the trade-offs across jurisdictions?
 - How do CBDCs with privacy compare to private stablecoins?
 - What's the migration path from traditional payment systems?
 - How do privacy requirements differ between commercial B2B payments and institutional grant disbursement with on-the-ground verification?
+- Network timing correlation: both L1 and L2 privacy approaches leak metadata; see [Network-Level Anonymity](../patterns/pattern-network-anonymity.md)
 
 ## 7) Notes And Links
 
 - Related: [private-stablecoins.md](private-stablecoins.md) (stablecoin-specific privacy)
 - Related: [private-fx.md](private-fx.md) (cross-currency payments)
 - Related: [private-treasuries.md](private-treasuries.md) (corporate payment context)
+- Reference: [Private Payment PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment)
 - Market context: Governments building digital currency infrastructure; cross-border payment networks exploring blockchain alternatives to SWIFT
 - Note: Transaction patterns are highly revealing of business and personal activity
 - See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team) — G2P payments, aid disbursement

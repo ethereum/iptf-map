@@ -13,6 +13,12 @@ This folder contains public-facing documentation for IPTF, including technical p
 - **[Domains](./domains/)**: Technical domain overviews (payments, custody, trading, etc.)
 - **[Vendors](./vendors/)**: Neutral documentation on vendor products and tooling
 
+## Evaluation Framework
+
+This map evaluates solutions against **CROPS** — four properties the Ethereum Foundation considers non-negotiable: Censorship Resistance, Open Source and Free, Privacy, and Security.
+
+Patterns and approaches distinguish between **I2I** (Institution-to-Institution) and **I2U** (Institution-to-End-User) contexts because CROPS requirements differ based on the power dynamic between counterparties. See [GLOSSARY.md](GLOSSARY.md) for full definitions.
+
 ## Using This Documentation
 
 **For business stakeholders:**

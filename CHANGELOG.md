@@ -5,6 +5,7 @@ All notable changes to the IPTF Map are documented here.
 ## [Unreleased]
 
 ### Changed
+- chore(approach|use-case): Updated [Private Payments](approaches/approach-private-payments.md) approach and [use case](use-cases/private-payments.md) with PoC validation data
 - refactor(use-case): Renamed Private Authentication → [Private Identity](use-cases/private-identity.md) — authentication reframed as one application of private identity (also renamed approach)
 - feat(use-case): Enriched [Private Payments](use-cases/private-payments.md) with conditional & programmable payment privacy (grant disbursement, milestone-based releases) — see also [EPIC map](https://epic-webapp.vercel.app/)
 - feat(use-case): Enriched [Private Government Debt](use-cases/private-government-debt.md) with fiscal transparency vs operational privacy tension — see also [EPIC map](https://epic-webapp.vercel.app/)
@@ -17,6 +18,10 @@ All notable changes to the IPTF Map are documented here.
 - feat(use-case): [Private Supply Chain](use-cases/private-supply-chain.md) — supply chain provenance with privacy (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
 - feat(use-case): [Private Procurement](use-cases/private-procurement.md) — sealed bids, invoice privacy, audit trails (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
 - feat(use-case): [Private Registry](use-cases/private-registry.md) — privacy-preserving on-chain registries (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
+- feat(template): [crops_profile](vendors/_template.md) frontmatter block and CROPS evaluation criteria added to vendor template and README ([#102](https://github.com/ethereum/iptf-map/issues/102))
+- feat(template): [crops_profile](patterns/_template.md) frontmatter block added to pattern template for CROPS dimension indexing ([#101](https://github.com/ethereum/iptf-map/issues/101))
+- docs(glossary): [CROPS, I2I, I2U](GLOSSARY.md#iptf-evaluation-frameworks) evaluation framework definitions ([#100](https://github.com/ethereum/iptf-map/issues/100))
+- docs(readme): [Evaluation Framework](README.md#evaluation-framework) section with CROPS alignment statement ([#100](https://github.com/ethereum/iptf-map/issues/100))
 - feat(approach): [Private Money Market Funds](approaches/approach-private-money-market-funds.md) - Privacy-preserving MMF operations with ZK NAV proofs
 - feat(pattern): [EY: Starlight](vendors/ey.md#starlight) - Solidity transpiler for private on-chain state. Consolidated EY products into a single vendor file.
 - feat(pattern): [Network-Level Anonymity](patterns/pattern-network-anonymity.md) - Umbrella pattern for transport-layer sender anonymity (Tor, mixnets, private RPC, TEE-assisted, VPN)
