@@ -152,5 +152,5 @@ On-chain proof verification guarantees `total_shares` correctness independent of
   - ZK/UTXO: [Paladin](../vendors/paladin.md), [Railgun](../vendors/railgun.md), [Privacy Pools](../vendors/privacypools.md)
   - FHE: [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md), [Orion Finance](../vendors/orion-finance.md)
   - MPC/GC: [Soda Labs](../vendors/soda-labs.md)
-- **Related Patterns:** [Shielding](../patterns/pattern-shielding.md), [Private Vaults](../patterns/pattern-private-vaults.md), [ZK Shielded Balances](../patterns/pattern-zk-shielded-balances.md), [Regulatory Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [Compliance Monitoring](../patterns/pattern-compliance-monitoring.md)
+- **Related Patterns:** [Shielding](../patterns/pattern-shielding.md), [Private Vaults](../patterns/pattern-private-vaults.md), [Regulatory Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [Compliance Monitoring](../patterns/pattern-compliance-monitoring.md)
 - **Related Approaches:** [Private Bonds](./approach-private-bonds.md), [Private DvP](./approach-dvp-atomic-settlement.md)

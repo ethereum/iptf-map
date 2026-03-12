@@ -120,7 +120,7 @@ The Ethereum ecosystem has developed multiple standards addressing institutional
 | **Key Features** | Shielded balances, confidential transfers, ZK proofs for validity |
 | **Institutional Fit** | High - addresses balance/amount privacy needs |
 | **Vendor Support** | Early implementations emerging |
-| **Pattern Support** | [ZK Shielded Balances](../patterns/pattern-zk-shielded-balances.md) |
+| **Pattern Support** | [Shielding](../patterns/pattern-shielding.md) |
 | **Limitations** | Draft status; implementation complexity; proving costs |
 
 **When to use**: Token transfers where balance and amount visibility must be hidden from chain observers while maintaining verifiable correctness.
@@ -136,7 +136,7 @@ The Ethereum ecosystem has developed multiple standards addressing institutional
 | **Key Features** | Wrap any ERC-20 into shielded version, unwrap back to original, compatibility with existing tokens |
 | **Institutional Fit** | High - enables privacy for existing token infrastructure |
 | **Vendor Support** | Early implementations |
-| **Pattern Support** | [ZK Shielded Balances](../patterns/pattern-zk-shielded-balances.md) |
+| **Pattern Support** | [Shielding](../patterns/pattern-shielding.md) |
 | **Limitations** | Draft status; shield/unshield boundaries create linkability risks |
 
 **When to use**: Adding privacy to existing ERC-20 tokens without replacing the token contract; gradual privacy adoption for established tokens.
@@ -280,7 +280,7 @@ This survey should be updated as the standards landscape evolves:
 - [ERC-3643 RWA Tokenization](../patterns/pattern-erc3643-rwa.md)
 - [Atomic DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md)
 - [Stealth Addresses](../patterns/pattern-stealth-addresses.md)
-- [ZK Shielded Balances](../patterns/pattern-zk-shielded-balances.md)
+- [Shielding](../patterns/pattern-shielding.md)
 - [FOCIL - Censorship Resistance](../patterns/pattern-focil-eip7805.md)
 
 ### External Resources

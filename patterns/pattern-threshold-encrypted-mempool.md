@@ -15,6 +15,12 @@ avoid-when:
   - Decryption latency incompatible with use case
   - Single trusted party acceptable (simpler private relay)
 dependencies: [Threshold cryptography, Distributed key generation, Block builder integration]
+context: both
+crops_profile:
+  cr: high
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -89,6 +95,7 @@ Prevent MEV extraction by encrypting transaction content before mempool submissi
 - **Complexity**: Additional infrastructure (DKG, keyper network, decryption oracle)
 - **Metadata leakage**: Transaction size, gas limit, sender address may still be visible
 - **Incomplete coverage**: Only protects mempool phase; post-decryption MEV still possible
+- **CROPS context (both)**: CROPS profile is symmetric across I2I and I2U — the protocol-level design gives equal guarantees to all participants. Shutter is open source; keyper infrastructure is not universally available.
 
 ## Failure Modes
 

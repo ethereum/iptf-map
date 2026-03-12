@@ -16,7 +16,7 @@ It uses the **Noir** language along with the Aztec.nr framework to write smart c
 
 - [pattern-noir-private-contracts.md](../patterns/pattern-noir-private-contracts.md) - Noir private smart contracts
 - [pattern-privacy-l2s.md](../patterns/pattern-privacy-l2s.md) - Privacy-native rollup execution
-- [pattern-zk-shielded-balances.md](../patterns/pattern-zk-shielded-balances.md) - Confidential balances for derivatives
+- [pattern-shielding.md](../patterns/pattern-shielding.md) - Shielded ERC-20 transfers and confidential balances
 - [pattern-shielding.md](../patterns/pattern-shielding.md) - Confidential ERC-20 transfers
 
 ## Not a substitute for

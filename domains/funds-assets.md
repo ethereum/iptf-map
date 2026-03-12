@@ -19,7 +19,6 @@ status: draft
 - [L1 ZK commitment pool](../patterns/pattern-l1-zk-commitment-pool.md)
 - [Crypto-registry bridge (eWpG) + EAS](../patterns/pattern-crypto-registry-bridge-ewpg-eas.md)
 - [ICMA Bond Data Taxonomy](../patterns/pattern-icma-bdt-data-model.md)
-- [ZK proof of derivative delta](../patterns/pattern-zk-derivative-delta.md)
 - [Selective disclosure (view keys + proofs)](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
 
 ## Adjacent vendors

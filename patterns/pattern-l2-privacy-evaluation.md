@@ -197,4 +197,4 @@ OTC settlement: filter by Cryptographic privacy, require Viewing Keys for audit,
 - [RFP: Living Benchmark Dashboard](../rfps/rfp-benchmark-dashboard.md) - Automated benchmark pipeline
 - [L2Beat](https://l2beat.com/) - Independent L2 risk analysis
 - [Pattern: Hybrid Public-Private Modes](pattern-hybrid-public-private-modes.md)
-- [Pattern: ZK Shielded Balances](pattern-zk-shielded-balances.md)
+- [Pattern: Shielding](pattern-shielding.md)
