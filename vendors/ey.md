@@ -43,7 +43,7 @@ Target segments include multinational corporations, financial institutions
 - UltraPlonk proof system with no per-circuit trusted setup
 - supporting ERC20/721/1155/3525 standards
 - RESTful APIs for deposit, transfer, withdraw operations with X-Request-ID tracking
-- Integration with LocalWallet, AzureWallet, and HSM for enterprise key management
+- Integration with LocalWallet and AzureWallet for enterprise key management
 - Sophisticated chain reorganization handling and immediate finality from ZK rollup architecture.
 
 ### Strengths
