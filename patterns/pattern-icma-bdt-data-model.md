@@ -13,6 +13,12 @@ avoid-when:
   - ICMA is not the schema being used for a particular jurisdiction/domain
 dependencies:
   - ICMA BDT schema
+context: i2i
+crops_profile:
+  cr: none
+  os: yes
+  privacy: full
+  security: high
 ---
 
 ## Intent
@@ -34,6 +40,7 @@ Use **ICMA Bond Data Taxonomy** as the canonical schema for bond terms & lifecyc
 
 ## Trade-offs
 - Up-front mapping effort to existing systems.
+- **CROPS context (i2i)**: CR could reach `medium` if the BDT schema is published as a permissionless open registry with EAS-anchored contributions and no approval gate. Among institutional counterparties, open schema governance ensures no single issuer or registrar controls the canonical bond data format, enabling competitive issuance platforms to interoperate without gatekeeping.
 
 ## Example
 - Issuance terms in BDT; hash anchored via EAS; regulator verifies consistency.
