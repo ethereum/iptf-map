@@ -105,7 +105,7 @@ Noir is the DSL developed by Aztec, enable developers to write Ethereum-compatib
 - Leverage growing [Awesome Noir](https://github.com/noir-lang/awesome-noir) ecosystem for shared libraries
 - Start with selective privacy layers, expand as tooling matures
 - Optimize circuit design to minimize proving time
-- **CROPS improvement path**: CR → high by shifting to permissionless sequencer election; Security → high by replacing admin keys with DAO-governed upgrade paths.
+- **CROPS context (both)**: CR could reach `high` if sequencer election shifts to a permissionless model. Security could reach `high` by replacing admin keys with DAO-governed upgrade paths. In I2I, censorship resistance matters for ensuring no counterparty can block settlement transactions. In I2U, decentralized sequencing protects end users from unilateral transaction exclusion.
 
 ## Example
 

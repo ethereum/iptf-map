@@ -93,7 +93,7 @@ A long-range redesign of Ethereum’s consensus layer aiming to enter in action 
 - Single large fork: Failure at any component delays entire bundle
 - Research coupling: PQ signatures, zkVMs, and P2P upgrades must all reach production readiness
 - Consensus-only scope: Does not address L1 execution scaling or transaction privacy
-- **CROPS improvement path**: Privacy → full by incorporating post-quantum-safe ZK primitives for private validator participation and confidential state proofs; Security → high by completing formal verification of PQ signature aggregation in Lean 4 and full cryptanalysis of hash-based schemes (expected 2027–2028 milestones).
+- **CROPS context (both)**: Privacy could reach `full` by incorporating post-quantum-safe ZK primitives for private validator participation and confidential state proofs. Security could reach `high` once formal verification of PQ signature aggregation and full cryptanalysis of hash-based schemes are completed. In I2I, post-quantum privacy primitives enable institutions to participate in validation without exposing staking positions to competitors. In I2U, formally verified consensus gives end users stronger guarantees that light-client proofs on minimal devices are trustworthy.
 
 ## Example (illustrative)
 

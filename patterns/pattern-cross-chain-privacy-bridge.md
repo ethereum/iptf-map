@@ -111,7 +111,7 @@ Move assets between chains while preserving privacy on the destination by mintin
 - Threshold key compromise — TSS/MPC signers collude
 - View key misuse — auditors leak or sell data
 - Upgrade attacks — malicious contract upgrades
-- **CROPS improvement path**: CR → high by decentralizing relay infrastructure with permissionless relayer selection; OS → yes by open-sourcing bridge contracts and verification circuits with reproducible builds; Privacy → full by mandating source-side anonymization (deposit through pre-bridge shielded pool before generating commitments); Security → high by replacing custodial/MPC operators with ZK verification of source consensus and economic finality guarantees.
+- **CROPS context (both)**: CR could reach `high` if relay infrastructure is decentralized with permissionless relayer selection. OS improves to `yes` by open-sourcing bridge contracts and verification circuits with reproducible builds. Privacy could reach `full` by mandating source-side anonymization (deposit through a pre-bridge shielded pool before generating commitments). Security improves to `high` by replacing custodial or MPC operators with ZK verification of source consensus and economic finality guarantees. In I2I settings, institutions may operate their own relayers under bilateral agreements, reducing censorship risk but concentrating trust. In I2U settings, end-users depend entirely on public relayer availability, making permissionless relayer selection and source-side anonymization more critical.
 
 ## Example
 

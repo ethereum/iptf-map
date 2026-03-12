@@ -142,7 +142,7 @@ Route all blockchain traffic through a VPN. Hides IP from the RPC provider but t
 - Stronger anonymity generally means higher latency — institutional latency requirements constrain the choice.
 - All approaches except mixnets are vulnerable to a sufficiently powerful global passive adversary.
 - Operational complexity varies significantly: VPN is trivial; mixnet integration is non-trivial.
-- **CROPS improvement path**: CR → high by adopting permissionless mix node participation via stake-weighted selection; OS → yes by mandating open-source implementations under copyleft with no proprietary exit nodes; Privacy → full by defaulting to cover-traffic model instead of opt-in anonymity; Security → high by removing TEE dependency and proving security under passive global adversary via anonymity definitions.
+- **CROPS context (both)**: CR could reach `high` if mix node participation becomes permissionless via stake-weighted selection. OS improves to `yes` by mandating copyleft implementations with no proprietary exit nodes. Privacy could reach `full` by defaulting to cover-traffic models. Security could reach `high` by removing TEE dependency. In I2I, dedicated relays give institutions stronger anonymity. In I2U, protection depends on shared anonymity set size.
 
 ## Example
 

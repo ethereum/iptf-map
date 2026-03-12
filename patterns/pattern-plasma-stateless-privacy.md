@@ -58,7 +58,7 @@ Use stateless Plasma architecture to enable private token transfers where transa
 - **Limited Programmability**: Stateless model restricts complex contract interactions
 - **Block Producer Trust**: Liveness depends on block producer; censorship possible (but not theft)
 - **Client Compute**: Proof generation requires client-side resources (acceptable for institutions)
-- **CROPS improvement path**: CR → high by implementing protocol-enforced forced exit via L1 anchor (cryptographic proof-based withdrawal bypassing block producer liveness); OS → yes by publishing all circuit code in a forkable repository under a permissive open-source license; Security → high by adopting post-quantum hash-based ZK primitives.
+- **CROPS context (both)**: CR could reach `high` if protocol-enforced forced exits via the L1 anchor allow cryptographic proof-based withdrawals that bypass block producer liveness. OS improves to `yes` by publishing all circuit code in a forkable repository under a permissive open-source license. Security could reach `high` by adopting post-quantum hash-based ZK primitives. In I2I, forced exit guarantees ensure no block producer can hold institutional funds hostage. In I2U, self-sovereign withdrawal rights protect end users from operator censorship.
 
 ## Example
 

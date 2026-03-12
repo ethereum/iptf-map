@@ -56,7 +56,7 @@ Enable atomic transactions and data exchange across distinct permissioned ledger
 - **Interoperability limits**: not natively composable with public-chain DeFi.
 - **Failure modes**: stalled domain halts atomic settlement.
 - **Operator censorship**: each ledger operator controls participation; can deny access, freeze assets, or refuse to process transactions.
-- **CROPS improvement path**: CR → medium by decentralizing validator set with permissionless joining (bonded validators, no sponsorship gating) and protocol-enforced exit rights via L1 proof of funds; OS → yes by open-sourcing the sync protocol under copyleft; Privacy → full by encrypting cross-domain messages via TLS 1.3 + scoped view keys with no plaintext at relay boundaries; Security → high by auditing contract semantics for state leakage and proving Byzantine consensus liveness under partition.
+- **CROPS context (i2i)**: CR could reach `medium` if validators can join permissionlessly via bonding with protocol-enforced exit rights. OS improves to `yes` by open-sourcing the sync protocol under copyleft. Privacy could reach `full` by encrypting cross-domain messages end-to-end with scoped view keys. Security could reach `high` by proving Byzantine consensus liveness under partition. Operator control over access and asset freezes is the primary censorship risk; decentralized validator admission mitigates this.
 
 ## Example
 

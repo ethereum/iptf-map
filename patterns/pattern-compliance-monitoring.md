@@ -71,7 +71,7 @@ Enable institutions to monitor private transactions for regulatory compliance (A
 | **Cost** | Screening services charge per-transaction fees | Volume discounts; internal screening for high-frequency flows |
 | **Censorship** | Compliance oracle can unilaterally block any transaction; no on-chain bypass in base protocol | Threshold oracle with governance; transparent appeal process |
 
-- **CROPS improvement path**: CR → medium by replacing centralized oracle with threshold consensus oracle network (e.g., Chainlink DON with appeal routes); OS → yes by open-sourcing the screening rule engine under copyleft license; Privacy → full by enforcing ZK proof-based screening where the oracle validates compliance attestations without seeing amounts or identities; Security → high by replacing single-operator trust with threshold KMS and timelocked recovery.
+- **CROPS context (both)**: CR could reach `medium` if the centralized oracle is replaced with a threshold consensus oracle network that includes appeal routes. OS improves to `yes` by open-sourcing the screening rule engine under a copyleft license. Privacy could reach `full` by enforcing ZK proof-based screening where the oracle validates compliance attestations without seeing amounts or identities. Security improves to `high` by replacing single-operator trust with threshold KMS and timelocked recovery. In I2I settings, counterparties may accept a single compliance oracle operated by a trusted consortium member. In I2U settings, end-users have no visibility into oracle decisions, making threshold consensus and transparent appeal processes essential.
 
 ## Alert Thresholds (Reference)
 

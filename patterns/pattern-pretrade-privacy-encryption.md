@@ -40,7 +40,7 @@ Prevent **front-running and information leakage** by routing quotes/orders via *
 ## Trade-offs
 - Additional infra dependency; fallback path required.
 - Latency/availability tied to privacy routing.
-- **CROPS improvement path**: CR → high by implementing permissionless threshold committee selection via stake-weighted rotation (e.g., Shutter EIP-8105); OS → yes by adopting enshrined protocol rules and open-sourcing all encryption/decryption logic under copyleft; Privacy → full by encrypting quotes end-to-end until settlement confirmation (not just pre-trade); Security → high by hardening collusion resistance via TEE-backed key compartmentalization.
+- **CROPS context (both)**: CR could reach `high` if threshold committee selection becomes permissionless via stake-weighted rotation. OS improves to `yes` by open-sourcing all encryption and decryption logic under copyleft. Privacy could reach `full` by encrypting quotes end-to-end until settlement confirmation, not just during the pre-trade phase. Security could reach `high` by hardening collusion resistance through key compartmentalization across independent operators. In I2I, encrypted order flow prevents counterparties and intermediaries from front-running institutional block trades. In I2U, threshold encryption protects retail orders from MEV extraction by builders or relayers.
 
 ## Example
 - Three quotes received; best quote settles; unfilled quotes remain undisclosed.

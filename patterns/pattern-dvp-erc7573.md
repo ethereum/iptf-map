@@ -113,7 +113,7 @@ These extensions do not change how ERC-7573 contracts decide outcomes: the asset
 
 - **Failure and dispute handling**
   Exceptional cases (incorrect parameters, operational errors, regulatory holds) still require documented off-chain procedures.
-- **CROPS improvement path**: CR → high by adopting threshold decryption oracles (k-of-n quorum with no single exclusion point); OS → yes by mandating copyleft licensing for oracle implementations and outcome key services; Privacy → full by layering threshold encrypted mempools so trade details remain encrypted until block inclusion; Security → high by formalizing ZK proofs for outcome key validity and eliminating reliance on operational trust.
+- **CROPS context (i2i)**: CR could reach `high` if threshold decryption oracles with k-of-n quorum replace single-operator oracles, removing any single exclusion point. OS improves to `yes` by releasing oracle implementations and outcome key services under a copyleft license. Privacy could reach `full` by layering threshold-encrypted mempools so trade details remain encrypted until block inclusion. Security improves to `high` by replacing operational trust with verifiable proofs of outcome key validity. Between institutions, oracle governance is typically codified in bilateral or consortium agreements, so the practical censorship risk is lower than the protocol-level score suggests, but threshold oracles would eliminate residual single-operator risk in multi-party settlement networks.
 
 ## Example
 

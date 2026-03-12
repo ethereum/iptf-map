@@ -42,7 +42,7 @@ Operate with a licensed **crypto-register** today while **mirroring key facts** 
 - Two sources of truth; reconciliation required.
 - Strong incident/runbook discipline.
 - Registrar is sole gatekeeper; can refuse or delay registrations with no on-chain bypass.
-- **CROPS improvement path**: CR → medium by enabling alternative registrar implementations via open API standard (reducing single-registrar lock-in); OS → yes by open-sourcing the registrar integration layer and EAS schema definitions; Security → high by requiring multiple EAS attesters to cross-validate registrar claims (fault-tolerant attestation network).
+- **CROPS context (i2i)**: CR could reach `medium` if an open API standard enables alternative registrar implementations, reducing single-registrar lock-in. OS improves to `yes` by publishing the registrar integration layer and EAS schema definitions under an open-source license. Security improves to `high` by requiring multiple independent EAS attesters to cross-validate registrar claims. Between institutions, the registrar dependency is partially offset by existing contractual relationships, but multi-registrar interoperability would reduce concentration risk and simplify cross-border issuance under eWpG.
 
 ## Example
 - Issuance logged by registrar; hash anchored on-chain; auditor verifies hash match later.

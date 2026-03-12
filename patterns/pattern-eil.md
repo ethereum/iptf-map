@@ -65,7 +65,7 @@ Account-based cross-L2 interoperability where users sign once and execute transa
 - Not suitable for contract-to-contract composability (only account-based)
 - ERC-4337 overhead until EIP-7701 (Native AA) adoption
 - Dispute mechanism adds complexity vs simple bridges
-- **CROPS improvement path**: Privacy → full by integrating encrypted UserOps via threshold encryption (e.g., Shutter-style mechanisms) where cross-L2 intents remain encrypted until XLP ordering is finalized.
+- **CROPS context (both)**: Privacy could reach `full` by integrating encrypted UserOps via threshold encryption where cross-L2 intents remain encrypted until XLP ordering is finalized. In I2I settings, counterparties may tolerate visible call targets and amounts given existing confidentiality agreements. In I2U settings, public UserOp contents expose end-user activity to MEV extraction and surveillance, making encrypted submission a higher priority.
 
 ## Example
 
