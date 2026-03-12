@@ -15,7 +15,7 @@ Price feeds and data sources that protect query privacy - hiding which instituti
 
 ## 3) Actors
 
-Data Providers · Banks · Trading Firms · Oracle Operators · Regulators
+Data Providers · Banks · Trading Firms · Oracle Operators · Regulators · Data regulators · Consent management platforms
 
 ## 4) Problems
 
@@ -51,6 +51,22 @@ Some institutions (particularly banks) are data providers/originators. Privacy r
 - Multiple data provider aggregation
 - Conflict of interest management
 
+### Problem 3: Data Provenance & Consent in Oracle Feeds
+
+When oracles aggregate data from multiple institutional sources, data providers need assurance their contributions are used only as agreed. Consumers need provenance guarantees — knowing that the data originates from authorized sources, has not been tampered with, and was aggregated according to a verifiable methodology. Consent receipts (tamper-evident records of data-use agreements) can be anchored on-chain.
+
+**Requirements:**
+
+- **Must hide:** Individual data provider contributions, specific data-use agreement terms
+- **Public OK:** Aggregated feed outputs, methodology version, attestation of compliance
+- **Regulator access:** Data provenance trail, consent verification, methodology audit
+
+**Constraints:**
+
+- Data protection frameworks (GDPR, sector-specific regulations) apply to oracle data pipelines
+- Consent must be granular, revocable, and auditable
+- Multiple jurisdictions may apply different rules to the same data feed
+
 ## 5) Recommended Approaches
 
 Approach TBD. Going forward, assumption is oracles should be default private.
@@ -59,12 +75,14 @@ Consider:
 - Private information retrieval (PIR) techniques
 - Encrypted query mechanisms
 - Aggregated data delivery (hide individual queries in batches)
+- Consent receipts anchored on-chain for data-use agreements
 
 ## 6) Open Questions
 
 - Which markets have the highest priority for private oracles (bonds, derivatives, FX, funds)?
 - How does private oracle infrastructure integrate with existing data providers?
 - What's the performance overhead for query privacy?
+- How do data protection frameworks (GDPR) interact with on-chain oracle data provenance?
 
 ## 7) Notes And Links
 
@@ -72,3 +90,4 @@ Consider:
 - Related: [private-read.md](private-read.md) (query privacy for blockchain state)
 - Related: [private-derivatives.md](private-derivatives.md) (oracle-dependent pricing)
 - Note: "Going forward, assumption is oracles are all default private. Entire stack must be end-to-end with no information leakage."
+- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team) — consent, data sharing, audit trails
