@@ -6,7 +6,8 @@ All notable changes to the IPTF Map are documented here.
 
 ### Added
 
-- feat(approach): [Enshrined Private Transfers](approaches/approach-enshrined-private-transfers.md) - Intent-transaction standard, Privacy RPC adoption bridge, and hard-fork-upgradeable L1 privacy pool design
+- feat(pattern): [Permissionless Spend Auth](patterns/pattern-permissionless-spend-auth.md) - Outer/inner circuit split for permissionless, user-chosen spend authorization without fragmenting anonymity sets (EIP-8182)
+- feat(pattern): [Safe Proof Delegation](patterns/pattern-safe-proof-delegation.md) - Intent-based delegation to untrusted provers with revocable visibility (EIP-8182)
 - feat(pattern): [Network-Level Anonymity](patterns/pattern-network-anonymity.md) - Umbrella pattern for transport-layer sender anonymity (Tor, mixnets, private RPC, TEE-assisted, VPN)
 - feat(pattern): [TEE-Assisted Network Anonymity](patterns/pattern-tee-network-anonymity.md) - TEE+secret-sharing approach for low-latency sender anonymity (Flashbots Flashnet)
 - feat(pattern): [Private Shared State](patterns/pattern-private-shared-state.md) - Umbrella pattern for multi-party private state (FHE, MPC+ZK, TEE comparison)
