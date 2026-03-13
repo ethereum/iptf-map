@@ -14,7 +14,7 @@ Unlike Ethereum (where the network executes everything), Miden pushes execution 
 
 ## Fits with patterns
 
-- [pattern-zk-shielded-balances.md](../patterns/pattern-zk-shielded-balances.md) - Confidential balances for derivatives
+- [pattern-shielding.md](../patterns/pattern-shielding.md) - Confidential balances and shielded transfers
 - [pattern-private-iso20022.md](../patterns/pattern-private-iso20022.md) - Private messaging & settlement
 - [pattern-privacy-l2s.md](../patterns/pattern-privacy-l2s.md) - Privacy-native rollup execution
 

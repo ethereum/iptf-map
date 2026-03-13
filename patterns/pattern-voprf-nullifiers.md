@@ -18,6 +18,12 @@ dependencies:
   - vOPRF implementation (e.g., IETF OPRF/VOPRF constructions in prime-order groups).
   - Threshold/MPC or threshold signature infrastructure (t-of-n) to hold the server key without a single custodian.
   - A nullifier registry / replay protection mechanism in the target system (contract or service).
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: full
+  security: medium
 ---
 
 ## Intent
@@ -107,6 +113,7 @@ deterministic output for one-per-scope limits, anti-replay, or persistent pseudo
 - Key management:
   - Requires ceremony/DSKG, resharing, rotation, and incident response. Rotation interacts with determinism:
     changing keys changes outputs unless versioned (key_id included in input framing).
+- **CROPS context (both)**: In I2U, the pattern's value is highest — prevents institutions from building offline dossiers of user activity. In I2I, the online dependency may be a liveness concern for high-frequency operations. TACEO OPRF is open source; other threshold MPC implementations vary.
 
 ## Example
 

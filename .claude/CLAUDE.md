@@ -23,7 +23,7 @@ The **Institutional Privacy Task Force (IPTF) Map** is a public reference reposi
 
 ## File Naming Conventions
 
-- **Patterns:** `pattern-<slug>.md` (e.g., `pattern-zk-shielded-balances.md`)
+- **Patterns:** `pattern-<slug>.md` (e.g., `pattern-shielding.md`)
 - **Use Cases:** `<descriptive-name>.md` (e.g., `private-bonds.md`)
 - **Approaches:** `approach-<use-case-slug>.md` (e.g., `approach-private-bonds.md`)
 - **Vendors:** `<vendor-name>.md` (e.g., `aztec.md`, `paladin.md`)

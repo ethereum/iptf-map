@@ -13,6 +13,12 @@ avoid-when:
   - Full on-chain transparency of strategy or yield composition is a regulatory requirement.
   - Low gas environments or limited privacy infra availability.
 dependencies: [ERC-20, ERC-7573, EAS, Zama FHE SDK, Oracles]
+context: both
+crops_profile:
+  cr: low
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -45,6 +51,7 @@ Enable institutional or DeFi actors to **express trading or allocation intents**
 - **Performance:** FHE or privacy L2 introduces latency and higher gas cost.
 - **Complexity:** Requires secure off-chain computation and intent relayer coordination.
 - **Risk:** Misconfigured access control or key leakage may expose strategy data.
+- **CROPS context (both)**: In I2U, CR is especially low -- end-user depends entirely on vault operator for strategy execution and redemption. OS improves if solver is open source and auditable. CR improves with permissionless vault entry and multiple competing solvers.
 
 ## Example
 

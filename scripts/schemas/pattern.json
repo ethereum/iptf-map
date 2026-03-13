@@ -65,6 +65,38 @@
     "rollout-plan": {
       "type": "string",
       "description": "Optional rollout plan or timeline"
+    },
+    "context": {
+      "type": "string",
+      "enum": ["i2i", "i2u", "both"],
+      "description": "Applicable relationship type"
+    },
+    "crops_profile": {
+      "type": "object",
+      "description": "CROPS dimension assessment for this pattern",
+      "properties": {
+        "cr": {
+          "type": "string",
+          "enum": ["high", "medium", "low", "none"],
+          "description": "Censorship resistance impact"
+        },
+        "os": {
+          "type": "string",
+          "enum": ["yes", "partial", "no"],
+          "description": "Open Source and Free: source availability, forkability, exit paths"
+        },
+        "privacy": {
+          "type": "string",
+          "enum": ["full", "partial", "none"],
+          "description": "Privacy guarantees: full (private from everyone), partial (selective disclosure required), none (public or institution sees all)"
+        },
+        "security": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "description": "Strength of security guarantees (cryptographic assumptions, decentralization, trust model)"
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

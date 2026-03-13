@@ -16,8 +16,7 @@ status: draft
 ## Shortest-path patterns
 - [Pre-trade privacy (Shutter/SUAVE)](../patterns/pattern-pretrade-privacy-encryption.md)
 - [Atomic DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md)
-- [ZK Shielded Balances](../patterns/pattern-zk-shielded-balances.md)
-- [zk-SPV (cross-chain)](../patterns/pattern-zk-spv.md)
+- [Shielding](../patterns/pattern-shielding.md)
 - [Commit-and-Prove fallback](../patterns/pattern-commit-and-prove.md)
 
 ## Adjacent vendors

@@ -69,5 +69,5 @@ Approach TBD. Consider:
 ## 7) Notes And Links
 
 - Related: Pre-trade negotiation in [private-bonds.md](private-bonds.md), [private-fx.md](private-fx.md), [private-derivatives.md](private-derivatives.md)
-- Related: [private-auth.md](private-auth.md) (identity for message authentication)
+- Related: [private-identity.md](private-identity.md) (identity for message authentication)
 - Open question: What changes from existing messaging platforms (e.g., Bloomberg) when moving to blockchain?

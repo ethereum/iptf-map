@@ -14,6 +14,12 @@ avoid-when:
   - The threat model includes strong physical or microarchitectural side-channel attackers against the TEE.
 dependencies:
   - Attested TEEs (Intel SGX/AMD SEV)
+context: both
+crops_profile:
+  cr: low
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -110,6 +116,7 @@ External systems bind the signer public key and policy hash to an approved attes
 - **Single-TEE limitation**
   - A single TEE instance is a single point of compromise. For production custody, threshold key distribution across multiple TEE instances operated by independent parties is recommended. Single-TEE deployments are acceptable for pilot use or warm/operational keys with limited exposure.
   - See [TEE-Based Privacy — Defense Layers](pattern-tee-based-privacy.md#defense-layers) for the layered security model.
+- **CROPS context (I2I)**: Security improves to `high` with threshold keys across multiple independent TEE instances. Single-TEE is acceptable for pilot only.
 
 ## Example
 

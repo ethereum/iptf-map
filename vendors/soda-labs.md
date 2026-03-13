@@ -18,7 +18,7 @@ The Garbled Circuit–based confidential compute engine operates in two modes: i
 - [Shielded ERC-20 Transfers](../patterns/pattern-shielding.md) - Garbled Circuit-based implementation for confidential token transfers
 - [Atomic DvP via ERC-7573 (cross-network)](../patterns/pattern-dvp-erc7573.md) - Soda Labs's Bubble Network maintains atomicity while preserving trade details private
 - [Private L2s](../patterns/pattern-privacy-l2s.md) - Soda Labs's gcEVM provides Garbled Circuit-based rollup capabilities
-- [Shielded Balances](../patterns/pattern-zk-shielded-balances.md) - Garbled Circuit-based implementation achieves shielding capabilities similar to those of ZK
+- [Shielding](../patterns/pattern-shielding.md) - Garbled Circuit-based implementation achieves shielding capabilities similar to those of ZK
 
 ## Not a substitute for
 

@@ -17,6 +17,12 @@ dependencies:
   - ISO 20022 schema (pacs.008/009/002, camt.\*)
   - ERC-20 / ERC-3643 (tokenized cash/RWA)
   - Optional: ERC-7573 (conditional settlement), ZK proof system
+context: i2i
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: full
+  security: medium
 ---
 
 ## Intent
@@ -87,8 +93,9 @@ To formalize, institutions can submit a **Change Request (CR)** to the relevant 
 
 - Privacy rails (B1/B2) introduce **infra complexity** (shielded circuits or confidential VM) and **key governance**.
 - **Signing convention** (algorithm, PKI) must be agreed (full ISO hash vs reduced settlement tuple) for on-chain authorization.
-- **Cross-chain atomicity** (if the two legs span different chains) requires [**zk-SPV**](../patterns/pattern-zk-spv.md) or **single-domain execution** (B3).
+- **Cross-chain atomicity** (if the two legs span different chains) requires **zk-SPV** or **single-domain execution** (B3).
 - **Incremental rollout**: `<SplmtryData>` "can ignore" semantics mean non-participating intermediaries pass messages through unchanged, but they also cannot verify proofs in transit.
+- **CROPS context (I2I)**: CR improves to `high` if settlement uses single-chain shielded pool without relayer. OS depends on privacy rail: Railgun (open) vs proprietary FHE coprocessor. SWIFT infrastructure is licensed/proprietary; ISO schema is open.
 
 ---
 
@@ -106,5 +113,4 @@ To formalize, institutions can submit a **Change Request (CR)** to the relevant 
 ## See also
 
 - [Pattern: DvP using ERC-7573](./pattern-dvp-erc7573.md): conditional coupling
-- [Pattern: ZK SPV](./pattern-zk-spv.md): strong cross-chain atomicity
 - [Pattern: Privacy L2](./pattern-privacy-l2s.md): privacy rails

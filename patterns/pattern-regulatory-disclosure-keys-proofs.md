@@ -14,6 +14,12 @@ dependencies:
   - EAS
   - Threshold-crypto/KMS
   - ZK predicate circuits
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -37,6 +43,7 @@ Provide **on-demand, scoped visibility** into confidential trades/positions via 
 ## Trade-offs
 - Operational complexity (key custody/rotation).
 - Proof authoring/UX requires discipline.
+- **CROPS context (both)**: Regulator-mandated disclosure is normal institutional operation and protects end-users (CR `medium`). In I2U, CR drops to `low` when disclosure is imposed on users without their control. OS depends on whether the viewing key implementation is open and composable (e.g. Aztec viewing keys are open) vs proprietary KMS. Security varies by implementation — audited threshold KMS could reach `high`.
 
 ## Example
 - BaFin asks for Jan-15 trades in ISIN X.
