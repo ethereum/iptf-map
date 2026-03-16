@@ -58,7 +58,7 @@ This differs from a privacy bridge and from privacy L2s. Here, the “confidenti
 - **Limits failure blast radius:** Cross-chain messaging issues primarily impact **availability/UX** (e.g. delayed withdrawals), while custody remains governed by the origin locking contract.
 - **Supports auditability:** Selective disclosure can reveal what is required, when required.
 - **User-controlled encryption keys:** Each account’s ElGamal private key is held by the account holder; the protocol, relayers, or any other network component do not manage or store these keys.
-- **Controlled audit access:** Audit keys are generated per transaction through a Multi-Party Computation (MPC) network. A verified auditor can use the generated key to decrypt the specific transaction under review.
+- **Controlled audit access:** Audit keys are generated per transaction through a multi-party computation (MPC) network. A verified auditor can use the generated key to decrypt the specific transaction under review.
 
 ## Trade-offs
 
