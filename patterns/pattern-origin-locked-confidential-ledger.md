@@ -14,6 +14,12 @@ avoid-when:
   - Need default anonymity/identity encryption or large anonymity sets.
   - Need single-domain designs where all logic and settlement must occur on Ethereum L1/L2.
 dependencies: ERC-20, Verifiable cross-chain messaging, Selective disclosure (view keys / proofs)
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: partial
+  security: high
 ---
 
 ## Intent
@@ -28,9 +34,9 @@ This differs from a privacy bridge and from privacy L2s. Here, the “confidenti
   - Minimal locking contract for deposits/withdrawals
   - User-facing entrypoint for “deposit/private transfer/withdraw”
 - **Confidential execution layer:**
-  - Encrypted ledger (per-account balances as ciphertext)
+  - **Public encrypted ledger:** Per-account balances are stored as ElGamal ciphertext under the account holder’s key.
   - ZK verification for valid state transitions (no overspend, conservation, etc.)
-  - Lightweight homomorphic add/sub for balance updates (ciphertext domain)
+  - Balances update via ElGamal homomorphic addition/subtraction plaintext balances are never revealed and the ledger is not maintained by any external party.
 - **Cross-chain messaging (verifiable):**
   - IBC-style / light-client verification to transport packets
   - Relayers move packets but are not trusted for correctness
@@ -51,6 +57,8 @@ This differs from a privacy bridge and from privacy L2s. Here, the “confidenti
 - **Preserves asset reality:** Underlying ERC-20 issuance and liquidity stay on the origin chain (no wrapped token required; no fund bridge).
 - **Limits failure blast radius:** Cross-chain messaging issues primarily impact **availability/UX** (e.g. delayed withdrawals), while custody remains governed by the origin locking contract.
 - **Supports auditability:** Selective disclosure can reveal what is required, when required.
+- **User-controlled encryption keys:** Each account’s ElGamal private key is held by the account holder; the protocol, relayers, or any other network component do not manage or store these keys.
+- **Controlled audit access:** Audit keys are generated per transaction through a Multi-Party Computation (MPC) network. A verified auditor can use the generated key to decrypt the specific transaction under review.
 
 ## Trade-offs
 
