@@ -19,7 +19,7 @@ regular smart contracts in Rust.
 - [Shielding](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-shielding.md)  
 - [Pattern-hybrid-public-private-modes](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-hybrid-public-private-modes.md)  
 - [Pattern-l2-privacy-evaluation](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-l2-privacy-evaluation.md)  
-- P[attern-modular-privacy-stack](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-modular-privacy-stack.md)  
+- [Pattern-modular-privacy-stack](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-modular-privacy-stack.md)  
 - [Pattern-permissioned-ledger-interoperability](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-permissioned-ledger-interoperability.md)  
 - [Pattern-pretrade-privacy-encryption](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-pretrade-privacy-encryption.md)  
 - [Pattern-private-pvp-stablecoins-erc7573](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-pvp-stablecoins-erc7573.md)  
