@@ -45,5 +45,5 @@ One paragraph describing the gap or problem this RFP addresses.
 
 ## See Also
 
-- [Related Pattern](../patterns/pattern-example.md)
-- [Related Use Case](../use-cases/example.md)
+- `[Related Pattern](../patterns/pattern-example.md)`
+- `[Related Use Case](../use-cases/example.md)`

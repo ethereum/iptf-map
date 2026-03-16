@@ -127,8 +127,6 @@ Privacy achieved: L2 trading activity not linkable to original L1 depositor (ass
 
 ## See also
 
-- [pattern-zk-spv.md](pattern-zk-spv.md) — ZK verification of cross-chain finality
-- [pattern-zk-htlc.md](pattern-zk-htlc.md) — Atomic swaps with privacy
 - [pattern-permissioned-ledger-interoperability.md](pattern-permissioned-ledger-interoperability.md) — Enterprise ledger sync
 - [pattern-privacy-l2s.md](pattern-privacy-l2s.md) — Destination privacy environments
-- [pattern-zk-shielded-balances.md](pattern-zk-shielded-balances.md) — Commitment/nullifier pools
+- [pattern-shielding.md](pattern-shielding.md) — Commitment/nullifier pools

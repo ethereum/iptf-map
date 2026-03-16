@@ -14,6 +14,12 @@ avoid-when:
   - Public transparency is required by policy or regulation
   - Immediate inclusion guarantees are critical (private routes may have lower priority)
 dependencies: [Flashbots Protect, Shutter Network, SUAVE]
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -70,6 +76,7 @@ Hide transaction content from the public mempool to prevent front-running, sandw
 - **Coverage**: MEV-Boost covers ~90% of Ethereum blocks; Flashbots relay handles ~70% of MEV-Boost blocks.
 - **Failure mode**: If private relay unavailable, transaction can fallback to public mempool (losing privacy) or fail (losing liveness).
 - **Cost**: Some private relay services charge fees or take MEV share; Shutter requires threshold committee infrastructure.
+- **CROPS context (both)**: In I2U, end-users depend on relay operators they cannot audit. In I2I, institutions can contractually bind relay operators and run their own relay infrastructure.
 
 ## Example
 

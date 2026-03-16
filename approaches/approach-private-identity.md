@@ -1,6 +1,6 @@
-# Approach: Private Authentication & Identity Verification
+# Approach: Private Identity
 
-**Use Case Link:** [Private Authentication & Identity Verification](../use-cases/private-auth.md)
+**Use Case Link:** [Private Identity](../use-cases/private-identity.md)
 
 **High-level goal:** Enable any party (institutions, governments, DAOs) to verify identity claims on Ethereum without exposing the underlying identity, using verification logic that is publicly auditable and cryptographically enforced.
 

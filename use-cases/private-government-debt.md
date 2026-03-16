@@ -53,6 +53,22 @@ While debt terms are public, individual holder positions reveal investment strat
 - Central bank operations transparency
 - Public interest in government debt markets
 
+### Problem 3: Fiscal Transparency vs Operational Privacy
+
+Government treasuries face a unique tension between public accountability (taxpayers' right to know how public funds are managed) and market-sensitive operational timing. Debt operations, reserve management decisions, and funding strategies can move markets if disclosed prematurely, but democratic accountability demands eventual transparency.
+
+**Requirements:**
+
+- **Must hide (temporarily):** Operational timing, funding strategy details, counterparty negotiations
+- **Public OK (eventually):** Aggregate debt levels, maturity profiles, cost of funding (ex-post)
+- **Regulator/public access:** Ex-post audit trail of decisions and execution; freedom of information compliance
+
+**Constraints:**
+
+- Public accountability frameworks and freedom of information requirements
+- Commit-and-reveal schemes must support ex-post audit without real-time market exposure
+- Different jurisdictions have different disclosure timelines (e.g., auction results vs. debt management strategy)
+
 ## 5) Recommended Approaches
 
 See [approach-private-bonds.md](../approaches/approach-private-bonds.md) for general architecture. Government debt specific considerations:
@@ -60,15 +76,18 @@ See [approach-private-bonds.md](../approaches/approach-private-bonds.md) for gen
 - Sealed-bid auction mechanisms
 - Post-auction disclosure requirements
 - Balancing public accountability with participant privacy
+- Commit-and-reveal schemes for fiscal operations: commit to a decision on-chain, reveal after market-sensitive window closes
 
 ## 6) Open Questions
 
 - How to balance public accountability (government operations) with participant privacy?
 - What auction mechanisms best prevent collusion while maintaining efficiency?
 - How do municipal debt requirements differ from sovereign debt?
+- What ex-post disclosure models satisfy both public accountability and government operational security?
 
 ## 7) Notes And Links
 
 - Related: [private-bonds.md](private-bonds.md) (general bond pattern)
 - Related: [private-corporate-bonds.md](private-corporate-bonds.md) (higher privacy requirements)
 - Emerging market: Municipal debt tokenization gaining traction in Asia
+- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team) — treasury transparency, audit trails

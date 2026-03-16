@@ -59,4 +59,3 @@ Fallback atomic DvP by both parties posting commitments to shared secret `C=Com(
 
 - pattern-dvp-erc7573.md
 - pattern-l1-zk-commitment-pool.md
-- pattern-zk-htlc.md

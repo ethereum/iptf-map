@@ -18,6 +18,12 @@ dependencies:
   - Attested TEEs (Intel SGX, AMD SEV, AWS Nitro)
   - zero-knowledge proof system (Groth16/PLONK)
   - Stealth address support (EIP-5564)
+context: i2i
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -118,6 +124,8 @@ Attestation verification: check hardware signature is from known manufacturer, c
 | High-frequency matching | Good fit | Too slow | No auditability |
 | Institutional coordination (contractual trust) | Good fit | May suffice | Acceptable with audit layers |
 
+- **CROPS context (I2I)**: Privacy is `partial` because TEE hardware vendor can observe plaintext during execution — a privacy breach manageable through contractual controls in institutional settings. ZK proof guarantees financial correctness regardless of TEE integrity.
+
 ## Example
 
 **Cross-border bond DvP with stealth address settlement:**
@@ -134,5 +142,4 @@ Attestation verification: check hardware signature is from known manufacturer, c
 - [TEE-Based Privacy](pattern-tee-based-privacy.md) — general TEE trust model, failure modes, upgrade paths
 - [TEE Key Manager](pattern-tee-key-manager.md) — key generation, entropy, lifecycle in TEEs
 - [DvP ERC-7573](pattern-dvp-erc7573.md) — cross-network DvP coordination standard
-- [ZK-SPV Cross-Chain Verification](pattern-zk-spv.md) — trustless cross-chain proof verification
 - [Cross-Chain Privacy Bridge](pattern-cross-chain-privacy-bridge.md) — bridging assets between chains with privacy

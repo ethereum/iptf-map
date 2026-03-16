@@ -8,11 +8,11 @@ status: draft
 - Public verification without publishing PII; scoped disclosure for regulators.
 
 ## Primary use cases
-- [Private Authentication & Identity Verification](../use-cases/private-auth.md)
+- [Private Identity](../use-cases/private-identity.md)
 - (Cross-cut; applied in all domains as a prerequisite)
 
 ## Approaches
-- [Approach: Private Authentication & Identity Verification](../approaches/approach-private-auth.md)
+- [Approach: Private Identity](../approaches/approach-private-identity.md)
 
 ## Shortest-path patterns
 - [Private MTP Authentication](../patterns/pattern-private-mtp-auth.md)
