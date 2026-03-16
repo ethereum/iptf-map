@@ -11,6 +11,12 @@ works-best-when:
 avoid-when:
   - data can be exported using API
 dependencies:
+context: both
+crops_profile:
+  cr: low
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -39,6 +45,7 @@ zk-TLS let investors generate verifiable identities from their existing web2 dat
 ## Trade-offs
 
 - Notary must be trusted (can be the institution that wants access to the identity data)
+- **CROPS context (I2U)**: Requires trusted notary who can refuse participation. TLSNotary is open source; notary infrastructure and ZK prover tooling vary in licensing.
 
 ## Examples
 

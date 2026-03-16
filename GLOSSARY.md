@@ -1,5 +1,13 @@
 ## Glossary
 
+### IPTF Evaluation Frameworks
+
+**CROPS (Censorship Resistance, Open Source and Free, Privacy, Security)**: Four non-negotiable properties for Ethereum defined by the Ethereum Foundation. The IPTF Map evaluates solutions against all four dimensions independently. See [CONTRIBUTING.md § CROPS Evaluation](CONTRIBUTING.md#crops-evaluation) for full scoring rubrics.
+
+**I2I (Institution-to-Institution)**: Interaction model where both counterparties are regulated entities (e.g., bank-to-bank settlement). Symmetric power dynamic; both parties have legal teams, vendor choice, and contractual recourse.
+
+**I2U (Institution-to-End-User)**: Interaction model where one counterparty is a regulated entity and the other is an individual (e.g., retail payment). Asymmetric power dynamic; CROPS must protect the user from the institution. Institutions should be transparent to regulators and end users; end users should have the right to protect their private lives.
+
 ### Core Privacy Concepts
 
 **Commitment**: Cryptographic value computed from hidden data (for example, amount and secrets). It lets others later verify that revealed data is consistent, without learning the data from the commitment itself.
@@ -109,7 +117,7 @@ A dedicated network or service that publishes and stores the data required for D
 
 ### Identity & Compliance
 
-**PCD (Proof-Carrying Data)**: Data bundled with a cryptographic proof of its own correctness, enabling portable and composable verifiable credentials. 
+**PCD (Proof-Carrying Data)**: Data bundled with a cryptographic proof of its own correctness, enabling portable and composable verifiable credentials.
 
 **Sybil Resistance**: Preventing a single actor from creating multiple fake identities to gain disproportionate influence in systems that distribute value, votes, or access.
 

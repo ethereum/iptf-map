@@ -33,10 +33,9 @@ These problems interact because traditional privacy solutions (like simple encry
 
 ### Recommended Architecture: Hybrid ZK + Shielded Pool Approach
 
-**Primary Pattern:** [ZK Shielded Balances for Derivatives](../patterns/pattern-zk-shielded-balances.md)
+**Primary Pattern:** [Shielding](../patterns/pattern-shielding.md)
 **Supporting Patterns:**
 
-- [ZK Proof of Private State Transition](../patterns/pattern-zk-derivative-delta.md)
 - [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
 - [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
 

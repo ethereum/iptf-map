@@ -16,7 +16,7 @@ Zama develops **open-source FHE (Fully Homomorphic Encryption)** tools that enab
 - [Private Intent-Based Vaults](../patterns/pattern-private-vaults.md) - FHE-enabled chains allow private strategy execution while keeping assets auditable
 - [Shielded ERC-20 Transfers](../patterns/pattern-shielding.md) - Native FHE implementation for confidential token transfers
 - [Private L2s](../patterns/pattern-privacy-l2s.md) - Zama's fhEVM provides FHE-based rollup capabilities
-- [ZK Shielded Balances](../patterns/pattern-zk-shielded-balances.md) - FHE can complement ZK approaches for confidential balance management
+- [Shielding](../patterns/pattern-shielding.md) - FHE can complement ZK approaches for confidential balance management
 
 ## Not a substitute for
 

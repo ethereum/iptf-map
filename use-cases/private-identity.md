@@ -1,12 +1,12 @@
 ---
-title: "Private Authentication & Identity Verification"
+title: "Private Identity"
 primary_domain: Identity & Compliance
 secondary_domain: Governance
 ---
 
 ## 1) Use Case
 
-Prove membership, eligibility, or attribute possession on-chain without revealing identity or creating linkable activity. Applies to financial compliance (KYC registry membership), governance (anonymous voting), national identity (selective disclosure from government documents), and community membership (sybil-resistant access).
+Prove identity claims, membership, eligibility, or attribute possession on-chain without revealing the underlying identity or creating linkable activity. Authentication is one key application — others include credential portability, sybil resistance, and selective disclosure. Applies to financial compliance (KYC registry membership), governance (anonymous voting), national identity (selective disclosure from government documents), and community membership (sybil-resistant access).
 
 ## 2) Additional Business Context
 
@@ -61,6 +61,17 @@ Systems that distribute value (governance votes, token distributions) must preve
 - Must handle: revocation of compromised credentials without re-identifying holders
 - Reference: [vOPRF Nullifiers pattern](../patterns/pattern-voprf-nullifiers.md) for nullifier generation primitives
 
+### Problem 4: Credential Portability & Reuse
+
+Institutions repeatedly collect the same credentials (KYC/KYB) from counterparties during onboarding. Reusable, privacy-preserving credentials that work across institutional contexts reduce onboarding cost and friction. Key challenges include cross-border recognition (a credential issued in one jurisdiction accepted in another), revocation propagation without de-anonymization (revoking a compromised credential without revealing which holder was affected), and credential freshness guarantees (proving a credential is still valid, not just that it was once issued).
+
+**Requirements:**
+
+- Must support: reuse of a single credential across multiple relying parties without re-disclosure of underlying data
+- Must not require: a centralized credential database or single point of trust
+- Must handle: cross-border credential recognition (e.g., eIDAS mutual recognition), revocation propagation, and credential expiry/refresh
+- Reference: [Verifiable Attestation pattern](../patterns/pattern-verifiable-attestation.md) for attestation lifecycle primitives; [OpenAC](https://eprint.iacr.org/2026/251) for privacy-preserving access control across relying parties
+
 ## 5) Recommended Approaches
 
 | Credential Source | Primary Approach | Example Deployments |
@@ -74,8 +85,10 @@ Systems that distribute value (governance votes, token distributions) must preve
 | Event/community | POD2 | [POD2](https://github.com/0xPARC/pod2) (0xPARC) |
 | Multi-party private inputs | Collaborative proving (co-SNARK) | TACEO |
 | On-chain attestation | EAS / ONCHAINID / W3C VC | Tokeny, EAS |
+| Civil registry / vital records | Government registry attestation + ZK | eIDAS 2.0, EUDI pilots |
+| Professional license / certificate | Issuer attestation + revocation registry | EBSI, national licensing boards |
 
-See detailed architecture and trade-offs in [**Approach: Private Authentication**](../approaches/approach-private-auth.md).
+See detailed architecture and trade-offs in [**Approach: Private Identity**](../approaches/approach-private-identity.md).
 
 ## 6) Open Questions
 
@@ -85,6 +98,8 @@ See detailed architecture and trade-offs in [**Approach: Private Authentication*
 4. What trust models are acceptable for biometric enrollment systems in different regulatory contexts?
 5. How to handle credential revocation across heterogeneous issuers without a central revocation authority?
 6. How do these building blocks map onto existing and emerging compliance frameworks (EUDI ARF, eIDAS 2.0, MiCA) across jurisdictions?
+7. How do government-issued verifiable credentials (eIDAS 2.0, EUDI Wallet) integrate with on-chain attestation registries for institutional KYC?
+8. What models enable credential reuse across institutions without creating a centralized identity database?
 
 ## 7) Notes And Links
 
@@ -92,4 +107,5 @@ See detailed architecture and trade-offs in [**Approach: Private Authentication*
 - **ZK Frameworks:** [Semaphore](https://semaphore.pse.dev/), [Noir/Barretenberg](https://docs.aztec.network/), [Circom/Groth16](https://docs.circom.io/)
 - **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Rarimo](https://rarimo.com/), [Anon Aadhaar](https://github.com/anon-aadhaar), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [POD2](https://github.com/0xPARC/pod2), [OpenAC](https://eprint.iacr.org/2026/251)
 - **Validated Deployments:** [WFP Building Blocks](https://www.wfp.org/building-blocks), [OpenCerts](https://www.opencerts.io/)
+- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team, demo data) — verifiable credentials, KYC/KYB, licensing, selective disclosure
 - **Related Patterns:** [Private MTP Auth](../patterns/pattern-private-mtp-auth.md), [zk-TLS](../patterns/pattern-zk-tls.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md), [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [co-SNARK](../patterns/pattern-co-snark.md)

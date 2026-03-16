@@ -4,7 +4,7 @@
 
 **TODO: This folder needs to be refactored, deduped and populated more**
 
-**How to use.** When a design is repeatable, add `pattern-*.md` using the template below. Keep it concise: intent → protocol → guarantees → trade-offs. Cross-link related patterns and any live PoCs.
+**How to use.** When a design is repeatable, add `pattern-*.md` using the template below. Keep it concise: intent → protocol → guarantees → trade-offs. Cross-link related patterns and any live PoCs. Each pattern includes a CROPS score — see [CONTRIBUTING.md § CROPS Evaluation](../CONTRIBUTING.md#crops-evaluation) for scoring rubrics.
 - Template: [`_template.md`](./_template.md)
 - Naming: `pattern-<slug>.md` (kebab-case)
 - Status flow: `draft` → `ready` (update `maturity` as you pilot/ship)
