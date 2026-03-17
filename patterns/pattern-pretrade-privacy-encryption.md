@@ -13,6 +13,12 @@ avoid-when:
 dependencies:
   - Encrypted mempool (Shutter) or private builders (SUAVE)
   - RFQ service
+context: both
+crops_profile:
+  cr: low
+  os: partial
+  privacy: partial
+  security: low
 ---
 
 ## Intent
@@ -34,6 +40,7 @@ Prevent **front-running and information leakage** by routing quotes/orders via *
 ## Trade-offs
 - Additional infra dependency; fallback path required.
 - Latency/availability tied to privacy routing.
+- **CROPS context (both)**: CR could reach `high` if threshold committee selection becomes permissionless via stake-weighted rotation. OS improves to `yes` by open-sourcing all encryption and decryption logic under copyleft. Privacy could reach `full` by encrypting quotes end-to-end until settlement confirmation, not just during the pre-trade phase. Security could reach `high` by hardening collusion resistance through key compartmentalization across independent operators. In I2I, encrypted order flow prevents counterparties and intermediaries from front-running institutional block trades. In I2U, threshold encryption protects retail orders from MEV extraction by builders or relayers.
 
 ## Example
 - Three quotes received; best quote settles; unfilled quotes remain undisclosed.

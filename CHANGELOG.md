@@ -33,6 +33,7 @@ All notable changes to the IPTF Map are documented here.
   [vOPRF Nullifiers](patterns/pattern-voprf-nullifiers.md),
   [ZK KYC/ML ID (ERC-734/735)](patterns/pattern-zk-kyc-ml-id-erc734-735.md),
   [zk-TLS](patterns/pattern-zk-tls.md)
+- feat(patterns): Add `context` and `crops_profile` CROPS frontmatter to some patterns
 
 ### Removed
 

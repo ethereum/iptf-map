@@ -19,6 +19,12 @@ dependencies:
   - ERC-3643
   - EAS
   - EIP-4844
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -84,6 +90,7 @@ Define a four-layer privacy architecture where **Data**, **Execution**, **Settle
 - **Interface rigidity**: Standardized interfaces may constrain layer-specific optimizations or require adaptation layers.
 - **Tooling fragmentation**: Different vendors per layer means multiple SDKs, monitoring tools, and support relationships.
 - **Metadata leakage**: Even with encrypted data, cross-layer routing can reveal timing, access patterns, and transaction graph information.
+- **CROPS context (both)**: CR could reach `high` if layer routing is permissionless with decentralized orchestration nodes and independent exit paths per layer. OS improves to `yes` by releasing reference implementations for each layer interface. Privacy could reach `full` by mandating end-to-end encryption between layers with no metadata cleartext at routing boundaries. Security could reach `high` by eliminating single-operator trust in orchestration and using threshold cryptography for cross-layer key management. In I2I, decentralized orchestration prevents any single infrastructure provider from gatekeeping settlement between counterparties. In I2U, permissionless exit paths per layer ensure end users can withdraw assets even if one layer's operator becomes unresponsive or adversarial.
 
 ## Example
 

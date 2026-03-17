@@ -17,6 +17,12 @@ dependencies:
   - ERC-7573 (DvP settlement)
   - ERC-3643 (compliant tokens with transfer rules)
   - Volition or dual-chain architecture (public/private execution environments)
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: partial
+  security: medium
 ---
 
 ## Intent
@@ -94,6 +100,7 @@ Allow institutions to select **public or private execution mode** on a per-trans
 
 - **Policy drift risk**
   Rules must stay synchronized across systems; misconfigurations can route sensitive transactions to public mode.
+- **CROPS context (both)**: CR could reach `high` if the policy engine is decentralized as a permissionless smart contract with no unilateral override. OS improves to `yes` by mandating open-source mode-routing logic and requiring privacy L2 provers to remain forkable. Security could reach `high` with multi-operator settlement oracles using threshold cryptography. In I2I, decentralized policy governance prevents any single counterparty from controlling mode selection for bilateral trades. In I2U, open-source routing logic lets end users verify that their transactions are correctly assigned to private mode when required.
 
 ## Example
 
