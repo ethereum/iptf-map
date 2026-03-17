@@ -15,6 +15,12 @@ avoid-when:
   - Team lacks capacity to adopt new tooling and non-Solidity development
   - Simple shielding or anonymity is sufficient (lighter alternatives exist)
 dependencies: [Aztec Protocol, Noir, Barretenberg Prover]
+context: both
+crops_profile:
+  cr: medium
+  os: yes
+  privacy: full
+  security: medium
 ---
 
 ## Intent
@@ -99,6 +105,7 @@ Noir is the DSL developed by Aztec, enable developers to write Ethereum-compatib
 - Leverage growing [Awesome Noir](https://github.com/noir-lang/awesome-noir) ecosystem for shared libraries
 - Start with selective privacy layers, expand as tooling matures
 - Optimize circuit design to minimize proving time
+- **CROPS context (both)**: CR could reach `high` if sequencer election shifts to a permissionless model. Security could reach `high` by replacing admin keys with DAO-governed upgrade paths. In I2I, censorship resistance matters for ensuring no counterparty can block settlement transactions. In I2U, decentralized sequencing protects end users from unilateral transaction exclusion.
 
 ## Example
 

@@ -13,6 +13,12 @@ avoid-when:
   - Near-real-time settlement is required (added latency).
 dependencies:
   - ERC-7573, EAS (commit attestations)
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: none
+  security: medium
 ---
 
 ## Intent
@@ -48,6 +54,7 @@ Fallback atomic DvP by both parties posting commitments to shared secret `C=Com(
 - No built-in privacy of amounts.
 - Irreversibility: once one chain finalizes, that leg cannot be rolled back.
 - Refunds/time-locks are required to mitigate stuck or one-sided settlements.
+- **CROPS context (both)**: CR could reach `high` if protocol-enforced timelocks with forced-withdrawal are added on both chains. OS improves to `yes` by open-sourcing coordination logic under a permissive license. Privacy could reach `full` by proving knowledge of the commitment pre-image via ZKP without revealing it. Security improves to `high` by replacing irreversibility risk with guaranteed revert paths and verifiable finality proofs. In I2I settings, both counterparties typically have legal recourse if one leg fails, reducing the practical impact of weak CR. In I2U settings, end-users lack equivalent remedies, making protocol-enforced timelocks and revert paths more critical.
 
 ## Example
 

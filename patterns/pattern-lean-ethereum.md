@@ -12,6 +12,12 @@ works-best-when:
 avoid-when:
   - Near-term deployment required (4–5 year horizon)
 dependencies: [Post-quantum signatures, minimal zkVMs, P2P networking upgrades]
+context: both
+crops_profile:
+  cr: high
+  os: yes
+  privacy: none
+  security: medium
 ---
 
 ## Intent
@@ -87,6 +93,7 @@ A long-range redesign of Ethereum’s consensus layer aiming to enter in action 
 - Single large fork: Failure at any component delays entire bundle
 - Research coupling: PQ signatures, zkVMs, and P2P upgrades must all reach production readiness
 - Consensus-only scope: Does not address L1 execution scaling or transaction privacy
+- **CROPS context (both)**: Privacy could reach `full` by incorporating post-quantum-safe ZK primitives for private validator participation and confidential state proofs. Security could reach `high` once formal verification of PQ signature aggregation and full cryptanalysis of hash-based schemes are completed. In I2I, post-quantum privacy primitives enable institutions to participate in validation without exposing staking positions to competitors. In I2U, formally verified consensus gives end users stronger guarantees that light-client proofs on minimal devices are trustworthy.
 
 ## Example (illustrative)
 

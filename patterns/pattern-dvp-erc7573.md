@@ -16,6 +16,12 @@ dependencies:
   - ERC-7573 locking contract (asset leg)
   - ERC-7573 decryption contract (payment leg)
   - Stateless decryption oracle on the payment network
+context: both
+crops_profile:
+  cr: medium
+  os: partial
+  privacy: none
+  security: medium
 ---
 
 ## Intent
@@ -105,8 +111,9 @@ These extensions do not change how ERC-7573 contracts decide outcomes: the asset
 - **Integration effort**  
   Internal systems must handle outcome keys, track trade identifiers, listen to events on both networks, and reconcile them with internal ledgers.
 
-- **Failure and dispute handling**  
+- **Failure and dispute handling**
   Exceptional cases (incorrect parameters, operational errors, regulatory holds) still require documented off-chain procedures.
+- **CROPS context (i2i)**: CR could reach `high` if threshold decryption oracles with k-of-n quorum replace single-operator oracles, removing any single exclusion point. OS improves to `yes` by releasing oracle implementations and outcome key services under a copyleft license. Privacy could reach `full` by layering threshold-encrypted mempools so trade details remain encrypted until block inclusion. Security improves to `high` by replacing operational trust with verifiable proofs of outcome key validity. Between institutions, oracle governance is typically codified in bilateral or consortium agreements, so the practical censorship risk is lower than the protocol-level score suggests, but threshold oracles would eliminate residual single-operator risk in multi-party settlement networks.
 
 ## Example
 
