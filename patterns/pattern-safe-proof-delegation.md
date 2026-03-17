@@ -8,7 +8,7 @@ assumptions: Intent-based authorization, ZK proof system, nullifierKey + rotatab
 last_reviewed: 2026-03-16
 context: both
 crops_profile:
-  cr: high
+  cr: low
   os: yes
   privacy: partial
   security: high
@@ -27,7 +27,7 @@ dependencies:
 
 ## Intent
 
-Let a user delegate ZK proof generation to an external prover — a Privacy RPC, a hardware accelerator, or a third-party service — without giving that prover the ability to forge, redirect, or overspend. The user signs a **canonical intent digest** that binds every material parameter; the prover can only produce a valid proof that executes exactly that intent.
+Let a user delegate ZK proof generation to an external prover — a Privacy RPC, a hardware accelerator, or a third-party service — without giving that prover the ability to forge, redirect, or overspend. The user signs a **canonical intent digest** that binds every material parameter; the prover can produce a valid proof that executes exactly that intent, nothing else.
 
 ## Ingredients
 
@@ -66,7 +66,6 @@ Let a user delegate ZK proof generation to an external prover — a Privacy RPC,
 
 ## See also
 
-- [L1 ZK Commitment Pool](pattern-l1-zk-commitment-pool.md) - the pool contract this delegation targets
-- [Shielded ERC-20 Transfers](pattern-shielding.md) - general shielded transfer mechanics
+- [Shielding](pattern-shielding.md) - the pool contract this delegation targets
 - [Permissionless Spend Auth](pattern-permissionless-spend-auth.md) - inner/outer circuit split this delegation composes with
 - [EIP-8182 (draft)](https://github.com/ethereum/EIPs/pull/11373)

@@ -27,7 +27,7 @@ dependencies:
 
 ## Intent
 
-This pattern has two layers. The first is a security-model decision: separate note ownership from spend authorization. The second is an implementation choice: use a recursive inner/outer circuit architecture so that multiple auth methods can coexist without fragmenting the anonymity set.
+This pattern has two layers. One is a security-model decision: separate note ownership from spend authorization. The other is an implementation choice: use a recursive inner/outer circuit architecture so that multiple auth methods can coexist without fragmenting the anonymity set.
 
 ## Layer 1: Ownership / auth split
 
@@ -83,7 +83,7 @@ The recursive approach avoids both problems:
 - **Unified anonymity set.** All auth methods share one note tree — ECDSA spends are indistinguishable from passkey spends on-chain.
 - **Auth method privacy.** Observers cannot determine which inner circuit was used.
 - **No fund migration.** Changing or adding auth methods does not require moving notes.
-- **Ownership isolation.** A bug in an inner circuit cannot forge ownership — it can only produce false authorization claims. The outer circuit independently enforces ownership, value conservation, and nullifier correctness.
+- **Ownership isolation.** A bug in an inner circuit cannot forge ownership — it can produce false authorization claims but nothing else. The outer circuit independently enforces ownership, value conservation, and nullifier correctness.
 
 ## Trade-offs
 
@@ -102,7 +102,6 @@ EIP-8182 implements this pattern using Ethereum addresses as the owner identifie
 
 ## See also
 
-- [L1 ZK Commitment Pool](pattern-l1-zk-commitment-pool.md) - the shielded pool this auth pattern plugs into
-- [Shielded ERC-20 Transfers](pattern-shielding.md) - general shielded transfer pattern
+- [Shielding](pattern-shielding.md) - the shielded pool this auth pattern plugs into
 - [Safe Proof Delegation](pattern-safe-proof-delegation.md) - intent-based delegation that composes with this circuit model
 - [EIP-8182 (draft)](https://github.com/ethereum/EIPs/pull/11373)
