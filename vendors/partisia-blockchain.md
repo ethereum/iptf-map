@@ -1,12 +1,13 @@
-| Title | Status |
-| :---- | :---- |
-| Vendor: Partisia Blockchain | draft |
+---
+title: Partisia Blockchain
+status: draft
+---
 
-# Partisia Blockchain – Private Smart Contracts using Secure Multi-Party Computation
+# Partisia Blockchain – Private Smart Contracts using Secure multi-party computation
 
 # What it is
 
-Partisia Blockchain (PBC) is a layer-1 blockchain with a cross-chain bridge to Ethereum that allows for customizable MPC (multi-party computation) as a service to the Ethereum network. MPC is enabled as an integrated, first level citizen with orchestration of the computation through a combination of Ethereum and Partisia Blockchain smart contracts.   
+Partisia Blockchain (PBC) is a Layer 1 blockchain with a cross-chain bridge to Ethereum that allows for customizable MPC (multi-party computation) as a service to the Ethereum network. MPC is enabled as an integrated, first-level citizen with orchestration of the computation through a combination of Ethereum and Partisia Blockchain smart contracts.   
 
 PBC is a semi-permissioned blockchain, where all nodes (blockproducers, oracle,  
 and MPC) have undergone a formal KYC check. PBC allows users to write  
@@ -22,7 +23,7 @@ regular smart contracts in Rust.
 - [Pattern-modular-privacy-stack](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-modular-privacy-stack.md)  
 - [Pattern-permissioned-ledger-interoperability](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-permissioned-ledger-interoperability.md)  
 - [Pattern-pretrade-privacy-encryption](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-pretrade-privacy-encryption.md)  
-- [Pattern-private-pvp-stablecoins-erc7573](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-pvp-stablecoins-erc7573.md)  
+- [Pattern-private-PVP-stablecoins-ERC-7573](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-pvp-stablecoins-erc7573.md)  
 - [Pattern-private-stablecoin-shielded-payments](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-stablecoin-shielded-payments.md)  
 - [Pattern-private-vaults](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-vaults.md)
 
@@ -75,7 +76,7 @@ More details on Gas in Partisia can be found here \- [https://partisiablockchain
 
 - One threat model supported out of the box (four parties, one corruption)  
 - Current network supports GDPR compliance.  Other regions require additional node buildout  
-- Unique integration to Ethereum.  Not an L2 but also not a side-chain.    
+- Integration to Ethereum.  Not an L2 but also not a side-chain.    
 - Protocol based.  Not CPU intensive like TEE or FHE but sensitive to network usage.
 
 # Links
