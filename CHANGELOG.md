@@ -46,6 +46,7 @@ All notable changes to the IPTF Map are documented here.
 
 ### Added
 
+- feat(pattern): [Private Set Intersection (DH-based)](patterns/pattern-private-set-intersection-dh.md) - Bilateral ECDH-PSI for private matching of identifier sets
 - feat(pattern): [Permissionless Spend Auth](patterns/pattern-permissionless-spend-auth.md) - Outer/inner circuit split for permissionless, user-chosen spend authorization without fragmenting anonymity sets (EIP-8182)
 - feat(pattern): [Safe Proof Delegation](patterns/pattern-safe-proof-delegation.md) - Intent-based delegation to non-custodial provers with revocable visibility (EIP-8182)
 - feat(use-case): [Private Supply Chain](use-cases/private-supply-chain.md) — supply chain provenance with privacy (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
