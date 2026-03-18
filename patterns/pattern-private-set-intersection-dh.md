@@ -36,11 +36,10 @@ Two parties each hold a private set of identifiers and want to learn which eleme
 ## Protocol
 
 1. **Agree**: Parties A and B fix an elliptic curve and hash-to-curve function. Each generates an ephemeral secret scalar (a, b).
-2. **Blind**: A hashes each element to a curve point and multiplies by a. Sends {aH(x)} to B.
-3. **Double-blind**: B hashes their own elements by b. B also multiplies A's blinded set by b, producing {abH(x)}. B sends {bH(y)} and {abH(x)} to A.
-4. **Complete**: A multiplies B's blinded set by a, producing {abH(y)}.
-5. **Match**: A compares {abH(x)} with {abH(y)}. Equal points are the intersection.
-6. **Output**: Both parties learn the intersection. Non-matching elements stay hidden behind the other party's scalar.
+2. **Blind**: A hashes each element to a curve point and multiplies by a, sending {aH(x)} to B. B does the same with scalar b, sending {bH(y)} to A.
+3. **Double-blind**: B multiplies A's blinded set by b, sending {abH(x)} to A. A multiplies B's blinded set by a, sending {abH(y)} to B.
+4. **Match**: Each party now holds both {abH(x)} and {abH(y)}. Each compares the two sets; equal points are the intersection.
+5. **Output**: Each party maps matched points back to their own plaintext elements. Non-matching elements stay hidden behind the other party's scalar.
 
 ## Guarantees
 
