@@ -14,6 +14,7 @@ avoid-when:
   - Evaluating general-purpose L2s without privacy features
   - Single-vendor evaluation (use vendor docs directly)
 dependencies: []
+crops_profile: "n/a"
 ---
 
 ## Intent
@@ -136,14 +137,14 @@ _AppChain SDKs have deployment-dependent assumptions (sequencer, DA, governance)
 
 ### Privacy Visibility Matrix
 
-| Protocol         |     Balance      |      Sender      |     Receiver     |      Amount      |   Code/Function    |
-| :--------------- | :--------------: | :--------------: | :--------------: | :--------------: | :----------------: |
+| Protocol         |      Balance       |       Sender       |      Receiver      |       Amount       |   Code/Function    |
+| :--------------- | :----------------: | :----------------: | :----------------: | :----------------: | :----------------: |
 | **Aztec**        | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> |
 | **Miden**        | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> |
-| **Intmax**       |      Hidden      |      Hidden      |      Hidden      |      Hidden      | Public<sup>2</sup> |
-| **Prividium**    |      Hidden      |      Hidden      |      Hidden      |      Hidden      |       Hidden       |
-| **Scroll Cloak** |      Hidden      |      Hidden      |      Hidden      |      Hidden      |       Hidden       |
-| **EY Nightfall** |      Hidden      |      Hidden      |      Hidden      |      Hidden      |      Limited       |
+| **Intmax**       |       Hidden       |       Hidden       |       Hidden       |       Hidden       | Public<sup>2</sup> |
+| **Prividium**    |       Hidden       |       Hidden       |       Hidden       |       Hidden       |       Hidden       |
+| **Scroll Cloak** |       Hidden       |       Hidden       |       Hidden       |       Hidden       |       Hidden       |
+| **EY Nightfall** |       Hidden       |       Hidden       |       Hidden       |       Hidden       |      Limited       |
 
 <sup>1</sup> Both Aztec and Miden let the developer choose to store assets in Public (Account model) or in Private (UTXO note).
 
@@ -180,11 +181,11 @@ _Tables generated via LLM synthesis of sources below. Last updated: 2026-01-27_
 
 Privacy solutions for existing chains (no separate L2 state/sequencer):
 
-| Solution              | Type             | Description                              |
-| :-------------------- | :--------------- | :--------------------------------------- |
-| **Railgun**           | L1 Shielded Pool | Shielded transfers on Ethereum L1        |
-| **Kaleido (Paladin)** | L1 Privacy Layer | Enterprise privacy on Ethereum L1        |
-| **Zama fhEVM**        | Coprocessor      | FHE confidentiality for any EVM chain    |
+| Solution              | Type             | Description                           |
+| :-------------------- | :--------------- | :------------------------------------ |
+| **Railgun**           | L1 Shielded Pool | Shielded transfers on Ethereum L1     |
+| **Kaleido (Paladin)** | L1 Privacy Layer | Enterprise privacy on Ethereum L1     |
+| **Zama fhEVM**        | Coprocessor      | FHE confidentiality for any EVM chain |
 
 See [RFP: Living Benchmark Dashboard](../rfps/rfp-benchmark-dashboard.md).
 

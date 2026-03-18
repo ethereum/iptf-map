@@ -4,7 +4,7 @@
   "title": "IPTF Pattern Frontmatter",
   "description": "Schema for pattern document frontmatter in IPTF Map",
   "type": "object",
-  "required": ["title", "status", "maturity"],
+  "required": ["title", "status", "maturity", "crops_profile"],
   "properties": {
     "title": {
       "type": "string",
@@ -72,31 +72,40 @@
       "description": "Applicable relationship type"
     },
     "crops_profile": {
-      "type": "object",
-      "description": "CROPS dimension assessment for this pattern",
-      "properties": {
-        "cr": {
+      "description": "CROPS dimension assessment. Use the string 'n/a' for meta/evaluation patterns that do not implement privacy directly.",
+      "oneOf": [
+        {
           "type": "string",
-          "enum": ["high", "medium", "low", "none"],
-          "description": "Censorship resistance impact"
+          "enum": ["n/a"]
         },
-        "os": {
-          "type": "string",
-          "enum": ["yes", "partial", "no"],
-          "description": "Open Source and Free: source availability, forkability, exit paths"
-        },
-        "privacy": {
-          "type": "string",
-          "enum": ["full", "partial", "none"],
-          "description": "Privacy guarantees: full (private from everyone), partial (selective disclosure required), none (public or institution sees all)"
-        },
-        "security": {
-          "type": "string",
-          "enum": ["high", "medium", "low"],
-          "description": "Strength of security guarantees (cryptographic assumptions, decentralization, trust model)"
+        {
+          "type": "object",
+          "required": ["cr", "os", "privacy", "security"],
+          "properties": {
+            "cr": {
+              "type": "string",
+              "enum": ["high", "medium", "low", "none"],
+              "description": "Censorship resistance impact"
+            },
+            "os": {
+              "type": "string",
+              "enum": ["yes", "partial", "no"],
+              "description": "Open Source and Free: source availability, forkability, exit paths"
+            },
+            "privacy": {
+              "type": "string",
+              "enum": ["full", "partial", "none"],
+              "description": "Privacy guarantees: full (private from everyone), partial (selective disclosure required), none (public or institution sees all)"
+            },
+            "security": {
+              "type": "string",
+              "enum": ["high", "medium", "low"],
+              "description": "Strength of security guarantees (cryptographic assumptions, decentralization, trust model)"
+            }
+          },
+          "additionalProperties": false
         }
-      },
-      "additionalProperties": false
+      ]
     }
   },
   "additionalProperties": false

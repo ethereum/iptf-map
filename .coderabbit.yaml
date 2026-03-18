@@ -28,7 +28,7 @@ reviews:
 
   path_instructions:
     # ── Patterns ──────────────────────────────────────────────────────────
-    - path: "patterns/**/*.md"
+    - path: "patterns/pattern-*.md"
       instructions: |
         This is a **pattern card**.
 
@@ -37,18 +37,18 @@ reviews:
         Pattern names must be vendor-neutral (no vendor-specific names like aztec, nightfall, railgun, etc.).
 
         **CROPS alignment (CRITICAL):**
-        Every pattern MUST include a `crops_profile` in its frontmatter with `cr`, `os`, `privacy`, and `security` scores.
-        Validate that each score uses the correct enum values defined in `CONTRIBUTING.md § CROPS Evaluation`:
-        - `cr`: high | medium | low | none
-        - `os`: yes | partial | no
-        - `privacy`: full | partial | none
-        - `security`: high | medium | low
+        `crops_profile` with all four fields (`cr`, `os`, `privacy`, `security`) is required — CI will reject patterns missing it.
+        Exception: meta/evaluation patterns that do not implement privacy directly may set `crops_profile: "n/a"` — flag if this is used on a pattern that clearly does implement a privacy primitive.
+        Valid enum values are defined in `CONTRIBUTING.md § CROPS Evaluation` and enforced by the JSON schema at `scripts/schemas/pattern.json`.
 
-        Review CROPS scores for plausibility — e.g., a pattern that requires a centralized operator should not claim `cr: high`.
-        If the pattern involves I2U context, check that the censorship resistance score accounts for user escape paths as described in the CR rubric.
+        Your job is to review CROPS scores for **plausibility**, which CI cannot check:
+        - A pattern requiring a centralized operator should not claim `cr: high`.
+        - If the pattern involves I2U context, check that the CR score accounts for user escape paths per the CR rubric in CONTRIBUTING.md.
+        - A pattern using proprietary components should not claim `os: yes`.
+        - A pattern where the operator sees all user operations should not claim `privacy: full`.
 
         **Word limits:** warn > 800, error > 1500.
-        **Tone:** factual and neutral per `vendors/README.md` house style. No marketing language.
+        **Tone:** factual and neutral per house style. No marketing language.
 
     # ── Vendors ───────────────────────────────────────────────────────────
     - path: "vendors/**/*.md"

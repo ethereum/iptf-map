@@ -52,7 +52,8 @@ const WORD_LIMITS = {
 const REQUIRED_PATTERN_FRONTMATTER = [
   'title',
   'status',
-  'maturity'
+  'maturity',
+  'crops_profile'
 ];
 
 // New frontmatter fields (warn only for now)
@@ -297,6 +298,24 @@ function validatePattern(filePath) {
     }
   }
 
+  // Validate crops_profile sub-fields (skip if explicitly opted out with "n/a")
+  if (frontmatter.crops_profile && frontmatter.crops_profile !== 'n/a') {
+    const cp = frontmatter.crops_profile;
+    const cropsFields = {
+      cr: ['high', 'medium', 'low', 'none'],
+      os: ['yes', 'partial', 'no'],
+      privacy: ['full', 'partial', 'none'],
+      security: ['high', 'medium', 'low']
+    };
+    for (const [field, allowed] of Object.entries(cropsFields)) {
+      if (!cp[field]) {
+        fileErrors.push(`crops_profile missing required field: ${field}`);
+      } else if (!allowed.includes(cp[field])) {
+        fileErrors.push(`crops_profile.${field} has invalid value '${cp[field]}'. Allowed: ${allowed.join(', ')}`);
+      }
+    }
+  }
+
   // Check recommended frontmatter (warnings only)
   for (const field of RECOMMENDED_PATTERN_FRONTMATTER) {
     if (!frontmatter[field]) {
@@ -309,14 +328,19 @@ function validatePattern(filePath) {
     const valid = validatePatternSchema(frontmatter);
     if (!valid) {
       for (const error of validatePatternSchema.errors) {
-        const path = error.instancePath || 'frontmatter';
+        const errorPath = error.instancePath || 'frontmatter';
         const msg = error.message;
+        // Schema violations on required fields are errors, not warnings
+        const isRequiredField = error.keyword === 'required' ||
+          errorPath.startsWith('/crops_profile');
         if (error.keyword === 'additionalProperties') {
           fileWarnings.push(`Schema: unexpected field '${error.params.additionalProperty}' in frontmatter`);
+        } else if (isRequiredField) {
+          fileErrors.push(`Schema: ${errorPath} ${msg}`);
         } else if (error.keyword === 'enum') {
-          fileWarnings.push(`Schema: ${path} ${msg}. Allowed: ${error.params.allowedValues.join(', ')}`);
+          fileWarnings.push(`Schema: ${errorPath} ${msg}. Allowed: ${error.params.allowedValues.join(', ')}`);
         } else {
-          fileWarnings.push(`Schema: ${path} ${msg}`);
+          fileWarnings.push(`Schema: ${errorPath} ${msg}`);
         }
       }
     }
