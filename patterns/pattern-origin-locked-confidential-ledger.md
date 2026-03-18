@@ -64,6 +64,7 @@ This differs from a privacy bridge and from privacy L2s. Here, the “confidenti
 
 - **Identity privacy is not default:** Sender/receiver addresses can remain transparent unless combined with separate identity/relationship-obfuscation patterns.
 - **Operational overhead:** Requires monitoring relayers/messaging, retries, and clear failure-handling for delayed acks.
+- **Post-quantum exposure**: ElGamal homomorphic encryption relies on ECDLP broken by CRQC; HNDL risk is high for on-chain encrypted balances. Mitigation: lattice-based PKE. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Example
 

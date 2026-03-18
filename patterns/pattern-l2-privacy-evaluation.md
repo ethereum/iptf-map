@@ -198,3 +198,4 @@ OTC settlement: filter by Cryptographic privacy, require Viewing Keys for audit,
 - [L2Beat](https://l2beat.com/) - Independent L2 risk analysis
 - [Pattern: Hybrid Public-Private Modes](pattern-hybrid-public-private-modes.md)
 - [Pattern: Shielding](pattern-shielding.md)
+- [Post-Quantum Threats](../domains/post-quantum.md)

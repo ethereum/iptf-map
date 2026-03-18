@@ -58,6 +58,7 @@ Provide secure custody and controlled execution of digital asset transactions by
 - **Trust assumptions**: relies on vendor’s MPC infrastructure and orchestration.
 - **Operator censorship**: MPC operator or policy engine can refuse to co-sign; no unilateral user exit path.
 - **CROPS context (both)**: CR could reach `high` if consensus-backed multi-sig with forced exit via L1 timelock is implemented alongside threshold key refresh. OS improves to `yes` by open-sourcing the core MPC signing protocol. Privacy could reach `full` by adding threshold encryption of transactions before policy evaluation. Security could reach `high` by adopting verifiable threshold signing with proactive key refresh. In I2I, forced L1 exit paths ensure institutions can recover assets even if the MPC operator becomes adversarial or insolvent. In I2U, open-source signing protocols let end users verify that custody providers cannot unilaterally access or freeze their assets.
+- **Post-quantum exposure**: threshold ECDSA/EdDSA is broken by CRQC (not HNDL-urgent — signatures are public). Mitigation: ML-DSA or hash-based threshold schemes. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Example
 

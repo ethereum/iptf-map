@@ -103,3 +103,4 @@ A consumer-grade laptop runs a solo validator at a much lower stake threshold. A
 
 - [Lean Roadmap](https://leanroadmap.org/)
 - [Lean Specification repository](https://github.com/leanEthereum/leanSpec)
+- [Post-Quantum Threats](../domains/post-quantum.md)

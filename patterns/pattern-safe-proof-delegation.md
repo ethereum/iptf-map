@@ -59,6 +59,7 @@ Let a user delegate ZK proof generation to an external prover — a Privacy RPC,
 - **Expiry tuning.** Too short and transactions fail before submission; too long and a compromised prover has a wider replay-like window (though still bound to the exact intent parameters).
 - **Note-delivery risk.** The prover chooses note-delivery payloads. A malicious prover can emit unusable data, making the in-flight transfer's output notes unrecoverable by the recipient. The prover cannot steal or redirect funds.
 - **Output secret rotation cost.** After rotation, the user must retain the prior `outputSecret` until the stale-root window expires and any authorized transactions have settled.
+- **Post-quantum exposure**: recursive ZK verification relies on EC-based proof systems broken by CRQC. Mitigation: STARK-based recursive proving. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Example
 

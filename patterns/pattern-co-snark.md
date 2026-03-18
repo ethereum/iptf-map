@@ -51,6 +51,7 @@ Co-SNARKs let institutions, investors, or service providers jointly prove proper
 - Delegated proving possible, but introduces new trust assumptions.
 - Honest-majority assumption: if a majority of proving parties collude, proof integrity is compromised.
 - **CROPS context (both)**: CR could reach `high` if economic incentives like bond-backed provers with slashing are added for Byzantine behavior. Security improves to `high` by replacing trusted setup with a universal setup. In I2I settings, multi-party proving typically involves known counterparties with existing legal agreements, so the honest-majority assumption carries lower practical risk. In I2U settings, end-users contributing private inputs face greater exposure if the proving coalition is dominated by institutional actors.
+- **Post-quantum exposure**: co-SNARK (Groth16-based) relies on pairings broken by CRQC. Mitigation: co-STARK alternatives. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Examples
 

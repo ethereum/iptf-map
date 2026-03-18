@@ -114,6 +114,7 @@ deterministic output for one-per-scope limits, anti-replay, or persistent pseudo
   - Requires ceremony/DSKG, resharing, rotation, and incident response. Rotation interacts with determinism:
     changing keys changes outputs unless versioned (key_id included in input framing).
 - **CROPS context (both)**: In I2U, the pattern's value is highest — prevents institutions from building offline dossiers of user activity. In I2I, the online dependency may be a liveness concern for high-frequency operations. TACEO OPRF is open source; other threshold MPC implementations vary.
+- **Post-quantum exposure**: EC-based OPRF relies on DDH assumption broken by CRQC. Mitigation: lattice-based OPRF constructions. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Example
 

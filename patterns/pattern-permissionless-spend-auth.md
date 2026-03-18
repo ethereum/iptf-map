@@ -105,3 +105,4 @@ EIP-8182 implements this pattern using Ethereum addresses as the owner identifie
 - [Shielding](pattern-shielding.md) - the shielded pool this auth pattern plugs into
 - [Safe Proof Delegation](pattern-safe-proof-delegation.md) - intent-based delegation that composes with this circuit model
 - [EIP-8182 (draft)](https://github.com/ethereum/EIPs/pull/11373)
+- [Post-Quantum Threats](../domains/post-quantum.md)

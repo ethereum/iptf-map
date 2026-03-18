@@ -76,6 +76,7 @@ Use stateless Plasma architecture to enable private token transfers where transa
 - [Privacy L2s](pattern-privacy-l2s.md) — Alternative: native privacy rollups (Aztec)
 - [Shielding](pattern-shielding.md) — Alternative: L1 shielding pools
 - [L2 Encrypted Offchain Audit](pattern-l2-encrypted-offchain-audit.md) — Audit trail for compliance
+- [Post-Quantum Threats](../domains/post-quantum.md)
 
 ## References
 

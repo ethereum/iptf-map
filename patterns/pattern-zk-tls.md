@@ -46,6 +46,7 @@ zk-TLS let investors generate verifiable identities from their existing web2 dat
 
 - Notary must be trusted (can be the institution that wants access to the identity data)
 - **CROPS context (I2U)**: Requires trusted notary who can refuse participation. TLSNotary is open source; notary infrastructure and ZK prover tooling vary in licensing.
+- **Post-quantum exposure**: MPC/2PC operates on ECDH key exchange broken by CRQC; ML-KEM handshake in MPC/2PC is unsolved. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Examples
 
