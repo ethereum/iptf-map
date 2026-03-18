@@ -46,7 +46,7 @@ Two parties each hold a private set of identifiers and want to learn which eleme
 - **Input privacy**: Non-intersecting elements are computationally hidden under DDH.
 - **Bilateral**: Runs directly between two parties without a server or operator.
 - **Completeness**: All shared elements are found (zero false negatives).
-- **Soundness**: Zero false positives (collision-resistant hash-to-curve).
+- **Soundness**: Minimal false positives (collision-resistant hash-to-curve).
 - **I2I**: Institutions match order books, reconcile settlement, or deduplicate KYC without revealing full client lists.
 - **I2U**: A user checks if their address appears in an institution's eligibility list without the institution learning the user's other addresses.
 
