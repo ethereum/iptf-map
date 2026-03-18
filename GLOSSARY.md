@@ -161,7 +161,7 @@ A dedicated network or service that publishes and stores the data required for D
 
 **SLH-DSA**: NIST hash-based PQ signature (FIPS 205, formerly SPHINCS+). Security relies only on hash function properties.
 
-**Poseidon**: Arithmetic-friendly hash function for efficient ZK circuit evaluation. Post-quantum safe.
+**Poseidon**: Arithmetic-friendly hash function for efficient ZK circuit evaluation. No known practical quantum break beyond generic hash-model considerations (e.g., Grover-style security reduction).
 
 ### Infrastructure
 

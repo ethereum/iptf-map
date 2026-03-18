@@ -22,11 +22,11 @@ status: draft
 | **Symmetric crypto**      | AES security                    | Grover             | Weakened | AES-128 -> ~64-bit                |
 | **MAC / PRF / KDF**       | HMAC, HKDF                      | Grover             | Weakened | Double key sizes                 |
 | **Lattice-based**         | LWE, Ring-LWE, SIS              | No known speedup   | No       | Kyber, Dilithium                 |
-| **Hash-based signatures** | Merkle / one-time signatures    | Grover only        | No       | XMSS, SPHINCS+                   |
+| **Hash-based signatures** | Merkle / one-time signatures    | Grover (not Shor)  | No       | XMSS, SPHINCS+                   |
 | **Code-based**            | Syndrome decoding               | No known speedup   | No       | McEliece                         |
 | **Multivariate**          | MQ problem                      | No known speedup   | No       | Some schemes fragile classically |
 | **SNARK commitments**     | KZG (pairing-based)             | via Dlog           | Yes      | Ethereum zk stack                |
-| **STARKs**                | Hash + FRI                      | Grover only        | No       | Post-quantum friendly            |
+| **STARKs**                | Hash + FRI                      | Grover (not Shor)  | No       | Post-quantum friendly            |
 
 ## Ethereum Layer Analysis
 

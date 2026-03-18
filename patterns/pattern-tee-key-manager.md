@@ -117,7 +117,7 @@ External systems bind the signer public key and policy hash to an approved attes
   - A single TEE instance is a single point of compromise. For production custody, threshold key distribution across multiple TEE instances operated by independent parties is recommended. Single-TEE deployments are acceptable for pilot use or warm/operational keys with limited exposure.
   - See [TEE-Based Privacy — Defense Layers](pattern-tee-based-privacy.md#defense-layers) for the layered security model.
 - **CROPS context (I2I)**: Security improves to `high` with threshold keys across multiple independent TEE instances. Single-TEE is acceptable for pilot only.
-- **Post-quantum exposure**: ECDSA/BLS signing keys are broken by CRQC. Mitigation: PQ signature schemes (ML-DSA, SLH-DSA) within TEE. See [Post-Quantum Threats](../domains/post-quantum.md).
+- **Post-quantum exposure**: ECDSA/BLS signing keys are broken by CRQC. Mitigation: PQ signature schemes (ML-DSA, SLH-DSA) within TEE. Note: TEE attestation infrastructure also relies on CPU manufacturer ECDSA signing keys (e.g., Intel SGX DCAP); PQ attestation schemes will be needed for long-term TEE trust. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Example
 

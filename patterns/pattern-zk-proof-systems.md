@@ -23,7 +23,7 @@ crops_profile:
 
 ## Intent
 
-A zero-knowledge proof (ZKP) is a cryptographic protocol that lets one party prove a statement is true without revealing the inputs. For example, given a function f(x, y) = z, you can prove you know x and y that produce z, without ever disclosing x or y.
+A zero-knowledge proof is a cryptographic protocol that lets one party prove a statement is true without revealing the inputs. For example, given a function f(x, y) = z, you can prove you know x and y that produce z, without ever disclosing x or y.
 
 This pattern provides a decision framework for selecting ZK proof systems based on trust model, post-quantum safety, proof size, and prover/verifier cost. The core PQ-readiness question for any ZK-based privacy design on Ethereum is whether the underlying commitment scheme relies on elliptic curves (vulnerable) or hash functions or lattices (PQ-safe).
 
@@ -31,7 +31,7 @@ This pattern provides a decision framework for selecting ZK proof systems based 
 
 - **Pairing-based SNARKs**: Groth16, PLONK/KZG — rely on elliptic curve pairings (bilinear maps over BLS12-381 or BN254)
 - **EC-based SNARKs**: PLONK/IPA, Halo2 — rely on discrete log over elliptic curves (no pairings, but still EC)
-- **Hash-based proof systems**: FRI-based STARKs and hash-based SNARKs (Plonky2/3) — rely only on collision-resistant hash functions (Poseidon, Keccak, Blake). The SNARK/STARK boundary blurs here: systems like Plonky3 use FRI commitments but achieve SNARK-like succinctness
+- **Hash-based proof systems**: FRI-based STARKs and hash-based SNARKs (Plonky2/3) — rely on collision-resistant hash functions (Poseidon, Keccak, Blake) without additional cryptographic assumptions. The SNARK/STARK boundary blurs here: systems like Plonky3 use FRI commitments but achieve SNARK-like succinctness
 - **Lattice-based SNARKs**: emerging systems (e.g., Latticefold) — rely on lattice hardness assumptions (Module-SIS/LWE), PQ-safe but not yet deployed in production
 - **Hybrid systems**: SNARK-wrap-STARK (e.g., prove in STARK, compress proof via SNARK for cheaper on-chain verification)
 
@@ -50,8 +50,8 @@ This pattern provides a decision framework for selecting ZK proof systems based 
 | Groth16           | Trusted (per-circuit) | No (pairings)   | ~200 B     | Low         | Low           | [Railgun](../vendors/railgun.md), [EY](../vendors/ey.md), [Privacy Pools](../vendors/privacypools.md) |
 | PLONK/KZG         | Trusted (universal)   | No (pairings)   | ~400 B     | Medium      | Low           | [Aztec](../vendors/aztec.md), [zkSync](../vendors/zksync.md)                                          |
 | PLONK/IPA         | Transparent           | No (EC)         | ~1 KB      | Medium      | Medium        | ZCash                                                                                                  |
-| STARKs (FRI)      | Transparent           | Yes (hash-only) | ~50-200 KB | High        | Medium        | [Miden](../vendors/miden.md)                                                                           |
-| Hash-based SNARKs | Transparent           | Yes (hash-only) | ~70-250 KB | High        | Medium        | Plonky3, Binius                                                                                        |
+| STARKs (FRI)      | Transparent           | Yes (hash-based) | ~50-200 KB | High        | Medium        | [Miden](../vendors/miden.md)                                                                           |
+| Hash-based SNARKs | Transparent           | Yes (hash-based) | ~70-250 KB | High        | Medium        | Plonky3, Binius                                                                                        |
 | Lattice-based     | Transparent           | Yes (lattices)  | TBD        | TBD         | TBD           | Research stage (Latticefold)                                                                           |
 
 Benchmarks for Ethereum block proving workloads available at [ethproofs.org CSP benchmarks](https://ethproofs.org/csp-benchmarks). Note: the table above reflects typical privacy-application proof characteristics; block-proving benchmarks differ in scale.
@@ -81,7 +81,7 @@ Benchmarks for Ethereum block proving workloads available at [ethproofs.org CSP 
 
 ## Example
 
-- A privacy L2 uses PLONK/KZG for transaction proofs today. To prepare for PQ, they evaluate migrating to a FRI-based STARK backend: proof size increases from ~400 B to ~100 KB, but proofs are PQ-safe and require no trusted setup. They use recursive STARK composition to keep on-chain verification cost manageable, and leverage EIP-4844 blobs for proof data availability.
+- A privacy L2 uses PLONK/KZG for transaction proofs today. To prepare for PQ, they evaluate migrating to a FRI-based STARK backend: proof size increases from ~400 B to ~100 KB, but proofs are PQ-safe and require no trusted setup. They use recursive STARK composition to keep on-chain verification cost manageable, and leverage EIP-4844 blobs for proof Data Availability.
 
 ## See also
 
