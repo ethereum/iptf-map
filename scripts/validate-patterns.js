@@ -334,7 +334,11 @@ function validatePattern(filePath) {
         const isRequiredField = error.keyword === 'required' ||
           errorPath.startsWith('/crops_profile');
         if (error.keyword === 'additionalProperties') {
-          fileWarnings.push(`Schema: unexpected field '${error.params.additionalProperty}' in frontmatter`);
+          if (errorPath.startsWith('/crops_profile')) {
+            fileErrors.push(`Schema: unexpected field '${error.params.additionalProperty}' in crops_profile`);
+          } else {
+            fileWarnings.push(`Schema: unexpected field '${error.params.additionalProperty}' in frontmatter`);
+          }
         } else if (isRequiredField) {
           fileErrors.push(`Schema: ${errorPath} ${msg}`);
         } else if (error.keyword === 'enum') {
