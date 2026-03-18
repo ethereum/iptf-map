@@ -70,6 +70,9 @@ Two parties each hold a private set of identifiers and want to learn which eleme
 
 ## See also
 
+- [Private Set Intersection (OPRF-based)](pattern-private-set-intersection-oprf.md): OT/OPRF variant for large sets (10k+ elements)
+- [Private Set Intersection (Circuit-based)](pattern-private-set-intersection-circuit.md): garbled circuit variant for computing functions over intersections
+- [Private Set Intersection (FHE-based)](pattern-private-set-intersection-fhe.md): FHE variant for asymmetric set sizes with post-quantum security
 - [Private Shared State (co-SNARKs)](pattern-private-shared-state-cosnark.md): MPC for ongoing shared state, vs one-shot matching here
 - [VOPRF Nullifiers](pattern-voprf-nullifiers.md): OPRF is a building block in OT-based PSI variants
 - [DvP (ERC-7573)](pattern-dvp-erc7573.md): downstream consumer, matched trade to settlement
