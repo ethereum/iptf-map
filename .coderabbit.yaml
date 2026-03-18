@@ -1,4 +1,123 @@
+language: "en-US"
+tone_instructions: >
+  Be direct, factual, and concise. Match the neutral tone expected in this
+  knowledge-base repository. Flag marketing language, superlatives, or
+  promotional phrasing.
+
 reviews:
   auto_review:
     enabled: true
     drafts: false
+    base_branches:
+      - master
+  request_changes_workflow: true
+  high_level_summary: true
+  review_status: true
+  profile: "assertive"
+  review_details: true
+  poem: false
+  collapse_walkthrough: false
+  sequence_diagrams: false
+
+  path_filters:
+    - "!node_modules/**"
+    - "!scripts/node_modules/**"
+    - "!package-lock.json"
+    - "!.husky/**"
+    - "!weekly-updates/**"
+
+  path_instructions:
+    # ── Patterns ──────────────────────────────────────────────────────────
+    - path: "patterns/**/*.md"
+      instructions: |
+        This is a **pattern card**.
+
+        **Structure & frontmatter:** Validate against the template at `patterns/_template.md`.
+        File naming rules are in `patterns/README.md`. Filename must start with `pattern-` in kebab-case.
+        Pattern names must be vendor-neutral (no vendor-specific names like aztec, nightfall, railgun, etc.).
+
+        **CROPS alignment (CRITICAL):**
+        Every pattern MUST include a `crops_profile` in its frontmatter with `cr`, `os`, `privacy`, and `security` scores.
+        Validate that each score uses the correct enum values defined in `CONTRIBUTING.md § CROPS Evaluation`:
+        - `cr`: high | medium | low | none
+        - `os`: yes | partial | no
+        - `privacy`: full | partial | none
+        - `security`: high | medium | low
+
+        Review CROPS scores for plausibility — e.g., a pattern that requires a centralized operator should not claim `cr: high`.
+        If the pattern involves I2U context, check that the censorship resistance score accounts for user escape paths as described in the CR rubric.
+
+        **Word limits:** warn > 800, error > 1500.
+        **Tone:** factual and neutral per `vendors/README.md` house style. No marketing language.
+
+    # ── Vendors ───────────────────────────────────────────────────────────
+    - path: "vendors/**/*.md"
+      instructions: |
+        This is a **vendor card**.
+
+        **Structure & frontmatter:** Validate against the template at `vendors/_template.md`.
+
+        **Ethereum alignment (CRITICAL):**
+        Per `vendors/README.md`, IPTF only lists vendors whose products are Ethereum-aligned.
+        Check that the product is built for or deployed on Ethereum mainnet or production L2s,
+        or is a multichain solution that benefits the Ethereum ecosystem (supports EIPs/ERCs,
+        advances shared privacy patterns, or brings institutional adoption to Ethereum).
+        Flag products that primarily serve non-Ethereum L1s without meaningful Ethereum integration.
+
+        **CROPS evaluation (CRITICAL):**
+        Vendor cards MUST include a `## CROPS profile` section with a table evaluating each product.
+        Table columns: Product | CR | OS | Privacy | Security | Context.
+        Validate scores against the rubrics in `CONTRIBUTING.md § CROPS Evaluation`.
+        CROPS is assessed per product, not per vendor — a single vendor may have products with different profiles.
+        For vendors, the Security score should also consider: audit status, upgrade key controls, admin key scope, incident history, and bug bounty program.
+
+        **Tone (CRITICAL):** Must be neutral and factual per `vendors/README.md` house style.
+        Vendor cards describe capabilities objectively — they do not endorse products.
+        Flag any promotional language, superlatives, or marketing copy.
+
+        **Word limits:** warn > 1000, error > 1800.
+
+    # ── Use Cases ─────────────────────────────────────────────────────────
+    - path: "use-cases/**/*.md"
+      instructions: |
+        This is a **use case card**.
+
+        **Structure & frontmatter:** Validate against the template at `use-cases/_template.md`.
+        Rules and scope are in `use-cases/README.md`.
+
+        Check that `primary_domain` matches one of the domains listed in `domains/README.md`.
+        Use cases should stay on a single page — flag if the content is excessively long or duplicates linked docs.
+
+        Warn if section `## 2) Additional Business Context` contains anything that looks like confidential
+        information (specific organization names, pilot scopes, committed volumes) — these belong in `context/` files.
+
+    # ── Approaches ────────────────────────────────────────────────────────
+    - path: "approaches/**/*.md"
+      instructions: |
+        This is an **approach card**.
+
+        **Structure:** Validate against the template at `approaches/_template.md`.
+        File naming and conventions are in `approaches/README.md`. Filename must start with `approach-` in kebab-case.
+
+        Approach cards MUST link to both the use case they address and the patterns they combine.
+        Flag if no pattern or use case cross-references are present.
+
+        **Word limits:** warn > 2000, error > 3000.
+
+    # ── Jurisdictions ─────────────────────────────────────────────────────
+    - path: "jurisdictions/**/*.md"
+      instructions: |
+        This is a **jurisdiction card**.
+
+        **Structure & frontmatter:** Validate against the template at `jurisdictions/_template.md`.
+        All required subsections under `## Actionable Best Practices` must be present
+        (Payments, Trading, Funds & Assets, Custody, Identity & Compliance, Data & Oracles).
+
+    # ── Changelog ─────────────────────────────────────────────────────────
+    - path: "CHANGELOG.md"
+      instructions: |
+        Entries must go under `[Unreleased]`, include a markdown link to the changed file,
+        reference the PR number `(#NNN)`, and use a semantic prefix (`feat(pattern):`, `feat(vendor):`, `fix:`, `docs:`, etc.).
+
+chat:
+  auto_reply: true
