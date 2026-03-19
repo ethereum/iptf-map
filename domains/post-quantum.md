@@ -30,7 +30,7 @@ All assumptions that derive security from discrete-log or factorization structur
 | Elliptic-Curve Discrete Log Problem (ECDLP)           | Shor (direct) | ECDSA, EdDSA, ECDH, Schnorr                         | Transaction signing (secp256k1), stealth address derivation |
 | Discrete Log over finite fields                       | Shor (direct) | DSA, Diffie-Hellman                                 | Legacy key exchange                                         |
 | Computational / Decisional Diffie-Hellman (CDH / DDH) | via ECDLP     | Diffie-Hellman key exchange, ElGamal, Oblivious PRF | TLS, on-chain encryption, viewing keys                      |
-| Pairing assumptions (Bilinear DH, q-Strong DH, SXDH)  | via ECDLP     | BLS signatures, Groth16, PLONK/KZG commitments      | Consensus (BLS), ZK proof systems, blob commitments         |
+| Pairing assumptions (Bilinear DH, q-Strong DH, SXDH)  | via ECDLP     | BLS signatures, Groth16, PLONK/KZG commitments      | Consensus (BLS), zero-knowledge proof systems, blob commitments         |
 | Integer factorization / Strong RSA                    | Shor (direct) | RSA, RSA accumulators                               | Accumulators, RSA-based Verifiable Delay Functions          |
 
 ### Weakened Primitives (via Grover / BHT)
