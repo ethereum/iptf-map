@@ -5,59 +5,85 @@ status: draft
 
 ## TLDR
 
-- CRQC breaks ECDSA, BLS, ECDH, Groth16, PLONK/KZG — Ethereum consensus, execution, and application privacy layers all affected.
+- A Cryptographically Relevant Quantum Computer (CRQC) breaks ECDSA, BLS, ECDH, Groth16, PLONK/KZG — Ethereum consensus, execution, and application privacy layers all affected.
 - Harvest Now, Decrypt Later (HNDL) means confidentiality-critical applications face urgency now, even though CRQC is years away.
 - Hash-based and lattice-based primitives provide migration paths; STARKs are already PQ-safe.
 
 ## PQ Threat Landscape
 
-| Category                  | Assumption / Problem            | Quantum Effect     | Broken?     | Impacted Systems / Notes         |
-| ------------------------- | ------------------------------- | ------------------ | ----------- | -------------------------------- |
-| **Discrete Log**          | Dlog (ECDLP, finite fields)     | Shor (exponential) | Yes      | ECDSA, EdDSA, DH, DSA            |
-| **Factorization**         | Integer factorization           | Shor (exponential) | Yes      | RSA, RSA accumulators            |
-| **Diffie-Hellman**        | CDH / DDH                       | via Dlog           | Yes      | TLS, key exchange                |
-| **Pairing-based**         | BDH, q-SDH, SXDH                | via Dlog           | Yes      | BLS, Groth16, KZG                |
-| **RSA-type variants**     | Strong RSA                      | via factorization  | Yes      | Accumulators, VDFs (RSA-based)   |
-| **Hash functions**        | Preimage / collision resistance | Grover / BHT       | Weakened | SHA-256 -> ~128-bit               |
-| **Symmetric crypto**      | AES security                    | Grover             | Weakened | AES-128 -> ~64-bit                |
-| **MAC / PRF / KDF**       | HMAC, HKDF                      | Grover             | Weakened | Double key sizes                 |
-| **Lattice-based**         | LWE, Ring-LWE, SIS              | No known speedup   | No       | Kyber, Dilithium                 |
-| **Hash-based signatures** | Merkle / one-time signatures    | Grover (not Shor)  | No       | XMSS, SPHINCS+                   |
-| **Code-based**            | Syndrome decoding               | No known speedup   | No       | McEliece                         |
-| **Multivariate**          | MQ problem                      | No known speedup   | No       | Some schemes fragile classically |
-| **SNARK commitments**     | KZG (pairing-based)             | via Dlog           | Yes      | Ethereum zk stack                |
-| **STARKs**                | Hash + FRI                      | Grover (not Shor)  | No       | Post-quantum friendly            |
+Quantum computers threaten cryptography through two algorithms. Shor's algorithm provides exponential speedup against problems based on the structure of algebraic groups (discrete logarithms, integer factorization). Grover's algorithm provides quadratic speedup against unstructured search, effectively halving the security level of symmetric primitives and hash functions.
+
+### Quantum Algorithms
+
+| Algorithm                     | Speedup     | Target                                               | Effect                                                       |
+| ----------------------------- | ----------- | ---------------------------------------------------- | ------------------------------------------------------------ |
+| **Shor**                      | Exponential | Discrete logarithms, integer factorization           | Fully breaks the underlying hardness assumption              |
+| **Grover**                    | Quadratic   | Unstructured search (symmetric keys, hash preimages) | Halves effective security bits (e.g., 256-bit → 128-bit)     |
+| **Brassard-Hoyer-Tapp (BHT)** | Moderate    | Collision finding in hash functions                  | Reduces collision resistance (e.g., 256-bit hash → ~170-bit) |
+
+### Broken Hardness Assumptions (via Shor)
+
+All assumptions that derive security from discrete-log or factorization structure are fully broken by Shor's algorithm.
+
+| Hardness Assumption                                   | Quantum Route | Affected Schemes                                    | Ethereum Impact                                             |
+| ----------------------------------------------------- | ------------- | --------------------------------------------------- | ----------------------------------------------------------- |
+| Elliptic-Curve Discrete Log Problem (ECDLP)           | Shor (direct) | ECDSA, EdDSA, ECDH, Schnorr                         | Transaction signing (secp256k1), stealth address derivation |
+| Discrete Log over finite fields                       | Shor (direct) | DSA, Diffie-Hellman                                 | Legacy key exchange                                         |
+| Computational / Decisional Diffie-Hellman (CDH / DDH) | via ECDLP     | Diffie-Hellman key exchange, ElGamal, Oblivious PRF | TLS, on-chain encryption, viewing keys                      |
+| Pairing assumptions (Bilinear DH, q-Strong DH, SXDH)  | via ECDLP     | BLS signatures, Groth16, PLONK/KZG commitments      | Consensus (BLS), ZK proof systems, blob commitments         |
+| Integer factorization / Strong RSA                    | Shor (direct) | RSA, RSA accumulators                               | Accumulators, RSA-based Verifiable Delay Functions          |
+
+### Weakened Primitives (via Grover / BHT)
+
+These primitives are not broken but require increased parameter sizes to maintain target security levels.
+
+| Primitive Category                                                                          | Security Property    | Quantum Effect       | Mitigation                                                 | Post-Quantum Security       |
+| ------------------------------------------------------------------------------------------- | -------------------- | -------------------- | ---------------------------------------------------------- | --------------------------- |
+| Hash functions (SHA-256, Keccak)                                                            | Preimage resistance  | Grover: halves bits  | Use 256-bit hashes for 128-bit PQ security                 | Sufficient at current sizes |
+| Hash functions (SHA-256, Keccak)                                                            | Collision resistance | BHT: reduces by ~1/3 | 256-bit hash retains ~170-bit collision security           | Sufficient at current sizes |
+| Symmetric encryption (AES)                                                                  | Key security         | Grover: halves bits  | AES-256 for 128-bit PQ security (AES-128 drops to ~64-bit) | Use AES-256                 |
+| Message Authentication Codes, Pseudorandom Functions, Key Derivation Functions (HMAC, HKDF) | Key security         | Grover: halves bits  | Double key sizes                                           | Use 256-bit keys            |
+
+### PQ-Safe Foundations
+
+Assumptions and schemes with no known quantum speedup. These form the basis for post-quantum migration.
+
+| Assumption Family     | Hardness Problem                                                   | Representative Schemes             | NIST Status                  | Notes                                                                                |
+| --------------------- | ------------------------------------------------------------------ | ---------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------ |
+| Lattice-based         | Learning With Errors (LWE), Ring-LWE, Short Integer Solution (SIS) | ML-KEM (Kyber), ML-DSA (Dilithium) | Standardized (FIPS 203, 204) | Primary PQ replacement for key exchange and signatures                               |
+| Hash-based signatures | One-time signatures + Merkle trees                                 | XMSS, SPHINCS+ (SLH-DSA)           | Standardized (FIPS 205)      | Stateful (XMSS) or stateless (SPHINCS+); conservative — relies only on hash security |
+| Hash + FRI (STARKs)   | Hash collision resistance                                          | STARK proof systems                | N/A                          | Already deployed in Ethereum L2s; PQ-safe by construction                            |
 
 ## Ethereum Layer Analysis
 
-| Layer           | Today (Broken)            | Migration Path                                                                             | Target End State                             |
-| --------------- | ------------------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------- |
+| Layer           | Today (Broken)            | Migration Path                                                                                                                                                                                   | Target End State                             |
+| --------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
 | **Consensus**   | BLS (pairings, Dlog)      | Replace fixed BLS with programmable verification; use hash-based sigs or STARK aggregation (see [Lean Ethereum](../patterns/pattern-lean-ethereum.md), [Lean Roadmap](https://leanroadmap.org/)) | Validators submit **proofs**, not signatures |
-| **Execution**   | ECDSA (secp256k1)         | Account abstraction (EIP-8141-style); modular validation (custom sig / ZK checks)          | Account = **verification logic**             |
-| **Application** | Groth16, PLONK, KZG, ECDH | Replace pairings & Dlog: STARKs, hash commitments, PQ KEMs                                 | **Hash/STARK-first stack**                   |
+| **Execution**   | ECDSA (secp256k1)         | Account abstraction (EIP-8141-style); modular validation (custom sig / ZK checks)                                                                                                                | Account = **verification logic**             |
+| **Application** | Groth16, PLONK, KZG, ECDH | Replace pairings & Dlog: STARKs, hash commitments, PQ KEMs                                                                                                                                       | **Hash/STARK-first stack**                   |
 
 ## Application-Layer Breakages
 
 HNDL makes privacy migration more urgent than authentication: harvested ciphertexts can never be re-encrypted, while signature forgery is at least partially remediable through emergency coordination. New designs should use PQ key exchange for any confidentiality surface that persists beyond a single session.
 
-Ethereum inherits PQ transport encryption for some surfaces (Go 1.24 ships hybrid PQ TLS by default for HTTPS/JSON-RPC). What it *cannot* inherit is application-layer privacy: on-chain ciphertexts, ECDH-based key derivation, stealth address generation, ZK-proven encryption, and access pattern hiding are blockchain-specific problems with no industry equivalent.
+Ethereum inherits PQ transport encryption for some surfaces (Go 1.24 ships hybrid PQ TLS by default for HTTPS/JSON-RPC). What it _cannot_ inherit is application-layer privacy: on-chain ciphertexts, ECDH-based key derivation, stealth address generation, ZK-proven encryption, and access pattern hiding are blockchain-specific problems with no industry equivalent.
 
 ### Anonymity and Unlinkability
 
-| Surface | Broken Primitive | Solution Path | Status | Pattern |
-|---------|-----------------|---------------|--------|---------|
-| Stealth Addresses | ECDH key exchange | ML-KEM + OMR sidecar (33x ciphertext bloat; [Module-LWE protocol](https://eprint.iacr.org/2025/112) ~66.8% faster scan) | Active research | [Stealth Addresses](../patterns/pattern-stealth-addresses.md) |
-| zkTLS | MPC/2PC on ECDH handshake | Co-design MPC with ML-KEM algebraic structure; TLS 1.3 support prerequisite | Unsolved | [zk-TLS](../patterns/pattern-zk-tls.md) |
-| zkID (export) | EC-based signatures | Poseidon-internal hash-based PQ sigs + STARK verification on device | Tractable | [ZK KYC/ML ID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md) |
-| zkID (import) | NIST PQ sig arithmetization | 131x gap vs Groth16; [EIP-8051](https://eips.ethereum.org/EIPS/eip-8051)/[8052](https://eips.ethereum.org/EIPS/eip-8052) precompiles for direct verification | Open research | [ZK KYC/ML ID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md) |
+| Surface           | Broken Primitive            | Solution Path                                                                                                                                                | Status          | Pattern                                                        |
+| ----------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------- | -------------------------------------------------------------- |
+| Stealth Addresses | ECDH key exchange           | ML-KEM + OMR sidecar (33x ciphertext bloat; [Module-LWE protocol](https://eprint.iacr.org/2025/112) ~66.8% faster scan)                                      | Active research | [Stealth Addresses](../patterns/pattern-stealth-addresses.md)  |
+| zkTLS             | MPC/2PC on ECDH handshake   | Co-design MPC with ML-KEM algebraic structure; TLS 1.3 support prerequisite                                                                                  | Unsolved        | [zk-TLS](../patterns/pattern-zk-tls.md)                        |
+| zkID (export)     | EC-based signatures         | Poseidon-internal hash-based PQ sigs + STARK verification on device                                                                                          | Tractable       | [ZK KYC/ML ID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md) |
+| zkID (import)     | NIST PQ sig arithmetization | 131x gap vs Groth16; [EIP-8051](https://eips.ethereum.org/EIPS/eip-8051)/[8052](https://eips.ethereum.org/EIPS/eip-8052) precompiles for direct verification | Open research   | [ZK KYC/ML ID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md) |
 
 ### Confidentiality
 
-| Surface | Broken Primitive | Solution Path | Status | Pattern |
-|---------|-----------------|---------------|--------|---------|
-| Note discovery / viewing keys | EC-based key derivation | ML-KEM (outside ZK circuit) + OMR | Tractable | [Shielding](../patterns/pattern-shielding.md), [Noir Private Contracts](../patterns/pattern-noir-private-contracts.md) |
-| Proven-correct encryption to auditor | ElGamal (EC scalar mul) | Lattice PKE outside circuit + Poseidon symmetric encryption inside circuit (detect-and-flag model) | Partial | [Regulatory Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md) |
-| Protocol-enforced decryptability | Proving lattice PKE in-circuit | Field mismatch (q=3,329 vs BN254); simpler than full ML-KEM but still expensive | Unsolved | — |
+| Surface                              | Broken Primitive               | Solution Path                                                                                      | Status    | Pattern                                                                                                                |
+| ------------------------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Note discovery / viewing keys        | EC-based key derivation        | ML-KEM (outside ZK circuit) + OMR                                                                  | Tractable | [Shielding](../patterns/pattern-shielding.md), [Noir Private Contracts](../patterns/pattern-noir-private-contracts.md) |
+| Proven-correct encryption to auditor | ElGamal (EC scalar mul)        | Lattice PKE outside circuit + Poseidon symmetric encryption inside circuit (detect-and-flag model) | Partial   | [Regulatory Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md)                                      |
+| Protocol-enforced decryptability     | Proving lattice PKE in-circuit | Field mismatch (q=3,329 vs BN254); simpler than full ML-KEM but still expensive                    | Unsolved  | —                                                                                                                      |
 
 ### Dependencies
 
@@ -66,26 +92,27 @@ Ethereum inherits PQ transport encryption for some surfaces (Go 1.24 ships hybri
 
 ## Affected Patterns
 
-| Pattern | PQ-Broken Primitive | HNDL Risk | Mitigation Path |
-|---------|-------------------|-----------|-----------------|
-| [Stealth Addresses](../patterns/pattern-stealth-addresses.md) | ECDH (shared secret) | High | ML-KEM + OMR sidecar |
-| [PSI-DH](../patterns/pattern-private-set-intersection-dh.md) | DDH / commutative encryption | Medium | Lattice-based PSI |
-| [MPC Custody](../patterns/pattern-mpc-custody.md) | Threshold ECDSA/EdDSA | Low | ML-DSA / hash-based threshold |
-| [TEE Key Manager](../patterns/pattern-tee-key-manager.md) | ECDSA/BLS signing | Low | PQ signing in TEE |
-| [Noir Private Contracts](../patterns/pattern-noir-private-contracts.md) | Barretenberg (PLONK) | High | Hash-based commitments / STARKs |
-| [Private Shared State (co-SNARK)](../patterns/pattern-private-shared-state-cosnark.md) | Groth16 | Medium | co-STARK alternatives |
-| [TEE+ZK Settlement](../patterns/pattern-tee-zk-settlement.md) | Groth16/PLONK | Medium | STARKs |
-| [co-SNARK](../patterns/pattern-co-snark.md) | co-SNARK (Groth16-based) | Medium | co-STARK |
-| [Threshold Encrypted Mempool](../patterns/pattern-threshold-encrypted-mempool.md) | Pairing-based threshold encryption | Medium | Lattice-based threshold encryption |
-| [Shielding](../patterns/pattern-shielding.md) | ZK proofs (impl-dependent) | High | STARK-based shielded pools |
-| [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md) | EC-based OPRF (DDH) | Low | Lattice-based OPRF |
-| [Pretrade Privacy](../patterns/pattern-pretrade-privacy-encryption.md) | Threshold encryption | Medium | Lattice-based threshold |
-| [zk-TLS](../patterns/pattern-zk-tls.md) | MPC on ECDH key exchange | Medium | MPC/2PC over ML-KEM (unsolved) |
-| [ZK KYC/ML ID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md) | Underlying proof system | Medium | STARK-based proving |
-| [Origin-Locked Confidential Ledger](../patterns/pattern-origin-locked-confidential-ledger.md) | ElGamal (EC-based) | High | Lattice-based PKE |
-| [Safe Proof Delegation](../patterns/pattern-safe-proof-delegation.md) | Recursive ZK (if EC-based) | Medium | STARK-based recursion |
+| Pattern                                                                                       | PQ-Broken Primitive                | HNDL Risk | Mitigation Path                    |
+| --------------------------------------------------------------------------------------------- | ---------------------------------- | --------- | ---------------------------------- |
+| [Stealth Addresses](../patterns/pattern-stealth-addresses.md)                                 | ECDH (shared secret)               | High      | ML-KEM + OMR sidecar               |
+| [PSI-DH](../patterns/pattern-private-set-intersection-dh.md)                                  | DDH / commutative encryption       | Medium    | Lattice-based PSI                  |
+| [MPC Custody](../patterns/pattern-mpc-custody.md)                                             | Threshold ECDSA/EdDSA              | Low       | ML-DSA / hash-based threshold      |
+| [TEE Key Manager](../patterns/pattern-tee-key-manager.md)                                     | ECDSA/BLS signing                  | Low       | PQ signing in TEE                  |
+| [Noir Private Contracts](../patterns/pattern-noir-private-contracts.md)                       | Barretenberg (PLONK)               | High      | Hash-based commitments / STARKs    |
+| [Private Shared State (co-SNARK)](../patterns/pattern-private-shared-state-cosnark.md)        | Groth16                            | Medium    | co-STARK alternatives              |
+| [TEE+ZK Settlement](../patterns/pattern-tee-zk-settlement.md)                                 | Groth16/PLONK                      | Medium    | STARKs                             |
+| [co-SNARK](../patterns/pattern-co-snark.md)                                                   | co-SNARK (Groth16-based)           | Medium    | co-STARK                           |
+| [Threshold Encrypted Mempool](../patterns/pattern-threshold-encrypted-mempool.md)             | Pairing-based threshold encryption | Medium    | Lattice-based threshold encryption |
+| [Shielding](../patterns/pattern-shielding.md)                                                 | ZK proofs (impl-dependent)         | High      | STARK-based shielded pools         |
+| [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md)                                   | EC-based OPRF (DDH)                | Low       | Lattice-based OPRF                 |
+| [Pretrade Privacy](../patterns/pattern-pretrade-privacy-encryption.md)                        | Threshold encryption               | Medium    | Lattice-based threshold            |
+| [zk-TLS](../patterns/pattern-zk-tls.md)                                                       | MPC on ECDH key exchange           | Medium    | MPC/2PC over ML-KEM (unsolved)     |
+| [ZK KYC/ML ID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md)                                | Underlying proof system            | Medium    | STARK-based proving                |
+| [Origin-Locked Confidential Ledger](../patterns/pattern-origin-locked-confidential-ledger.md) | ElGamal (EC-based)                 | High      | Lattice-based PKE                  |
+| [Safe Proof Delegation](../patterns/pattern-safe-proof-delegation.md)                         | Recursive ZK (if EC-based)         | Medium    | STARK-based recursion              |
 
 **PQ-safe patterns** (no mitigation needed):
+
 - [Private Shared State (FHE)](../patterns/pattern-private-shared-state-fhe.md) — lattice-based
 - [Private MTP Auth](../patterns/pattern-private-mtp-auth.md) — Merkle trees, hash-based
 - [Plasma Stateless Privacy](../patterns/pattern-plasma-stateless-privacy.md) — hash-based ZK
