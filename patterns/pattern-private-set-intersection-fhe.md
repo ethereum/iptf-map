@@ -8,8 +8,8 @@ assumptions: One party runs FHE encryption/decryption, the other evaluates a mat
 last_reviewed: 2026-03-18
 works-best-when:
   - Set sizes are asymmetric (one party holds a much larger set than the other)
-  - Low round count is critical (1-2 communication rounds)
-  - Post-quantum security is a requirement
+  - Minimal round count is critical (1-2 rounds; GC is also constant-round at 3-5)
+  - Post-quantum security from lattice assumptions is preferred (GC can also be PQ via PQ-secure OT)
   - Labeled PSI is needed (return associated metadata for matched items)
 avoid-when:
   - Both sets are large and comparable in size (ciphertext expansion makes communication costly)
