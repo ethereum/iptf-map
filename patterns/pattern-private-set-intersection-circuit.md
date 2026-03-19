@@ -25,7 +25,7 @@ crops_profile:
 
 ## Intent
 
-Two parties each hold a private set and want to compute a function over their shared elements without either party learning the raw intersection. The key distinction from other PSI variants: intersection-finding logic is embedded inside the circuit alongside the aggregate function F, so the only output is F(intersection). The raw matches are never revealed to either party. This enables use cases where knowing *which* elements overlap would itself be sensitive. The circuit is evaluated jointly using authenticated garbling or secret-shared circuits (GMW). More expensive per element than DH-based PSI, but able to compute arbitrary functions: cardinality, sum, threshold checks, or filtered subsets.
+Two parties each hold a private set and want to compute a function over their shared elements without either party learning the raw intersection. The key distinction from other PSI variants: intersection-finding logic is embedded inside the circuit alongside the aggregate function F, so the output is limited to F(intersection). The raw matches are not revealed to either party. This enables use cases where knowing *which* elements overlap would itself be sensitive. The circuit is evaluated jointly using authenticated garbling or secret-shared circuits (GMW). More expensive per element than DH-based PSI, but able to compute arbitrary functions: cardinality, sum, threshold checks, or filtered subsets.
 
 ## Ingredients
 
@@ -54,27 +54,27 @@ Two parties each hold a private set and want to compute a function over their sh
 
 ## Trade-offs
 
-- Circuit size scales with O((n + m) log(n + m) * σ) gates for sort-compare-shuffle, where σ is the element bit-width. Practical for sets up to ~100k elements per party.
+- Circuit size scales with O((n + m) log(n + m) * σ) gates for sort-compare-shuffle, where σ is the element bit-width. For 256-bit identifiers, this becomes costly beyond ~10k elements per party.
 - Communication overhead is higher than DH-based PSI: the garbled circuit itself must be transmitted, typically several MB for moderate set sizes.
 - Circuit must be compiled for a fixed function AND fixed set sizes. Changing either requires recompilation. Each execution requires fresh garbling (garbled circuits are single-use). Some preprocessing (input-independent) can be done ahead of time.
 - Semi-honest security by default. Authenticated garbling (Wang-Ranellucci-Katz 2017) achieves malicious security at ~2-3x overhead.
 - Asymmetric roles in garbling (garbler vs evaluator). Both parties learn the output, but the garbler must transmit the full garbled circuit. GMW supports more than 2 parties but requires MPC-based garbling or a trusted dealer for preprocessing, plus more communication rounds.
 - OT extensions (IKNP or SoftSpoken) amortize the base OT cost, making per-element OT overhead negligible for sets above a few hundred elements.
-- **CROPS context**: Applies to both I2I and I2U. CR is `high` because both parties participate directly in circuit evaluation over a bilateral channel. In I2I, institutions jointly evaluate the circuit over an authenticated channel. In I2U, the user evaluates their side on commodity hardware. Privacy is `full` because the garbled circuit hides both inputs and intermediate computation; only the agreed-upon function output is revealed.
+- **CROPS context**: Applies to both I2I and I2U. CR is `high` because both parties participate directly in circuit evaluation over a bilateral channel. In I2I, institutions jointly evaluate the circuit over an authenticated channel. In I2U, the user evaluates their side on commodity hardware. Privacy is `full` because the garbled circuit hides both inputs and intermediate computation; the output is limited to the agreed-upon function result.
 
 ## Example
 
 - Compliance Team A holds 2,000 flagged wallet addresses.
 - Compliance Team B holds 3,500 flagged wallet addresses.
 - They want to know how many flagged addresses they share, without revealing which specific addresses overlap.
-- Both compile a PSI-cardinality circuit that outputs only the intersection count.
+- Both compile a PSI-cardinality circuit that outputs the intersection count.
 - After garbling, OT, and evaluation, both learn the count: 47 shared flags.
 - Both sides learn the count; the matching addresses themselves stay private.
 - If the count exceeds a risk threshold, they escalate to a supervised disclosure protocol.
 
 ## See also
 
-- [Private Set Intersection (DH-based)](pattern-private-set-intersection-dh.md): simpler ECDH variant for when only the raw intersection is needed
+- [Private Set Intersection (DH-based)](pattern-private-set-intersection-dh.md): simpler ECDH variant for when the raw intersection is sufficient
 - [Private Set Intersection (OPRF-based)](pattern-private-set-intersection-oprf.md): OT/OPRF variant for large sets (10k+ elements)
 - [Private Set Intersection (FHE-based)](pattern-private-set-intersection-fhe.md): FHE variant for asymmetric set sizes with post-quantum security
 - [Private Shared State (co-SNARKs)](pattern-private-shared-state-cosnark.md): MPC for ongoing shared state, vs one-shot computation here

@@ -3,7 +3,7 @@ title: "Pattern: Private Set Intersection (FHE-based)"
 status: draft
 maturity: PoC
 layer: offchain
-privacy_goal: Two parties discover shared set elements using fully homomorphic encryption, suited to asymmetric set sizes
+privacy_goal: Two parties discover shared set elements using Fully Homomorphic Encryption, suited to asymmetric set sizes
 assumptions: One party runs FHE encryption/decryption, the other evaluates a matching function homomorphically, LWE/RLWE hardness
 last_reviewed: 2026-03-18
 works-best-when:
@@ -26,13 +26,13 @@ crops_profile:
 
 ## Intent
 
-Two parties want to learn which elements they share without exposing non-matching entries. This variant uses fully homomorphic encryption: one party (the receiver) encrypts their set under an FHE scheme and sends ciphertexts. The other party (the sender) homomorphically evaluates a matching function against their own plaintext set and returns encrypted results. The receiver decrypts to learn the intersection. For the sender to also learn results, the parties reverse roles and run a second round. FHE-based PSI suits asymmetric settings where one party holds a much larger set, and the low round count (1-2 rounds per direction) minimizes network latency.
+Two parties want to learn which elements they share without exposing non-matching entries. This variant uses Fully Homomorphic Encryption: one party (the receiver) encrypts their set under an FHE scheme and sends ciphertexts. The other party (the sender) homomorphically evaluates a matching function against their own plaintext set and returns encrypted results. The receiver decrypts to learn the intersection. For the sender to also learn results, the parties reverse roles and run a second round. FHE-based PSI suits asymmetric settings where one party holds a much larger set, and the low round count (1-2 rounds per direction) minimizes network latency.
 
 ## Ingredients
 
 - **Cryptography**: BFV or BGV FHE scheme, polynomial evaluation for membership testing, SIMD/batching encoding
 - **Infra**: Authenticated channel (TLS, Noise, or similar)
-- **Off-chain**: Ephemeral computation. Sender bears the heavier compute load; receiver only encrypts and decrypts.
+- **Off-chain**: Ephemeral computation. Sender bears the heavier compute load; receiver performs encryption and decryption.
 
 ## Protocol
 
@@ -46,7 +46,7 @@ Two parties want to learn which elements they share without exposing non-matchin
 
 ## Guarantees
 
-- **Input privacy**: The sender sees only FHE ciphertexts. The receiver learns only which of their own elements match, not the sender's full set.
+- **Input privacy**: The sender sees FHE ciphertexts. The receiver learns which of their own elements match, not the sender's full set.
 - **Post-quantum security**: Security reduces to LWE/RLWE, believed resistant to quantum attacks.
 - **Completeness**: All shared elements are found (minimal false negatives).
 - **Soundness**: Randomized masking in step 4 prevents false positives.
@@ -58,7 +58,7 @@ Two parties want to learn which elements they share without exposing non-matchin
 - Ciphertext expansion is significant (orders of magnitude larger than plaintext). Communication cost scales with receiver set size, so the receiver should hold the smaller set.
 - Homomorphic polynomial evaluation is compute-intensive on the sender side. Cost is roughly O(m * sqrt(n)) FHE multiplications.
 - SIMD batching (packing multiple plaintexts per ciphertext) is essential for practical performance.
-- The base protocol reveals the intersection only to the receiver. A bilateral result requires a second round (step 7), doubling communication and compute.
+- The base protocol reveals the intersection to the receiver. A bilateral result requires a second round (step 7), doubling communication and compute.
 - Labeled PSI extension: the sender attaches encrypted payloads to matched items, so the receiver decrypts both match status and associated metadata.
 - Semi-honest security by default. Malicious security requires ZK proofs over the sender's polynomial evaluation.
 - **CROPS context**: Applies to both I2I and I2U. CR is `high` because the receiver holds the decryption key and runs the protocol directly, with no intermediary controlling match results. In I2I, both institutions can initiate a round as receiver. In I2U, the user acts as receiver and decrypts on commodity hardware; the institution acts as sender and bears the heavier FHE evaluation cost. Security is `high` due to lattice-based post-quantum assumptions under LWE/RLWE.
