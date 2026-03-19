@@ -108,9 +108,9 @@ Ethereum inherits PQ transport encryption for some surfaces (Go 1.24 ships hybri
 | [Pretrade Privacy](../patterns/pattern-pretrade-privacy-encryption.md)                        | Threshold encryption               | Medium    | Lattice-based threshold            |
 | [zk-TLS](../patterns/pattern-zk-tls.md)                                                       | MPC on ECDH key exchange           | Medium    | MPC/2PC over ML-KEM (unsolved)     |
 | [ZK KYC/ML ID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md)                                | Underlying proof system            | Medium    | STARK-based proving                |
+| [ZK Proof Systems](../patterns/pattern-zk-proof-systems.md)                                   | Groth16, PLONK/KZG (pairing/Dlog) | Medium    | PLONK/IPA, STARKs, folding schemes |
 | [Origin-Locked Confidential Ledger](../patterns/pattern-origin-locked-confidential-ledger.md) | ElGamal (EC-based)                 | High      | Lattice-based PKE                  |
 | [Safe Proof Delegation](../patterns/pattern-safe-proof-delegation.md)                         | Recursive ZK (if EC-based)         | Medium    | STARK-based recursion              |
-
 **PQ-safe patterns** (no mitigation needed):
 
 - [Private Shared State (FHE)](../patterns/pattern-private-shared-state-fhe.md) — lattice-based
