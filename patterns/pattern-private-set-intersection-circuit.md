@@ -25,7 +25,7 @@ crops_profile:
 
 ## Intent
 
-Two parties each hold a private set and want to compute a function over their shared elements without either party learning the raw intersection. The key distinction from other PSI variants: intersection-finding logic is embedded inside the circuit alongside the aggregate function F, so the output is limited to F(intersection). The raw matches are not revealed to either party. This enables use cases where knowing *which* elements overlap would itself be sensitive. The circuit is evaluated jointly using authenticated garbling or secret-shared circuits (GMW). More expensive per element than DH-based PSI, but able to compute arbitrary functions: cardinality, sum, threshold checks, or filtered subsets.
+Two parties each hold a private set and want to compute a function over their shared elements without either party learning the raw intersection. Intersection-finding logic is embedded inside the circuit alongside the aggregate function F, so the output is limited to F(intersection). The raw matches are not revealed to either party. The circuit is evaluated jointly using authenticated garbling or secret-shared circuits (GMW).
 
 ## Ingredients
 
@@ -35,42 +35,34 @@ Two parties each hold a private set and want to compute a function over their sh
 
 ## Protocol
 
-1. **Agree**: Parties A and B fix a circuit compiler and agree on the target function F to compute over the intersection (e.g. cardinality, sum of associated values, threshold test).
-2. **Compile**: Both parties compile a Boolean circuit C that encodes the matching logic (sort-compare-shuffle or hash-based) plus the aggregate function F. The circuit takes both sets as input and outputs F(intersection). Circuit size is fixed to the agreed set sizes.
-3. **Garble**: A, acting as garbler, generates fresh garbled tables for every gate in C and sends the garbled circuit to B. Garbling is done fresh for each execution.
-4. **Transfer inputs**: A encodes its inputs into garbled labels directly. B obtains garbled labels for its inputs via OT, so A learns nothing about B's inputs and B learns nothing beyond what the circuit output reveals.
-5. **Evaluate**: B evaluates the garbled circuit gate-by-gate using the garbled tables and input labels, producing the garbled output.
-6. **Reveal**: A shares the output decoding table with B. B decodes the garbled output locally. B also sends the garbled output labels to A, who decodes independently. Both parties learn F(intersection).
+1. **Compile**: Parties agree on function F and set sizes. Both compile a Boolean circuit C encoding matching logic (sort-compare-shuffle or hash-based) plus F. Circuit size is fixed to the agreed parameters.
+2. **Garble**: A generates fresh garbled tables for every gate in C and sends the garbled circuit to B.
+3. **Transfer inputs**: A encodes its inputs into garbled labels directly. B obtains garbled labels for its inputs via OT.
+4. **Evaluate**: B evaluates the garbled circuit gate-by-gate, producing the garbled output.
+5. **Reveal**: A shares the output decoding table with B. B decodes locally, then sends the garbled output labels to A. Both parties learn F(intersection).
 
 ## Guarantees
 
-- **Input privacy**: Non-intersecting elements are hidden inside the garbled circuit. Each party's set remains opaque to the other.
-- **Bilateral**: Runs directly between two parties over an authenticated channel.
-- **Function generality**: The circuit encodes any Boolean function over the intersection, including cardinality, weighted sums, or threshold predicates.
-- **Completeness**: Deterministic evaluation over all shared elements (minimal false negatives).
-- **Soundness**: Malicious security achievable via authenticated garbling.
-- **I2I**: Institutions compute aggregates over shared portfolios, flagged-entity overlaps, or netting totals without exposing full books.
-- **I2U**: A user verifies whether their credential set meets an institution's threshold without the institution learning which credentials the user holds.
+- **Input privacy**: Each party's set remains opaque to the other inside the garbled circuit.
+- **Function generality**: Encodes any Boolean function over the intersection, including cardinality, weighted sums, or threshold predicates.
+- **Completeness**: Deterministic evaluation over all shared elements (zero false negatives).
+- **I2I**: Institutions compute aggregates over shared portfolios or flagged-entity overlaps without exposing full books.
+- **I2U**: A user verifies whether their credential set meets an institution's threshold without revealing which credentials they hold.
 
 ## Trade-offs
 
 - Circuit size scales with O((n + m) log(n + m) * σ) gates for sort-compare-shuffle, where σ is the element bit-width. For 256-bit identifiers, this becomes costly beyond ~10k elements per party.
-- Communication overhead is higher than DH-based PSI: the garbled circuit itself must be transmitted, typically several MB for moderate set sizes.
-- Circuit must be compiled for a fixed function AND fixed set sizes. Changing either requires recompilation. Each execution requires fresh garbling (garbled circuits are single-use). Some preprocessing (input-independent) can be done ahead of time.
+- Circuit must be compiled for a fixed function and fixed set sizes. Each execution requires fresh garbling (single-use). Input-independent preprocessing can be done ahead of time.
 - Semi-honest security by default. Authenticated garbling (Wang-Ranellucci-Katz 2017) achieves malicious security at ~2-3x overhead.
-- Asymmetric roles in garbling (garbler vs evaluator). Both parties learn the output, but the garbler must transmit the full garbled circuit. GMW supports more than 2 parties but requires MPC-based garbling or a trusted dealer for preprocessing, plus more communication rounds.
-- OT extensions (IKNP or SoftSpoken) amortize the base OT cost, making per-element OT overhead negligible for sets above a few hundred elements.
+- Garbling has asymmetric roles (garbler transmits the full circuit). GMW supports more than 2 parties but requires MPC-based garbling or a trusted dealer for preprocessing.
 - **CROPS context**: Applies to both I2I and I2U. CR is `high` because both parties participate directly in circuit evaluation over a bilateral channel. In I2I, institutions jointly evaluate the circuit over an authenticated channel. In I2U, the user evaluates their side on commodity hardware. Privacy is `full` because the garbled circuit hides both inputs and intermediate computation; the output is limited to the agreed-upon function result.
 
 ## Example
 
-- Compliance Team A holds 2,000 flagged wallet addresses.
-- Compliance Team B holds 3,500 flagged wallet addresses.
-- They want to know how many flagged addresses they share, without revealing which specific addresses overlap.
+- Compliance Team A holds 2,000 flagged wallet addresses; Team B holds 3,500.
 - Both compile a PSI-cardinality circuit that outputs the intersection count.
 - After garbling, OT, and evaluation, both learn the count: 47 shared flags.
-- Both sides learn the count; the matching addresses themselves stay private.
-- If the count exceeds a risk threshold, they escalate to a supervised disclosure protocol.
+- The matching addresses themselves stay private. If the count exceeds a threshold, they escalate to supervised disclosure.
 
 ## See also
 
@@ -78,10 +70,8 @@ Two parties each hold a private set and want to compute a function over their sh
 - [Private Set Intersection (OPRF-based)](pattern-private-set-intersection-oprf.md): OT/OPRF variant for large sets (10k+ elements)
 - [Private Set Intersection (FHE-based)](pattern-private-set-intersection-fhe.md): FHE variant for asymmetric set sizes with post-quantum security
 - [Private Shared State (co-SNARKs)](pattern-private-shared-state-cosnark.md): MPC for ongoing shared state, vs one-shot computation here
-- [VOPRF Nullifiers](pattern-voprf-nullifiers.md): OPRF is a building block in OT-based PSI variants
 - [DvP (ERC-7573)](pattern-dvp-erc7573.md): downstream consumer when matched trades feed into settlement
 - [Pre-trade Privacy Encryption](pattern-pretrade-privacy-encryption.md): alternative approach for pre-trade discovery
-- [MPC Custody](pattern-mpc-custody.md): shares the MPC trust model family
 
 ## See also (external)
 
