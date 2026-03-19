@@ -20,7 +20,7 @@ crops_profile:
   cr: high
   os: yes
   privacy: full
-  security: high
+  security: medium
 ---
 
 ## Intent
@@ -72,9 +72,6 @@ Two parties each hold a private set and want to compute a function over their sh
 - [Private Shared State (co-SNARKs)](pattern-private-shared-state-cosnark.md): MPC for ongoing shared state, vs one-shot computation here
 - [DvP (ERC-7573)](pattern-dvp-erc7573.md): downstream consumer when matched trades feed into settlement
 - [Pre-trade Privacy Encryption](pattern-pretrade-privacy-encryption.md): alternative approach for pre-trade discovery
-
-## See also (external)
-
 - [ABY Framework](https://github.com/encryptogroup/ABY): mixed-protocol framework supporting arithmetic, Boolean, and Yao sharing for two-party computation
 - [EMP-toolkit](https://github.com/emp-toolkit): efficient MPC toolkit with garbled circuit implementations and semi-honest/malicious protocols
 - [MOTION Framework](https://github.com/encryptogroup/MOTION): mixed-protocol MPC framework supporting BMR (multi-party garbled circuits), GMW, and arithmetic sharing for two or more parties

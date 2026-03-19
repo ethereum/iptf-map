@@ -21,7 +21,7 @@ crops_profile:
   cr: high
   os: yes
   privacy: full
-  security: high
+  security: medium
 ---
 
 ## Intent
@@ -82,9 +82,6 @@ Two parties want to learn which elements they share without exposing non-matchin
 - [Private Set Intersection (Circuit-based)](pattern-private-set-intersection-circuit.md): garbled circuit variant for computing functions over intersections
 - [DvP (ERC-7573)](pattern-dvp-erc7573.md): downstream consumer, matched trade to settlement
 - [Pre-trade Privacy Encryption](pattern-pretrade-privacy-encryption.md): alternative approach for pre-trade discovery
-
-## See also (external)
-
 - [Microsoft APSI](https://github.com/microsoft/APSI): Asymmetric PSI library using FHE (built on Microsoft SEAL), supports labeled PSI and sender payloads
 - [Microsoft SEAL](https://github.com/microsoft/SEAL): Underlying BFV/BGV homomorphic encryption library used by APSI
 - [TFHE-rs](https://github.com/zama-ai/tfhe-rs): Zama's FHE library in Rust, suitable for building custom FHE-PSI protocols

@@ -20,7 +20,7 @@ crops_profile:
   cr: high
   os: yes
   privacy: full
-  security: high
+  security: medium
 ---
 
 ## Intent
@@ -81,9 +81,6 @@ Two parties each hold a private set of identifiers and want to learn which eleme
 - [DvP (ERC-7573)](pattern-dvp-erc7573.md): downstream consumer, matched trade to settlement
 - [Pre-trade Privacy Encryption](pattern-pretrade-privacy-encryption.md): alternative approach for pre-trade discovery
 - [MPC Custody](pattern-mpc-custody.md): shares the MPC trust model family
-
-## See also (external)
-
 - [Microsoft APSI](https://github.com/microsoft/APSI): asymmetric PSI library supporting labeled and unlabeled modes with unbalanced set sizes
 - [OpenMined PSI](https://github.com/OpenMined/PSI): PSI cardinality protocol based on ECDH and Bloom Filters, available in C++, Go, and Rust
 - [Encrypto Group PSI](https://github.com/encryptogroup/PSI): benchmarking suite for multiple PSI protocol variants including OT-based
