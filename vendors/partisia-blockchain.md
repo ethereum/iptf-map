@@ -23,7 +23,7 @@ regular smart contracts in Rust.
 - [Pattern-modular-privacy-stack](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-modular-privacy-stack.md)  
 - [Pattern-permissioned-ledger-interoperability](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-permissioned-ledger-interoperability.md)  
 - [Pattern-pretrade-privacy-encryption](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-pretrade-privacy-encryption.md)  
-- [Pattern-private-PVP-stablecoins-ERC-7573](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-pvp-stablecoins-erc7573.md)  
+- [Pattern-private-PvP-stablecoins-ERC-7573](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-pvp-stablecoins-erc7573.md)  
 - [Pattern-private-stablecoin-shielded-payments](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-stablecoin-shielded-payments.md)  
 - [Pattern-private-vaults](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-vaults.md)
 
