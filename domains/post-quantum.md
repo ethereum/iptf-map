@@ -87,7 +87,7 @@ Ethereum inherits PQ transport encryption for some surfaces (Go 1.24 ships hybri
 
 ### Dependencies
 
-- **Client-side GPU proving**: PQ privacy requires on-device ZK proofs. NTT-based PQ primitives align well with GPU architecture ([100+ Gops/s on mobile GPUs for small fields vs < 1 Gops/s for BN254](https://pse.dev/blog/client-side-gpu-everyday-ef-privacy)).
+- **Client-side GPU proving**: PQ privacy requires on-device ZK proofs. NTT-based PQ primitives align well with GPU architecture ([client-side-gpu-everyday-ef-privacy](https://pse.dev/blog/client-side-gpu-everyday-ef-privacy)).
 - **STARK migration**: SNARKs (Groth16, PLONK/KZG) broken; STARKs (hash + FRI) survive. See [ZK Proof Systems](../patterns/pattern-zk-proof-systems.md).
 
 ## Affected Patterns
