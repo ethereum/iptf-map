@@ -7,7 +7,7 @@ status: draft
 
 # What it is
 
-Partisia Blockchain (PBC) is a Layer 1 blockchain with a cross-chain bridge to Ethereum that allows for customizable MPC (multi-party computation) as a service to the Ethereum network. MPC is enabled as an integrated, first-level citizen with orchestration of the computation through a combination of Ethereum and Partisia Blockchain smart contracts.   
+Partisia Blockchain (PBC) is a Layer 1 blockchain with a cross-chain bridge to Ethereum that allows for customizable MPC (multi-party computation) as a service to the Ethereum network. MPC is enabled as an integrated, core protocol component with orchestration of the computation through a combination of Ethereum and Partisia Blockchain smart contracts.   
 
 PBC is a semi-permissioned blockchain, where all nodes (blockproducers, oracle,  
 and MPC) have undergone a formal KYC check. PBC allows users to write  
