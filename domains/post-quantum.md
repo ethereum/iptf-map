@@ -51,7 +51,7 @@ Assumptions and schemes with no known quantum speedup. These form the basis for 
 | Assumption Family     | Hardness Problem                                                   | Representative Schemes             | NIST Status                  | Notes                                                                                |
 | --------------------- | ------------------------------------------------------------------ | ---------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------ |
 | Lattice-based         | Learning With Errors (LWE), Ring-LWE, Short Integer Solution (SIS) | ML-KEM (Kyber), ML-DSA (Dilithium) | Standardized (FIPS 203, 204) | Primary PQ replacement for key exchange and signatures                               |
-| Hash-based signatures | One-time signatures + Merkle trees                                 | XMSS, SPHINCS+ (SLH-DSA)           | Standardized (FIPS 205)      | Stateful (XMSS) or stateless (SPHINCS+); conservative — relies only on hash security |
+| Hash-based signatures | One-time signatures + Merkle trees                                 | XMSS, SPHINCS+ (SLH-DSA)           | Standardized (FIPS 205)      | Stateful (XMSS) or stateless (SPHINCS+); conservative — depends on hash security assumptions |
 | Hash + FRI (STARKs)   | Hash collision resistance                                          | STARK proof systems                | N/A                          | Already deployed in Ethereum L2s; PQ-safe by construction                            |
 
 ## Ethereum Layer Analysis
