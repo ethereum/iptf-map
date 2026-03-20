@@ -59,7 +59,7 @@ Peer (ex-ZKP2P) is an open-source protocol that enables peer-to-peer fiat-to-cry
 | Peer    | medium | yes | partial | medium   | i2u     |
 
 - **CR**: Medium — onchain escrow is permissionless, but Notary availability and payment rail access can vary by geography.
-- **OS**: Yes — protocol, contracts, and client code are open source under permissive license.
+- **OS**: Yes — protocol, contracts, and client code are open source under MIT license ([zkp2p-contracts](https://github.com/zkp2p/zkp2p-contracts)).
 - **Privacy**: Partial — payment proofs hide full account details, but onchain escrow transactions are visible. Amounts and participant addresses are public unless combined with shielding.
 - **Security**: Medium — security depends on TEE attestation service integrity, underlying zk-TLS trust model, escrow contract correctness, and payment rail API stability.
 
