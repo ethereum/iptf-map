@@ -39,7 +39,7 @@ ZKP2P is an open-source protocol that enables peer-to-peer fiat-to-crypto swaps 
 ## Technical details
 
 - **Proof system**: Vendor-agnostic — supports TLSNotary, Primus, and ZKEmail as proof backends. TEE attestation service validates proofs and produces EIP-712 attestations.
-- **Supported rails**: Venmo, Revolut, and ~100x more payment providers enabled by the V3 unified verification architecture.
+- **Supported rails**: Venmo, Revolut, and additional payment providers supported via the V3 unified verification architecture.
 - **Settlement chain**: Ethereum and L2s.
 - **Client-side**: Browser extension handles TLS session co-signing and proof generation.
 - **Partial releases**: V3 supports partial payment releases, resolving cross-currency payment errors.
