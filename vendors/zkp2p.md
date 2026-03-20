@@ -49,7 +49,7 @@ ZKP2P is an open-source protocol that enables peer-to-peer fiat-to-crypto swaps 
 - Fully open-source protocol and client tooling
 - No custodial intermediary — settlement is peer-to-peer with onchain escrow
 - Payment privacy preserved — zero-knowledge proofs reveal necessary payment attributes without exposing full account details
-- Extensible to any payment rail with TLS-accessible confirmation endpoints
+- Extensible to payment rails with TLS-accessible confirmation endpoints
 - Permissionless participation for both liquidity providers and takers
 
 ## CROPS profile
