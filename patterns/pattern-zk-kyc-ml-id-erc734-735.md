@@ -36,7 +36,7 @@ Allows onboarding identities such as ERC-734/735 in a public verfiable manner fo
 
 ## Trade-offs
 - **CROPS context (I2U)**: Institution/issuer controls identity onboarding and can refuse claims. ERC-734/735 is open; EZKL is partially open; zk-TLS notary infrastructure varies.
-
+- **Post-quantum exposure**: underlying proof system (EZKL/Groth16) relies on pairings broken by CRQC; PQ signature arithmetization (131x gap) needed for real-world credential import. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Example
 - Bank issues an id for an investor, needs to generate a proof of KYC/AML of the investor;

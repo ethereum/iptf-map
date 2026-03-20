@@ -106,6 +106,7 @@ Noir is the DSL developed by Aztec, enable developers to write Ethereum-compatib
 - Start with selective privacy layers, expand as tooling matures
 - Optimize circuit design to minimize proving time
 - **CROPS context (both)**: CR could reach `high` if sequencer election shifts to a permissionless model. Security could reach `high` by replacing admin keys with DAO-governed upgrade paths. In I2I, censorship resistance matters for ensuring no counterparty can block settlement transactions. In I2U, decentralized sequencing protects end users from unilateral transaction exclusion.
+- **Post-quantum exposure**: Barretenberg (PLONK variant with EC commitments) is broken by CRQC; HNDL risk is high for encrypted notes. Mitigation: hash-based commitments and STARK-based proving. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Example
 

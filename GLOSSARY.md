@@ -149,6 +149,20 @@ A dedicated network or service that publishes and stores the data required for D
 
 **ESMA MMFR (Money Market Fund Regulation)**: EU regulation establishing rules for money market funds including daily/weekly maturity limits, stress testing obligations, and reporting to national competent authorities
 
+### Post-Quantum Cryptography
+
+**CRQC (Cryptographically Relevant Quantum Computer)**: Quantum computer capable of running Shor's algorithm at production key sizes, breaking ECDLP, RSA, and pairing-based assumptions.
+
+**HNDL (Harvest Now, Decrypt Later)**: Attack where an adversary records encrypted data today to decrypt once a CRQC is available. On-chain ciphertexts are immutably stored and capturable by anyone.
+
+**ML-KEM**: NIST PQ key encapsulation (FIPS 203, formerly Kyber). Lattice-based; replaces ECDH.
+
+**ML-DSA**: NIST PQ signature scheme (FIPS 204, formerly Dilithium). Lattice-based; replaces ECDSA/EdDSA.
+
+**SLH-DSA**: NIST hash-based PQ signature (FIPS 205, formerly SPHINCS+). Security relies only on hash function properties.
+
+**Poseidon**: Arithmetic-friendly hash function for efficient ZK circuit evaluation. No known practical quantum break beyond generic hash-model considerations (e.g., Grover-style security reduction).
+
 ### Infrastructure
 
 **Oracle**: External data provider for blockchain smart contracts

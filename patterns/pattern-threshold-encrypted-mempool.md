@@ -96,6 +96,7 @@ Prevent MEV extraction by encrypting transaction content before mempool submissi
 - **Metadata leakage**: Transaction size, gas limit, sender address may still be visible
 - **Incomplete coverage**: Only protects mempool phase; post-decryption MEV still possible
 - **CROPS context (both)**: CROPS profile is symmetric across I2I and I2U — the protocol-level design gives equal guarantees to all participants. Shutter is open source; keyper infrastructure is not universally available.
+- **Post-quantum exposure**: pairing-based threshold encryption schemes and assumptions are broken by CRQC; pre-inclusion ciphertext has HNDL risk. Mitigation: lattice-based threshold encryption. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Failure Modes
 

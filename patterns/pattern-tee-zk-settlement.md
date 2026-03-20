@@ -125,6 +125,7 @@ Attestation verification: check hardware signature is from known manufacturer, c
 | Institutional coordination (contractual trust) | Good fit | May suffice | Acceptable with audit layers |
 
 - **CROPS context (I2I)**: Privacy is `partial` because TEE hardware vendor can observe plaintext during execution — a privacy breach manageable through contractual controls in institutional settings. ZK proof guarantees financial correctness regardless of TEE integrity.
+- **Post-quantum exposure**: Groth16/PLONK proof systems rely on pairings/EC broken by CRQC. Mitigation: STARK-based settlement proofs. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Example
 

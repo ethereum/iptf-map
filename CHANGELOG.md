@@ -4,6 +4,15 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
+### Added
+
+- feat(domain): [Post-Quantum Threats](domains/post-quantum.md) — PQ threat landscape, Ethereum layer analysis, and application-layer breakage index ([#121](https://github.com/ethereum/iptf-map/pull/121))
+- feat(pattern): [Native Account Abstraction](patterns/pattern-native-account-abstraction.md) — EIP-8141 modular verification logic for PQ auth agility ([#121](https://github.com/ethereum/iptf-map/pull/121))
+- feat(pattern): [ZK Proof Systems](patterns/pattern-zk-proof-systems.md) — taxonomy of proving systems with PQ safety analysis ([#121](https://github.com/ethereum/iptf-map/pull/121))
+- docs(glossary): Add PQ cryptography terms (CRQC, HNDL, ML-KEM, ML-DSA, SLH-DSA, Poseidon) ([#121](https://github.com/ethereum/iptf-map/pull/121))
+- fix(patterns): Add PQ exposure notes to Trade-offs of 16 affected patterns and cross-refs to 4 PQ-aware patterns ([#121](https://github.com/ethereum/iptf-map/pull/121))
+- fix(domain): Restructured [Post-Quantum Threats](domains/post-quantum.md) threat landscape into four subsections (quantum algorithms, broken assumptions, weakened primitives, PQ-safe foundations) for clarity
+
 ### Changed
 
 - chore(approach|use-case): Updated [Private Payments](approaches/approach-private-payments.md) approach and [use case](use-cases/private-payments.md) with PoC validation data

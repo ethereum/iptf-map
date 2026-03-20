@@ -58,6 +58,7 @@ Two parties each hold a private set of identifiers and want to learn which eleme
 - Semi-honest security by default. Malicious security requires additional ZK commitments proving the blinded set matches a committed set.
 - Privacy degrades if a party submits a singleton set (reveals whether that element is in the other's set). Mitigate with a minimum set-size policy.
 - **CROPS context**: Applies to both I2I and I2U. CR is `high` because both parties run the protocol directly without an intermediary that could censor or filter matches. In I2I, institutions execute the protocol bilaterally over an authenticated channel. In I2U, the user runs their side independently on commodity hardware. Privacy degrades from `full` to `partial` if either party submits a very small set, since intersection membership becomes attributable to specific elements.
+- **Post-quantum exposure**: DDH assumption (commutative ECDH encryption) is broken by CRQC. Mitigation: lattice-based PSI protocols. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Example
 

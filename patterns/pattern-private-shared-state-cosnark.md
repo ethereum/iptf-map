@@ -60,6 +60,7 @@ Unlike single-party privacy (shielding), private shared state requires computati
 - Testnet maturity as of March 2026; UTXO shielding is production-ready but covers single-party privacy only.
 - **Liveness**: MPC halts if fewer than the required quorum of nodes respond. Degrades to unavailability, not privacy loss.
 - **CROPS context**: Applies to I2I (multi-party institutional computation). CR is `medium` because participation requires MPC network access but protocol-level guarantees exist. In I2I, institutions negotiate MPC node operation among themselves. If extended to I2U, end-users would depend on institutional MPC nodes with no independent fallback.
+- **Post-quantum exposure**: Groth16-based co-SNARKs rely on pairings broken by CRQC. Mitigation: co-STARK alternatives. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Example
 

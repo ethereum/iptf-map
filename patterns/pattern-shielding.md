@@ -56,6 +56,7 @@ Enable **confidential ERC-20 transfers** by shielding balances and transfer meta
 - Metadata leakage possible (timing, gas payer).
 - Tooling immaturity compared to ERC-20.
 - **CROPS context (both)**: CR reaches `high` on L1 shielded pools (Railgun) where users can deposit/withdraw permissionlessly. Drops to `low` on permissioned L2s with operator-controlled exit. Relies on relayer and paymaster for transaction submission, both of which can censor. In I2U, the exit path guarantee is critical — without forced withdrawal, CR is effectively `low`.
+- **Post-quantum exposure**: underlying ZK proof system may use EC-based commitments (Groth16, PLONK/KZG) broken by CRQC; HNDL risk is high for encrypted notes. Mitigation: STARK-based shielded pools with hash commitments. See [Post-Quantum Threats](../domains/post-quantum.md).
 
 ## Example
 
