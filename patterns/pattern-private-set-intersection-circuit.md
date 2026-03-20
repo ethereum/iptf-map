@@ -54,7 +54,7 @@ Two parties each hold a private set and want to compute a function over their sh
 - Circuit size scales with O((n + m) log(n + m) * σ) gates for sort-compare-shuffle, where σ is the element bit-width. For 256-bit identifiers, this becomes costly beyond ~10k elements per party.
 - Circuit must be compiled for a fixed function and fixed set sizes. Each execution requires fresh garbling (single-use). Input-independent preprocessing can be done ahead of time.
 - Semi-honest security by default. Authenticated garbling (Wang-Ranellucci-Katz 2017) achieves malicious security at ~2-3x overhead.
-- Garbling has asymmetric roles (garbler transmits the full circuit). GMW supports more than 2 parties but requires MPC-based garbling or a trusted dealer for preprocessing.
+- Garbling has asymmetric roles (garbler transmits the full circuit). The garbler holds the output decoding table and can withhold it, preventing the evaluator from learning the result. In I2U, the institution typically garbles. GMW supports more than 2 parties but requires MPC-based garbling or a trusted dealer for preprocessing.
 - **CROPS context**: Applies to both I2I and I2U. CR is `high` because both parties participate directly in circuit evaluation over a bilateral channel. In I2I, institutions jointly evaluate the circuit over an authenticated channel. In I2U, the user evaluates their side on commodity hardware. Privacy is `full` because the garbled circuit hides both inputs and intermediate computation; the output is limited to the agreed-upon function result.
 
 ## Example

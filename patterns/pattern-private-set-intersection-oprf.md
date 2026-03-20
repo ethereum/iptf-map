@@ -85,3 +85,5 @@ Two parties each hold a private set of identifiers and want to learn which eleme
 - [OpenMined PSI](https://github.com/OpenMined/PSI): PSI cardinality protocol based on ECDH and Bloom Filters, available in C++, Go, and Rust
 - [Encrypto Group PSI](https://github.com/encryptogroup/PSI): benchmarking suite for multiple PSI protocol variants including OT-based
 - [libOTe](https://github.com/osu-crypto/libOTe): OT extension library underpinning many OPRF-PSI implementations
+- [Kolesnikov et al. 2016](https://eprint.iacr.org/2016/799): foundational paper on efficient batched OPRF for PSI
+- [Pinkas et al. 2019](https://eprint.iacr.org/2019/241): circuit-PSI and OPRF-PSI with linear communication
