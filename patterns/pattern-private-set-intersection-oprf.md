@@ -57,7 +57,7 @@ Two parties each hold a private set of identifiers and want to learn which eleme
 
 - More complex to implement than the DH-based variant. Requires OT extension libraries and cuckoo hashing.
 - O(n + m) communication, but with larger per-element constants than DH-based due to OT base setup. Amortizes well as set sizes grow.
-- Semi-honest security by default. Malicious security requires committed OPRF, which adds a ZK proof per element and roughly doubles computation.
+- Semi-honest security by default. Malicious security requires a committed OPRF, which adds a zero-knowledge proof per element and roughly doubles computation.
 - Cuckoo hashing introduces a small failure probability (element insertion fails). Stash slots or larger tables mitigate this at minor cost.
 - Privacy degrades if a party submits a singleton set (reveals whether that element is in the other's set). Mitigate with a minimum set-size policy.
 - **CROPS context**: Applies to both I2I and I2U. CR is `high` because both parties run the protocol directly without an intermediary that could censor or filter matches. In I2I, institutions execute the protocol bilaterally over an authenticated channel, with set sizes in the hundreds of thousands or millions. In I2U, the user runs their side independently on commodity hardware. Privacy degrades from `full` to `partial` if either party submits a very small set, since intersection membership becomes attributable to specific elements.
