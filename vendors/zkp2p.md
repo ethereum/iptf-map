@@ -26,7 +26,7 @@ ZKP2P is an open-source protocol that enables peer-to-peer fiat-to-crypto swaps 
 
 - **Modular contract design (V3)**: Separated into an **Escrow Contract** (deposit configuration, fund locking) and an **Orchestrator Contract** (intent lifecycle, fee distribution, post-settlement hooks). Liquidity providers can update rates, currencies, and payment methods without creating new vaults.
 - **TEE attestation service**: V3 moves proof verification offchain to a TEE attestation service (e.g. Phala) that validates zk-TLS proofs and emits standardized EIP-712 payment attestations. Rotating attestors and onchain membership checks distribute trust across multiple operators.
-- **Unified Payment Verifier**: A single onchain verifier checks EIP-712 signatures, amounts, and replay protection — replacing V2's per-provider onchain JSON parsing.
+- **Unified Payment Verifier**: A single onchain verifier checks EIP-712 signatures, amounts, and replay protection.
 - **Vendor-agnostic verification**: Supports multiple zk-TLS backends (TLSNotary, Primus, ZKEmail) as part of a progressive decentralization roadmap.
 - **Orderbook model**: Liquidity providers post onchain orders specifying accepted payment rails, exchange rates, and limits. Takers browse and select orders.
 
