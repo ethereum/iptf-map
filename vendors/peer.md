@@ -1,13 +1,13 @@
 ---
-title: "Vendor: ZKP2P"
+title: "Vendor: Peer"
 status: draft
 ---
 
-# ZKP2P - Peer-to-peer fiat onramp using zk-TLS and TEE attestations
+# Peer (ex-ZKP2P) - Peer-to-peer fiat onramp using zk-TLS and TEE attestations
 
 ## What it is
 
-ZKP2P is an open-source protocol that enables peer-to-peer fiat-to-crypto swaps by proving fiat payments were completed on instant payment rails (Venmo, Revolut, and others). V3 uses a modular verification architecture: a TEE attestation service validates zk-TLS proofs offchain and emits EIP-712 payment attestations, which a Unified Payment Verifier contract checks onchain before releasing escrowed crypto.
+Peer (ex-ZKP2P) is an open-source protocol that enables peer-to-peer fiat-to-crypto swaps by proving fiat payments were completed on instant payment rails (Venmo, Revolut, and others). V3 uses a modular verification architecture: a TEE attestation service validates zk-TLS proofs offchain and emits EIP-712 payment attestations, which a Unified Payment Verifier contract checks onchain before releasing escrowed crypto.
 
 ## Fits with patterns (names only)
 
@@ -54,9 +54,9 @@ ZKP2P is an open-source protocol that enables peer-to-peer fiat-to-crypto swaps 
 
 ## CROPS profile
 
-| Product | CR | OS | Privacy | Security | Context |
-|---------|----|----|---------|----------|---------|
-| ZKP2P | medium | yes | partial | medium | i2u |
+| Product | CR     | OS  | Privacy | Security | Context |
+| ------- | ------ | --- | ------- | -------- | ------- |
+| Peer    | medium | yes | partial | medium   | i2u     |
 
 - **CR**: Medium — onchain escrow is permissionless, but Notary availability and payment rail access can vary by geography.
 - **OS**: Yes — protocol, contracts, and client code are open source under permissive license.
