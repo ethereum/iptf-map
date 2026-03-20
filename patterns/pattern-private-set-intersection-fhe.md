@@ -61,7 +61,7 @@ Two parties want to learn which elements they share without exposing non-matchin
 - The base protocol reveals the intersection to the receiver. A bilateral result requires a second round (step 7), doubling communication and compute.
 - Labeled PSI extension: the sender attaches encrypted payloads to matched items, so the receiver decrypts both match status and associated metadata.
 - Semi-honest security by default. Malicious security requires ZK proofs over the sender's polynomial evaluation.
-- **CROPS context**: Applies to both I2I and I2U. CR is `high` because the receiver holds the decryption key and runs the protocol directly, with no intermediary controlling match results. In I2I, both institutions can initiate a round as receiver. In I2U, the user acts as receiver and decrypts on commodity hardware; the institution acts as sender and bears the heavier FHE evaluation cost. Security is `high` due to lattice-based post-quantum assumptions under LWE/RLWE.
+- **CROPS context**: Applies to both I2I and I2U. CR is `high` because the receiver holds the decryption key and runs the protocol directly, with no intermediary controlling match results. In I2I, both institutions can initiate a round as receiver. In I2U, the user acts as receiver and decrypts on commodity hardware; the institution acts as sender and bears the heavier FHE evaluation cost. Security is `medium` (semi-honest by default); lattice-based assumptions (LWE/RLWE) provide post-quantum resistance.
 
 ## Example
 

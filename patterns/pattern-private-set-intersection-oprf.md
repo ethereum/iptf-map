@@ -45,7 +45,7 @@ Two parties each hold a private set of identifiers and want to learn which eleme
 
 ## Guarantees
 
-- **Input privacy**: Non-intersecting elements are computationally hidden under OT hardness. The OPRF ensures the evaluator learns only PRF outputs.
+- **Input privacy**: Non-intersecting elements are computationally hidden under OT hardness. The OPRF ensures the evaluator learns just the PRF outputs.
 - **Bilateral**: Runs directly between two parties over an authenticated channel.
 - **Completeness**: All shared elements are found, assuming cuckoo hashing insertion succeeds (negligible failure probability).
 - **Soundness**: Zero false positives (PRF collision probability is negligible).
