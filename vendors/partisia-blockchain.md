@@ -92,9 +92,11 @@ More details on Gas in Partisia can be found here \- [https://partisiablockchain
 
 # Links
 
-- [https://partisiablockchain.gitlab.io/documentation/index.html](https://partisiablockchain.gitlab.io/documentation/index.html)
-- [https://gitlab.com/partisiablockchain/language/example-contracts](https://gitlab.com/partisiablockchain/language/example-contracts)
-- [https://partisiablockchain.gitlab.io/documentation/smart-contracts/pbc-as-second-layer/partisia-blockchain-as-second-layer.html](https://partisiablockchain.gitlab.io/documentation/smart-contracts/pbc-as-second-layer/partisia-blockchain-as-second-layer.html)
+- Official website: [https://partisiablockchain.com](https://partisiablockchain.com)
+- GitLab organization: [https://gitlab.com/partisiablockchain](https://gitlab.com/partisiablockchain)
+- Documentation: [https://partisiablockchain.gitlab.io/documentation/index.html](https://partisiablockchain.gitlab.io/documentation/index.html)
+- Example contracts: [https://gitlab.com/partisiablockchain/language/example-contracts](https://gitlab.com/partisiablockchain/language/example-contracts)
+- Cross-chain integration guide: [https://partisiablockchain.gitlab.io/documentation/smart-contracts/pbc-as-second-layer/partisia-blockchain-as-second-layer.html](https://partisiablockchain.gitlab.io/documentation/smart-contracts/pbc-as-second-layer/partisia-blockchain-as-second-layer.html)
 
 [^1]:  Institutional Privacy Task Force
 
