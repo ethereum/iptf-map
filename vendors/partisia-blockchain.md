@@ -72,6 +72,17 @@ More details on Gas in Partisia can be found here \- [https://partisiablockchain
 - MPC protocols are interoperable with programmable platform protocol.
 - Cross chain bridge enabling orchestration of Multi-party Computation (MPC) on Ethereum, with gas payable using USDT or ETH.
 
+## CROPS profile
+
+| Product | CR | OS | Privacy | Security | Context |
+|---------|----|----|---------|----------|---------|
+| Partisia Blockchain | low | yes | full | medium | both |
+
+- **CR**: Low — all nodes (block producers, oracle, MPC) undergo formal KYC, creating identifiable gatekeepers. While protocol-level exit exists via the cross-chain bridge, node operators can exclude users or delay operations.
+- **OS**: Yes — entire codebase including node software and MPC implementation is available under AGPL license, providing full auditability and forkability with strong copyleft protections.
+- **Privacy**: Full — MPC operations are private by default with no party learning more than the protocol requires. Privacy guarantees are controlled by the smart contract developer, with no mandatory disclosure to node operators.
+- **Security**: Medium — security relies on honest-majority MPC (four-party, one-corruption threshold), cross-chain bridge integrity, and active node network. The MPC protocol has guaranteed output but requires operational trust in KYC'ed node operators.
+
 # Risks and open questions
 
 - One threat model supported out of the box (four parties, one corruption)
