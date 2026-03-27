@@ -6,7 +6,7 @@ All notable changes to the IPTF Map are documented here.
 
 ### Added
 
-- feat(vendor): [Vendor: Partisia Blockchain](vendors/partisia-blockchain.md) ([#123](https://github.com/ethereum/iptf-map/issues/123))
+- feat(vendor): [Vendor: Partisia Blockchain](vendors/partisia-blockchain.md) ([#128](https://github.com/ethereum/iptf-map/issues/128))
 - feat(pattern): [TLS Payment Bridge](patterns/pattern-tls-payment-bridge.md) — trust-minimized fiat-to-onchain swaps via zk-TLS proofs on instant payment rails ([#88](https://github.com/ethereum/iptf-map/issues/88))
 - feat(vendor): [Peer](vendors/peer.md) — P2P fiat-to-crypto onramp using TLSNotary proofs ([#88](https://github.com/ethereum/iptf-map/issues/88))
 - feat(domain): [Post-Quantum Threats](domains/post-quantum.md) — PQ threat landscape, Ethereum layer analysis, and application-layer breakage index ([#121](https://github.com/ethereum/iptf-map/pull/121))

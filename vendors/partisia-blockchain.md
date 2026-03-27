@@ -30,7 +30,7 @@ regular smart contracts in Rust.
 
 # Not a substitute for
 
-- ZKp based techniques where data must be verifiable unconditionally and non-interactively.
+- ZKP-based techniques where data must be verifiable unconditionally and non-interactively.
 - TEE
 - FHE
 
@@ -38,11 +38,11 @@ regular smart contracts in Rust.
 
 PBC’s private smart contract feature is enabled by a four-party, threshold one, MPC protocol. When deploying a private smart contract, the user can specify requirements for jurisdiction etc. which is then used when picking the set of KYC’ed nodes that are tasked with keeping the computation state secret, as well as running the MPC. PBC’s execution engine feature can be used to further control which nodes run the computation, as well as what the MPC protocol looks like.
 
-Access to MPC from Ethereum is available through a MPC backed, collateralized cross-chain bridge between Ethereum and Partisia Blockchain
+Access to MPC from Ethereum is available through a MPC-backed, collateralized cross-chain bridge between Ethereum and Partisia Blockchain
 
 Gas for the MPC computation is payable in Eth or USDT, usually bridged into Partisia Blockchain
 
-More details on Crosschain can be found here \- [https://partisiablockchain.gitlab.io/documentation/smart-contracts/pbc-as-second-layer/partisia-blockchain-as-second-layer.html](https://partisiablockchain.gitlab.io/documentation/smart-contracts/pbc-as-second-layer/partisia-blockchain-as-second-layer.html)
+More details on cross-chain can be found here \- [https://partisiablockchain.gitlab.io/documentation/smart-contracts/pbc-as-second-layer/partisia-blockchain-as-second-layer.html](https://partisiablockchain.gitlab.io/documentation/smart-contracts/pbc-as-second-layer/partisia-blockchain-as-second-layer.html)
 
 More details on Gas in Partisia can be found here \- [https://partisiablockchain.gitlab.io/documentation/pbc-fundamentals/byoc/byoc.html](https://partisiablockchain.gitlab.io/documentation/pbc-fundamentals/byoc/byoc.html)
 
@@ -55,8 +55,8 @@ More details on Gas in Partisia can be found here \- [https://partisiablockchain
 
 - Compliant shielded transactions
 - Programmable MPC key custody for enterprise custody
-- Analysis of secret data (health care, AML, Credit rating, supply chain, etc)
-- MPC based secret bid auctions for RWA, Orderbooks, etc
+- Analysis of secret data (health care, AML, Credit rating, supply chain, etc.)
+- MPC based secret bid auctions for RWA, Orderbooks, etc.
 - Hybrid Public / Private blockchain model
 - Private Shared State for financial organization (and others)
 - Selective Disclosure
@@ -70,7 +70,7 @@ More details on Gas in Partisia can be found here \- [https://partisiablockchain
 # Strengths
 
 - MPC protocols are interoperable with programmable platform protocol.
-- Cross chain bridge enabling orchestration of Multi-party Computation (MPC) on Ethereum, with gas payable using USDT or ETH.
+- Cross-chain bridge enabling orchestration of Multi-party Computation (MPC) on Ethereum, with gas payable using USDT or ETH.
 
 ## CROPS profile
 
