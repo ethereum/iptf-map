@@ -96,6 +96,3 @@ More details on Gas in Partisia can be found here \- [https://partisiablockchain
 - [Documentation](https://partisiablockchain.gitlab.io/documentation/index.html)
 - [Example contracts](https://gitlab.com/partisiablockchain/language/example-contracts)
 - [Cross-chain integration guide](https://partisiablockchain.gitlab.io/documentation/smart-contracts/pbc-as-second-layer/partisia-blockchain-as-second-layer.html)
-
-[^1]:  Institutional Privacy Task Force
-
