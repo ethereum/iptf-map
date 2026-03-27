@@ -11,19 +11,19 @@ Partisia Blockchain (PBC) is a Layer 1 blockchain that provides MPC (multi-party
 
 PBC is a semi-permissioned blockchain, where all nodes (block producers, oracle, and MPC) have undergone a formal KYC check. PBC allows users to write regular smart contracts in Rust.
 
-# Fits Patterns
+Fits with patterns (names only)
 
-- [MPC Custody](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-mpc-custody.md)
-- [Private Shared State](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-shared-state.md)
-- [Shielding](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-shielding.md)
-- [Pattern-hybrid-public-private-modes](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-hybrid-public-private-modes.md)
-- [Pattern-l2-privacy-evaluation](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-l2-privacy-evaluation.md)
-- [Pattern-modular-privacy-stack](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-modular-privacy-stack.md)
-- [Pattern-permissioned-ledger-interoperability](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-permissioned-ledger-interoperability.md)
-- [Pattern-pretrade-privacy-encryption](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-pretrade-privacy-encryption.md)
-- [Pattern-private-PvP-stablecoins-ERC-7573](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-pvp-stablecoins-erc7573.md)
-- [Pattern-private-stablecoin-shielded-payments](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-stablecoin-shielded-payments.md)
-- [Pattern-private-vaults](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-vaults.md)
+- MPC Custody
+- Private Shared State
+- Shielding
+- Pattern-hybrid-public-private-modes
+- Pattern-l2-privacy-evaluation
+- Pattern-modular-privacy-stack
+- Pattern-permissioned-ledger-interoperability
+- Pattern-pretrade-privacy-encryption
+- Pattern-private-PvP-stablecoins-ERC-7573
+- Pattern-private-stablecoin-shielded-payments
+- Pattern-private-vaults
 
 
 # Not a substitute for
