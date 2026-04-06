@@ -8,7 +8,7 @@ maturity: production
 
 ## What it is
 
-Hinkal is a smart contract on public chains that lets users hold private balances controlled through their existing wallet keys. This enables to send, receive and operate in stablecoins with complete confidentiality, 
+Hinkal is a smart contract on public chains that lets users hold private balances controlled through their existing wallet keys. This enables to send, receive and operate in stablecoins confidentially, 
 without changing chains or custody. Through zero-knowledge proofs, every transaction is proven valid and verifiable on public chains, while participants and amounts stay private. Via viewing keys, users can selectively 
 disclose transaction history to preserve auditability. And for compliance, Chainalysis KYT screens wallet addresses before execution to prevent high-risk funds from entering the smart contract.
 
@@ -45,7 +45,7 @@ disclose transaction history to preserve auditability. And for compliance, Chain
 ## Enterprise demand and use cases
 
 - **Payment service providers**: confidential merchant settlement, payouts, and treasury flows. 
-- **Payroll, remmitances and invoicing**: private salary, contractor and vendor paymenents.
+- **Payroll, remittances and invoicing**: private salary, contractor and vendor payments.
 - **Wallets and custody platforms**: native privacy embedded directly into wallet dashboards and APIs. 
 - **Exchanges, on-ramps, and OTC desks**: private withdrawals and settlement flows for customers receiving funds on public chains. 
 - **Enterprise treasury and payment operations**: confidential treasury management and payout infrastructure for companies using stablecoins.
@@ -63,7 +63,7 @@ disclose transaction history to preserve auditability. And for compliance, Chain
 - No migration required. Works with existing wallets, custody setups, stablecoins, and payment infrastructure.
 - Preserves recipient privacy without CEX routing
 - Built-in compliance controls - viewing keys and KYT
-- 6 independent security audits + 3yr uptime.
+- Mature and audited
 
 ## Risks and open questions
 
