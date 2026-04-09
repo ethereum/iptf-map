@@ -4,13 +4,11 @@ status: draft
 maturity: production
 ---
 
-# Hinkal - ZK-enabled smart contract for private stablecoin settlements on Ethereum Mainnet, Solana and Tron
+# Hinkal - ZK-enabled smart contract for private stablecoin settlements on Ethereum
 
 ## What it is
 
-Hinkal is a smart contract on public chains that lets users hold private balances controlled through their existing wallet keys. This enables users to send, receive and operate in stablecoins confidentially, 
-without changing chains or custody. Through zero-knowledge proofs, every transaction is proven valid and verifiable on public chains, while participants and amounts stay private. Via viewing keys, users can selectively 
-disclose transaction history to preserve auditability. And for compliance, Chainalysis KYT screens wallet addresses before execution to prevent high-risk funds from entering the smart contract.
+Hinkal is a smart contract on public chains that lets users hold private balances controlled through their existing wallet keys. This enables users to send, receive and operate in stablecoins confidentially, without changing chains or custody. Through zero-knowledge proofs, every transaction is proven valid and verifiable on public chains, while participants and amounts stay private. Via viewing keys, users can selectively disclose transaction history to preserve auditability. And for compliance, Chainalysis KYT screens wallet addresses before execution to prevent high-risk funds from entering the smart contract.
 
 ## Fits with patterns (names only)
 
@@ -53,12 +51,12 @@ disclose transaction history to preserve auditability. And for compliance, Chain
 ## Technical details
 
 - zk-SNARK proving via Groth16
-- Smart contract architecture deployed on Ethereum Mainnet, Solana and Tron
+- Smart contract architecture deployed on Ethereum
 - UTXO model: each note represents a claim on deposited tokens; nullifiers prevent double spends.
 
 ## Strengths
 
-- Multichain. Available on Ethereum Mainnet, Solana and Tron
+- Available on Ethereum
 - Works with existing wallets, custody setups, stablecoins, and payment infrastructure.
 - Preserves recipient privacy without CEX routing
 - Built-in compliance controls - viewing keys and KYT
