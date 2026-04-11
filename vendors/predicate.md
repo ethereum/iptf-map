@@ -1,10 +1,9 @@
+---
+title: "Vendor: Predicate"
+status: draft
+---
 
-
-| title | status |
-| :---- | :---- |
-| Vendor: Predicate | Draft |
-
-# Predicate: Programmable, real-time compliance for onchain financial products
+# Predicate – Programmable, real-time compliance for onchain financial products
 
 ## What it is
 
@@ -44,13 +43,13 @@ How it works:
 - **Predicate registry:** The smart contracts/programs used to verify attestations and enforce policy-to-client bindings.
 
 ​  
-![][image1]
+![Predicate system diagram](https://mintcdn.com/aethos/xFQko6f71IQeLxjv/images/system.png?fit=max&auto=format&n=xFQko6f71IQeLxjv&q=85&s=386f8f152933be3f1dec54ce8a90b35c)
 
 **Attestation process:**
 
 The user submits their transaction and associated details (e.g. amount) via a web app, and the Predicate API validates the request against the latest policy and returns an attestation, which the user then includes in their onchain transaction for verification and execution.
 
-![][image2]
+![Predicate sequence diagram](https://mintcdn.com/aethos/qz-wtxIt_2jZVTke/images/sequence.png?w=1650&fit=max&auto=format&n=qz-wtxIt_2jZVTke&q=85&s=c5ca38d20a1f2f47afe6a2935862bcbc)
 
 **How it works for asset issuers:**
 
