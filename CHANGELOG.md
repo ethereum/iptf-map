@@ -7,6 +7,10 @@ All notable changes to the IPTF Map are documented here.
 - feat(pattern): [zk-promises](patterns/pattern-zk-promises.md) -- stateful anonymous credentials with async callbacks for blind compliance enforcement ([#132](https://github.com/ethereum/iptf-map/pull/132))
 - feat(pattern): [Proof of Innocence](patterns/pattern-proof-of-innocence.md) -- association set membership/exclusion proofs for compliance without surveillance ([#132](https://github.com/ethereum/iptf-map/pull/132))
 
+### Removed
+
+- chore: Retire `PRD-IPTF-PUBLIC-Q1-2026.md` -- Q1 closed; remaining unfinished items tracked in [#143](https://github.com/ethereum/iptf-map/issues/143) ([#144](https://github.com/ethereum/iptf-map/pull/144))
+
 ## [0.3.0] - 2026-04-13
 
 71 commits, 162 files changed since v0.2.0. Major additions: CROPS evaluation framework, 20+ new patterns, 12 new use cases, 4 new approaches, post-quantum threat analysis, CI quality guardrails.
@@ -14,6 +18,7 @@ All notable changes to the IPTF Map are documented here.
 ### Added
 
 #### Patterns
+- feat(pattern): [Forced Withdrawal](patterns/pattern-forced-withdrawal.md) — L1 escape hatch for asset recovery without operator cooperation ([#125](https://github.com/ethereum/iptf-map/issues/125))
 - feat(pattern): [TLS Payment Bridge](patterns/pattern-tls-payment-bridge.md) — trust-minimized fiat-to-onchain swaps via zk-TLS proofs on instant payment rails ([#88](https://github.com/ethereum/iptf-map/issues/88))
 - feat(pattern): [Native Account Abstraction](patterns/pattern-native-account-abstraction.md) — EIP-8141 modular verification logic for PQ auth agility ([#121](https://github.com/ethereum/iptf-map/pull/121))
 - feat(pattern): [ZK Proof Systems](patterns/pattern-zk-proof-systems.md) — taxonomy of proving systems with PQ safety analysis ([#121](https://github.com/ethereum/iptf-map/pull/121))
@@ -78,7 +83,7 @@ All notable changes to the IPTF Map are documented here.
 
 #### Documentation
 - docs(glossary): Add PQ cryptography terms (CRQC, HNDL, ML-KEM, ML-DSA, SLH-DSA, Poseidon) ([#121](https://github.com/ethereum/iptf-map/pull/121))
-- docs: [Q1 2026 PRD](PRD-IPTF-PUBLIC-Q1-2026.md) with sprint planning ([#39](https://github.com/ethereum/iptf-map/pull/39))
+- docs: Q1 2026 PRD with sprint planning ([#39](https://github.com/ethereum/iptf-map/pull/39))
 - docs: [CHANGELOG.md](CHANGELOG.md) and weekly summary script ([#49](https://github.com/ethereum/iptf-map/pull/49))
 - docs: [weekly-updates](weekly-updates/) directory ([#59](https://github.com/ethereum/iptf-map/pull/59))
 
