@@ -4,47 +4,93 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-04-13
+
+71 commits, 162 files changed since v0.2.0. Major additions: CROPS evaluation framework, 20+ new patterns, 12 new use cases, 4 new approaches, post-quantum threat analysis, CI quality guardrails.
+
 ### Added
 
+#### Patterns
 - feat(pattern): [TLS Payment Bridge](patterns/pattern-tls-payment-bridge.md) — trust-minimized fiat-to-onchain swaps via zk-TLS proofs on instant payment rails ([#88](https://github.com/ethereum/iptf-map/issues/88))
-- feat(vendor): [Peer](vendors/peer.md) — P2P fiat-to-crypto onramp using TLSNotary proofs ([#88](https://github.com/ethereum/iptf-map/issues/88))
-- feat(domain): [Post-Quantum Threats](domains/post-quantum.md) — PQ threat landscape, Ethereum layer analysis, and application-layer breakage index ([#121](https://github.com/ethereum/iptf-map/pull/121))
 - feat(pattern): [Native Account Abstraction](patterns/pattern-native-account-abstraction.md) — EIP-8141 modular verification logic for PQ auth agility ([#121](https://github.com/ethereum/iptf-map/pull/121))
 - feat(pattern): [ZK Proof Systems](patterns/pattern-zk-proof-systems.md) — taxonomy of proving systems with PQ safety analysis ([#121](https://github.com/ethereum/iptf-map/pull/121))
+- feat(pattern): [Private Set Intersection (DH-based)](patterns/pattern-private-set-intersection-dh.md) - Bilateral ECDH-PSI for private matching of identifier sets
+- feat(pattern): [Private Set Intersection (OPRF-based)](patterns/pattern-private-set-intersection-oprf.md) - OT/OPRF-based PSI scaling to millions of elements
+- feat(pattern): [Private Set Intersection (Circuit-based)](patterns/pattern-private-set-intersection-circuit.md) - Garbled circuit PSI for computing arbitrary functions over intersections
+- feat(pattern): [Private Set Intersection (FHE-based)](patterns/pattern-private-set-intersection-fhe.md) - FHE-based PSI for asymmetric set sizes with post-quantum security
+- feat(pattern): [Permissionless Spend Auth](patterns/pattern-permissionless-spend-auth.md) - Outer/inner circuit split for permissionless, user-chosen spend authorization without fragmenting anonymity sets (EIP-8182)
+- feat(pattern): [Safe Proof Delegation](patterns/pattern-safe-proof-delegation.md) - Intent-based delegation to non-custodial provers with revocable visibility (EIP-8182)
+- feat(pattern): [Network-Level Anonymity](patterns/pattern-network-anonymity.md) - Umbrella pattern for transport-layer sender anonymity (Tor, mixnets, private RPC, TEE-assisted, VPN)
+- feat(pattern): [TEE-Assisted Network Anonymity](patterns/pattern-tee-network-anonymity.md) - TEE+secret-sharing approach for low-latency sender anonymity (Flashbots Flashnet)
+- feat(pattern): Private Shared State split into [co-SNARKs](patterns/pattern-private-shared-state-cosnark.md), [FHE](patterns/pattern-private-shared-state-fhe.md), [TEE](patterns/pattern-private-shared-state-tee.md) — each with distinct CROPS profile and trust model ([#104](https://github.com/ethereum/iptf-map/issues/104))
+- feat(pattern): Enhanced [Hybrid TEE + ZK Settlement](patterns/pattern-tee-zk-settlement.md) with trust framework, TEE API surface, stealth address design, anti-pattern table, and PoC learnings ([#79](https://github.com/ethereum/iptf-map/issues/79))
+- feat(pattern): [Compliance Monitoring](patterns/pattern-compliance-monitoring.md) - Transaction screening with privacy-preserving audit trails ([#73](https://github.com/ethereum/iptf-map/pull/73))
+- feat(pattern): [L2 Privacy Evaluation Framework](patterns/pattern-l2-privacy-evaluation.md) - Methodology for institutions to compare privacy L2s (PR-011)
+- feat(pattern): [Cross-chain Privacy Bridge](patterns/pattern-cross-chain-privacy-bridge.md) - Bridge assets between chains while preserving privacy
+- feat(pattern): [Stateless Plasma Privacy](patterns/pattern-plasma-stateless-privacy.md) - Client-side proving with minimal on-chain footprint (Intmax-style)
+- feat(pattern): [vOPRF Nullifiers](patterns/pattern-voprf-nullifiers.md) - Threshold vOPRF-based nullifier generation for credentials/signals ([#61](https://github.com/ethereum/iptf-map/pull/61))
+- feat(pattern): [Modular Privacy Stack](patterns/pattern-modular-privacy-stack.md) - Four-layer privacy architecture ([#54](https://github.com/ethereum/iptf-map/pull/54))
+- feat(pattern): [Hybrid public-private modes](patterns/pattern-hybrid-public-private-modes.md)
+- feat(pattern): [Private transaction broadcasting](patterns/pattern-private-transaction-broadcasting.md) ([#43](https://github.com/ethereum/iptf-map/pull/43))
+- feat(pattern): [TEE-based privacy](patterns/pattern-tee-based-privacy.md) ([#44](https://github.com/ethereum/iptf-map/pull/44))
+- feat(pattern): [Threshold encrypted mempool](patterns/pattern-threshold-encrypted-mempool.md) ([#45](https://github.com/ethereum/iptf-map/pull/45))
+
+#### Approaches
+- feat(approach): [Private Money Market Funds](approaches/approach-private-money-market-funds.md) - Privacy-preserving MMF operations with ZK NAV proofs
+- feat(approach): Restructured [Private Trade Settlement](approaches/approach-private-trade-settlement.md) — separated single-chain and cross-chain approaches, added TEE+ZK, MPC, and intent-based settlement with trade-off matrices ([#77](https://github.com/ethereum/iptf-map/issues/77))
+- feat(approach): Enhanced [Private Bonds](approaches/approach-private-bonds.md) with PoC learnings, coprocessor model analysis (co-SNARKs vs FHE), comparison matrix, and implementation guidance
+- feat(approach): [Privacy Standards Survey](approaches/approach-privacy-standards-survey.md) - Standards catalog, gap analysis, and decision guidance ([#64](https://github.com/ethereum/iptf-map/pull/64))
+- feat(approach): [White-label infrastructure deployment](approaches/approach-white-label-deployment.md) ([#55](https://github.com/ethereum/iptf-map/pull/55))
+- feat(approach): [Atomic DvP Settlement](approaches/approach-dvp-atomic-settlement.md) ([#56](https://github.com/ethereum/iptf-map/pull/56))
+- feat(approach): Expanded [Private Payments](approaches/approach-private-payments.md) with Plasma and TEE approaches
+
+#### Use Cases
+- feat(use-case): [Private Supply Chain](use-cases/private-supply-chain.md), [Private Procurement](use-cases/private-procurement.md), [Private Registry](use-cases/private-registry.md), [Private Read](use-cases/private-read.md), [Private Corporate Bonds](use-cases/private-corporate-bonds.md), [Private Government Debt](use-cases/private-government-debt.md), [Private FX](use-cases/private-fx.md), [Private Stocks](use-cases/private-stocks.md), [Private Commodities](use-cases/private-commodities.md), [Private Repo](use-cases/private-repo.md), [Private Money Market Funds](use-cases/private-money-market-funds.md), [Private Treasuries](use-cases/private-treasuries.md), [Private Payments](use-cases/private-payments.md), [Private Oracles](use-cases/private-oracles.md), [Private Messaging](use-cases/private-messaging.md)
+
+#### Domains & Vendors
+- feat(domain): [Post-Quantum Threats](domains/post-quantum.md) — PQ threat landscape, Ethereum layer analysis, and application-layer breakage index ([#121](https://github.com/ethereum/iptf-map/pull/121))
+- feat(vendor): [Peer](vendors/peer.md) — P2P fiat-to-crypto onramp using TLSNotary proofs ([#88](https://github.com/ethereum/iptf-map/issues/88))
+- feat(vendor): [EY Starlight](vendors/ey.md#starlight) - Solidity transpiler for private on-chain state
+- feat(vendor): [TACEO Merces](vendors/taceo-merces.md) - MPC + ZK approach for private stablecoin transfers
+- feat(vendor): [Fhenix](vendors/fhenix.md) - FHE privacy ([#32](https://github.com/ethereum/iptf-map/pull/32))
+- feat(vendor): [Space and Time](vendors/space-and-time.md) ([#46](https://github.com/ethereum/iptf-map/pull/46))
+
+#### CROPS Framework & Evaluation
+- feat(template): [crops_profile](patterns/_template.md) frontmatter block added to pattern template for CROPS dimension indexing ([#101](https://github.com/ethereum/iptf-map/issues/101))
+- feat(template): [crops_profile](vendors/_template.md) frontmatter block and CROPS evaluation criteria added to vendor template and README ([#102](https://github.com/ethereum/iptf-map/issues/102))
+- docs(glossary): [CROPS, I2I, I2U](GLOSSARY.md#iptf-evaluation-frameworks) evaluation framework definitions ([#100](https://github.com/ethereum/iptf-map/issues/100))
+- docs(readme): [Evaluation Framework](README.md#evaluation-framework) section with CROPS alignment statement ([#100](https://github.com/ethereum/iptf-map/issues/100))
+- feat(patterns): CROPS-aligned 18 patterns with `crops_profile` frontmatter and deployment-context Trade-offs notes ([#104](https://github.com/ethereum/iptf-map/issues/104))
+- feat(patterns): Add `context` and `crops_profile` CROPS frontmatter to additional patterns
+
+#### CI & Quality
+- feat(ci): Enhanced AI content quality guardrails ([#58](https://github.com/ethereum/iptf-map/issues/58))
+  - Vale prose linter with custom IPTF styles for marketing language, hedging, and terminology
+  - GLOSSARY.md term consistency checker (`scripts/check-terminology.js`)
+  - Extended validation to all content types (vendors, use-cases, approaches, jurisdictions)
+  - JSON Schema validation for frontmatter
+  - Husky pre-commit hooks with lint-staged
+  - LLM-based content review tool (`scripts/llm-review.js`)
+- feat(ci): Pattern validation workflow ([#40](https://github.com/ethereum/iptf-map/pull/40))
+
+#### Documentation
 - docs(glossary): Add PQ cryptography terms (CRQC, HNDL, ML-KEM, ML-DSA, SLH-DSA, Poseidon) ([#121](https://github.com/ethereum/iptf-map/pull/121))
-- fix(patterns): Add PQ exposure notes to Trade-offs of 16 affected patterns and cross-refs to 4 PQ-aware patterns ([#121](https://github.com/ethereum/iptf-map/pull/121))
-- fix(domain): Restructured [Post-Quantum Threats](domains/post-quantum.md) threat landscape into four subsections (quantum algorithms, broken assumptions, weakened primitives, PQ-safe foundations) for clarity
+- docs: [Q1 2026 PRD](PRD-IPTF-PUBLIC-Q1-2026.md) with sprint planning ([#39](https://github.com/ethereum/iptf-map/pull/39))
+- docs: [CHANGELOG.md](CHANGELOG.md) and weekly summary script ([#49](https://github.com/ethereum/iptf-map/pull/49))
+- docs: [weekly-updates](weekly-updates/) directory ([#59](https://github.com/ethereum/iptf-map/pull/59))
 
 ### Changed
 
 - chore(approach|use-case): Updated [Private Payments](approaches/approach-private-payments.md) approach and [use case](use-cases/private-payments.md) with PoC validation data
 - refactor(use-case): Renamed Private Authentication → [Private Identity](use-cases/private-identity.md) — authentication reframed as one application of private identity (also renamed approach)
-- feat(use-case): Enriched [Private Payments](use-cases/private-payments.md) with conditional & programmable payment privacy (grant disbursement, milestone-based releases) — see also [EPIC map](https://epic-webapp.vercel.app/)
-- feat(use-case): Enriched [Private Government Debt](use-cases/private-government-debt.md) with fiscal transparency vs operational privacy tension — see also [EPIC map](https://epic-webapp.vercel.app/)
-- feat(use-case): Enriched [Private Identity](use-cases/private-identity.md) with credential portability & reuse problem, government credential sources — see also [EPIC map](https://epic-webapp.vercel.app/)
-- feat(use-case): Enriched [Private Oracles](use-cases/private-oracles.md) with data provenance & consent angle — see also [EPIC map](https://epic-webapp.vercel.app/)
+- feat(use-case): Enriched [Private Payments](use-cases/private-payments.md) with conditional & programmable payment privacy (grant disbursement, milestone-based releases)
+- feat(use-case): Enriched [Private Government Debt](use-cases/private-government-debt.md) with fiscal transparency vs operational privacy tension
+- feat(use-case): Enriched [Private Identity](use-cases/private-identity.md) with credential portability & reuse problem, government credential sources
+- feat(use-case): Enriched [Private Oracles](use-cases/private-oracles.md) with data provenance & consent angle
 - feat(use-case): Broadened [Private Identity](use-cases/private-identity.md) beyond institutional KYC to cover governance and national identity use cases
 - feat(approach): Restructured [Private Identity Approach](approaches/approach-private-identity.md) with credential-source taxonomy and validated deployment references
-- feat(patterns): CROPS-aligned 18 patterns with `crops_profile` frontmatter and deployment-context Trade-offs notes ([#104](https://github.com/ethereum/iptf-map/issues/104)):
-  [Private ISO 20022](patterns/pattern-private-iso20022.md),
-  [Private MTP Auth](patterns/pattern-private-mtp-auth.md),
-  [Private PvP Stablecoins](patterns/pattern-private-pvp-stablecoins-erc7573.md),
-  [Private Stablecoin Shielded Payments](patterns/pattern-private-stablecoin-shielded-payments.md),
-  [Private Transaction Broadcasting](patterns/pattern-private-transaction-broadcasting.md),
-  [Private Vaults](patterns/pattern-private-vaults.md),
-  [Regulatory Disclosure Keys/Proofs](patterns/pattern-regulatory-disclosure-keys-proofs.md),
-  [Shielding](patterns/pattern-shielding.md),
-  [Stealth Addresses](patterns/pattern-stealth-addresses.md),
-  [TEE-Based Privacy](patterns/pattern-tee-based-privacy.md),
-  [TEE Key Manager](patterns/pattern-tee-key-manager.md),
-  [TEE Network Anonymity](patterns/pattern-tee-network-anonymity.md),
-  [TEE+ZK Settlement](patterns/pattern-tee-zk-settlement.md),
-  [Threshold Encrypted Mempool](patterns/pattern-threshold-encrypted-mempool.md),
-  [Verifiable Attestation](patterns/pattern-verifiable-attestation.md),
-  [vOPRF Nullifiers](patterns/pattern-voprf-nullifiers.md),
-  [ZK KYC/ML ID (ERC-734/735)](patterns/pattern-zk-kyc-ml-id-erc734-735.md),
-  [zk-TLS](patterns/pattern-zk-tls.md)
-- feat(patterns): Add `context` and `crops_profile` CROPS frontmatter to some patterns
+- fix(patterns): Add PQ exposure notes to Trade-offs of 16 affected patterns and cross-refs to 4 PQ-aware patterns ([#121](https://github.com/ethereum/iptf-map/pull/121))
+- fix(pattern): Refreshed [TEE-Based Privacy](patterns/pattern-tee-based-privacy.md) — added CPU-encrypted vs hypervisor-isolated platform classification and threat model comparison
 
 ### Removed
 
@@ -54,78 +100,6 @@ All notable changes to the IPTF Map are documented here.
   `pattern-zk-shielded-balances.md` (merged into [Shielding](patterns/pattern-shielding.md)),
   `pattern-zk-spv.md` (removed from map)
 - refactor(patterns): Deleted original `pattern-private-shared-state.md`, replaced by 3 trust-model-specific cards ([#104](https://github.com/ethereum/iptf-map/issues/104))
-
-### Added
-
-- feat(pattern): [Private Set Intersection (DH-based)](patterns/pattern-private-set-intersection-dh.md) - Bilateral ECDH-PSI for private matching of identifier sets
-- feat(pattern): [Private Set Intersection (OPRF-based)](patterns/pattern-private-set-intersection-oprf.md) - OT/OPRF-based PSI scaling to millions of elements
-- feat(pattern): [Private Set Intersection (Circuit-based)](patterns/pattern-private-set-intersection-circuit.md) - Garbled circuit PSI for computing arbitrary functions over intersections
-- feat(pattern): [Private Set Intersection (FHE-based)](patterns/pattern-private-set-intersection-fhe.md) - FHE-based PSI for asymmetric set sizes with post-quantum security
-- feat(pattern): [Permissionless Spend Auth](patterns/pattern-permissionless-spend-auth.md) - Outer/inner circuit split for permissionless, user-chosen spend authorization without fragmenting anonymity sets (EIP-8182)
-- feat(pattern): [Safe Proof Delegation](patterns/pattern-safe-proof-delegation.md) - Intent-based delegation to non-custodial provers with revocable visibility (EIP-8182)
-- feat(use-case): [Private Supply Chain](use-cases/private-supply-chain.md) — supply chain provenance with privacy (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
-- feat(use-case): [Private Procurement](use-cases/private-procurement.md) — sealed bids, invoice privacy, audit trails (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
-- feat(use-case): [Private Registry](use-cases/private-registry.md) — privacy-preserving on-chain registries (stub) — see also [EPIC map](https://epic-webapp.vercel.app/)
-- feat(template): [crops_profile](vendors/_template.md) frontmatter block and CROPS evaluation criteria added to vendor template and README ([#102](https://github.com/ethereum/iptf-map/issues/102))
-- feat(template): [crops_profile](patterns/_template.md) frontmatter block added to pattern template for CROPS dimension indexing ([#101](https://github.com/ethereum/iptf-map/issues/101))
-- docs(glossary): [CROPS, I2I, I2U](GLOSSARY.md#iptf-evaluation-frameworks) evaluation framework definitions ([#100](https://github.com/ethereum/iptf-map/issues/100))
-- docs(readme): [Evaluation Framework](README.md#evaluation-framework) section with CROPS alignment statement ([#100](https://github.com/ethereum/iptf-map/issues/100))
-- feat(approach): [Private Money Market Funds](approaches/approach-private-money-market-funds.md) - Privacy-preserving MMF operations with ZK NAV proofs
-- feat(pattern): [EY: Starlight](vendors/ey.md#starlight) - Solidity transpiler for private on-chain state. Consolidated EY products into a single vendor file.
-- feat(pattern): [Network-Level Anonymity](patterns/pattern-network-anonymity.md) - Umbrella pattern for transport-layer sender anonymity (Tor, mixnets, private RPC, TEE-assisted, VPN)
-- feat(pattern): [TEE-Assisted Network Anonymity](patterns/pattern-tee-network-anonymity.md) - TEE+secret-sharing approach for low-latency sender anonymity (Flashbots Flashnet)
-- feat(pattern): Private Shared State split into [co-SNARKs](patterns/pattern-private-shared-state-cosnark.md), [FHE](patterns/pattern-private-shared-state-fhe.md), [TEE](patterns/pattern-private-shared-state-tee.md) — each with distinct CROPS profile and trust model ([#104](https://github.com/ethereum/iptf-map/issues/104))
-- feat(approach): Restructured [Private Trade Settlement](approaches/approach-private-trade-settlement.md) — separated single-chain and cross-chain approaches, added TEE+ZK, MPC, and intent-based settlement with trade-off matrices ([#77](https://github.com/ethereum/iptf-map/issues/77))
-- feat(pattern): Enhanced [Hybrid TEE + ZK Settlement](patterns/pattern-tee-zk-settlement.md) with trust framework, TEE API surface, stealth address design, anti-pattern table, and PoC learnings ([#79](https://github.com/ethereum/iptf-map/issues/79))
-- fix(pattern): Refreshed [TEE-Based Privacy](patterns/pattern-tee-based-privacy.md) — added CPU-encrypted vs hypervisor-isolated platform classification and threat model comparison
-- feat(approach): Enhanced [Private Bonds](approaches/approach-private-bonds.md) with PoC learnings, coprocessor model analysis (co-SNARKs vs FHE), comparison matrix, and implementation guidance
-- chore(vendors|approaches): add taceo merces and update private payments approach: [TACEO Merces](vendors/taceo-merces.md) - MPC + ZK approach for private stablecoin transfers
-- feat(approach): [Privacy Standards Survey](approaches/approach-privacy-standards-survey.md) - Standards catalog, gap analysis, and decision guidance ([#64](https://github.com/ethereum/iptf-map/pull/64))
-- feat(pattern): [Compliance Monitoring](patterns/pattern-compliance-monitoring.md) - Transaction screening with privacy-preserving audit trails ([#73](https://github.com/ethereum/iptf-map/pull/73))
-- feat(use-case): [Private Read](use-cases/private-read.md) - blockchain query privacy (stub)
-- feat(use-case): [Private Corporate Bonds](use-cases/private-corporate-bonds.md) - capital formation privacy (stub)
-- feat(use-case): [Private Government Debt](use-cases/private-government-debt.md) - sovereign/municipal bonds (stub)
-- feat(use-case): [Private FX](use-cases/private-fx.md) - cross-border settlement privacy (stub)
-- feat(use-case): [Private Stocks](use-cases/private-stocks.md) - tokenized equity (stub)
-- feat(use-case): [Private Commodities](use-cases/private-commodities.md) - commodity trading (stub)
-- feat(use-case): [Private Repo](use-cases/private-repo.md) - repurchase agreements (stub)
-- feat(use-case): [Private Money Market Funds](use-cases/private-money-market-funds.md) - yield-bearing funds (stub)
-- feat(use-case): [Private Treasuries](use-cases/private-treasuries.md) - corporate treasury (stub)
-- feat(use-case): [Private Payments](use-cases/private-payments.md) - payment rails (stub)
-- feat(use-case): [Private Oracles](use-cases/private-oracles.md) - data feed privacy (stub)
-- feat(use-case): [Private Messaging](use-cases/private-messaging.md) - interbank communication (stub)
-- feat(pattern): [L2 Privacy Evaluation Framework](patterns/pattern-l2-privacy-evaluation.md) - Methodology for institutions to compare privacy L2s (PR-011)
-- feat(pattern): [Cross-chain Privacy Bridge](patterns/pattern-cross-chain-privacy-bridge.md) - Bridge assets between chains while preserving privacy
-- feat(pattern): [Stateless Plasma Privacy](patterns/pattern-plasma-stateless-privacy.md) - Client-side proving with minimal on-chain footprint (Intmax-style)
-- feat(approach): Expanded [Private Payments](approaches/approach-private-payments.md) with Plasma and TEE approaches
-- feat(use-case): Added user onboarding problem to [Private Stablecoins](use-cases/private-stablecoins.md)
-- feat(pattern): [vOPRF Nullifiers](patterns/pattern-voprf-nullifiers.md) - Threshold vOPRF-based nullifier generation for credentials/signals ([#61](https://github.com/ethereum/iptf-map/pull/61))
-- feat(ci): Enhanced AI content quality guardrails ([#58](https://github.com/ethereum/iptf-map/issues/58))
-  - Vale prose linter with custom IPTF styles for marketing language, hedging, and terminology
-  - GLOSSARY.md term consistency checker (`scripts/check-terminology.js`)
-  - Extended validation to all content types (vendors, use-cases, approaches, jurisdictions)
-  - JSON Schema validation for frontmatter
-  - Husky pre-commit hooks with lint-staged
-  - LLM-based content review tool (`scripts/llm-review.js`)
-- feat(approach): [White-label infrastructure deployment](approaches/approach-white-label-deployment.md) ([#55](https://github.com/ethereum/iptf-map/pull/55))
-- feat(approach): [Atomic DvP Settlement](approaches/approach-dvp-atomic-settlement.md) ([#56](https://github.com/ethereum/iptf-map/pull/56))
-- feat(pattern): [Modular Privacy Stack](patterns/pattern-modular-privacy-stack.md) - Four-layer privacy architecture ([#54](https://github.com/ethereum/iptf-map/pull/54))
-- feat(pattern): [Hybrid public-private modes](patterns/pattern-hybrid-public-private-modes.md)
-- feat(pattern): [Private transaction broadcasting](patterns/pattern-private-transaction-broadcasting.md) ([#43](https://github.com/ethereum/iptf-map/pull/43))
-- feat(pattern): [TEE-based privacy](patterns/pattern-tee-based-privacy.md) ([#44](https://github.com/ethereum/iptf-map/pull/44))
-- feat(pattern): [Threshold encrypted mempool](patterns/pattern-threshold-encrypted-mempool.md) ([#45](https://github.com/ethereum/iptf-map/pull/45))
-- feat(vendor): [Fhenix](vendors/fhenix.md) - FHE privacy ([#32](https://github.com/ethereum/iptf-map/pull/32))
-- feat(vendor): [Space and Time](vendors/space-and-time.md) ([#46](https://github.com/ethereum/iptf-map/pull/46))
-- feat(ci): Pattern validation workflow ([#40](https://github.com/ethereum/iptf-map/pull/40))
-- feat(approach): [Private bond PoC](approaches/approach-private-bonds.md) updates ([#47](https://github.com/ethereum/iptf-map/pull/47))
-- docs: [Q1 2026 PRD](PRD-IPTF-PUBLIC-Q1-2026.md) with sprint planning ([#39](https://github.com/ethereum/iptf-map/pull/39))
-- docs: [CHANGELOG.md](CHANGELOG.md) and weekly summary script ([#49](https://github.com/ethereum/iptf-map/pull/49))
-- docs: [weekly-updates](weekly-updates/) directory ([#59](https://github.com/ethereum/iptf-map/pull/59))
-- docs(prd): Sprint 6 for client-side proving and compliance
-- docs(prd): Source citations for accuracy verification findings
-- docs(prd): Sprint 1 completion and accuracy findings
-- docs(prd): GitHub issue traceability and missing deliverables
-- chore: Claude Code project configuration ([#36](https://github.com/ethereum/iptf-map/pull/36))
 
 ### Fixed
 
@@ -195,6 +169,7 @@ All notable changes to the IPTF Map are documented here.
 - docs: [GLOSSARY.md](GLOSSARY.md) with standardized terminology
 - docs: CC0 public domain license
 
-[Unreleased]: https://github.com/ethereum/iptf-map/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/ethereum/iptf-map/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/ethereum/iptf-map/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/ethereum/iptf-map/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/ethereum/iptf-map/releases/tag/v0.1.0

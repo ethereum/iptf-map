@@ -1,6 +1,6 @@
 {
   "name": "iptf-map",
-  "version": "1.0.0",
+  "version": "0.3.0",
   "description": "Institutional Privacy Task Force Map - Privacy-preserving solutions for enterprise Ethereum",
   "private": true,
   "scripts": {
