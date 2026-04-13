@@ -11,6 +11,7 @@ All notable changes to the IPTF Map are documented here.
 ### Added
 
 #### Patterns
+- feat(pattern): [Forced Withdrawal](patterns/pattern-forced-withdrawal.md) — L1 escape hatch for asset recovery without operator cooperation ([#125](https://github.com/ethereum/iptf-map/issues/125))
 - feat(pattern): [TLS Payment Bridge](patterns/pattern-tls-payment-bridge.md) — trust-minimized fiat-to-onchain swaps via zk-TLS proofs on instant payment rails ([#88](https://github.com/ethereum/iptf-map/issues/88))
 - feat(pattern): [Native Account Abstraction](patterns/pattern-native-account-abstraction.md) — EIP-8141 modular verification logic for PQ auth agility ([#121](https://github.com/ethereum/iptf-map/pull/121))
 - feat(pattern): [ZK Proof Systems](patterns/pattern-zk-proof-systems.md) — taxonomy of proving systems with PQ safety analysis ([#121](https://github.com/ethereum/iptf-map/pull/121))

@@ -68,7 +68,7 @@ These problems interact because traditional payment transparency conflicts with 
 **MPC-Based Privacy:**
 
 - Multi-party computation nodes jointly process transactions without any single party seeing plaintext
-- Combines MPC with ZK proofs (co-SNARKs) for on-chain verification of private state transitions
+- Combines MPC with zero-knowledge proofs (co-SNARKs) for on-chain verification of private state transitions
 - [co-SNARKs (Collaborative Proving)](../patterns/pattern-co-snark.md) pattern, See also [TACEO Merces](../vendors/taceo-merces.md)
 - Best for: Amount confidentiality where counterparty relationships are already known (e.g., bilateral settlement)
 - Trade-off: No sender/receiver anonymity; addresses remain public on-chain
@@ -106,7 +106,7 @@ These problems interact because traditional payment transparency conflicts with 
 
 ### PoC Validation
 
-Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO model with Noir/[UltraHonk](https://github.com/AztecProtocol/barretenberg)) and a Plasma/Intmax2 stateless rollup ([Plonky2](https://github.com/0xPolygonZero/plonky2)). Both use dual-key architecture (spending + viewing) and attestation-gated entry via ZK proof of KYC.
+Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO model with Noir/[UltraHonk](https://github.com/AztecProtocol/barretenberg)) and a Plasma/Intmax2 stateless rollup ([Plonky2](https://github.com/0xPolygonZero/plonky2)). Both use dual-key architecture (spending + viewing) and attestation-gated entry via zero-knowledge proof of KYC.
 
 > **Note:** Benchmarks below are indicative measurements from PoC testing, not production reference numbers. Implementers should run their own benchmarks with domain-specific configuration.
 
@@ -129,10 +129,11 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 #### Cross-Cutting Findings
 
 - **Dual-key architecture** (spending + viewing) works in both models, confirming selective disclosure is practical without granting transfer authority
-- **Attestation-gated entry** via ZK proof of Merkle tree inclusion is feasible (MAX_ATTESTATION_TREE_DEPTH=20, supporting ~1M participants, configurable for larger participtants, but increases proving time)
+- **Attestation-gated entry** via zero-knowledge proof of Merkle tree inclusion is feasible (MAX_ATTESTATION_TREE_DEPTH=20, supporting ~1M participants, configurable for larger participants, but increases proving time)
 - **Network timing correlation** is unmitigated in both approaches; see [Network-Level Anonymity](../patterns/pattern-network-anonymity.md) for mitigation patterns
 - **Withdrawal to fresh addresses** requires a gas relayer since the recipient address may not have ETH for gas. Users can always withdraw directly (sacrificing privacy), but private withdrawal depends on relayer liveness and willingness to relay
 - **Multi-token transfers** require same-token constraints in circuits, confirming per-token shielded pools and liquidity fragmentation concerns
+- **Forced withdrawal fallback** — when relayers are unavailable or censoring, users need a way to bypass them and withdraw via an L1 escape hatch contract directly. See [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md); privacy is weaker during forced exit (timing and destination address visible on-chain) but funds stay recoverable
 - **PlasmaBlind** (folding-scheme-based stateless plasma) is an emerging alternative to Plonky2 recursive proofs; see [PSE research](https://pse.dev/mastermap/ptr)
 
 ### Vendor Recommendations
@@ -199,12 +200,13 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 - **Shielded Pool:** No protocol-level operator needed; users interact directly with L1 contracts. Private transactions depend on a first/third-party gas relayer to avoid linking the sender's funded address
 - **Plasma/Intmax2:** Requires operator infrastructure for block building, proving, and withdrawal processing
 - **Consideration:** Operator economics and liveness guarantees must be addressed for production deployment
+- **Liveness fallback:** L2-based private payment solutions must implement [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md) so users can recover funds on L1 when the operator is unresponsive. Plasma/Intmax2 already supports this via the L1 anchor contract's exit game (users submit a zero-knowledge proof of sufficient balance). L1 shielded pools (e.g., Railgun) do not need a separate escape hatch since users interact with L1 directly
 
 ### Open Questions
 
 **Partially Resolved by PoC:**
 
-1. **Stablecoin Issuer Integration:** Attestation-gated entry (ZK proof of KYC) demonstrates a viable compliance gating mechanism. Remaining: freeze/denylist integration within shielded pools.
+1. **Stablecoin Issuer Integration:** Attestation-gated entry (zero-knowledge proof of KYC) demonstrates a viable compliance gating mechanism. Remaining: freeze/denylist integration within shielded pools.
 
 2. **Liquidity Fragmentation:** Multi-token transfers require same-token constraints in circuits, confirming per-token shielded pools. Remaining: cross-pool atomic swaps and multi-asset circuit designs.
 
@@ -241,7 +243,7 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 
 - **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573), [ISO 20022](https://www.iso20022.org/), [ERC-20](https://ercs.ethereum.org/ERCS/erc-20)
 - **Infrastructure:** [Railgun](https://railgun.org/), [Aztec Network](https://docs.aztec.network/), [Zama fhEVM](https://docs.zama.org/fhevm), [Intmax](https://www.intmax.io/)
-- **Patterns:** [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md), [Network-Level Anonymity](../patterns/pattern-network-anonymity.md)
+- **Patterns:** [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md), [Network-Level Anonymity](../patterns/pattern-network-anonymity.md), [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md)
 - **Regulatory:** [MiCA Framework](../jurisdictions/eu-MiCA.md), [SEC - GENIUS Act](../jurisdictions/us-SEC.md)
 - **Related Approaches:** [Private Trade Settlement](../approaches/approach-private-trade-settlement.md), [Private Derivatives](../approaches/approach-private-derivatives.md)
 - **Reference Implementation:** [Private Payment PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment)
