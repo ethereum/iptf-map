@@ -4,6 +4,9 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
+- feat(pattern): [zk-promises](patterns/pattern-zk-promises.md) -- stateful anonymous credentials with async callbacks for blind compliance enforcement ([#132](https://github.com/ethereum/iptf-map/pull/132))
+- feat(pattern): [Proof of Innocence](patterns/pattern-proof-of-innocence.md) -- association set membership/exclusion proofs for compliance without surveillance ([#132](https://github.com/ethereum/iptf-map/pull/132))
+
 ## [0.3.0] - 2026-04-13
 
 71 commits, 162 files changed since v0.2.0. Major additions: CROPS evaluation framework, 20+ new patterns, 12 new use cases, 4 new approaches, post-quantum threat analysis, CI quality guardrails.
