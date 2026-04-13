@@ -111,15 +111,6 @@ Example:
 - **CONTRIBUTING.md** - Contribution process and conventions
 - Pattern/vendor READMEs contain organization notes and TODO lists
 
-## PRD Workflow
-
-When working on tasks from `PRD-IPTF-PUBLIC-Q1-2026.md`:
-
-1. Create a separate branch for each PR (e.g., `pr-008-white-label-deployment`)
-2. Update CHANGELOG.md with the new content
-3. Mark the PRD task as ✅ DONE with PR link when complete
-4. Fill in PR description checklist before requesting review
-
 ## Notes for AI Assistants
 
 1. Check GLOSSARY.md for correct technical terminology
@@ -130,4 +121,3 @@ When working on tasks from `PRD-IPTF-PUBLIC-Q1-2026.md`:
 6. Use semantic commit prefixes
 7. Verify Ethereum alignment when discussing vendors
 8. No confidential business data in public docs
-9. When completing PRD tasks, update PRD with completion status and PR link
