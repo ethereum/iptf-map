@@ -95,6 +95,7 @@ The following patterns from the Modular Privacy Stack provide building blocks:
 | Better technology emerges | Evaluate migration cost vs. benefit |
 | Regulatory change | Assess compliance gap; remediate or migrate |
 | Strategy shift | Graceful wind-down with user notification |
+| Operator/sequencer goes offline | [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md) via L1 escape hatch; users self-exit within bounded time |
 
 ### Trade-offs
 
@@ -111,6 +112,7 @@ The following patterns from the Modular Privacy Stack provide building blocks:
 | Key personnel departure | Documentation, cross-training, vendor support |
 | Security vulnerability | Rapid patching process, per-layer isolation |
 | Bridge exploit | Insurance, security audits, rate limits |
+| Operator censorship or liveness failure | [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md) via L1 escape hatch; timelock-based user self-exit |
 
 ## Example
 
@@ -129,4 +131,5 @@ The following patterns from the Modular Privacy Stack provide building blocks:
 - [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md) - Execution layer option
 - [Privacy L2s](../patterns/pattern-privacy-l2s.md) - L2 technologies for deployment
 - [Hybrid Public-Private Modes](../patterns/pattern-hybrid-public-private-modes.md) - Mode switching for compliance
+- [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md) - L1 escape hatch for user-level exit when operator fails
 - [Aztec](../vendors/aztec.md), [Miden](../vendors/miden.md), [Fhenix](../vendors/fhenix.md) - Execution layer vendors
