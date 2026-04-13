@@ -4,9 +4,12 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
+- feat(pattern): [zk-promises](patterns/pattern-zk-promises.md) -- stateful anonymous credentials with async callbacks for blind compliance enforcement ([#132](https://github.com/ethereum/iptf-map/pull/132))
+- feat(pattern): [Proof of Innocence](patterns/pattern-proof-of-innocence.md) -- association set membership/exclusion proofs for compliance without surveillance ([#132](https://github.com/ethereum/iptf-map/pull/132))
+
 ### Removed
 
-- chore: Retire `PRD-IPTF-PUBLIC-Q1-2026.md` — Q1 closed; remaining unfinished items tracked in [#143](https://github.com/ethereum/iptf-map/issues/143) ([#144](https://github.com/ethereum/iptf-map/pull/144))
+- chore: Retire `PRD-IPTF-PUBLIC-Q1-2026.md` -- Q1 closed; remaining unfinished items tracked in [#143](https://github.com/ethereum/iptf-map/issues/143) ([#144](https://github.com/ethereum/iptf-map/pull/144))
 
 ## [0.3.0] - 2026-04-13
 
