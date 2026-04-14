@@ -67,12 +67,14 @@ Hide *who* is sending transactions or querying state at the network layer. Exist
 
 ## See also
 
-- [Network-Level Anonymity](pattern-network-anonymity.md) — general problem and alternative approaches (Tor, mixnets, VPNs)
-- [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md) — content privacy for writes (complementary)
-- [Threshold Encrypted Mempool](pattern-threshold-encrypted-mempool.md) — content privacy via threshold encryption
-- [TEE-Based Privacy](pattern-tee-based-privacy.md) — broader TEE trust model analysis
-- [RFP: Private Reads](../rfps/rfp-private-reads.md) — read-side privacy gap this pattern addresses
-- [Vendor: Flashbots](../vendors/flashbots.md) — Flashnet development
+- [Network-Level Anonymity](pattern-network-anonymity.md) - umbrella pattern and approach comparison
+- [Onion Routing](pattern-onion-routing.md) - Tor-based alternative, higher latency but no hardware trust
+- [Mixnet Anonymity](pattern-mixnet-anonymity.md) - strongest anonymity, highest latency
+- [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md) - content privacy for writes (complementary)
+- [Threshold Encrypted Mempool](pattern-threshold-encrypted-mempool.md) - content privacy via threshold encryption
+- [TEE-Based Privacy](pattern-tee-based-privacy.md) - broader TEE trust model analysis
+- [RFP: Private Reads](../rfps/rfp-private-reads.md) - read-side privacy gap this pattern addresses
+- [Vendor: Flashbots](../vendors/flashbots.md) - Flashnet development
 
 ## See also (external)
 

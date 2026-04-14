@@ -4,6 +4,11 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
+- feat(pattern): [Onion Routing](patterns/pattern-onion-routing.md) -- Tor-based multi-hop relay for sender IP anonymity (PSE tor-js, Flashbots .onion)
+- feat(pattern): [Mixnet Anonymity](patterns/pattern-mixnet-anonymity.md) -- batching, reordering, and cover traffic for strongest network anonymity (Nym, HOPR)
+- refactor(pattern): split [Network-Level Anonymity](patterns/pattern-network-anonymity.md) into umbrella pattern linking onion routing, mixnet, and TEE sub-patterns
+- feat(pattern): [User-Controlled Viewing Keys](patterns/pattern-user-controlled-viewing-keys.md) -- user-held viewing key custody for I2U privacy sovereignty ([#135](https://github.com/ethereum/iptf-map/issues/135))
+- feat(pattern): enhance [Network-Level Anonymity](patterns/pattern-network-anonymity.md) with I2U analysis ([#135](https://github.com/ethereum/iptf-map/issues/135))
 - feat(pattern): [zk-promises](patterns/pattern-zk-promises.md) -- stateful anonymous credentials with async callbacks for blind compliance enforcement ([#132](https://github.com/ethereum/iptf-map/pull/132))
 - feat(pattern): [Proof of Innocence](patterns/pattern-proof-of-innocence.md) -- association set membership/exclusion proofs for compliance without surveillance ([#132](https://github.com/ethereum/iptf-map/pull/132))
 

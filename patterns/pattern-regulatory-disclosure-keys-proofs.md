@@ -50,6 +50,7 @@ Provide **on-demand, scoped visibility** into confidential trades/positions via 
 - System issues 24-hour read token; EAS logs event; auto-revokes.
 
 ## See also
+- [User-Controlled Viewing Keys](pattern-user-controlled-viewing-keys.md): user-held key custody for I2U privacy sovereignty; this pattern covers the institution-side workflow once keys are shared
 - pattern-confidential-erc20-fhe-l2-erc7573.md
 - [Low-cost L2 + Off-chain Encrypted Audit Log](pattern-l2-encrypted-offchain-audit.md)
 
