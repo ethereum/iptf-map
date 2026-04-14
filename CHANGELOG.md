@@ -6,6 +6,7 @@ All notable changes to the IPTF Map are documented here.
 
 - feat(pattern): [zk-promises](patterns/pattern-zk-promises.md) -- stateful anonymous credentials with async callbacks for blind compliance enforcement ([#132](https://github.com/ethereum/iptf-map/pull/132))
 - feat(pattern): [Proof of Innocence](patterns/pattern-proof-of-innocence.md) -- association set membership/exclusion proofs for compliance without surveillance ([#132](https://github.com/ethereum/iptf-map/pull/132))
+- feat(approach|use-case): [Resilient Identity Continuity](use-cases/resilient-identity-continuity.md) and [approach](approaches/approach-resilient-identity-continuity.md) ([#145](https://github.com/ethereum/iptf-map/pull/145))
 
 ### Removed
 
