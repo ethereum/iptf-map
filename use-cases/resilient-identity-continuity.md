@@ -85,7 +85,7 @@ Verification in existing private identity systems often requires contacting a re
 | Recovery | Threshold (Shamir) + social (guardian-based) | No issuer participation required |
 | Verification | Universal (on-chain trust anchor + ZK proof) | Any verifier, no registry contact |
 
-See detailed architecture and trade-offs in [**Approach: Resilient Identity Continuity**](../approaches/approach-resilient-identity-continuity.md).
+See [**Approach: Private Identity, Section F**](../approaches/approach-private-identity.md#f-issuer-independent-enrollment-via-distributed-oprf) for detailed architecture and trade-offs.
 
 ## 6) Open Questions
 
