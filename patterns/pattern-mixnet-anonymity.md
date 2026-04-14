@@ -36,7 +36,7 @@ Hide *who* is sending transactions or querying state by routing messages through
 ## Protocol (concise)
 
 1. Client wraps the message (RPC query or transaction) in a Sphinx packet with layered encryption.
-2. Client sends the packet to the first mix node in a randomly selected route.
+2. Client sends the packet to the entry mix node in a randomly selected route.
 3. Each mix node collects incoming packets, adds random delay, reorders the batch, and strips one encryption layer before forwarding.
 4. Cover traffic (dummy packets) is injected at each hop to maintain constant traffic volume.
 5. Final mix node delivers the message to the destination (RPC node, mempool).
@@ -45,7 +45,7 @@ Hide *who* is sending transactions or querying state by routing messages through
 ## Guarantees
 
 - Defeats timing correlation attacks that onion routing is vulnerable to.
-- Cover traffic prevents traffic analysis even by a global passive adversary observing the entire network.
+- Cover traffic raises the cost of traffic correlation and, under sufficient volume and wide adoption, resists many timing and correlation attacks including those by global passive adversaries.
 - Anonymity set includes all clients active during the mixing window.
 - Does not hide message content; pair with content-privacy patterns for full-stack privacy.
 - **I2U**: the anonymity set is external to the institution. Even if the institution operates the RPC endpoint, it cannot correlate incoming queries with specific users because the mixnet destroys timing and ordering information.

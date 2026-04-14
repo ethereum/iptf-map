@@ -3,7 +3,7 @@ title: "Pattern: User-Controlled Viewing Keys"
 status: draft
 maturity: PoC
 layer: hybrid
-privacy_goal: Ensure end users retain sole custody of viewing keys, disclosing transaction history only to parties they choose
+privacy_goal: Ensure end users retain sole custody of viewing keys, disclosing transaction history to parties they choose
 assumptions: Dual-key architecture (spend + view), wallet-side key management, no mandatory key escrow
 last_reviewed: 2026-04-14
 works-best-when:
@@ -48,10 +48,10 @@ In many privacy-preserving systems, the institution operating the service holds 
 ## Guarantees
 
 - **User sovereignty**: no party can read the user's transaction history without a key the user explicitly provided.
-- **Scope limitation**: derived keys grant access only to the specified scope (time range, account, transaction set). Over-disclosure is prevented by the key derivation scheme, not by policy.
+- **Scope limitation**: derived keys grant access limited to the specified scope (time range, account, transaction set). Over-disclosure is prevented by the key derivation scheme, not by policy.
 - **Auditability without surveillance**: regulators can audit when the user cooperates, but cannot conduct ongoing surveillance.
-- **I2U**: the institution cannot unilaterally inspect user balances or transaction patterns. This is the defining property and the key difference from institution-held viewing keys.
-- **I2I**: between institutions, viewing keys are exchanged bilaterally under contractual terms. The power dynamic is symmetric, so user-controlled keys are less critical but still useful for damage containment (each counterparty sees only what was shared).
+- **I2U**: the institution is not able to unilaterally inspect user balances or transaction patterns. This is the defining property and the key difference from institution-held viewing keys.
+- **I2I**: between institutions, viewing keys are exchanged bilaterally under contractual terms. The power dynamic is symmetric, so user-controlled keys are less critical but still useful for damage containment (each counterparty sees what was shared).
 
 ## Trade-offs
 

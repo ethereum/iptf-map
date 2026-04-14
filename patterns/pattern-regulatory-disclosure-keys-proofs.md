@@ -33,7 +33,7 @@ Provide **on-demand, scoped visibility** into confidential trades/positions via 
 ## Protocol (concise)
 1. Regulator requests scope (account/ISIN/time).
 2. Policy engine checks mandate; emits EAS access-grant.
-3. Assemble **time-limited viewing key** or produce **ZK proof**.
+3. Assemble **time-limited viewing key** or produce **zero-knowledge proof**.
 4. Deliver result; log disclosure (hash + who/when).
 
 ## Guarantees

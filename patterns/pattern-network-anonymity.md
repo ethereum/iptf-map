@@ -33,7 +33,7 @@ This is an umbrella pattern. Multiple approaches exist, each with different trad
 ## Ingredients
 
 - Cryptographic: onion encryption, mix-and-shuffle, secret sharing, cover traffic (varies by approach)
-- Hardware: client-side TEE (TEE-assisted approach only)
+- Hardware: client-side TEE (TEE-assisted approach)
 - Infra: relay or mix node network, or anonymity server cluster; private RPC endpoint
 
 ## Protocol (concise)
@@ -82,7 +82,11 @@ Pure-cryptographic approaches (onion routing, mixnets) must sacrifice at least o
 
 ## Example
 
-Fund manager needs to query 50 token balances to value a portfolio. Without network anonymity, the RPC provider sees all queried addresses, revealing holdings and strategy. With onion routing, queries traverse 3 relays before reaching the RPC endpoint (~300ms added, acceptable for end-of-day valuation). With a mixnet, queries are batched and reordered (seconds of delay, strongest anonymity). With TEE-assisted anonymity, queries are secret-shared across servers (low latency, suitable for intraday checks). See sub-patterns for detailed examples.
+- Fund manager needs to query 50 token balances to value a portfolio. The RPC provider sees all queried addresses, revealing holdings and strategy.
+- Onion routing: queries traverse 3 relays before reaching the RPC endpoint (~300ms added, acceptable for end-of-day valuation).
+- Mixnet: queries are batched and reordered (seconds of delay, strongest anonymity guarantee).
+- TEE-assisted: queries are secret-shared across servers (low latency, suitable for intraday checks).
+- See sub-patterns for detailed examples.
 
 ## See also
 

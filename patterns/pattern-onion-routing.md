@@ -37,7 +37,7 @@ Hide *who* is sending transactions or querying state by routing traffic through 
 
 1. Client selects a circuit of 3+ relay nodes from the Tor directory.
 2. Client wraps the message (RPC query or transaction) in multiple encryption layers, one per relay.
-3. Each relay decrypts its layer, learns only the next hop, and forwards the message.
+3. Each relay decrypts its layer, learns the next hop, and forwards the message.
 4. Exit relay delivers the message to the destination (RPC node, mempool).
 5. Response returns through the same circuit in reverse.
 
