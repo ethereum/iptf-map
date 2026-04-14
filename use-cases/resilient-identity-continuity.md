@@ -10,8 +10,6 @@ Maintain the ability to prove identity attributes on-chain after the original cr
 
 ## 2) Additional Business Context
 
-**Confidential context:** Available in private IPTF repo
-
 **Related work and deployments:**
 
 - **Passport enrollment:** [ZKPassport](https://zkpassport.id/) (120+ country passports, NFC + Noir); [Self](https://self.xyz/)
