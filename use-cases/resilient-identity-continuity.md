@@ -65,7 +65,7 @@ Key loss in issuer-independent systems is permanent unless recovery mechanisms e
 
 ### Problem 4: Universal Verification Without Registry or Issuer Contact
 
-Verification in existing private identity systems often requires contacting a registry operator or issuer for revocation checks or credential status. In an issuer-hostile setting, verification must work with only the on-chain trust anchor and a ZK proof. No external calls.
+Verification in existing private identity systems often requires contacting a registry operator or issuer for revocation checks or credential status. In an issuer-hostile setting, verification must work with the on-chain trust anchor and a ZK proof, without external service calls.
 
 **Requirements:**
 
@@ -87,11 +87,11 @@ See [**Approach: Private Identity, Section F**](../approaches/approach-private-i
 
 ## 6) Open Questions
 
-1. What is the minimum guardian set size for social recovery that provides anti-coercion guarantees without excessive coordination overhead?
-2. How does recovery interact with the original enrollment? Can a recovered identity reuse original identifiers, or must new ones be derived deterministically?
-3. How do identity sources that require prior provider infrastructure handle retroactive deletion of cryptographic evidence by the provider?
-4. What models enable credential attribute freshness without an issuer to refresh them (e.g., expired passports, changed nationality)?
-5. What is the production path for private predicate parameters, so that verification transactions do not leak which attribute is being queried?
+- What is the minimum guardian set size for social recovery that provides anti-coercion guarantees without excessive coordination overhead?
+- How does recovery interact with the original enrollment? Can a recovered identity reuse original identifiers, or must new ones be derived deterministically?
+- How do identity sources that require prior provider infrastructure handle retroactive deletion of cryptographic evidence by the provider?
+- What models enable credential attribute freshness without an issuer to refresh them (e.g., expired passports, changed nationality)?
+- What is the production path for private predicate parameters, so that verification transactions do not leak which attribute is being queried?
 
 ## 7) Notes And Links
 
