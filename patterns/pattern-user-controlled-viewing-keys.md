@@ -20,7 +20,7 @@ dependencies:
   - Selective disclosure framework
 context: i2u
 crops_profile:
-  cr: high
+  cr: medium
   os: partial
   privacy: full
   security: medium
@@ -59,11 +59,15 @@ In many privacy-preserving systems, the institution operating the service holds 
 - **Key loss**: if the user loses the viewing key, historical transaction data becomes permanently inaccessible. Mitigation: encrypted backup with social recovery, threshold splitting across user-controlled devices.
 - **UX burden**: users must manage additional key material and make disclosure decisions. Institutional services can simplify this with wallet UX, but the user must understand the consequences of sharing keys.
 - **Granularity varies by implementation**: Aztec IVK/OVK provides account-level viewing. Railgun's per-note approach allows finer granularity. Zcash's full viewing key reveals all incoming transactions. The privacy/usability trade-off depends on the key derivation hierarchy.
-- **CROPS context (I2U)**: CR is `high` because the user retains key custody; the institution cannot selectively deny visibility or enforce unwanted transparency. CR drops to `medium` if the platform requires key escrow as a condition of service (effectively institution-held with extra steps). OS is `partial` because key derivation schemes are well-documented and open source (Aztec, Zcash, Railgun), but specific wallet implementations may be proprietary. Privacy is `full` because the user controls all disclosure; no party learns more than the user explicitly reveals. Security is `medium` because it depends on the user's key management practices and the underlying cryptographic assumptions (ECDH/BabyJubjub for Aztec, secp256k1 for Railgun). Security could reach `high` with audited key management tooling and hardware wallet integration.
+- **CROPS context (I2U)**: CR is `medium` because viewing keys protect the read axis (the institution cannot force disclosure), but do not address the write axis (transaction submission, service access). CR `high` requires resistance on both read and write; this pattern covers read. CR drops further if the platform requires key escrow as a condition of service. OS is `partial` because key derivation schemes are well-documented and open source (Aztec, Zcash, Railgun), but specific wallet implementations may be proprietary. Privacy is `full` because the user controls all disclosure; no party learns more than the user explicitly reveals. Security is `medium` because it depends on the user's key management practices and the underlying cryptographic assumptions (ECDH/BabyJubjub for Aztec, secp256k1 for Railgun). Security could reach `high` with audited key management tooling and hardware wallet integration.
 
 ## Example
 
-A fund manager uses a privacy L2 to execute trades. The L2 operator processes encrypted transactions but cannot read balances or counterparties. When the fund's compliance team needs a quarterly report, the manager derives a time-scoped viewing key covering Q1 and shares it with the compliance officer. The officer decrypts Q1 transactions and verifies them against on-chain commitments. The officer cannot see Q2 data or later. When BaFin requests an audit of a specific ISIN, the manager derives a per-asset viewing key and shares it through a secure channel. BaFin verifies the relevant positions without learning the full portfolio.
+- Fund manager executes trades on a privacy L2 where balances remain encrypted to the operator.
+- For quarterly reporting, the manager derives a Q1-scoped viewing sub-key and shares it with compliance.
+- Compliance verifies Q1 transactions against on-chain commitments without access to other periods.
+- For a BaFin ISIN audit, the manager derives an asset-scoped key and shares it via an authenticated channel.
+- Auditor verifies requested positions without receiving full-portfolio visibility.
 
 ## See also
 

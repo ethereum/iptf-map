@@ -56,7 +56,7 @@ Hide *who* is sending transactions or querying state by routing traffic through 
 - Exit relays can observe unencrypted traffic; HTTPS to the RPC endpoint mitigates this.
 - Vulnerable to traffic correlation attacks by a well-resourced adversary who can observe both ends of the circuit.
 - No native Tor support in any Ethereum execution client (Geth, Erigon, Reth) as of 2026, unlike Bitcoin Core which has had built-in Tor since 2016. Integration requires external tooling.
-- CROPS: CR is `high` because the Tor relay network is permissionless and globally distributed. OS is `yes` (Tor and Arti are open-source). Privacy is `partial` because on-chain side channels (transaction timing, gas patterns) persist even when IP is hidden. Security is `medium` due to vulnerability to global passive adversaries performing traffic correlation.
+- CROPS: CR is `high` because the Tor relay network is permissionless and, in the Ethereum context, the destination is the permissionless P2P network: users can submit signed transactions to any node, so no single entity can gate access. OS is `yes` (Tor and Arti are open-source). Privacy is `partial` because on-chain side channels (transaction timing, gas patterns) persist even when IP is hidden. Security is `medium` due to vulnerability to global passive adversaries performing traffic correlation.
 
 ## Example
 

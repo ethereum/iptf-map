@@ -20,7 +20,7 @@ crops_profile:
   cr: medium
   os: partial
   privacy: partial
-  security: high
+  security: medium
 ---
 
 ## Intent
@@ -58,7 +58,7 @@ Hide *who* is sending transactions or querying state by routing messages through
 - Anonymity set size depends on actual usage volume; low adoption creates a chicken-and-egg problem.
 - No production Ethereum-specific deployment as of 2026. Nym mainnet is live as a general-purpose mixnet; blockchain integrations are in development.
 - HOPR's RPCh (private RPC via mixnet) had a working prototype but development is paused.
-- CROPS: CR is `medium` because mix node participation requires staking. OS is `partial` (Nym and HOPR are open-source but the live networks have governance constraints). Privacy is `partial` because on-chain side channels persist. Security is `high` due to cryptographic guarantees against global adversaries.
+- CROPS: CR is `medium` because mix node participation requires staking. OS is `partial` (Nym and HOPR are open-source but the live networks have governance constraints). Privacy is `partial` because on-chain side channels persist. Security is `medium` because resistance to correlation depends on sustained cover traffic volume, adoption, and correct network operation.
 
 ## Example
 
