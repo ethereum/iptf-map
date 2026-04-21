@@ -10,6 +10,8 @@ Maintain the ability to prove identity attributes on-chain after the original cr
 
 ## 2) Additional Business Context
 
+Resilience here is the product of plurality. A single issuer is a single point of failure; composing credential sources with per-identity cost scaling in ~N² (see [Vitalik's zk-identity framework](https://vitalik.eth.limo/general/2025/06/28/zkid.html)) distributes dependence across issuers that fail independently. [Human Passport](https://passport.human.tech/) ships this shape for grant sybil resistance today; [TACEO](https://core.taceo.io/articles/taceo-oprf/) operates a 13-node threshold vOPRF that removes the issuer from the on-chain correlation path.
+
 **Related work and deployments:**
 
 - **Passport enrollment:** [ZKPassport](https://zkpassport.id/) (120+ country passports, NFC + Noir); [Self](https://self.xyz/)
@@ -39,9 +41,9 @@ Credential systems today depend on a live, cooperative issuer for revocation che
 - **Auditor access:** selective disclosure grants scoped read access to specific credential attributes or proof metadata
 - **Ops:** proof generation practical on consumer hardware; verification completable in a single on-chain transaction
 
-### Problem 2: Credential Source Diversity
+### Problem 2: Plural Enrollment Sources
 
-Passport-based enrollment excludes populations without biometric passports. An identity system designed for adversarial conditions is weakest for those who need it most if it depends on a single document type. Multiple enrollment paths are required: government-issued IDs, biometric enrollment, email, web2 data export, community attestation, and civil registry records.
+Monolithic enrollment concentrates issuer risk and excludes anyone without the mandatory credential. Plural identity treats sources as composable rather than substitutable: passports for strong legal attestations, national IDs or email for web services, social vouches or economic stake for communities. Each signal is partial; together they cover disjoint populations and distribute issuer dependence, so failure of any one source degrades gracefully rather than catastrophically.
 
 **Requirements:**
 
@@ -97,8 +99,9 @@ See [**Approach: Private Identity, Section F**](../approaches/approach-private-i
 
 - **Extends:** [Private Identity](private-identity.md) (drops the cooperative-issuer assumption)
 - **PoC:** [Resilient Private Identity](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity)
-- **Standards:** [RFC 9497 (OPRF)](https://www.rfc-editor.org/rfc/rfc9497), [RFC 9380 (hashToCurve)](https://www.rfc-editor.org/rfc/rfc9380), [W3C VC Data Model v2.0](https://www.w3.org/TR/vc-data-model-2.0/)
-- **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Anon Aadhaar](https://github.com/anon-aadhaar), [World ID](https://worldcoin.org/world-id), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [Semaphore](https://semaphore.pse.dev/), [Holonym](https://holonym.id/)
+- **Standards:** [RFC 9497 (OPRF)](https://www.rfc-editor.org/rfc/rfc9497) + [Jarecki threshold extension](https://eprint.iacr.org/2017/363), [RFC 9380 (hashToCurve)](https://www.rfc-editor.org/rfc/rfc9380), [W3C VC Data Model v2.0](https://www.w3.org/TR/vc-data-model-2.0/)
+- **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Anon Aadhaar](https://github.com/anon-aadhaar), [World ID](https://worldcoin.org/world-id), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [Semaphore](https://semaphore.pse.dev/), [Human Passport](https://passport.human.tech/), [Holonym](https://holonym.id/)
 - **Related Patterns:** [Private MTP Auth](../patterns/pattern-private-mtp-auth.md), [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [zk-TLS](../patterns/pattern-zk-tls.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md)
-- **Prior Art:** [zk-creds (Rosenberg et al., 2023)](https://eprint.iacr.org/2022/878), [zk-promises (Shih et al., 2025)](https://eprint.iacr.org/2024/1260)
+- **Prior Art:** [Vitalik zk-identity framework](https://vitalik.eth.limo/general/2025/06/28/zkid.html), [Human](https://human.tech/) (plural-identity scoring), [zk-creds (Rosenberg et al., 2023)](https://eprint.iacr.org/2022/878), [zk-promises (Shih et al., 2025)](https://eprint.iacr.org/2024/1260)
+- **Deployed vOPRF:** [TACEO](https://core.taceo.io/articles/taceo-oprf/) (13-node threshold)
 - **Allies:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Aztec](https://aztec.network/), [Anon Aadhaar](https://github.com/anon-aadhaar), [World ID](https://worldcoin.org/world-id), [Semaphore](https://semaphore.pse.dev/)

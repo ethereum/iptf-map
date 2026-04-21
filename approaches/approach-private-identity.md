@@ -11,8 +11,8 @@
 Private authentication addresses five interconnected challenges, all served by overlapping cryptographic primitives (membership proofs, nullifiers, selective disclosure):
 
 1. **Verification Without Disclosure:** Proving "I am eligible" without revealing "I am Alice." Traditional authentication exposes identities and creates trackable on-chain patterns.
-2. **Credential Source Heterogeneity:** No universal identity system exists. Passports, KYC registries, biometrics, email, and on-chain history each carry different trust assumptions and proof costs.
-3. **Sybil Resistance:** Distributing value (votes, tokens) requires "one per person" guarantees via deterministic, scope-bound nullifiers.
+2. **Plural Identity:** No universal source. Strong signals (passport, national ID) pull in regulatory cost; weak signals (email, social vouch) are cheap but forgeable. Plural systems treat sources as composable, not substitutable.
+3. **Sybil Resistance:** Plural identity and sybil resistance share one mechanism: a per-identity cost curve (roughly N², per [Vitalik's zk-identity framework](https://vitalik.eth.limo/general/2025/06/28/zkid.html)) that keeps legitimate pseudonyms cheap and prices mass sybils out. Implemented via scope-bound nullifiers and layered crypto/economic/social factors.
 4. **Regulatory Compliance:** Financial use cases require selective disclosure and audit trails with scoped visibility.
 5. **Issuer Independence:** When the issuer becomes unavailable, hostile, or destroyed, the trust anchor must shift to on-chain state (see [Approach F](#f-issuer-independent-enrollment-via-distributed-oprf)).
 
@@ -24,12 +24,12 @@ Private authentication addresses five interconnected challenges, all served by o
 
 **Governance:** Coercion resistance; scalable anonymity sets without centralized bottlenecks.
 
-**Issuer-Hostile:** On-chain trust anchor only (no issuer contact post-enrollment); recovery without duplicate identities; per-source sybil enforcement with economic fallback.
+**Issuer-Hostile:** On-chain trust anchor only (no issuer contact post-enrollment); recovery without duplicate identities; plural enrollment sources with layered (crypto + economic + social) sybil enforcement so no single issuer is load-bearing.
 
 ### TLDR for Different Personas
 
 - **Business:** Verify eligibility claims without exposing personal data. Identity proofs survive issuer shutdown or sanctions.
-- **Technical:** Organized by credential source (Merkle membership, document ZK, DKIM, TLS, biometric), each with different trust/cost profiles. Issuer independence via distributed OPRF enrollment anchored to an on-chain root.
+- **Technical:** Organized by credential source (Merkle membership, document ZK, DKIM, TLS, biometric), each with different trust/cost profiles. Issuer independence via threshold vOPRF enrollment ([RFC 9497](https://www.rfc-editor.org/rfc/rfc9497) + [Jarecki et al. threshold extension](https://eprint.iacr.org/2017/363)) anchored to an on-chain root; plural sources mean any one source can fail without breaking the system.
 - **Legal:** Compliance through verifiable proofs rather than data collection. Selective disclosure for scoped visibility. On-chain anchoring for identity continuity across jurisdictional disruptions.
 
 ## Architecture and Design Choices
@@ -105,9 +105,7 @@ Trusted issuers publish signed claims on-chain ([EAS](https://attest.org/), [ONC
 **Primary Pattern:** [Private MTP Authentication](../patterns/pattern-private-mtp-auth.md)
 **Supporting Patterns:** [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md)
 
-Addresses the issuer-hostile threat model where the issuer may be unavailable, hostile, or destroyed. Credential sources from A-E serve as enrollment inputs, but the trust anchor shifts to on-chain state.
-
-Holders prove identity ownership (passport NFC, national ID, email DKIM, TLS transcript, biometric, community attestation) and obtain a deterministic evaluation from a distributed OPRF network. The output produces an enrollment nullifier (one per identity) and a leaf commitment in an on-chain Merkle tree. Post-enrollment, the on-chain root is the sole trust anchor; no issuer contact during verification.
+Issuer-hostile model: issuer may be unavailable, hostile, or destroyed. Plurality is the default, so any A-E source can enroll and no single issuer is load-bearing. Holders prove identity ownership to a threshold vOPRF network ([RFC 9497](https://www.rfc-editor.org/rfc/rfc9497) + [Jarecki](https://eprint.iacr.org/2017/363)), yielding a deterministic enrollment nullifier and a [Poseidon](https://www.poseidon-hash.info/) leaf in an on-chain [LeanIMT](https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/lean-imt). Post-enrollment, the root is the sole trust anchor; no issuer contact during verification. [TACEO](https://core.taceo.io/articles/taceo-oprf/) operates a 13-node threshold vOPRF in production.
 
 **Enrollment paths:**
 
@@ -126,8 +124,8 @@ Holders prove identity ownership (passport NFC, national ID, email DKIM, TLS tra
 | Layer | Mechanism | What It Bounds | Assumption |
 | --- | --- | --- | --- |
 | Cryptographic | Distributed OPRF enrollment nullifier | One enrollment per source credential | Source credentials are unique and unforgeable |
-| Economic | Refundable stake per enrollment | Capital lockup per identity (N sybils = N * stake) | Attacker capital is finite |
-| Social (future) | Web-of-trust vouching | Amplification bounded by social reach | Social graph not fully captured by attacker |
+| Economic | Refundable stake (0.1 ETH default) | N sybils require N × stake locked | Attacker capital is finite |
+| Social (future) | Web-of-trust vouching (K=3 vouches, V=2 lifetime budget) | Linear (not exponential) sybil growth | Social graph not fully captured by attacker |
 
 When sources are honest, the cryptographic layer enforces one-to-one binding. When compromised, the economic layer bounds sybil creation to capital.
 
@@ -263,10 +261,10 @@ When sources are honest, the cryptographic layer enforces one-to-one binding. Wh
 
 - **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-734/735](https://eips.ethereum.org/EIPS/eip-734), [EAS](https://attest.org/), W3C Verifiable Credentials, [EIP-5564](https://eips.ethereum.org/EIPS/eip-5564), [RFC 9497 (OPRF)](https://www.rfc-editor.org/rfc/rfc9497), [RFC 9380 (hashToCurve)](https://www.rfc-editor.org/rfc/rfc9380), [EIP-196](https://eips.ethereum.org/EIPS/eip-196), [EIP-197](https://eips.ethereum.org/EIPS/eip-197)
 - **ZK Frameworks:** [Semaphore](https://github.com/semaphore-protocol), [Noir/Barretenberg](https://docs.aztec.network/), [Circom/Groth16](https://docs.circom.io/), [Iden3](https://github.com/iden3)
-- **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Rarimo](https://rarimo.com/), [Anon Aadhaar](https://github.com/anon-aadhaar), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [POD2](https://github.com/0xPARC/pod2), [OpenAC](https://eprint.iacr.org/2026/251), [Holonym](https://holonym.id/)
+- **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Rarimo](https://rarimo.com/), [Anon Aadhaar](https://github.com/anon-aadhaar), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [POD2](https://github.com/0xPARC/pod2), [OpenAC](https://eprint.iacr.org/2026/251), [Human Passport](https://passport.human.tech/), [Holonym](https://holonym.id/)
 - **Validated Deployments:** ZKPassport Aztec sale (120+ countries), Anon Aadhaar, World ID (25M registrations), [OpenCerts](https://www.opencerts.io/) (2M+ certs)
 - **Related Patterns:** [Private MTP Auth](../patterns/pattern-private-mtp-auth.md), [ZK-KYC/ML + ONCHAINID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md), [zk-TLS](../patterns/pattern-zk-tls.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [co-SNARK](../patterns/pattern-co-snark.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md), [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md), [Stealth Addresses](../patterns/pattern-stealth-addresses.md), [ERC-3643 RWA](../patterns/pattern-erc3643-rwa.md), [Compliance Monitoring](../patterns/pattern-compliance-monitoring.md), [Network Anonymity](../patterns/pattern-network-anonymity.md), [Noir Private Contracts](../patterns/pattern-noir-private-contracts.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md)
-- **Prior Art:** [zk-creds (Rosenberg et al., 2023)](https://eprint.iacr.org/2022/878), [zk-promises (Shih et al., 2025)](https://eprint.iacr.org/2024/1260), [PLUME (Aayush Gupta, ERC-7524)](https://aayushg.com/thesis.pdf)
+- **Prior Art:** [Vitalik zk-identity framework](https://vitalik.eth.limo/general/2025/06/28/zkid.html), [Human](https://human.tech/) (plural-identity scoring), [zk-creds (Rosenberg et al., 2023)](https://eprint.iacr.org/2022/878), [zk-promises (Shih et al., 2025)](https://eprint.iacr.org/2024/1260), [PLUME (Aayush Gupta, ERC-7524)](https://aayushg.com/thesis.pdf)
 - **PoC:** [Resilient Private Identity](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity)
 - **Vendors:** [Aztec](../vendors/aztec.md), [Miden](../vendors/miden.md), [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md), [TACEO](../vendors/taceo-merces.md), [Privacy Pools](../vendors/privacypools.md), [Chainlink ACE](../vendors/chainlink-ace.md), [EY](../vendors/ey.md)
 - **Allies:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Aztec](https://aztec.network/), [Anon Aadhaar](https://github.com/anon-aadhaar), [World ID](https://worldcoin.org/world-id), [Semaphore](https://semaphore.pse.dev/)
