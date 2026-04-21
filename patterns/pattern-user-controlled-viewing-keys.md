@@ -20,7 +20,7 @@ dependencies:
   - Selective disclosure framework
 context: i2u
 crops_profile:
-  cr: medium
+  cr: none
   os: partial
   privacy: full
   security: medium
@@ -33,7 +33,7 @@ In many privacy-preserving systems, the institution operating the service holds 
 ## Ingredients
 
 - **Cryptographic**: dual-key architecture separating spending authority from read access. Key derivation functions for scoped sub-keys (per-note, per-account, per-time-window). Optional threshold splitting for backup and recovery.
-- **Standards and protocols**: EIP-5564 (stealth addresses with view/spend split), Aztec incoming/outgoing viewing keys (IVK/OVK), Railgun wallet key hierarchy (spending key, viewing key, nullifier key), Zcash incoming/outgoing viewing keys.
+- **Standards and protocols**: EIP-5564 + EIP-6538 (stealth-address generation and meta-address registry with view/spend split), Aztec incoming viewing keys (IVK; OVK is reserved in the protocol but not currently used), Railgun wallet key hierarchy (spending key, viewing key, nullifier key), Zcash incoming/outgoing viewing keys.
 - **Infrastructure**: user-side wallet with key management, optional encrypted backup (user-controlled), selective disclosure interface for generating and delivering scoped keys.
 
 ## Protocol (concise)
@@ -58,8 +58,8 @@ In many privacy-preserving systems, the institution operating the service holds 
 - **Regulatory tension**: some jurisdictions may require always-on institutional access (travel rule implementations, mandatory suspicious activity monitoring). In such contexts, user-controlled keys conflict with regulatory requirements. Hybrid models exist: the user holds the master key but pre-commits to granting scoped access under defined conditions (court order, regulatory mandate) via smart contract logic or social recovery mechanisms.
 - **Key loss**: if the user loses the viewing key, historical transaction data becomes permanently inaccessible. Mitigation: encrypted backup with social recovery, threshold splitting across user-controlled devices.
 - **UX burden**: users must manage additional key material and make disclosure decisions. Institutional services can simplify this with wallet UX, but the user must understand the consequences of sharing keys.
-- **Granularity varies by implementation**: Aztec IVK/OVK provides account-level viewing. Railgun's per-note approach allows finer granularity. Zcash's full viewing key reveals all incoming transactions. The privacy/usability trade-off depends on the key derivation hierarchy.
-- **CROPS context (I2U)**: CR is `medium` because viewing keys protect the read axis (the institution cannot force disclosure), but do not address the write axis (transaction submission, service access). CR `high` requires resistance on both read and write; this pattern covers read. CR drops further if the platform requires key escrow as a condition of service. OS is `partial` because key derivation schemes are well-documented and open source (Aztec, Zcash, Railgun), but specific wallet implementations may be proprietary. Privacy is `full` because the user controls all disclosure; no party learns more than the user explicitly reveals. Security is `medium` because it depends on the user's key management practices and the underlying cryptographic assumptions (ECDH/BabyJubjub for Aztec, secp256k1 for Railgun). Security could reach `high` with audited key management tooling and hardware wallet integration.
+- **Granularity varies by implementation**: Aztec's IVK provides account-level viewing. Railgun's per-note approach allows finer granularity. Zcash's full viewing key (FVK) reveals both incoming and outgoing transactions; the incoming viewing key (IVK) is a narrower variant. The privacy/usability trade-off depends on the key derivation hierarchy.
+- **CROPS context (I2U)**: CR is `none` because this pattern addresses coerced disclosure and surveillance (read-axis), which is orthogonal to classic censorship resistance (write-axis: transaction submission, service access). Viewing-key control does not prevent an institution from blocking transactions or denying service; pair with [Forced Withdrawal](pattern-forced-withdrawal.md) for CR. OS is `partial` because key derivation schemes are well-documented and open source (Aztec, Zcash, Railgun), but specific wallet implementations may be proprietary. Privacy is `full` because the user controls all disclosure; no party learns more than the user explicitly reveals. Security is `medium` because it depends on the user's key management practices and the underlying cryptographic assumptions (ECDH/BabyJubJub for Aztec, BabyJubJub for Railgun derived from an Ethereum wallet signature). Security could reach `high` with audited key management tooling and hardware wallet integration.
 
 ## Example
 

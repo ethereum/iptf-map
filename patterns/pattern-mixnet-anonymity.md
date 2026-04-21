@@ -44,8 +44,7 @@ Hide *who* is sending transactions or querying state by routing messages through
 
 ## Guarantees
 
-- Defeats timing correlation attacks that onion routing is vulnerable to.
-- Cover traffic raises the cost of traffic correlation and, under sufficient volume and wide adoption, resists many timing and correlation attacks including those by global passive adversaries.
+- Under sufficient cover-traffic volume and wide adoption, mixnets substantially raise the cost of timing correlation and can resist global passive adversaries, threats that onion routing is vulnerable to. Guarantees degrade as cover traffic and anonymity-set size shrink.
 - Anonymity set includes all clients active during the mixing window.
 - Does not hide message content; pair with content-privacy patterns for full-stack privacy.
 - **I2U**: the anonymity set is external to the institution. Even if the institution operates the RPC endpoint, it cannot correlate incoming queries with specific users because the mixnet destroys timing and ordering information.
@@ -57,7 +56,7 @@ Hide *who* is sending transactions or querying state by routing messages through
 - Cover traffic adds bandwidth cost proportional to the desired anonymity level.
 - Anonymity set size depends on actual usage volume; low adoption creates a chicken-and-egg problem.
 - No production Ethereum-specific deployment as of 2026. Nym mainnet is live as a general-purpose mixnet; blockchain integrations are in development.
-- HOPR's RPCh (private RPC via mixnet) had a working prototype but development is paused.
+- HOPR's RPCh (private RPC via mixnet) had a working prototype but [development is paused](https://github.com/Rpc-h/RPCh) as of 2026 (team redirected to [Gnosis VPN](https://gnosisvpn.com/)).
 - CROPS: CR is `medium` because mix node participation requires staking. OS is `partial` (Nym and HOPR are open-source but the live networks have governance constraints). Privacy is `partial` because on-chain side channels persist. Security is `medium` because resistance to correlation depends on sustained cover traffic volume, adoption, and correct network operation.
 
 ## Example
@@ -73,6 +72,8 @@ Hide *who* is sending transactions or querying state by routing messages through
 - [Network-Level Anonymity](pattern-network-anonymity.md) - umbrella pattern and approach comparison
 - [Onion Routing](pattern-onion-routing.md) - lower latency but weaker against global adversaries
 - [TEE-Assisted Network Anonymity](pattern-tee-network-anonymity.md) - low-latency alternative using hardware trust
+- [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md) - complementary content-privacy pattern for mempool-level protection
+- [Threshold Encrypted Mempool](pattern-threshold-encrypted-mempool.md) - complementary content-privacy pattern for pre-inclusion encryption
 - [Modular Privacy Stack](pattern-modular-privacy-stack.md) - where network anonymity fits in the four-layer architecture
 
 ## See also (external)

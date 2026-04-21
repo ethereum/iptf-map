@@ -71,6 +71,8 @@ Hide *who* is sending transactions or querying state by routing traffic through 
 - [Network-Level Anonymity](pattern-network-anonymity.md) - umbrella pattern and approach comparison
 - [Mixnet Anonymity](pattern-mixnet-anonymity.md) - stronger anonymity guarantees but higher latency
 - [TEE-Assisted Network Anonymity](pattern-tee-network-anonymity.md) - low-latency alternative using hardware trust
+- [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md) - complementary content-privacy pattern for mempool-level protection
+- [Threshold Encrypted Mempool](pattern-threshold-encrypted-mempool.md) - complementary content-privacy pattern for pre-inclusion encryption
 - [Modular Privacy Stack](pattern-modular-privacy-stack.md) - where network anonymity fits in the four-layer architecture
 
 ## See also (external)

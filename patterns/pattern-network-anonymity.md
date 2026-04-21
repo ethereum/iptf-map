@@ -60,7 +60,7 @@ Pure-cryptographic approaches (onion routing, mixnets) must sacrifice at least o
 
 | Approach                                         | Latency                     | Anonymity strength | Trust assumption                    | Maturity | Pattern                       |
 | ------------------------------------------------ | --------------------------- | ------------------ | ----------------------------------- | -------- | ----------------------------- |
-| [Onion Routing](pattern-onion-routing.md)        | High (~200-500ms added)     | Strong             | No single relay sees full path      | PoC      | Tor relay network, PSE tor-js |
+| [Onion Routing](pattern-onion-routing.md)        | Moderate (~100-300ms typical, up to 500ms)     | Strong             | No single relay sees full path      | PoC      | Tor relay network, PSE tor-js |
 | [Mixnet Anonymity](pattern-mixnet-anonymity.md)  | Very high (seconds-minutes) | Strongest          | Threshold mix nodes + cover traffic | PoC      | Nym, HOPR                     |
 | [TEE-Assisted](pattern-tee-network-anonymity.md) | Low                         | Medium             | Client TEE + server majority        | PoC      | Flashbots Flashnet            |
 
