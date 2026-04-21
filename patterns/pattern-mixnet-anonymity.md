@@ -14,7 +14,9 @@ avoid-when:
   - Low latency is critical (real-time DeFi, intraday trading)
   - Bandwidth overhead from cover traffic is prohibitive
   - Simpler approaches (onion routing, TEE-assisted) meet the threat model
-dependencies: []
+dependencies:
+  - Mix node network (Nym, HOPR)
+  - Client-side cover-traffic generation
 context: both
 crops_profile:
   cr: medium
@@ -55,8 +57,8 @@ Hide *who* is sending transactions or querying state by routing messages through
 - Very high latency (seconds to minutes by design) makes mixnets unsuitable for real-time use cases.
 - Cover traffic adds bandwidth cost proportional to the desired anonymity level.
 - Anonymity set size depends on actual usage volume; low adoption creates a chicken-and-egg problem.
-- No production Ethereum-specific deployment as of 2026. Nym mainnet is live as a general-purpose mixnet; blockchain integrations are in development.
-- HOPR's RPCh (private RPC via mixnet) had a working prototype but [development is paused](https://github.com/Rpc-h/RPCh) as of 2026 (team redirected to [Gnosis VPN](https://gnosisvpn.com/)).
+- No production Ethereum-specific deployment as of 2026-04. Nym mainnet is live as a general-purpose mixnet as of 2026-04; blockchain integrations are in development.
+- HOPR's RPCh (private RPC via mixnet) had a working prototype but [development is paused](https://github.com/Rpc-h/RPCh) as of 2026-04 (team redirected to [Gnosis VPN](https://gnosisvpn.com/)).
 - CROPS: CR is `medium` because mix node participation requires staking. OS is `partial` (Nym and HOPR are open-source but the live networks have governance constraints). Privacy is `partial` because on-chain side channels persist. Security is `medium` because resistance to correlation depends on sustained cover traffic volume, adoption, and correct network operation.
 
 ## Example

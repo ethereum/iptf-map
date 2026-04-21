@@ -14,12 +14,15 @@ avoid-when:
   - Threat model does not include network observers
   - Running own node eliminates RPC provider trust
   - High-latency anonymity networks (Tor, Nym) are acceptable
-dependencies: [TEE (client-side), Secret sharing, Additive homomorphic commitments]
+dependencies:
+  - TEE (client-side)
+  - Secret sharing
+  - Additive homomorphic commitments
 context: both
 crops_profile:
   cr: medium
   os: partial
-  privacy: full
+  privacy: partial
   security: medium
 ---
 
@@ -54,8 +57,8 @@ Hide *who* is sending transactions or querying state at the network layer. Exist
 - Anonymity trilemma: anonymity set size, latency, and bandwidth (cover traffic) are in tension. Pure-crypto approaches (Tor, Nym, DC-Nets) must sacrifice at least one. TEE-assisted designs like Flashnet relax the trilemma by offloading verification to hardware, but introduce a hardware trust assumption for liveness.
 - Client TEEs required for liveness; hardware trust for availability only, not privacy.
 - Requires semi-honest majority among servers; colluding majority can break liveness.
-- Research-stage (Flashbots Flashnet); no production deployment yet.
-- **CROPS context (both)**: In I2U, end-users leak identity to RPC providers operated by institutions without this layer. In I2I, institutions may already run their own nodes, reducing the need.
+- Research-stage (Flashbots Flashnet); no production deployment as of 2026-04.
+- **CROPS context (both)**: Privacy is `partial` because anonymity rests on a client-side TEE and a semi-honest server majority; a TEE compromise or majority collusion can break sender anonymity, so defense in depth (pairing with Tor or a mixnet) is needed for stronger guarantees. In I2U, end-users leak identity to RPC providers operated by institutions without this layer. In I2I, institutions may already run their own nodes, reducing the need.
 
 ## Example
 

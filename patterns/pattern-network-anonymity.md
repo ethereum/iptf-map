@@ -13,7 +13,9 @@ works-best-when:
 avoid-when:
   - Threat model does not include network-level observers
   - On-chain content privacy is the only requirement
-dependencies: []
+dependencies:
+  - Transport-layer tooling (Tor, Nym, or TEE-assisted stack)
+  - External relay or mix-node infrastructure
 context: both
 crops_profile:
   cr: medium
@@ -78,7 +80,7 @@ Pure-cryptographic approaches (onion routing, mixnets) must sacrifice at least o
 - Stronger anonymity generally means higher latency -- institutional latency requirements constrain the choice.
 - All pure-cryptographic approaches are vulnerable to a sufficiently powerful global passive adversary (mixnets mitigate this best via cover traffic).
 - Operational complexity varies: onion routing has mature tooling (Tor); mixnet integration remains non-trivial; TEE-assisted is research-stage.
-- No Ethereum execution client natively supports any network anonymity layer as of 2026.
+- No Ethereum execution client natively supports any network anonymity layer as of 2026-04.
 
 ## Example
 

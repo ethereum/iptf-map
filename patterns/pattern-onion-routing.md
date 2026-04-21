@@ -14,7 +14,9 @@ avoid-when:
   - Sub-second latency is required (DeFi trading, real-time pricing)
   - The threat model includes a global passive adversary with traffic correlation capability
   - Users cannot run additional software or route through external networks
-dependencies: []
+dependencies:
+  - Tor relay network (or equivalent onion-routing overlay)
+  - Client-side routing library (PSE tor-js, Arti)
 context: both
 crops_profile:
   cr: medium
@@ -55,7 +57,7 @@ Hide *who* is sending transactions or querying state by routing traffic through 
 - High latency (3+ hops, ~200-500ms added per request) makes it unsuitable for latency-sensitive DeFi.
 - Exit relays can observe unencrypted traffic; HTTPS to the RPC endpoint mitigates this.
 - Vulnerable to traffic correlation attacks by a well-resourced adversary who can observe both ends of the circuit.
-- No native Tor support in any Ethereum execution client (Geth, Erigon, Reth) as of 2026, unlike Bitcoin Core which has had built-in Tor since 2016. Integration requires external tooling.
+- No native Tor support in any Ethereum execution client (Geth, Erigon, Reth) as of 2026-04, unlike Bitcoin Core which has had built-in Tor since 2016. Integration requires external tooling.
 - CROPS: CR is `medium` overall: when paired with direct P2P or decentralized RPC access, censorship resistance is strong (no single entity gates requests). When routed through a centralized RPC provider, CR drops because the provider can block Tor exit node IPs. OS is `yes` (Tor and Arti are open-source). Privacy is `partial` because on-chain side channels (transaction timing, gas patterns) persist even when IP is hidden. Security is `medium` due to vulnerability to global passive adversaries performing traffic correlation.
 
 ## Example
