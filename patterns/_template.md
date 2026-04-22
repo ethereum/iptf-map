@@ -120,7 +120,7 @@ prefixed with the actor performing it in square brackets:
 
 1. [user] Deposit ERC-20 tokens into shielded pool contract
 2. [contract] Emit commitment on-chain
-3. [user] Execute shielded transfer (generate ZK proof client-side)
+3. [user] Execute shielded transfer (generate zero-knowledge proof client-side)
 4. [relayer] Submit the shielded transaction for gas abstraction
 5. [auditor] Verify via viewing key
 
