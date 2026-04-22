@@ -201,5 +201,5 @@ _FHE-Based:_
   - Privacy L2: [Aztec Network](../vendors/aztec.md), [Miden](../vendors/miden.md)
   - co-SNARKs: [TACEO Merces](../vendors/taceo-merces.md)
   - FHE: [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md)
-- **Related Patterns:** [co-SNARKs](../patterns/pattern-co-snark.md), [Shielding](../patterns/pattern-shielding.md)
+- **Related Patterns:** [co-SNARKs](../patterns/pattern-co-snark.md), [Shielding](../patterns/pattern-shielding.md), [User-Controlled Viewing Keys](../patterns/pattern-user-controlled-viewing-keys.md)
 - **Related Approaches:** [Private DvP](../approaches/approach-private-dvp.md), [Private Derivatives](../approaches/approach-private-derivatives.md)
