@@ -8,7 +8,7 @@ assumptions: Network observer is a threat; content-layer privacy is handled sepa
 last_reviewed: 2026-04-14
 works-best-when:
   - Metadata leakage (IP, timing, query patterns) is a threat model concern
-  - Content privacy alone is insufficient -- "who" matters as much as "what"
+  - Content privacy alone is insufficient; "who" matters as much as "what"
   - Both read privacy (RPC queries) and write privacy (transaction submission) are needed
 avoid-when:
   - Threat model does not include network-level observers
@@ -78,7 +78,7 @@ Pure-cryptographic approaches (onion routing, mixnets) must sacrifice at least o
 
 - No approach simultaneously achieves strong anonymity, low latency, and low bandwidth (anonymity trilemma).
 - Stronger anonymity generally means higher latency -- institutional latency requirements constrain the choice.
-- All pure-cryptographic approaches are vulnerable to a sufficiently powerful global passive adversary (mixnets mitigate this best via cover traffic).
+- All pure-cryptographic approaches are vulnerable to a sufficiently powerful global passive adversary (mixnets mitigate this best via cover traffic, which carries its own tradeoffs).
 - Operational complexity varies: onion routing has mature tooling (Tor); mixnet integration remains non-trivial; TEE-assisted is research-stage.
 - No Ethereum execution client natively supports any network anonymity layer as of 2026-04.
 
