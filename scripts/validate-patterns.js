@@ -56,24 +56,34 @@ const REQUIRED_PATTERN_FRONTMATTER = [
   'crops_profile'
 ];
 
-// New frontmatter fields (warn only for now)
+// Recommended v2 frontmatter (warnings only). `privacy_goal` and
+// `assumptions` have been dropped from v2; they trigger deprecation warnings
+// in validateV2Fields rather than appearing as recommended.
 const RECOMMENDED_PATTERN_FRONTMATTER = [
   'layer',
-  'privacy_goal',
-  'assumptions',
   'last_reviewed'
 ];
 
-// Required sections in pattern documents
+// Required sections in pattern documents.
+// v2 notes:
+//   - `## Components` replaces `## Ingredients`
+//   - `## Guarantees & threat model` replaces `## Guarantees`
+//   - Either form is accepted during migration
+//   - `## Protocol` and `## Example` are skipped for `type: meta` patterns
+//     (handled inline in validatePattern).
 const REQUIRED_PATTERN_SECTIONS = [
   '## Intent',
-  '## Ingredients',
+  '## Ingredients|## Components',
   '## Protocol',
-  '## Guarantees',
+  '## Guarantees|## Guarantees & threat model',
   '## Trade-offs',
   '## Example',
   '## See also'
 ];
+
+// v2 maturity values. v1 values remain valid until the strict-mode flip.
+const V2_MATURITY_VALUES = ['research', 'concept', 'testnet', 'production'];
+const V1_MATURITY_VALUES = ['experimental', 'PoC', 'pilot', 'prod'];
 
 // Required sections for vendor documents
 const REQUIRED_VENDOR_SECTIONS = [
@@ -272,6 +282,60 @@ function validatePatternFileName(fileName) {
 }
 
 /**
+ * Validate v2-specific frontmatter fields. During migration these surface as
+ * warnings; the strict-mode flip promotes them to errors.
+ */
+function validateV2Fields(frontmatter, fileWarnings) {
+  // context: both requires context_differentiation with both slots filled.
+  if (frontmatter.context === 'both') {
+    const cd = frontmatter.context_differentiation;
+    if (!cd) {
+      fileWarnings.push(`v2: context is 'both' but context_differentiation is missing. Add both i2i and i2u strings.`);
+    } else {
+      if (!cd.i2i || String(cd.i2i).trim() === '') {
+        fileWarnings.push(`v2: context_differentiation.i2i is empty — required when context: both.`);
+      }
+      if (!cd.i2u || String(cd.i2u).trim() === '') {
+        fileWarnings.push(`v2: context_differentiation.i2u is empty — required when context: both.`);
+      }
+    }
+  }
+
+  // type: meta requires sub_patterns.
+  if (frontmatter.type === 'meta') {
+    if (!Array.isArray(frontmatter.sub_patterns) || frontmatter.sub_patterns.length === 0) {
+      fileWarnings.push(`v2: type is 'meta' but sub_patterns is empty.`);
+    }
+  }
+
+  // related_patterns slugs must resolve to an existing pattern file.
+  const rp = frontmatter.related_patterns;
+  if (rp && typeof rp === 'object') {
+    for (const slot of ['requires', 'composes_with', 'alternative_to', 'see_also']) {
+      const list = rp[slot];
+      if (!Array.isArray(list)) continue;
+      for (const slug of list) {
+        const target = path.join(PATTERNS_DIR, `${slug}.md`);
+        if (!fs.existsSync(target)) {
+          fileWarnings.push(`v2: related_patterns.${slot} references missing file ${slug}.md`);
+        }
+      }
+    }
+  }
+
+  // sub_patterns slugs must resolve to an existing pattern file.
+  if (Array.isArray(frontmatter.sub_patterns)) {
+    for (const sp of frontmatter.sub_patterns) {
+      if (!sp || !sp.pattern) continue;
+      const target = path.join(PATTERNS_DIR, `${sp.pattern}.md`);
+      if (!fs.existsSync(target)) {
+        fileWarnings.push(`v2: sub_patterns references missing file ${sp.pattern}.md`);
+      }
+    }
+  }
+}
+
+/**
  * Validate a single pattern file
  */
 function validatePattern(filePath) {
@@ -298,20 +362,29 @@ function validatePattern(filePath) {
     }
   }
 
-  // Validate crops_profile sub-fields (skip if explicitly opted out with "n/a")
+  // Validate crops_profile sub-fields (skip if explicitly opted out with "n/a").
+  // v2 renames CROPS fields to single-letter keys matching the acronym:
+  //   os → o  (Openness, not just open source)
+  //   privacy → p
+  //   security → s
+  // Old names are accepted during migration with a deprecation warning.
   if (frontmatter.crops_profile && frontmatter.crops_profile !== 'n/a') {
     const cp = frontmatter.crops_profile;
     const cropsFields = {
-      cr: ['high', 'medium', 'low', 'none'],
-      os: ['yes', 'partial', 'no'],
-      privacy: ['full', 'partial', 'none'],
-      security: ['high', 'medium', 'low']
+      cr: { allowed: ['high', 'medium', 'low', 'none'], legacy: null, label: 'Censorship resistance' },
+      o:  { allowed: ['yes', 'partial', 'no'], legacy: 'os', label: 'Openness' },
+      p:  { allowed: ['full', 'partial', 'none'], legacy: 'privacy', label: 'Privacy' },
+      s:  { allowed: ['high', 'medium', 'low'], legacy: 'security', label: 'Security' }
     };
-    for (const [field, allowed] of Object.entries(cropsFields)) {
-      if (!cp[field]) {
-        fileErrors.push(`crops_profile missing required field: ${field}`);
-      } else if (!allowed.includes(cp[field])) {
-        fileErrors.push(`crops_profile.${field} has invalid value '${cp[field]}'. Allowed: ${allowed.join(', ')}`);
+    for (const [field, spec] of Object.entries(cropsFields)) {
+      const value = cp[field] ?? (spec.legacy ? cp[spec.legacy] : undefined);
+      const usedKey = cp[field] !== undefined ? field : spec.legacy;
+      if (value === undefined) {
+        fileErrors.push(`crops_profile missing required field: ${field} (${spec.label})`);
+      } else if (!spec.allowed.includes(value)) {
+        fileErrors.push(`crops_profile.${usedKey} has invalid value '${value}'. Allowed: ${spec.allowed.join(', ')}`);
+      } else if (spec.legacy && cp[spec.legacy] !== undefined && cp[field] === undefined) {
+        fileWarnings.push(`v2: crops_profile.${spec.legacy} is deprecated — rename to '${field}' to match the CROPS acronym.`);
       }
     }
   }
@@ -355,22 +428,39 @@ function validatePattern(filePath) {
     fileErrors.push(`Invalid status value: ${frontmatter.status} (must be 'draft' or 'ready')`);
   }
 
-  if (frontmatter.maturity && !['experimental', 'PoC', 'pilot', 'production', 'prod'].includes(frontmatter.maturity)) {
-    fileWarnings.push(`Unexpected maturity value: ${frontmatter.maturity}`);
+  if (frontmatter.maturity) {
+    const m = frontmatter.maturity;
+    if (V1_MATURITY_VALUES.includes(m)) {
+      fileWarnings.push(`Deprecated v1 maturity value '${m}'. Migrate to v2: research | concept | testnet | production. (PoC|pilot → testnet; prod → production; experimental → manual review.)`);
+    } else if (!V2_MATURITY_VALUES.includes(m)) {
+      fileWarnings.push(`Unexpected maturity value: ${m}`);
+    }
   }
 
-  // Validate required sections
+  const isMeta = frontmatter.type === 'meta';
+
+  // Validate required sections. v2 accepts `## Components` in place of
+  // `## Ingredients`. Meta-patterns may omit Protocol / Example.
   for (const section of REQUIRED_PATTERN_SECTIONS) {
-    if (!content.includes(section)) {
+    if (isMeta && (section === '## Protocol' || section === '## Example')) {
+      continue;
+    }
+    const alternatives = section.split('|');
+    const hasAny = alternatives.some(s => content.includes(s));
+    if (!hasAny) {
+      const label = alternatives.join(' or ');
       // For existing patterns, only warn about missing sections
       const isNewPattern = !fs.existsSync(filePath.replace('feature/ci-infrastructure', 'master'));
       if (IS_CI && isNewPattern) {
-        fileErrors.push(`Missing required section: ${section}`);
+        fileErrors.push(`Missing required section: ${label}`);
       } else {
-        fileWarnings.push(`Missing required section: ${section}`);
+        fileWarnings.push(`Missing required section: ${label}`);
       }
     }
   }
+
+  // v2 checks (warnings during migration; promoted to errors in strict mode)
+  validateV2Fields(frontmatter, fileWarnings);
 
   // Validate internal links (warning only - enable blocking after fixing existing issues)
   const linkErrors = validateInternalLinks(filePath, content);
