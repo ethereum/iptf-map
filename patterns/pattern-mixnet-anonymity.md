@@ -4,7 +4,7 @@ status: draft
 maturity: PoC
 layer: offchain
 privacy_goal: Hide sender identity by batching, delaying, reordering, and padding messages with cover traffic
-assumptions: Threshold trust across mix nodes; cover traffic defeats timing analysis
+assumptions: Threshold trust across mix nodes; sufficient cover traffic and adoption to raise timing-correlation cost
 last_reviewed: 2026-04-14
 works-best-when:
   - The threat model includes a global passive adversary capable of traffic correlation
@@ -49,7 +49,7 @@ Hide *who* is sending transactions or querying state by routing messages through
 - Under sufficient cover-traffic volume and wide adoption, mixnets substantially raise the cost of timing correlation and can resist global passive adversaries, threats that onion routing is vulnerable to. Guarantees degrade as cover traffic and anonymity-set size shrink.
 - Anonymity set includes all clients active during the mixing window.
 - Does not hide message content; pair with content-privacy patterns for full-stack privacy.
-- **I2U**: the anonymity set is external to the institution. Even if the institution operates the RPC endpoint, it cannot correlate incoming queries with specific users because the mixnet destroys timing and ordering information.
+- **I2U**: the anonymity set is external to the institution. Even if the institution operates the RPC endpoint, mixnets reduce its ability to correlate incoming queries with specific users by disrupting timing and ordering signals; protection strength depends on cover volume, adoption, and route quality.
 - **I2I**: institutions can hide query patterns and transaction timing from counterparty infrastructure and from network-level observers.
 
 ## Trade-offs

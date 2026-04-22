@@ -1,7 +1,7 @@
 ---
 title: "Pattern: Onion Routing"
 status: draft
-maturity: prod
+maturity: PoC
 layer: offchain
 privacy_goal: Hide sender IP by routing traffic through multiple relay nodes, each peeling one encryption layer
 assumptions: No single relay sees both sender and destination; vulnerable to global passive adversary
