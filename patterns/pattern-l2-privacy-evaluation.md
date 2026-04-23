@@ -65,37 +65,37 @@ Give institutions a vendor-neutral, sourced methodology for comparing privacy-pr
 
 | Metric                     | Discrete metrics                                                                                                             |
 | :------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
-| **Max Throughput**         | Max theoretical TPS, tested peak TPS (with benchmark link). Report TPS<sub>Public</sub> and TPS<sub>Private</sub> separately |
-| **Transaction cost**       | Gas usage in `L1 gas units` + `L2 gas units` for Simple Value Transfer                                                       |
-| **Bridging and exit**      | L2 to L1 withdrawal and forced exit cost (gas units)                                                                         |
-| **Finality time**          | `Soft Finality` (L2 inclusion), `Hard Finality` (L1 commitment + proof), `Challenge Period`                                  |
-| **Transaction retrieval**  | Sync mechanism (`Trial decryption`, `Detection Keys`, `Server-side filtering`) and sync speed                                |
+| Max Throughput         | Max theoretical TPS, tested peak TPS (with benchmark link). Report TPS<sub>Public</sub> and TPS<sub>Private</sub> separately |
+| Transaction cost       | Gas usage in `L1 gas units` + `L2 gas units` for Simple Value Transfer                                                       |
+| Bridging and exit      | L2 to L1 withdrawal and forced exit cost (gas units)                                                                         |
+| Finality time          | `Soft Finality` (L2 inclusion), `Hard Finality` (L1 commitment + proof), `Challenge Period`                                  |
+| Transaction retrieval  | Sync mechanism (`Trial decryption`, `Detection Keys`, `Server-side filtering`) and sync speed                                |
 
 ### 2. Privacy and Data Availability
 
 | Metric                    | Discrete metrics                                                                                                                      |
 | :------------------------ | :------------------------------------------------------------------------------------------------------------------------------------ |
-| **Level of privacy**      | **What**: `Balance`, `Sender/Receiver`, `Amount`, `Code/Function`, `Contract Bytecode`. **Who sees**: `Public`, `Sequencer`, `Prover` |
-| **DA layer**              | `L1 Call Data`, `L1 Data Blobs (EIP-4844)`, `External DAC`                                                                            |
-| **DA trust**              | `Trustless/L1-secured`, `Trusted DAC`                                                                                                 |
-| **Data posted to L1**     | `Full Transaction Data`, `State Diff`, `Validity Proof Only`                                                                          |
-| **Compliance features**   | `Incoming Viewing Key`, `Outgoing Viewing Key`, `Full History Viewing Key`                                                            |
-| **Privacy trust model**   | **Base**: `Cryptographic`, `Threshold (MPC/FHE)`. **Collusion threshold**: m-of-n                                                     |
-| **Network privacy**       | RPC privacy options (`Tor/I2P`, `Oblivious HTTP`, `Mixnet`)                                                                           |
+| Level of privacy      | What: `Balance`, `Sender/Receiver`, `Amount`, `Code/Function`, `Contract Bytecode`. Who sees: `Public`, `Sequencer`, `Prover` |
+| DA layer              | `L1 Call Data`, `L1 Data Blobs (EIP-4844)`, `External DAC`                                                                            |
+| DA trust              | `Trustless/L1-secured`, `Trusted DAC`                                                                                                 |
+| Data posted to L1     | `Full Transaction Data`, `State Diff`, `Validity Proof Only`                                                                          |
+| Compliance features   | `Incoming Viewing Key`, `Outgoing Viewing Key`, `Full History Viewing Key`                                                            |
+| Privacy trust model   | Base: `Cryptographic`, `Threshold (MPC/FHE)`. Collusion threshold: m-of-n                                                     |
+| Network privacy       | RPC privacy options (`Tor/I2P`, `Oblivious HTTP`, `Mixnet`)                                                                           |
 
 ### 3. Security and governance
 
 | Metric                         | Discrete metrics                                                                                                                                                                       |
 | :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Sequencer decentralization** | `Centralized`, `Permissioned Set`, `Decentralized Auction`, `Based (L1 Sequencing)`                                                                                                    |
-| **Censorship resistance**      | **Mechanism**: `Force inclusion`, `Escape Hatch`, `Council`. **User burden**: `Stateless`, `Merkle Witness`, `Full State Reconstruction`. **Latency**: `Immediate`, `Challenge Period` |
-| **Prover mechanism**           | **Access**: `Whitelist`, `Permissionless`. **System**: `Plonk`, `Stark`, `FHE`, `Groth16`                                                                                              |
-| **Upgrade process**            | **Governance**: `Multisig (m-of-n)`, `Immutable`, `DAO Vote`. **Timelock**: delay in days or hours                                                                                     |
-| **Client-side requirements**   | **Client proving**: `Yes`/`No`. **Features**: `Mobile Proving`, `Trusted Delegation`, `Blind Delegation`                                                                               |
-| **Finality security**          | `Validity (ZK)`, `Optimistic (Fraud Proofs)`                                                                                                                                           |
-| **Proof system setup**         | `Trusted Ceremony`, `Transparent`                                                                                                                                                      |
-| **Programmability**            | **Language**: `EVM/Solidity`, `DSL`, `WASM`. **Deployment**: `Permissionless`, `Whitelisted`                                                                                           |
-| **PQ security**                | Susceptible to HNDL attacks? (`Yes`/`No`)                                                                                                                                              |
+| Sequencer decentralization | `Centralized`, `Permissioned Set`, `Decentralized Auction`, `Based (L1 Sequencing)`                                                                                                    |
+| Censorship resistance      | Mechanism: `Force inclusion`, `Escape Hatch`, `Council`. User burden: `Stateless`, `Merkle Witness`, `Full State Reconstruction`. Latency: `Immediate`, `Challenge Period` |
+| Prover mechanism           | Access: `Whitelist`, `Permissionless`. System: `Plonk`, `Stark`, `FHE`, `Groth16`                                                                                              |
+| Upgrade process            | Governance: `Multisig (m-of-n)`, `Immutable`, `DAO Vote`. Timelock: delay in days or hours                                                                                     |
+| Client-side requirements   | Client proving: `Yes`/`No`. Features: `Mobile Proving`, `Trusted Delegation`, `Blind Delegation`                                                                               |
+| Finality security          | `Validity (ZK)`, `Optimistic (Fraud Proofs)`                                                                                                                                           |
+| Proof system setup         | `Trusted Ceremony`, `Transparent`                                                                                                                                                      |
+| Programmability            | Language: `EVM/Solidity`, `DSL`, `WASM`. Deployment: `Permissionless`, `Whitelisted`                                                                                           |
+| PQ security                | Susceptible to HNDL attacks? (`Yes`/`No`)                                                                                                                                              |
 
 ## Simple Value Transfer
 
@@ -132,12 +132,12 @@ Results below are drawn from public documentation and independent sources. Empty
 
 | Protocol         | Deployment   | Privacy model      | Proof system       | DA                      | Client proving          | Censorship resistance |
 | :--------------- | :----------- | :----------------- | :----------------- | :---------------------- | :---------------------- | :-------------------- |
-| **Aztec**        | Public L2    | Cryptographic (ZK) | UltraHonk          | L1 Blobs                | Yes (heavy)             | Escape Hatch          |
-| **Miden**        | Public L2    | Cryptographic (ZK) | STARK (Winterfell) | L1 Blobs                | Yes (can be delegated)  | TBD                   |
-| **Intmax**       | Public L2    | Cryptographic (ZK) | Plonk/Gnark        | Stateless (Client-Side) | Yes (light)             | Force Inclusion       |
-| **Prividium**    | AppChain SDK | Cryptographic (ZK) | Boojum/Plonk       | External (Private DB)   | No (server)             | Operator-dependent    |
-| **Scroll Cloak** | AppChain SDK | Cryptographic (ZK) | Scroll zkEVM       | Host chain              | No (prover service)     | Force Exit to host    |
-| **EY Nightfall** | AppChain SDK | Cryptographic (ZK) | UltraPlonk         | L1 Call Data            | Yes                     | TBD                   |
+| Aztec        | Public L2    | Cryptographic (ZK) | UltraHonk          | L1 Blobs                | Yes (heavy)             | Escape Hatch          |
+| Miden        | Public L2    | Cryptographic (ZK) | STARK (Winterfell) | L1 Blobs                | Yes (can be delegated)  | TBD                   |
+| Intmax       | Public L2    | Cryptographic (ZK) | Plonk/Gnark        | Stateless (Client-Side) | Yes (light)             | Force Inclusion       |
+| Prividium    | AppChain SDK | Cryptographic (ZK) | Boojum/Plonk       | External (Private DB)   | No (server)             | Operator-dependent    |
+| Scroll Cloak | AppChain SDK | Cryptographic (ZK) | Scroll zkEVM       | Host chain              | No (prover service)     | Force Exit to host    |
+| EY Nightfall | AppChain SDK | Cryptographic (ZK) | UltraPlonk         | L1 Call Data            | Yes                     | TBD                   |
 
 AppChain SDKs have deployment-dependent assumptions (sequencer, DA, governance) that vary by operator. Public L2s offering hybrid modes (Aztec, Miden) let the developer choose between a public account model and a private UTXO note model; stateless or validium designs (Intmax, Prividium, Scroll Cloak) hide balances and transfer data by default.
 

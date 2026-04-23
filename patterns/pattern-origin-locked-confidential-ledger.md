@@ -58,12 +58,12 @@ Provide confidential balances and transfers for an existing ERC-20 on an origin 
 
 ## Components
 
-- **Origin locking contract**: minimal contract on the origin EVM chain that escrows deposits and releases withdrawals. It is the only place user funds live.
-- **Encrypted ledger**: per-account balances stored as ElGamal ciphertext under the account holder's key on a separate confidentiality execution layer.
-- **ZK verifier**: validates state transitions on the encrypted ledger (no overspend, conservation of value, correct key usage) without decrypting balances.
-- **Homomorphic update logic**: encrypted balances update via ElGamal additive homomorphism; plaintext balances are never reconstructed by any component.
-- **Verifiable cross-chain messaging**: light-client or IBC-style messaging between the origin chain and the confidentiality layer. Relayers move packets but are not trusted for correctness.
-- **Disclosure layer** (optional): scoped viewing keys or per-transaction audit keys generated via MPC, so a designated auditor can decrypt specific transactions under review.
+- Origin locking contract: minimal contract on the origin EVM chain that escrows deposits and releases withdrawals. It is the only place user funds live.
+- Encrypted ledger: per-account balances stored as ElGamal ciphertext under the account holder's key on a separate confidentiality execution layer.
+- ZK verifier: validates state transitions on the encrypted ledger (no overspend, conservation of value, correct key usage) without decrypting balances.
+- Homomorphic update logic: encrypted balances update via ElGamal additive homomorphism; plaintext balances are never reconstructed by any component.
+- Verifiable cross-chain messaging: light-client or IBC-style messaging between the origin chain and the confidentiality layer. Relayers move packets but are not trusted for correctness.
+- Disclosure layer (optional): scoped viewing keys or per-transaction audit keys generated via MPC, so a designated auditor can decrypt specific transactions under review.
 
 ## Protocol
 

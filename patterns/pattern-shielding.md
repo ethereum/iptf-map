@@ -54,17 +54,17 @@ open_source_implementations:
 
 ## Intent
 
-Enable **confidential transfers** by shielding balances, sender, and receiver, while still allowing regulators and auditors to verify via selective disclosure (viewing keys, proofs). The logic generalizes beyond ERC-20 to any transferable asset.
+Enable confidential transfers by shielding balances, sender, and receiver, while still allowing regulators and auditors to verify via selective disclosure (viewing keys, proofs). The logic generalizes beyond ERC-20 to any transferable asset.
 
 ## Components
 
-- **Shielded pool contract** stores commitments, the nullifier set, and a ZK verifier. Deployable on L1 or a shielded L2.
-- **Hash-based commitments** (e.g. Poseidon) hide note contents; notes represent spendable state.
-- **Nullifier set** prevents double-spends by tracking spent notes.
-- **Prover and verifier**, with circuit logic authored in a DSL (Noir, Circom, Halo2, Gnark, etc.); the prover runs client-side.
-- **Wallet/KMS** manages shielded keys and optional viewing keys.
-- **Relayer/paymaster** (optional) for gas abstraction.
-- **Stealth addresses** (optional, ERC-5564) for recipient unlinkability.
+- Shielded pool contract stores commitments, the nullifier set, and a ZK verifier. Deployable on L1 or a shielded L2.
+- Hash-based commitments (e.g. Poseidon) hide note contents; notes represent spendable state.
+- Nullifier set prevents double-spends by tracking spent notes.
+- Prover and verifier, with circuit logic authored in a DSL (Noir, Circom, Halo2, Gnark, etc.); the prover runs client-side.
+- Wallet/KMS manages shielded keys and optional viewing keys.
+- Relayer/paymaster (optional) for gas abstraction.
+- Stealth addresses (optional, ERC-5564) for recipient unlinkability.
 
 ## Protocol
 

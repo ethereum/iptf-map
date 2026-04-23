@@ -55,11 +55,11 @@ Prevent censorship of Ethereum transactions by sophisticated block builders. A c
 
 ## Components
 
-- **IL committee** of 16 validators selected per slot to construct inclusion lists for the following slot.
-- **Inclusion list** is a signed, bounded set of transactions (8 KiB max per member) that the next block must include.
-- **P2P gossip network** propagates signed inclusion lists across the validator set.
-- **Fork-choice enforcement** is the consensus-layer rule: attesters refuse to attest to blocks that fail to satisfy observed ILs.
-- **Equivocation detection** identifies committee members publishing conflicting ILs and discards their contributions.
+- IL committee of 16 validators selected per slot to construct inclusion lists for the following slot.
+- Inclusion list is a signed, bounded set of transactions (8 KiB max per member) that the next block must include.
+- P2P gossip network propagates signed inclusion lists across the validator set.
+- Fork-choice enforcement is the consensus-layer rule: attesters refuse to attest to blocks that fail to satisfy observed ILs.
+- Equivocation detection identifies committee members publishing conflicting ILs and discards their contributions.
 
 ## Protocol
 

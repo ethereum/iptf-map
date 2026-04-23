@@ -55,12 +55,12 @@ Move assets between chains while preserving privacy on the destination by mintin
 
 ## Components
 
-- **Source escrow contract** locks assets on forward bridging or burns them on return. Emits an event carrying the destination commitment.
-- **Destination privacy primitive** is a shielded pool with commitments and nullifiers. The bridge mints a note into this pool rather than transferring a transparent token.
-- **Cross-domain message and verification mechanism** carries finality evidence from source to destination. Options include operator signatures, MPC or threshold signatures, optimistic claims with challenge windows, ZK succinct proofs of source consensus (zk-SPV), light clients, or TEE-attested enclaves.
-- **Relayer infrastructure** submits finality proofs on the destination without linking the depositor. Fee model matters: if the depositor pays the relayer directly from a known address, the linkage is reintroduced.
-- **Optional compliance hooks** include viewing keys for auditors, screening gates, and deposit limits.
-- **Timeout and recovery path** on the source escrow allows the depositor to reclaim funds if the destination mint never completes.
+- Source escrow contract locks assets on forward bridging or burns them on return. Emits an event carrying the destination commitment.
+- Destination privacy primitive is a shielded pool with commitments and nullifiers. The bridge mints a note into this pool rather than transferring a transparent token.
+- Cross-domain message and verification mechanism carries finality evidence from source to destination. Options include operator signatures, MPC or threshold signatures, optimistic claims with challenge windows, ZK succinct proofs of source consensus (zk-SPV), light clients, or TEE-attested enclaves.
+- Relayer infrastructure submits finality proofs on the destination without linking the depositor. Fee model matters: if the depositor pays the relayer directly from a known address, the linkage is reintroduced.
+- Optional compliance hooks include viewing keys for auditors, screening gates, and deposit limits.
+- Timeout and recovery path on the source escrow allows the depositor to reclaim funds if the destination mint never completes.
 
 ## Protocol
 
@@ -110,10 +110,10 @@ Threat model:
 
 ## Variants
 
-- **Pre-bridge mixing**: Deposit through a source-chain shielded pool first, then bridge. Achieves full sender privacy at the cost of additional latency.
-- **Hub-and-spoke**: Use L1 as a verification hub; multiple L2s prove deposits via the L1 bridge contract.
-- **Privacy-to-privacy**: Both source and destination have shielded pools. Maximum privacy but verification is more complex.
-- **Asymmetric**: Only one direction is private (for example, public L1 to private L2).
+- Pre-bridge mixing: Deposit through a source-chain shielded pool first, then bridge. Achieves full sender privacy at the cost of additional latency.
+- Hub-and-spoke: Use L1 as a verification hub; multiple L2s prove deposits via the L1 bridge contract.
+- Privacy-to-privacy: Both source and destination have shielded pools. Maximum privacy but verification is more complex.
+- Asymmetric: Only one direction is private (for example, public L1 to private L2).
 
 ## See also
 

@@ -52,15 +52,15 @@ open_source_implementations:
 
 Offload zero-knowledge proof generation to a distributed prover network without revealing the witness. The user secret-shares their witness across several proving nodes; the nodes jointly run an MPC protocol to compute a single SNARK proof; no individual node ever reconstructs the full witness. The resulting proof is identical to one produced client-side and is verified on-chain or off-chain with no changes on the verifier side.
 
-This pattern covers **delegated proving for a single prover's witness**. For multi-party joint computation over shared secret inputs (e.g. a consortium ledger), see `pattern-private-shared-state-cosnark`.
+This pattern covers delegated proving for a single prover's witness. For multi-party joint computation over shared secret inputs (e.g. a consortium ledger), see `pattern-private-shared-state-cosnark`.
 
 ## Components
 
-- **User or application** holds the witness and wants a proof generated without exposing the witness.
-- **Share-distribution layer** splits the witness using secret-sharing (additive or Shamir) and routes shares to proving nodes.
-- **Distributed prover network** runs the MPC protocol to jointly compute the SNARK. Each node sees only its share.
-- **Coordinator** sequences MPC rounds and assembles the final proof. Can be one of the proving nodes or a separate role.
-- **Verifier** checks the final proof exactly as it would check a client-side SNARK. No changes on the verification side.
+- User or application holds the witness and wants a proof generated without exposing the witness.
+- Share-distribution layer splits the witness using secret-sharing (additive or Shamir) and routes shares to proving nodes.
+- Distributed prover network runs the MPC protocol to jointly compute the SNARK. Each node sees only its share.
+- Coordinator sequences MPC rounds and assembles the final proof. Can be one of the proving nodes or a separate role.
+- Verifier checks the final proof exactly as it would check a client-side SNARK. No changes on the verification side.
 
 ## Protocol
 

@@ -50,11 +50,11 @@ Coordinate a cross-chain settlement by having both parties post commitments to a
 
 ## Components
 
-- **Commitment scheme** (hash-based or Pedersen) binds the shared witness `w` to a public value `C` that both parties post.
-- **Per-chain settlement contracts** accept a settlement transaction that references `C` and verifies local conditions (asset transfer, payment).
-- **Coordination layer** (off-chain) holds the pre-image `w`, sequences the two legs, and drives retry logic.
-- **Timeout and refund paths** on each chain allow a counterparty to reclaim funds if the other leg never posts within a deadline.
-- **Attestation log** (optional) records the commitments and settlement events for later audit.
+- Commitment scheme (hash-based or Pedersen) binds the shared witness `w` to a public value `C` that both parties post.
+- Per-chain settlement contracts accept a settlement transaction that references `C` and verifies local conditions (asset transfer, payment).
+- Coordination layer (off-chain) holds the pre-image `w`, sequences the two legs, and drives retry logic.
+- Timeout and refund paths on each chain allow a counterparty to reclaim funds if the other leg never posts within a deadline.
+- Attestation log (optional) records the commitments and settlement events for later audit.
 
 ## Protocol
 

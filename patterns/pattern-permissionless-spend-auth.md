@@ -53,11 +53,11 @@ Separate note ownership from spend authorization in a shielded pool, and use a r
 
 ## Components
 
-- **Ownership secret**: a per-user secret (e.g., a nullifier key) committed in each note via its hash. Not derived from any auth credential.
-- **Auth policy registry**: on-chain Merkleized registry binding `(userIdentifier, innerVkHash)` to credentials. Separate from the note tree so auth updates do not touch note state.
-- **Outer circuit (stable)**: proves ownership, enforces pool invariants (value conservation, nullifier correctness), and recursively verifies the inner proof.
-- **Inner circuit (permissionless)**: proves authorization for a registered auth policy. Anyone can author and deploy a new inner circuit type.
-- **Recursive verifier**: the outer circuit verifies the inner circuit's proof inline, producing a single on-chain proof format.
+- Ownership secret: a per-user secret (e.g., a nullifier key) committed in each note via its hash. Not derived from any auth credential.
+- Auth policy registry: on-chain Merkleized registry binding `(userIdentifier, innerVkHash)` to credentials. Separate from the note tree so auth updates do not touch note state.
+- Outer circuit (stable): proves ownership, enforces pool invariants (value conservation, nullifier correctness), and recursively verifies the inner proof.
+- Inner circuit (permissionless): proves authorization for a registered auth policy. Anyone can author and deploy a new inner circuit type.
+- Recursive verifier: the outer circuit verifies the inner circuit's proof inline, producing a single on-chain proof format.
 
 The shielded pool this plugs into is described in `pattern-shielding`.
 

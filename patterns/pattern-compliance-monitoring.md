@@ -53,12 +53,12 @@ This is an orchestration pattern that composes primitives (viewing keys, zero-kn
 
 ## Components
 
-- **Compliance oracle or screening service** evaluates transactions against sanctions lists, AML rules, and internal policies. Can be centralized, federated, or threshold-operated.
-- **Rule engine** stores jurisdiction-specific rules with versioning. Rule updates are logged and auditable.
-- **Threshold key management** issues and rotates viewing keys distributed to authorized parties, so no single operator can unilaterally decrypt transaction contents.
-- **zero-knowledge proof verifiers** (optional) validate compliance attestations such as "amount below reporting threshold" or "counterparty not on sanctions list" without revealing the underlying values.
-- **Alert and case management system** handles flagged transactions through severity tiers with defined response times.
-- **Audit log** records every screening decision with timestamp, rule version, and decision hash. Typically anchored on-chain via attestations for tamper evidence.
+- Compliance oracle or screening service evaluates transactions against sanctions lists, AML rules, and internal policies. Can be centralized, federated, or threshold-operated.
+- Rule engine stores jurisdiction-specific rules with versioning. Rule updates are logged and auditable.
+- Threshold key management issues and rotates viewing keys distributed to authorized parties, so no single operator can unilaterally decrypt transaction contents.
+- zero-knowledge proof verifiers (optional) validate compliance attestations such as "amount below reporting threshold" or "counterparty not on sanctions list" without revealing the underlying values.
+- Alert and case management system handles flagged transactions through severity tiers with defined response times.
+- Audit log records every screening decision with timestamp, rule version, and decision hash. Typically anchored on-chain via attestations for tamper evidence.
 
 ## Protocol
 

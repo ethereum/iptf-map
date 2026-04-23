@@ -52,11 +52,11 @@ Enable cross-chain intent-based settlement where users express desired outcomes 
 
 ## Components
 
-- **Intent contracts**: input-collection and output-delivery entry points that escrow user assets, record intent parameters, and release funds on proof of fulfilment.
-- **Solver**: off-chain service that indexes intents, computes execution routes (swaps, bridges, liquidity routing), and submits fulfilment transactions.
-- **Cross-chain messaging layer**: transports proofs of fulfilment between origin and destination chains.
-- **Oracle or proof mechanism**: verifies that outputs have been delivered before the origin contract releases inputs.
-- **Settlement module**: finalises the intent and handles refund or cancellation on failure.
+- Intent contracts: input-collection and output-delivery entry points that escrow user assets, record intent parameters, and release funds on proof of fulfilment.
+- Solver: off-chain service that indexes intents, computes execution routes (swaps, bridges, liquidity routing), and submits fulfilment transactions.
+- Cross-chain messaging layer: transports proofs of fulfilment between origin and destination chains.
+- Oracle or proof mechanism: verifies that outputs have been delivered before the origin contract releases inputs.
+- Settlement module: finalises the intent and handles refund or cancellation on failure.
 
 ## Protocol
 

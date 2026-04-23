@@ -48,18 +48,18 @@ Enable atomic Delivery-versus-Payment across two networks so that either the ass
 
 In this pattern:
 
-- **asset leg** is the tokenized security or collateral being delivered.
-- **cash leg** is the token used for payment, such as a stablecoin or tokenized deposit.
-- **decryption oracle** is a service on the payment network that, for each trade, decrypts one of two outcome keys based on the actual payment result; the asset contract then uses that key to decide whether to deliver or reclaim.
+- asset leg is the tokenized security or collateral being delivered.
+- cash leg is the token used for payment, such as a stablecoin or tokenized deposit.
+- decryption oracle is a service on the payment network that, for each trade, decrypts one of two outcome keys based on the actual payment result; the asset contract then uses that key to decide whether to deliver or reclaim.
 
 ## Components
 
-- **Locking contract on the asset network** registers the hashed outcome keys per trade identifier and gates delivery of the locked asset.
-- **Decryption contract on the payment network** holds the encrypted outcome keys and calls the oracle after observing the payment result.
-- **Decryption oracle** is a single or multi-operator service that decrypts the outcome key matching the actual payment result. Stateless by design.
-- **Off-chain trade negotiation layer** assigns a shared trade identifier, creates and distributes two outcome keys per trade (success and failure), and holds them off-chain.
-- **Oracle proxy and callback contracts** bridge the decryption contract and the oracle per the ERC-7573 interface.
-- **Monitoring and logging infrastructure** watches both networks for event correlation and reconciles trade state.
+- Locking contract on the asset network registers the hashed outcome keys per trade identifier and gates delivery of the locked asset.
+- Decryption contract on the payment network holds the encrypted outcome keys and calls the oracle after observing the payment result.
+- Decryption oracle is a single or multi-operator service that decrypts the outcome key matching the actual payment result. Stateless by design.
+- Off-chain trade negotiation layer assigns a shared trade identifier, creates and distributes two outcome keys per trade (success and failure), and holds them off-chain.
+- Oracle proxy and callback contracts bridge the decryption contract and the oracle per the ERC-7573 interface.
+- Monitoring and logging infrastructure watches both networks for event correlation and reconciles trade state.
 
 ## Protocol
 
@@ -107,9 +107,9 @@ Threat model:
 
 Standard ERC-7573 provides atomic settlement but no privacy. For institutional use cases requiring confidentiality:
 
-- **Threshold decryption oracle**: Run the oracle with several independent operators and require a k-of-n quorum before an outcome key is released.
-- **Minimal on-chain trade data**: Keep full trade terms (price, size, counterparties) in internal systems; on-chain, store only a trade identifier and a short reference that links back to those records.
-- **Private or proof-based payment layer**: Use a network or rollup for the cash leg that hides detailed balances but can provide a clear "payment completed or not completed" result for each trade identifier.
+- Threshold decryption oracle: Run the oracle with several independent operators and require a k-of-n quorum before an outcome key is released.
+- Minimal on-chain trade data: Keep full trade terms (price, size, counterparties) in internal systems; on-chain, store only a trade identifier and a short reference that links back to those records.
+- Private or proof-based payment layer: Use a network or rollup for the cash leg that hides detailed balances but can provide a clear "payment completed or not completed" result for each trade identifier.
 
 These extensions do not change how the contracts decide outcomes: the asset contract still receives an outcome key and either delivers the asset or allows reclaim.
 

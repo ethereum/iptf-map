@@ -49,12 +49,12 @@ Enable compliant tokenization of real-world assets with built-in identity manage
 
 ## Components
 
-- **Permissioned token contract** (ERC-3643) exposes an ERC-20 interface but routes every transfer through compliance and identity checks.
-- **On-chain identity contract** per participant stores claims (KYC, accreditation, jurisdiction) and exposes verification endpoints.
-- **Identity registry** maps wallet addresses to identity contracts and gates who is eligible to hold the token.
-- **Compliance module suite** is a pluggable rules engine that evaluates per-transfer restrictions (caps, lockups, eligibility classes).
-- **Claim issuers** are off-chain actors that sign claims written into identity contracts; the registry tracks trusted issuers.
-- **Token agent** holds administrative powers: freeze, force-transfer, blacklist, supply management, compliance-rule updates.
+- Permissioned token contract (ERC-3643) exposes an ERC-20 interface but routes every transfer through compliance and identity checks.
+- On-chain identity contract per participant stores claims (KYC, accreditation, jurisdiction) and exposes verification endpoints.
+- Identity registry maps wallet addresses to identity contracts and gates who is eligible to hold the token.
+- Compliance module suite is a pluggable rules engine that evaluates per-transfer restrictions (caps, lockups, eligibility classes).
+- Claim issuers are off-chain actors that sign claims written into identity contracts; the registry tracks trusted issuers.
+- Token agent holds administrative powers: freeze, force-transfer, blacklist, supply management, compliance-rule updates.
 
 ## Protocol
 

@@ -44,11 +44,11 @@ Use the ICMA Bond Data Taxonomy as the canonical schema for bond terms and lifec
 
 ## Components
 
-- **Canonical schema** defines bond terms (identifiers, parties, cash flows, covenants) and lifecycle events (issuance, coupons, redemption, restructuring).
-- **Schema validator** checks that bond records conform to the canonical definitions before they are signed, hashed, or anchored.
-- **Compression layer** converts verbose representations (for example XML) into binary or compact serialization for efficient on-chain anchoring.
-- **Registrar integration** maps internal registrar records to the canonical schema so existing systems can emit conformant data without rewriting their back office.
-- **Attestation anchor** posts hashes of conformant records to an on-chain attestation registry so any verifier can check that a disclosed document matches what the registrar recorded.
+- Canonical schema defines bond terms (identifiers, parties, cash flows, covenants) and lifecycle events (issuance, coupons, redemption, restructuring).
+- Schema validator checks that bond records conform to the canonical definitions before they are signed, hashed, or anchored.
+- Compression layer converts verbose representations (for example XML) into binary or compact serialization for efficient on-chain anchoring.
+- Registrar integration maps internal registrar records to the canonical schema so existing systems can emit conformant data without rewriting their back office.
+- Attestation anchor posts hashes of conformant records to an on-chain attestation registry so any verifier can check that a disclosed document matches what the registrar recorded.
 
 ## Protocol
 

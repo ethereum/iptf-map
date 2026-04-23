@@ -45,11 +45,11 @@ Operate with a licensed crypto-register today while mirroring key legal facts (i
 
 ## Components
 
-- **Licensed crypto-register** under eWpG holds the legal records, PII, and signed notarial documents off-chain. It is the sole source of legal truth.
-- **Registrar API integration layer** exposes signed records for each legal event (issuance, transfer, lien) to downstream systems.
-- **On-chain attestation schema** defines the structure of mirrored facts: event type, record hash, registrar identifier, timestamp. PII never appears on-chain.
-- **Middleware attester** reads the registrar's signed records, computes the hash, and posts an attestation on-chain under the schema.
-- **Reconciliation and audit tooling** matches the on-chain anchor to the off-chain registrar record and flags drift.
+- Licensed crypto-register under eWpG holds the legal records, PII, and signed notarial documents off-chain. It is the sole source of legal truth.
+- Registrar API integration layer exposes signed records for each legal event (issuance, transfer, lien) to downstream systems.
+- On-chain attestation schema defines the structure of mirrored facts: event type, record hash, registrar identifier, timestamp. PII never appears on-chain.
+- Middleware attester reads the registrar's signed records, computes the hash, and posts an attestation on-chain under the schema.
+- Reconciliation and audit tooling matches the on-chain anchor to the off-chain registrar record and flags drift.
 
 ## Protocol
 
