@@ -4,7 +4,9 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
-- feat(schema): pattern template v2 — structured `crops_context`, `post_quantum`, `context_differentiation`, `related_patterns`, `open_source_implementations`, `sub_patterns`, and `type: meta` flag. `_template.md`, `scripts/schemas/pattern.json`, and `scripts/validate-patterns.js` updated. Validator stays permissive during migration; existing v1 patterns continue to pass with deprecation warnings. ([#150](https://github.com/ethereum/iptf-map/issues/150))
+- feat(schema): flip pattern validator to strict v2. All v1 aliases (`os`, `privacy`, `security` CROPS keys; `PoC`/`pilot`/`prod`/`experimental` maturity values; `privacy_goal`, `assumptions`, `dependencies`, `## Ingredients`, `## Guarantees` section names) now fail validation instead of warning. Requires #154 and #155 to merge first. ([#150](https://github.com/ethereum/iptf-map/issues/150))
+- feat(patterns): migrate all 60 cards to schema v2. Drops `privacy_goal`/`assumptions`, renames CROPS keys to single-letter (`o`, `p`, `s`), adds `crops_context`, `post_quantum`, `context_differentiation`, `related_patterns`, `open_source_implementations`, `sub_patterns`, `type: meta`. ([#150](https://github.com/ethereum/iptf-map/issues/150))
+- feat(schema): pattern template v2 introduced in permissive mode. ([#150](https://github.com/ethereum/iptf-map/issues/150))
 - feat(pattern): [Onion Routing](patterns/pattern-onion-routing.md) -- Tor-based multi-hop relay for sender IP anonymity (PSE tor-js, Flashbots .onion) ([#146](https://github.com/ethereum/iptf-map/pull/146))
 - feat(pattern): [Mixnet Anonymity](patterns/pattern-mixnet-anonymity.md) -- batching, reordering, and cover traffic for strongest network anonymity (Nym, HOPR) ([#146](https://github.com/ethereum/iptf-map/pull/146))
 - refactor(pattern): split [Network-Level Anonymity](patterns/pattern-network-anonymity.md) into umbrella pattern linking onion routing, mixnet, and TEE sub-patterns ([#146](https://github.com/ethereum/iptf-map/pull/146))

@@ -56,34 +56,26 @@ const REQUIRED_PATTERN_FRONTMATTER = [
   'crops_profile'
 ];
 
-// Recommended v2 frontmatter (warnings only). `privacy_goal` and
-// `assumptions` have been dropped from v2; they trigger deprecation warnings
-// in validateV2Fields rather than appearing as recommended.
+// Recommended v2 frontmatter (warnings only).
 const RECOMMENDED_PATTERN_FRONTMATTER = [
   'layer',
   'last_reviewed'
 ];
 
 // Required sections in pattern documents.
-// v2 notes:
-//   - `## Components` replaces `## Ingredients`
-//   - `## Guarantees & threat model` replaces `## Guarantees`
-//   - Either form is accepted during migration
-//   - `## Protocol` and `## Example` are skipped for `type: meta` patterns
-//     (handled inline in validatePattern).
+// `## Protocol` and `## Example` are skipped for `type: meta` patterns
+// (handled inline in validatePattern).
 const REQUIRED_PATTERN_SECTIONS = [
   '## Intent',
-  '## Ingredients|## Components',
+  '## Components',
   '## Protocol',
-  '## Guarantees|## Guarantees & threat model',
+  '## Guarantees & threat model',
   '## Trade-offs',
   '## Example',
   '## See also'
 ];
 
-// v2 maturity values. v1 values remain valid until the strict-mode flip.
 const V2_MATURITY_VALUES = ['research', 'concept', 'testnet', 'production'];
-const V1_MATURITY_VALUES = ['experimental', 'PoC', 'pilot', 'prod'];
 
 // Required sections for vendor documents
 const REQUIRED_VENDOR_SECTIONS = [
@@ -282,21 +274,20 @@ function validatePatternFileName(fileName) {
 }
 
 /**
- * Validate v2-specific frontmatter fields. During migration these surface as
- * warnings; the strict-mode flip promotes them to errors.
+ * Validate v2-specific frontmatter fields. These are errors in strict mode.
  */
-function validateV2Fields(frontmatter, fileWarnings) {
+function validateV2Fields(frontmatter, fileErrors) {
   // context: both requires context_differentiation with both slots filled.
   if (frontmatter.context === 'both') {
     const cd = frontmatter.context_differentiation;
     if (!cd) {
-      fileWarnings.push(`v2: context is 'both' but context_differentiation is missing. Add both i2i and i2u strings.`);
+      fileErrors.push(`context is 'both' but context_differentiation is missing. Add both i2i and i2u strings.`);
     } else {
       if (!cd.i2i || String(cd.i2i).trim() === '') {
-        fileWarnings.push(`v2: context_differentiation.i2i is empty — required when context: both.`);
+        fileErrors.push(`context_differentiation.i2i is empty. Required when context: both.`);
       }
       if (!cd.i2u || String(cd.i2u).trim() === '') {
-        fileWarnings.push(`v2: context_differentiation.i2u is empty — required when context: both.`);
+        fileErrors.push(`context_differentiation.i2u is empty. Required when context: both.`);
       }
     }
   }
@@ -304,7 +295,7 @@ function validateV2Fields(frontmatter, fileWarnings) {
   // type: meta requires sub_patterns.
   if (frontmatter.type === 'meta') {
     if (!Array.isArray(frontmatter.sub_patterns) || frontmatter.sub_patterns.length === 0) {
-      fileWarnings.push(`v2: type is 'meta' but sub_patterns is empty.`);
+      fileErrors.push(`type is 'meta' but sub_patterns is empty.`);
     }
   }
 
@@ -317,7 +308,7 @@ function validateV2Fields(frontmatter, fileWarnings) {
       for (const slug of list) {
         const target = path.join(PATTERNS_DIR, `${slug}.md`);
         if (!fs.existsSync(target)) {
-          fileWarnings.push(`v2: related_patterns.${slot} references missing file ${slug}.md`);
+          fileErrors.push(`related_patterns.${slot} references missing file ${slug}.md`);
         }
       }
     }
@@ -329,7 +320,7 @@ function validateV2Fields(frontmatter, fileWarnings) {
       if (!sp || !sp.pattern) continue;
       const target = path.join(PATTERNS_DIR, `${sp.pattern}.md`);
       if (!fs.existsSync(target)) {
-        fileWarnings.push(`v2: sub_patterns references missing file ${sp.pattern}.md`);
+        fileErrors.push(`sub_patterns references missing file ${sp.pattern}.md`);
       }
     }
   }
@@ -363,28 +354,22 @@ function validatePattern(filePath) {
   }
 
   // Validate crops_profile sub-fields (skip if explicitly opted out with "n/a").
-  // v2 renames CROPS fields to single-letter keys matching the acronym:
-  //   os → o  (Openness, not just open source)
-  //   privacy → p
-  //   security → s
-  // Old names are accepted during migration with a deprecation warning.
+  // CROPS fields use single-letter keys matching the acronym:
+  //   cr (Censorship resistance), o (Openness), p (Privacy), s (Security).
   if (frontmatter.crops_profile && frontmatter.crops_profile !== 'n/a') {
     const cp = frontmatter.crops_profile;
     const cropsFields = {
-      cr: { allowed: ['high', 'medium', 'low', 'none'], legacy: null, label: 'Censorship resistance' },
-      o:  { allowed: ['yes', 'partial', 'no'], legacy: 'os', label: 'Openness' },
-      p:  { allowed: ['full', 'partial', 'none'], legacy: 'privacy', label: 'Privacy' },
-      s:  { allowed: ['high', 'medium', 'low'], legacy: 'security', label: 'Security' }
+      cr: { allowed: ['high', 'medium', 'low', 'none'], label: 'Censorship resistance' },
+      o:  { allowed: ['yes', 'partial', 'no'], label: 'Openness' },
+      p:  { allowed: ['full', 'partial', 'none'], label: 'Privacy' },
+      s:  { allowed: ['high', 'medium', 'low'], label: 'Security' }
     };
     for (const [field, spec] of Object.entries(cropsFields)) {
-      const value = cp[field] ?? (spec.legacy ? cp[spec.legacy] : undefined);
-      const usedKey = cp[field] !== undefined ? field : spec.legacy;
+      const value = cp[field];
       if (value === undefined) {
         fileErrors.push(`crops_profile missing required field: ${field} (${spec.label})`);
       } else if (!spec.allowed.includes(value)) {
-        fileErrors.push(`crops_profile.${usedKey} has invalid value '${value}'. Allowed: ${spec.allowed.join(', ')}`);
-      } else if (spec.legacy && cp[spec.legacy] !== undefined && cp[field] === undefined) {
-        fileWarnings.push(`v2: crops_profile.${spec.legacy} is deprecated — rename to '${field}' to match the CROPS acronym.`);
+        fileErrors.push(`crops_profile.${field} has invalid value '${value}'. Allowed: ${spec.allowed.join(', ')}`);
       }
     }
   }
@@ -430,37 +415,24 @@ function validatePattern(filePath) {
 
   if (frontmatter.maturity) {
     const m = frontmatter.maturity;
-    if (V1_MATURITY_VALUES.includes(m)) {
-      fileWarnings.push(`Deprecated v1 maturity value '${m}'. Migrate to v2: research | concept | testnet | production. (PoC|pilot → testnet; prod → production; experimental → manual review.)`);
-    } else if (!V2_MATURITY_VALUES.includes(m)) {
-      fileWarnings.push(`Unexpected maturity value: ${m}`);
+    if (!V2_MATURITY_VALUES.includes(m)) {
+      fileErrors.push(`Invalid maturity value '${m}'. Must be one of: ${V2_MATURITY_VALUES.join(' | ')}.`);
     }
   }
 
   const isMeta = frontmatter.type === 'meta';
 
-  // Validate required sections. v2 accepts `## Components` in place of
-  // `## Ingredients`. Meta-patterns may omit Protocol / Example.
+  // Validate required sections. Meta-patterns may omit Protocol / Example.
   for (const section of REQUIRED_PATTERN_SECTIONS) {
     if (isMeta && (section === '## Protocol' || section === '## Example')) {
       continue;
     }
-    const alternatives = section.split('|');
-    const hasAny = alternatives.some(s => content.includes(s));
-    if (!hasAny) {
-      const label = alternatives.join(' or ');
-      // For existing patterns, only warn about missing sections
-      const isNewPattern = !fs.existsSync(filePath.replace('feature/ci-infrastructure', 'master'));
-      if (IS_CI && isNewPattern) {
-        fileErrors.push(`Missing required section: ${label}`);
-      } else {
-        fileWarnings.push(`Missing required section: ${label}`);
-      }
+    if (!content.includes(section)) {
+      fileErrors.push(`Missing required section: ${section}`);
     }
   }
 
-  // v2 checks (warnings during migration; promoted to errors in strict mode)
-  validateV2Fields(frontmatter, fileWarnings);
+  validateV2Fields(frontmatter, fileErrors);
 
   // Validate internal links (warning only - enable blocking after fixing existing issues)
   const linkErrors = validateInternalLinks(filePath, content);
