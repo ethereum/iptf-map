@@ -50,12 +50,12 @@ Allow institutions to select public or private execution mode on a per-transacti
 
 ## Components
 
-- **Public execution environment** is an L1 or transparent L2 chain where amounts, counterparties, and timing are visible.
-- **Private execution environment** is a privacy L2 or shielded pool where amounts and counterparties are hidden behind ZK commitments or FHE ciphertexts.
-- **Mode-routing layer** is a smart contract or middleware that directs each transaction leg based on policy rules.
-- **Policy engine** defines mode-selection criteria: counterparty whitelist, asset thresholds, jurisdiction-based rules.
-- **Cross-mode settlement coordinator** uses ERC-7573 outcome keys or shared commitments to link a public leg and a private leg into one atomic trade.
-- **View-key infrastructure** issues selective-disclosure artifacts from private legs to counterparties and regulators.
+- Public execution environment is an L1 or transparent L2 chain where amounts, counterparties, and timing are visible.
+- Private execution environment is a privacy L2 or shielded pool where amounts and counterparties are hidden behind ZK commitments or FHE ciphertexts.
+- Mode-routing layer is a smart contract or middleware that directs each transaction leg based on policy rules.
+- Policy engine defines mode-selection criteria: counterparty whitelist, asset thresholds, jurisdiction-based rules.
+- Cross-mode settlement coordinator uses ERC-7573 outcome keys or shared commitments to link a public leg and a private leg into one atomic trade.
+- View-key infrastructure issues selective-disclosure artifacts from private legs to counterparties and regulators.
 
 ## Protocol
 

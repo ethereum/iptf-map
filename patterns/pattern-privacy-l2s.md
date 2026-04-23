@@ -70,11 +70,11 @@ Use a privacy-native rollup, either ZK-based or FHE-based, to execute financial 
 
 ## Components
 
-- **Privacy rollup execution layer**: either a ZK rollup that commits to state via ZK proofs of valid transitions, or an FHE rollup that computes on encrypted state.
-- **L1 bridge contracts**: deposit, withdraw, and forced-exit paths that anchor the rollup to Ethereum.
-- **Client-side or coprocessor prover**: generates ZK proofs for private state transitions, or orchestrates FHE computation.
-- **Viewing key and disclosure infrastructure**: off-chain key management and attestation services for regulator access.
-- **Sequencer or block builder**: collects and orders transactions for the rollup; centralized on most deployments today.
+- Privacy rollup execution layer: either a ZK rollup that commits to state via ZK proofs of valid transitions, or an FHE rollup that computes on encrypted state.
+- L1 bridge contracts: deposit, withdraw, and forced-exit paths that anchor the rollup to Ethereum.
+- Client-side or coprocessor prover: generates ZK proofs for private state transitions, or orchestrates FHE computation.
+- Viewing key and disclosure infrastructure: off-chain key management and attestation services for regulator access.
+- Sequencer or block builder: collects and orders transactions for the rollup; centralized on most deployments today.
 
 Shielded note logic on the rollup is described in `pattern-shielding`; disclosure flows in `pattern-regulatory-disclosure-keys-proofs`.
 

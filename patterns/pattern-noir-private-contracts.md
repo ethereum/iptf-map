@@ -61,11 +61,11 @@ Give developers a privacy-focused DSL to write smart contracts that blend public
 
 ## Components
 
-- **Private contract DSL**: Rust-inspired language for authoring functions, compiling to a circuit intermediate representation.
-- **Circuit intermediate representation**: backend-agnostic IR that the prover backend compiles into proving and verification keys.
-- **Client-side prover**: generates proofs for private-function executions on the user's machine (typically 8 GB RAM recommended).
-- **Privacy rollup**: private execution runtime, public execution VM, note-discovery infrastructure, and validity-proof pipeline to Ethereum L1.
-- **Encrypted logs**: note discovery mechanism; only the holders of decryption keys can read log contents.
+- Private contract DSL: Rust-inspired language for authoring functions, compiling to a circuit intermediate representation.
+- Circuit intermediate representation: backend-agnostic IR that the prover backend compiles into proving and verification keys.
+- Client-side prover: generates proofs for private-function executions on the user's machine (typically 8 GB RAM recommended).
+- Privacy rollup: private execution runtime, public execution VM, note-discovery infrastructure, and validity-proof pipeline to Ethereum L1.
+- Encrypted logs: note discovery mechanism; only the holders of decryption keys can read log contents.
 
 ## Protocol
 

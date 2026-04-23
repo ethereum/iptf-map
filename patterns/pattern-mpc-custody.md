@@ -62,13 +62,13 @@ Provide custody and controlled execution of digital-asset transactions by distri
 
 ## Components
 
-- **Threshold signature scheme** such as threshold ECDSA or threshold EdDSA; an `m`-of-`n` quorum produces a signature indistinguishable from a single-key signature.
-- **Signing nodes** run inside hardened environments (trusted execution environments or hardware security modules) and hold one key share each.
-- **Policy engine** validates each signing request against transaction limits, destination allowlists, and role-based approvals before releasing the signing request to the nodes.
-- **Orchestration API** exposes request submission, approval workflow, audit events, and status queries to client applications.
-- **Key-generation ceremony** creates the shares without ever materializing the full key; proactive key refresh rotates shares while keeping the public key stable.
-- **Audit log** records signing attempts, approvals, denials, and share-refresh events for compliance review.
-- **Target chain** (L1 or L2) that ultimately receives the signed transaction.
+- Threshold signature scheme such as threshold ECDSA or threshold EdDSA; an `m`-of-`n` quorum produces a signature indistinguishable from a single-key signature.
+- Signing nodes run inside hardened environments (trusted execution environments or hardware security modules) and hold one key share each.
+- Policy engine validates each signing request against transaction limits, destination allowlists, and role-based approvals before releasing the signing request to the nodes.
+- Orchestration API exposes request submission, approval workflow, audit events, and status queries to client applications.
+- Key-generation ceremony creates the shares without ever materializing the full key; proactive key refresh rotates shares while keeping the public key stable.
+- Audit log records signing attempts, approvals, denials, and share-refresh events for compliance review.
+- Target chain (L1 or L2) that ultimately receives the signed transaction.
 
 ## Protocol
 

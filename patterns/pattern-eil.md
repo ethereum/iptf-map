@@ -57,12 +57,12 @@ Account-based cross-L2 interoperability where users sign once and execute transa
 
 ## Components
 
-- **ERC-4337 account with multichain validation module** signs a Merkle root over the set of UserOps, letting one signature authorize calls across many chains.
-- **CrossChainPaymaster contracts** on each L2 accept vouchers from liquidity providers, pay gas, and release funds on the destination.
-- **L1CrossChainStakeManager** tracks liquidity provider registrations and stakes, with an 8-day unstake delay.
-- **Liquidity providers** stake on L1 once per network and quote fees via reverse Dutch auction; stake sizing is O(networks), not O(funds moved).
-- **P2P UserOp mempool** propagates signed intents and vouchers permissionlessly.
-- **L1 canonical bridge** serves as the arbiter for disputes when a liquidity provider misbehaves.
+- ERC-4337 account with multichain validation module signs a Merkle root over the set of UserOps, letting one signature authorize calls across many chains.
+- CrossChainPaymaster contracts on each L2 accept vouchers from liquidity providers, pay gas, and release funds on the destination.
+- L1CrossChainStakeManager tracks liquidity provider registrations and stakes, with an 8-day unstake delay.
+- Liquidity providers stake on L1 once per network and quote fees via reverse Dutch auction; stake sizing is O(networks), not O(funds moved).
+- P2P UserOp mempool propagates signed intents and vouchers permissionlessly.
+- L1 canonical bridge serves as the arbiter for disputes when a liquidity provider misbehaves.
 
 ## Protocol
 

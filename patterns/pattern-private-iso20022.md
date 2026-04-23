@@ -55,12 +55,12 @@ Coordinate private ERC-20 settlements between banks using ISO 20022 as the instr
 
 ## Components
 
-- **ISO 20022 schema and envelopes**: pacs.008, pacs.009, pacs.002, camt.\* messages plus the `<SplmtryData>` extension mechanism used to carry commitments and proofs.
-- **Message commitment `C_msg`**: hash of the canonical ISO message used to bind the settlement on-chain to the off-chain instruction.
-- **Private settlement rail**: a shielded pool, a confidential token layer, or a privacy L2 that performs the cash-leg transfer with amounts and counterparties hidden on-chain.
-- **Rollup or validium anchor** for minimal on-chain metadata (message type, coarse time bucket, status).
-- **Off-chain services**: ISO parsing and canonicalization (XML to canonical JSON), KMS for bank and regulator keys, and a selective-disclosure service.
-- **Settlement controller**: optional permissioned actor that authorizes confidential transfers on a permissioned confidential-token rail.
+- ISO 20022 schema and envelopes: pacs.008, pacs.009, pacs.002, camt.\* messages plus the `<SplmtryData>` extension mechanism used to carry commitments and proofs.
+- Message commitment `C_msg`: hash of the canonical ISO message used to bind the settlement on-chain to the off-chain instruction.
+- Private settlement rail: a shielded pool, a confidential token layer, or a privacy L2 that performs the cash-leg transfer with amounts and counterparties hidden on-chain.
+- Rollup or validium anchor for minimal on-chain metadata (message type, coarse time bucket, status).
+- Off-chain services: ISO parsing and canonicalization (XML to canonical JSON), KMS for bank and regulator keys, and a selective-disclosure service.
+- Settlement controller: optional permissioned actor that authorizes confidential transfers on a permissioned confidential-token rail.
 
 The shielded pool details live in `pattern-shielding`; the privacy L2 option in `pattern-privacy-l2s`; DvP coupling in `pattern-dvp-erc7573`.
 

@@ -74,11 +74,11 @@ Prevent front-running and information leakage by routing quotes and orders via e
 
 ## Components
 
-- **Encrypted submission path**: either a threshold-encrypted mempool (committee holds key shares; ciphertext is decrypted only after ordering is committed) or a private-builder stack (confidential execution environment that sees the order but commits to ordering honesty).
-- **RFQ broker**: off-chain service that routes quote requests to allow-listed counterparties and records the quote lifecycle for audit.
-- **Settlement rail**: shielded pool or privacy L2 where the winning order settles with amounts hidden.
-- **Fallback path**: unencrypted submission route invoked if the encrypted path stalls or fails.
-- **Audit trail**: signed or committed record of every RFQ, quote, and settlement for compliance review.
+- Encrypted submission path: either a threshold-encrypted mempool (committee holds key shares; ciphertext is decrypted only after ordering is committed) or a private-builder stack (confidential execution environment that sees the order but commits to ordering honesty).
+- RFQ broker: off-chain service that routes quote requests to allow-listed counterparties and records the quote lifecycle for audit.
+- Settlement rail: shielded pool or privacy L2 where the winning order settles with amounts hidden.
+- Fallback path: unencrypted submission route invoked if the encrypted path stalls or fails.
+- Audit trail: signed or committed record of every RFQ, quote, and settlement for compliance review.
 
 The encrypted mempool details are covered in `pattern-threshold-encrypted-mempool`; the settlement layer in `pattern-shielding` or `pattern-privacy-l2s`.
 

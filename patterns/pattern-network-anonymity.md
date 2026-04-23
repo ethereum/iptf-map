@@ -56,9 +56,9 @@ This is a meta-pattern. Multiple sub-patterns exist, each with different trade-o
 
 ## Components
 
-- **Transport anonymity layer**: a relay network, mix network, or hardware-assisted cluster that strips or obscures sender metadata before the message reaches the destination.
-- **Client routing or submission library**: prepares the message for the chosen anonymity layer (layered encryption, mix encoding, or secret sharing).
-- **Destination**: RPC endpoint, sequencer, or transaction mempool. The anonymity layer sits between the client and the destination.
+- Transport anonymity layer: a relay network, mix network, or hardware-assisted cluster that strips or obscures sender metadata before the message reaches the destination.
+- Client routing or submission library: prepares the message for the chosen anonymity layer (layered encryption, mix encoding, or secret sharing).
+- Destination: RPC endpoint, sequencer, or transaction mempool. The anonymity layer sits between the client and the destination.
 
 Each sub-pattern instantiates these components differently. See `sub_patterns` in frontmatter.
 

@@ -62,10 +62,10 @@ Hide who is sending transactions or querying state by routing traffic through a 
 
 ## Components
 
-- **Circuit of relays**: three or more nodes selected from a relay directory, each holding one encryption layer.
-- **Layered (onion) encryption**: the client wraps the message once per relay, outermost layer decryptable only by the first hop.
-- **Client routing library**: negotiates the circuit, applies the encryption layers, and exposes a local proxy (SOCKS5 or WASM) to the dApp or wallet.
-- **Exit relay**: decrypts the last layer and forwards the message to the destination (RPC node, mempool, .onion service).
+- Circuit of relays: three or more nodes selected from a relay directory, each holding one encryption layer.
+- Layered (onion) encryption: the client wraps the message once per relay, outermost layer decryptable only by the first hop.
+- Client routing library: negotiates the circuit, applies the encryption layers, and exposes a local proxy (SOCKS5 or WASM) to the dApp or wallet.
+- Exit relay: decrypts the last layer and forwards the message to the destination (RPC node, mempool, .onion service).
 
 ## Protocol
 

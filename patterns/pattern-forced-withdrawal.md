@@ -50,12 +50,12 @@ When an L2 sequencer, relayer, or operator becomes unavailable, users need a uni
 
 ## Components
 
-- **Data availability source** lets the user reconstruct their position. Can be L1 calldata, L1 blobs, an external DA layer, a validium DA committee, or client-side storage.
-- **L1 state-root oracle** stores the last verified L2 state root. Validity rollups anchor with a zero-knowledge proof; optimistic rollups anchor after a challenge period survives.
-- **Proof verifier contract** accepts Merkle proofs (transparent systems) or zero-knowledge proofs (privacy systems) and checks them against the anchored root.
-- **Nullifier registry** records completed withdrawals to prevent double-claims.
-- **Bridge liquidity contract** holds the locked deposits that forced exits draw from; no new funds are created.
-- **Client-side prover** with the required circuit, proving keys or SRS artifacts, and local compute (roughly 0.5 to 3 seconds native or 20 to 30 seconds in browser WASM on current hardware).
+- Data availability source lets the user reconstruct their position. Can be L1 calldata, L1 blobs, an external DA layer, a validium DA committee, or client-side storage.
+- L1 state-root oracle stores the last verified L2 state root. Validity rollups anchor with a zero-knowledge proof; optimistic rollups anchor after a challenge period survives.
+- Proof verifier contract accepts Merkle proofs (transparent systems) or zero-knowledge proofs (privacy systems) and checks them against the anchored root.
+- Nullifier registry records completed withdrawals to prevent double-claims.
+- Bridge liquidity contract holds the locked deposits that forced exits draw from; no new funds are created.
+- Client-side prover with the required circuit, proving keys or SRS artifacts, and local compute (roughly 0.5 to 3 seconds native or 20 to 30 seconds in browser WASM on current hardware).
 
 Where the data lives determines the trust assumption:
 
@@ -105,11 +105,11 @@ Threat model:
 
 ## Trade-offs
 
-- **Upgrade risk:** 86% of 129 L2 projects allow instant contract upgrades without exit windows ([Ethical Risk Analysis of L2 Rollups, 2025](https://arxiv.org/html/2512.12732v1)). An escape hatch the operator can remove via upgrade provides no meaningful guarantee. L2Beat Stages requires 7-day (Stage 1) or 30-day (Stage 2) upgrade delays, minus any withdrawal delay.
-- **DA withholding:** validium DA committees can freeze all funds by refusing to share state. External DA layers add a liveness dependency. On-chain calldata and blobs are immune but expensive. For privacy systems, data can sit on-chain yet be useless without decryption keys.
-- **State freshness gap:** users can prove only against the most recently anchored root. Any transactions after that root are lost. Anchoring intervals range from minutes (validity rollups) to hours.
-- **Mass exit:** everyone hits L1 at once. Gas prices spike, users with no L1 ETH cannot participate, and leveraged DeFi positions may create claims exceeding underlying bridge deposits.
-- **Proving liveness:** for privacy systems, the user must retain secrets and run a compatible prover. The prover code must be open-source, deterministically compilable, and match the L1 verifier's expected proof format. A version mismatch means funds are frozen until governance acts. Browser WASM proving works but is 5 to 15 times slower than native.
+- Upgrade risk: 86% of 129 L2 projects allow instant contract upgrades without exit windows ([Ethical Risk Analysis of L2 Rollups, 2025](https://arxiv.org/html/2512.12732v1)). An escape hatch the operator can remove via upgrade provides no meaningful guarantee. L2Beat Stages requires 7-day (Stage 1) or 30-day (Stage 2) upgrade delays, minus any withdrawal delay.
+- DA withholding: validium DA committees can freeze all funds by refusing to share state. External DA layers add a liveness dependency. On-chain calldata and blobs are immune but expensive. For privacy systems, data can sit on-chain yet be useless without decryption keys.
+- State freshness gap: users can prove only against the most recently anchored root. Any transactions after that root are lost. Anchoring intervals range from minutes (validity rollups) to hours.
+- Mass exit: everyone hits L1 at once. Gas prices spike, users with no L1 ETH cannot participate, and leveraged DeFi positions may create claims exceeding underlying bridge deposits.
+- Proving liveness: for privacy systems, the user must retain secrets and run a compatible prover. The prover code must be open-source, deterministically compilable, and match the L1 verifier's expected proof format. A version mismatch means funds are frozen until governance acts. Browser WASM proving works but is 5 to 15 times slower than native.
 
 ## Example
 
