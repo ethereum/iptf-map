@@ -1,124 +1,125 @@
 ---
 title: "Pattern: Private Transaction Broadcasting"
 status: draft
-maturity: pilot
+maturity: production
+type: standard
 layer: hybrid
-privacy_goal: Prevent MEV extraction and intent leakage during transaction submission
-assumptions: Private relay/builder infrastructure or threshold encryption committee available
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Transaction content must not leak before block inclusion
-  - MEV protection is required for large institutional trades
-  - Competitive intelligence exposure is a concern
+  - Transaction content must stay hidden from the public mempool until block inclusion to prevent MEV extraction.
+  - Large institutional trades must not signal intent to competitors before settlement.
+  - A block-inclusion latency overhead of tens to low hundreds of milliseconds is acceptable.
 avoid-when:
-  - Public transparency is required by policy or regulation
-  - Immediate inclusion guarantees are critical (private routes may have lower priority)
-dependencies: [Flashbots Protect, Shutter Network, SUAVE]
+  - Public transparency of the pending transaction is required by policy or regulation.
+  - Hard real-time inclusion guarantees are required and fallback to the public mempool is unacceptable.
+
 context: both
+context_differentiation:
+  i2i: "Between institutions the relay or threshold committee can be contracted under SLA with diverse operators, audit logging, and an escalation path. Reputational and legal recourse bound the risk of a relay that peeks at or reorders transactions."
+  i2u: "For end users the relay or threshold committee is operated by parties the user cannot audit. Protection strength depends on cryptographic enforcement (threshold decryption) rather than reputation, and on the availability of a fallback path that does not silently leak the transaction to the public mempool."
+
 crops_profile:
   cr: medium
-  os: partial
-  privacy: partial
-  security: medium
+  o: partial
+  p: partial
+  s: medium
+
+crops_context:
+  cr: "Private relays can refuse individual transactions; censorship resistance depends on relay diversity and on a fallback path. Threshold-encrypted mempools reach `high` once a wide validator set enforces inclusion of encrypted payloads."
+  o: "Core relay and threshold-decryption software is typically open source. Builder and relay operations often include proprietary orchestration and commercial MEV-capture logic."
+  p: "Content is hidden from public mempool observers until inclusion. A compromised relay or a threshold committee above the threshold can reveal content early. Sender address and gas payer are typically visible even during the pending phase."
+  s: "Relay-based variants rely on reputational and contractual enforcement. Threshold-encrypted variants rely on the honest-threshold assumption of the decryption committee and on timely decryption after inclusion."
+
+post_quantum:
+  risk: medium
+  vector: "Threshold-encryption schemes built on pairings or elliptic-curve key agreement are broken by CRQC; recorded encrypted transactions face HNDL risk. Relay authentication channels typically use TLS with classical key exchange."
+  mitigation: "Migrate threshold-encryption and relay authentication to post-quantum primitives (lattice-based KEMs and signatures) as the ecosystem ships them. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: []
+
+related_patterns:
+  composes_with: [pattern-threshold-encrypted-mempool, pattern-pretrade-privacy-encryption, pattern-focil-eip7805, pattern-mixnet-anonymity, pattern-onion-routing]
+  alternative_to: [pattern-shielding]
+  see_also: [pattern-modular-privacy-stack, pattern-network-anonymity]
+
+open_source_implementations:
+  - url: https://github.com/flashbots/mev-boost
+    description: "MEV-Boost relay infrastructure used by the majority of Ethereum validators"
+    language: Go
+  - url: https://github.com/shutter-network/rolling-shutter
+    description: "Threshold-encrypted mempool reference stack (production on Gnosis Chain)"
+    language: Go
 ---
 
 ## Intent
 
-Hide transaction content from the public mempool to prevent front-running, sandwich attacks, and competitive intelligence extraction. Transactions are submitted through private channels and only become visible after block inclusion, eliminating the window where adversaries can observe and exploit pending trades.
+Hide transaction content from the public mempool before inclusion so that front-runners, sandwich bots, and competitors cannot observe or exploit pending trades. Transactions are routed through private relays or published as ciphertexts decrypted only after ordering, so adversaries see the transaction only once it is committed to a block.
 
-## Ingredients
+## Components
 
-- **Standards**: None required (infrastructure-level pattern)
-- **Infra**:
-  - Private transaction relays (Flashbots Protect, MEV Blocker)
-  - Encrypted mempools with threshold decryption (Shutter Network)
-  - Intent-based execution pools (SUAVE)
-- **Off-chain**:
-  - RPC endpoint configuration for private submission
-  - Optional: bundle submission for atomic multi-tx execution
-  - Wallet/custody integration for private RPC routing
+- Private relay network that accepts signed transactions from users and forwards them to participating block builders under contractual or protocol rules.
+- Builder set that includes privately-routed transactions in blocks without republishing them to the public mempool.
+- Threshold decryption committee (for encrypted-mempool variants) that reveals transaction content only after the block containing it is committed.
+- Client-side encryption library for threshold-encrypted submissions.
+- RPC or wallet integration that routes traffic to the private endpoint with a configurable fallback policy.
+- Optional MEV-redistribution mechanism that returns part of any extracted value to the originator.
 
-## Protocol (concise)
+## Protocol
 
-### Variant A: Private Relay (Flashbots Protect)
+### Variant A: Private relay
 
-1. User signs transaction locally with standard tooling.
-2. Submit transaction to private RPC endpoint instead of public mempool.
-3. Relay forwards to participating block builders under NDA/protocol rules.
-4. Builder includes transaction in block without broadcasting to public mempool.
-5. Transaction appears on-chain only after block confirmation.
-6. Optional: MEV-Share returns portion of extracted value to user if MEV occurred.
+1. [user] Sign the transaction locally with standard tooling.
+2. [user] Submit the signed transaction to a private RPC endpoint instead of the public mempool.
+3. [relayer] Forward the transaction to participating block builders under the relay's operating rules.
+4. [validator] Include the transaction in a block without re-broadcasting to the public mempool.
+5. [contract] Execute the transaction; its content becomes visible only after on-chain inclusion.
+6. [relayer] Optionally return a share of extracted MEV to the originator via an MEV-sharing mechanism.
 
-### Variant B: Encrypted Mempool (Shutter)
+### Variant B: Threshold-encrypted mempool
 
-1. User encrypts transaction payload using threshold public key.
-2. Encrypted transaction submitted to mempool (content hidden, metadata visible).
-3. Transaction included in block by builder/proposer.
-4. After inclusion commitment, threshold committee decrypts transaction.
-5. Decrypted transaction executed; content revealed only post-inclusion.
-6. Front-running prevented as content was hidden during ordering phase.
+1. [user] Encrypt the transaction payload under the committee's threshold public key.
+2. [user] Submit the ciphertext to the mempool; metadata (sender, gas, size) is visible but content is not.
+3. [validator] Include the ciphertext in a block to commit its ordering.
+4. [operator] After inclusion commitment, the threshold committee publishes decryption shares.
+5. [validator] Validators reconstruct the plaintext and execute the transaction.
+6. [contract] Execution proceeds with ordering already fixed, so front-running based on observed content is impossible.
 
-## Guarantees
+## Guarantees & threat model
 
-- **Hides**: Transaction content (to, value, calldata) from public mempool observers during pending phase.
-- **Prevents**: Front-running, sandwich attacks, just-in-time liquidity attacks, intent signaling to competitors.
-- **Does not hide**: Transaction details after on-chain inclusion; sender address may still be visible depending on implementation.
-- **Atomicity**: Same as underlying L1/L2; private submission does not change execution semantics.
-- **Censorship**: Private relays may refuse transactions; fallback to public mempool available.
+Guarantees:
+
+- Transaction content (target, value, calldata) is hidden from public mempool observers during the pending phase.
+- Front-running, sandwiching, and just-in-time-liquidity attacks based on pre-inclusion observation are prevented.
+- In the threshold-encrypted variant, ordering is committed before content is revealed, so ordering cannot depend on the plaintext.
+- Execution semantics are unchanged from direct submission; the pattern is a transport change, not an execution change.
+
+Threat model:
+
+- In the relay variant: a colluding relay or builder can observe content; protection reduces to contractual and reputational enforcement.
+- In the threshold variant: a committee above the decryption threshold can reveal content before inclusion, defeating the guarantee.
+- Sender address and gas payer are typically visible during the pending phase.
+- A fallback to the public mempool on relay unavailability can silently leak the transaction; the fallback policy must be explicit.
+- Post-inclusion transaction details are fully public; this pattern does not provide shielded amounts or counterparties.
 
 ## Trade-offs
 
-- **Trust model**:
-  - Flashbots: Trust that relay/builders honor privacy commitments (reputational + contractual enforcement).
-  - Shutter: Trust threshold committee (cryptographic enforcement, k-of-n threshold security).
-- **Latency**: May add 10-100ms for relay routing; encrypted mempool adds decryption step.
-- **Inclusion priority**: Private transactions may have lower priority than direct builder submissions.
-- **Coverage**: MEV-Boost covers ~90% of Ethereum blocks; Flashbots relay handles ~70% of MEV-Boost blocks.
-- **Failure mode**: If private relay unavailable, transaction can fallback to public mempool (losing privacy) or fail (losing liveness).
-- **Cost**: Some private relay services charge fees or take MEV share; Shutter requires threshold committee infrastructure.
-- **CROPS context (both)**: In I2U, end-users depend on relay operators they cannot audit. In I2I, institutions can contractually bind relay operators and run their own relay infrastructure.
+- Block-inclusion latency overhead in the tens to low hundreds of milliseconds, plus a decryption step for the threshold variant.
+- Inclusion priority depends on the relay's agreements with builders; private routes may see higher variance in inclusion time than direct builder submissions.
+- Relay coverage varies over time; users should monitor live coverage metrics rather than assume a fixed figure.
+- The threshold variant requires a decryption committee infrastructure and adds a liveness dependency.
+- Cost model varies: some relay services are free, others take a share of MEV or charge fees.
 
 ## Example
 
-**Institutional Stablecoin Transfer**
-
-1. Bank A needs to transfer $50M USDC to Bank B for settlement.
-2. Submitting to public mempool would signal large transfer intent to competitors and MEV searchers.
-3. Bank A configures custody system to route through Flashbots Protect RPC.
-4. Transaction submitted privately; not visible in any public mempool explorer.
-5. Block builder includes transaction in next block.
-6. Competitors and MEV bots see the transfer only after on-chain confirmation.
-7. Result: No front-running, no sandwich attacks, no advance warning to market.
-
-**RFQ Settlement with Encrypted Mempool**
-
-1. Dealer wins RFQ to sell 1000 ETH to institutional buyer.
-2. Settlement transaction encrypted using Shutter threshold key.
-3. Encrypted payload submitted to Gnosis Chain mempool.
-4. Validators include encrypted transaction in block.
-5. After block finalization, threshold committee decrypts and executes.
-6. Competing dealers cannot front-run or copy trade.
-
-## Performance Characteristics
-
-- **Network**: Ethereum L1, Gnosis Chain (Shutter), L2s with private mempool support
-- **Latency**: +10-100ms vs public mempool submission
-- **Cost**: Varies by provider; Flashbots Protect is free, MEV-Share takes percentage
-- **Coverage**: ~90% of Ethereum blocks use MEV-Boost relays; Shutter live on Gnosis
-- **Failure rate**: <1% relay unavailability; fallback paths available
+- A bank settles a large institutional stablecoin transfer by routing through a private relay so the transfer does not appear in any public mempool explorer. The block builder includes the transaction; competitors and MEV bots observe it only after confirmation.
+- A dealer wins an RFQ and submits the settlement transaction encrypted under a threshold key. Validators commit the ciphertext to a block. Only after inclusion does the committee publish decryption shares, after which the transaction executes. Competing dealers cannot front-run or copy-trade the order.
 
 ## See also
 
-- [Pre-trade Privacy (Shutter/SUAVE)](pattern-pretrade-privacy-encryption.md)
-- [FOCIL Inclusion Lists](pattern-focil-eip7805.md) - Censorship resistance complement
-- [Vendor: Flashbots](../vendors/flashbots.md)
-- [Vendor: Shutter](../vendors/shutter.md)
-- [Approach: Private Broadcasting](../approaches/approach-private-broadcasting.md)
-
-## See also (external)
-
-- Flashbots Protect: https://docs.flashbots.net/flashbots-protect/overview
-- Flashbots MEV-Share: https://docs.flashbots.net/flashbots-mev-share/overview
-- Shutter Network: https://docs.shutter.network/
-- MEV Blocker: https://mevblocker.io/
-- SUAVE: https://writings.flashbots.net/the-future-of-mev-is-suave
+- [Flashbots](../vendors/flashbots.md)
+- [Shutter](../vendors/shutter.md)
+- [Flashbots Protect documentation](https://docs.flashbots.net/flashbots-protect/overview)
+- [Flashbots MEV-Share documentation](https://docs.flashbots.net/flashbots-mev-share/overview)
+- [Shutter Network documentation](https://docs.shutter.network/)
+- [MEV Blocker](https://mevblocker.io/)

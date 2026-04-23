@@ -2,90 +2,111 @@
 title: "Pattern: Attestation verifiable on-chain"
 status: ready
 maturity: production
+type: standard
 layer: hybrid
-privacy_goal: Verify claims about identities/credentials on-chain with minimal data disclosure
-assumptions: Trusted issuers (banks, KYC providers), EAS/ONCHAINID infrastructure, wallet support
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Some logic has to be embedded onchain and relies on off-chain attested data
-  - A user wants to prove a statement about his identity (membership, KYC,...)
+  - Smart-contract logic must gate on off-chain attested facts (KYC status, accreditation, membership).
+  - A user wants to prove a statement about their identity without revealing the underlying data.
+  - A trusted issuer exists whose signature the verifier is willing to rely on.
 avoid-when:
-  - No trusted issuer available or issuer centralization is unacceptable
-  - Simple token gating is sufficient (attestations add complexity for basic access control)
-dependencies: [EAS, ONCHAINID, W3C-VC]
+  - No trusted issuer is available or issuer centralization is unacceptable.
+  - Simple token gating or an allowlist would meet the requirement with less complexity.
+
 context: both
+context_differentiation:
+  i2i: "Between institutions both counterparties can cross-attest or rely on mutual-recognition frameworks. Issuer identity is public and issuers sit within a regulated perimeter, so attestation quality is backed by legal recourse. The CR constraint is mild because peers can route around a single issuer."
+  i2u: "A user cannot self-attest and depends on an issuer that may refuse, delay, or revoke service. CR improves only when multiple competing issuers exist and credentials are portable across them (W3C Verifiable Credentials). The consuming contract should treat issuer outage as a user-facing liveness failure."
+
 crops_profile:
   cr: low
-  os: yes
-  privacy: partial
-  security: high
+  o: yes
+  p: partial
+  s: high
+
+crops_context:
+  cr: "The user depends on the issuer to produce or refresh attestations. CR lifts to `medium` when credentials are portable across competing issuers under a shared schema."
+  o: "EAS, ONCHAINID (ERC-734/735), and W3C Verifiable Credentials are open standards with multiple implementations. Users can run their own verifier and swap issuers."
+  p: "On-chain verification reveals that the user holds an attestation of a given type at a given time. Wrapping the attestation in a zero-knowledge proof lets the user disclose only the predicate (over 18, accredited) without revealing the raw claim."
+  s: "Rides on issuer key custody, a sound signature scheme (ECDSA or EIP-712 typed data), and the revocation registry being queryable on-chain."
+
+post_quantum:
+  risk: high
+  vector: "ECDSA signatures on attestations are broken by a CRQC. An attacker could forge attestations once issuer public keys are exposed. HNDL does not apply to signatures themselves, but long-lived attestations exposed on-chain may need re-issuance before a CRQC arrives."
+  mitigation: "Migrate issuer signing to a post-quantum scheme once standardized, for example ML-DSA. Rotate issuer keys on a defined schedule. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: [EAS, ERC-734, ERC-735, EIP-712, W3C-VC]
+
+related_patterns:
+  composes_with: [pattern-zk-kyc-ml-id-erc734-735, pattern-regulatory-disclosure-keys-proofs, pattern-erc3643-rwa]
+  see_also: [pattern-zk-tls, pattern-private-mtp-auth]
+
+open_source_implementations:
+  - url: https://github.com/ethereum-attestation-service/eas-contracts
+    description: "Ethereum Attestation Service contracts (production)"
+    language: "Solidity"
+  - url: https://github.com/onchain-id/solidity
+    description: "ONCHAINID reference implementation of ERC-734/735 (production)"
+    language: "Solidity"
 ---
 
 ## Intent
 
-Enable smart contracts to verify claims about identities, credentials, or off-chain data without exposing unnecessary information. Attestations are issued off-chain and verified on-chain to prove statements (KYC status, accreditation, membership) while minimizing data disclosure.
+Let smart contracts verify claims about an identity or off-chain fact without the contract or the public learning the underlying data. Trusted issuers sign attestations off-chain; verifiers check issuer signatures and revocation state on-chain and gate access on the result.
 
-## Ingredients
+## Components
 
-- **Standards:** EAS (Ethereum Attestation Service), W3C Verifiable Credentials, ONCHAINID (ERC-734/735), EIP-712 for typed data signing
-- **Infra:** Ethereum L1/L2 for attestation registry, wallet support for signing/verifying credentials
-- **Off-chain:** Issuer services (banks, KYC providers, regulators), credential storage (IPFS, private databases)
-- **Optional:** ZK wrappers (prove a well formed signature for selective disclosure)
+- **Attestation registry** stores on-chain records of issued attestations, revocations, and issuer metadata. Deployable on L1 or L2.
+- **Issuer keys** held by a regulated party (bank, KYC provider, regulator) to sign structured attestation payloads.
+- **Typed signing format** binds attestation fields to the issuer signature so that replay and field substitution are infeasible.
+- **Subject identifier** (on-chain address, decentralized identifier, or pseudonymous handle) links the attestation to the party presenting it.
+- **Revocation list or on-chain state** lets issuers invalidate a previously issued attestation.
+- **Verifier contract** checks the issuer signature, the revocation state, and expiry, and emits a gate decision.
+- **Zero-knowledge wrapper** (optional) lets the subject prove a predicate over the attestation without revealing the attestation itself.
 
-## Protocol (concise)
+## Protocol
 
-1. **Issuance:** Trusted issuer (bank, KYC provider) creates signed attestation about subject (investor accredited, passed KYC)
-2. **Storage:** Attestation stored off-chain or on-chain registry (EAS, ONCHAINID smart contract)
-3. **Presentation:** User presents attestation to smart contract requiring credential verification
-4. **Verification:** Contract verifies issuer signature and checks attestation validity (not expired, not revoked)
-5. **Access Grant:** If valid, contract grants access (allows trade, unlocks funds, enables function call)
+1. [issuer] Issue a signed attestation to the subject describing a claim (accredited, KYC cleared, AML screened) with expiry and subject binding.
+2. [issuer] Publish the attestation or its hash to the attestation registry, or leave it off-chain with the subject holding the raw credential.
+3. [user] Present the attestation (or a zero-knowledge proof of the desired predicate) to a verifier contract when requesting access.
+4. [contract] Verify the issuer signature, check the registry for revocation, and enforce expiry.
+5. [contract] Grant access, unlock funds, or allow the gated function call on success.
+6. [issuer] Revoke the attestation if the underlying fact changes; the next presentation by the subject will fail.
 
-## Guarantees
+## Guarantees & threat model
 
-- **Privacy:**
+Guarantees:
 
-  - Minimal disclosure: only necessary claims verified on-chain (e.g., "is accredited" not full financial details)
-  - With ZK wrappers: can prove properties without revealing attestation content
-  - Issuer identity typically public (necessary for trust), but subject can use pseudonymous addresses
+- Minimal disclosure: only the claim needed for the access decision is verified on-chain.
+- Non-forgeability: cryptographic signatures bind the claim to the issuer.
+- Revocability: issuers can invalidate attestations on-chain; verifiers see the current state.
+- Auditability: issuance and access-check events are observable on-chain (or via issuer logs) and are available to regulators.
 
-- **Correctness:**
+Threat model:
 
-  - Cryptographic signatures ensure attestations cannot be forged
-  - On-chain verification prevents unauthorized access
-  - Revocation mechanisms allow issuers to invalidate compromised credentials
-
-- **Auditability:**
-
-  - Attestation issuance events logged on-chain (EAS) or via off-chain logs
-  - Smart contract access checks create audit trail of credential usage
-  - Regulators can verify issuer credentials and revocation status
+- Issuer honesty and key custody. A compromised issuer key can produce forged attestations until the key is revoked.
+- Availability of the revocation registry at verification time. A stale read defeats revocation.
+- Signature-scheme soundness. Current ECDSA and EIP-712 signatures are classically secure and PQ-vulnerable.
+- On-chain visibility of the verification event reveals which contract the user interacted with and when. Network-layer privacy and zero-knowledge wrappers are out of scope for this pattern.
 
 ## Trade-offs
 
-- Performance: On-chain verification adds gas cost for signature checks and registry lookups. ZK proof verification increases preprocessing cost but improves privacy and reduces on-chain gas.
-- Infrastructure: Relies on trusted issuers for attestation quality. Issuers' keys needs to be mapped (e.g., on-chain PKI).
-- Privacy: On-chain verification reveals which contracts user interacts with and transaction timing. Mitigate using privacy L2s or ZK proofs.
-- Standards: Multiple competing standards (EAS, W3C VC, ONCHAINID) limit cross-chain portability. Use adapters or multi-standard support.
-- **CROPS context (both)**: In I2U, CR is especially constrained — user cannot self-attest and depends on issuer willingness. CR improves if multiple competing issuers exist and credential portability is supported (W3C VC). In I2I, peers can cross-attest or use mutual recognition frameworks.
+- Gas cost for signature verification and registry lookup on every access check. Zero-knowledge wrappers move cost from calldata to proof verification.
+- Dependence on issuer availability and willingness to issue or refresh attestations.
+- Multiple competing standards (EAS, W3C Verifiable Credentials, ONCHAINID) limit portability; adapters or multi-standard verifier contracts are required.
+- Verification events leak contract interaction patterns; combine with a privacy L2 or a zero-knowledge wrapper to reduce observer linkability.
 
 ## Example
 
-**Institutional Bond Trading with KYC Attestations:**
-
-1. Bank A obtains accredited investor attestation from KYC provider, signed and registered in EAS
-2. Bank A wants to purchase tokenized bond requiring accredited investor status
-3. Bank A presents attestation to bond smart contract, which verifies KYC provider signature
-4. Contract checks attestation not expired or revoked, confirms Bank A meets requirements
-5. Bond transfer executes automatically after successful verification
+A buyer on a tokenized bond platform holds an accredited-investor attestation issued by a KYC provider and registered on-chain. When the buyer submits a subscription, the bond contract verifies the issuer signature, checks that the attestation is neither revoked nor expired, and clears the transfer. The public sees that an accredited-investor gate was passed, not the buyer's financial details.
 
 ## See also
 
-- [Pattern: ZK KYC/ML ID (ERC-734/735)](pattern-zk-kyc-ml-id-erc734-735.md) - Zero-knowledge identity verification
-- [Pattern: Regulatory Disclosure Keys/Proofs](pattern-regulatory-disclosure-keys-proofs.md) - Selective disclosure mechanisms
-- [Pattern: ERC-3643 RWA](pattern-erc3643-rwa.md) - Permissioned securities with identity management
-- [Approach: Private Bonds](../approaches/approach-private-bonds.md) - Tokenized securities with compliance
-- [Domain: Identity & Compliance](../domains/identity-compliance.md) - Identity infrastructure overview
-- [EAS (Ethereum Attestation Service)](https://attest.sh/) - On-chain attestation protocol
-- [W3C Verifiable Credentials](https://www.w3.org/TR/vc-data-model/) - Standard for digital credentials
-- [ONCHAINID (ERC-734/735)](https://github.com/onchain-id/solidity) - Identity and claims management
-- [EIP-712](https://eips.ethereum.org/EIPS/eip-712) - Typed structured data hashing and signing
+- [EAS (Ethereum Attestation Service)](https://attest.sh/)
+- [W3C Verifiable Credentials](https://www.w3.org/TR/vc-data-model/)
+- [ERC-734](https://eips.ethereum.org/EIPS/eip-734)
+- [ERC-735](https://eips.ethereum.org/EIPS/eip-735)
+- [EIP-712](https://eips.ethereum.org/EIPS/eip-712)
+- [Approach: Private Bonds](../approaches/approach-private-bonds.md)
+- [Domain: Identity and Compliance](../domains/identity-compliance.md)

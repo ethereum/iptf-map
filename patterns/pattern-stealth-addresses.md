@@ -1,90 +1,103 @@
 ---
 title: "Pattern: Stealth Addresses"
 status: draft
-maturity: PoC
+maturity: production
+type: standard
 layer: L1
-privacy_goal: Hide address linkages via one-time destination addresses; amounts remain visible
-assumptions: EIP-5564 support, wallet view/spend key management, optional registry for public view keys
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Sender and receiver want to hide address linkages on a public chain.
-  - Amount privacy is less critical than unlinkability of counterparties.
+  - Sender and receiver want to hide the link between their public identities on a transparent chain.
+  - Counterparty unlinkability matters more than amount confidentiality.
+  - Wallets or directory services can publish and manage view-key material for recipients.
 avoid-when:
-  - Strong amount confidentiality is required (use shielded pools or confidential tokens).
-  - Institutions require regulator keys / scoped audit by default.
-dependencies:
-  - ERC-20
-  - ERC-4337 (optional, account abstraction for wallet UX)
-  - EIP-5564 (Ethereum Stealth Addresses draft)
+  - Strong amount confidentiality is required; use a shielded pool or confidential token instead.
+  - The deployment requires scoped regulator access by default; stealth addresses only support voluntary disclosure.
+
 context: both
+context_differentiation:
+  i2i: "Between institutions, recipients can maintain directory entries that publish view keys. Disclosure to regulators happens by the recipient voluntarily sharing the private view key for a time window or a specific stealth address."
+  i2u: "For end users, self-relaying from the stealth address is necessary to preserve unlinkability; otherwise the gas-paying address re-links the stealth address to a known identity. CR drops to `low` when relayers are mandatory and centralised, which is often the case before account-abstraction paymasters are routinely available."
+
 crops_profile:
   cr: medium
-  os: yes
-  privacy: partial
-  security: high
+  o: yes
+  p: partial
+  s: high
+
+crops_context:
+  cr: "Reaches `high` when the user can self-relay and pay gas from the stealth address without a shared paymaster; in practice this requires account-abstraction support for fresh addresses. Drops to `low` when a central relayer is unavoidable."
+  o: "The stealth-address derivation is open and standardised; wallets implementing EIP-5564 can interoperate. Registry components may be open-source or proprietary depending on the deployment."
+  p: "Counterparty linkage on-chain is hidden; amounts and token type remain visible, and network-layer metadata (IP, timing, relayer identity) is out of scope."
+  s: "Rides on the hardness of the Diffie-Hellman problem used to derive shared secrets and on correct implementation of view and spend keys in wallets."
+
+post_quantum:
+  risk: high
+  vector: "Elliptic-curve Diffie-Hellman underpins the shared-secret derivation and is broken by a CRQC. HNDL risk is acute: address linkages recorded now are retroactively compromised once a quantum adversary can recover view keys."
+  mitigation: "Post-quantum key-encapsulation such as ML-KEM for the shared-secret step, combined with oblivious message retrieval as an off-chain scanning aid. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: [ERC-20, EIP-5564, ERC-4337]
+
+related_patterns:
+  composes_with: [pattern-shielding, pattern-erc3643-rwa, pattern-user-controlled-viewing-keys]
+  see_also: [pattern-private-iso20022, pattern-network-anonymity]
+
+open_source_implementations:
+  - url: https://github.com/nerolation/eip-stealth-address-erc-5564
+    description: "Reference implementation of EIP-5564 stealth-address scheme"
+    language: "Solidity"
 ---
 
 ## Intent
 
-Enable unlinkable transfers by deriving a **one-time destination address per transaction** using cryptographic Diffie–Hellman (shared secret) between sender and receiver keys.  
-Observers see the transfer to a fresh address, but only the receiver can detect and spend from it.
+Enable unlinkable transfers on a transparent chain by deriving a one-time destination address per transaction using a Diffie-Hellman shared secret between sender and receiver keys. Observers see a transfer to a fresh address; only the recipient can detect and spend the funds.
 
----
+## Components
 
-## Ingredients
+- Stealth keypair held by the recipient: a view key used to scan the chain and a spend key used to control funds.
+- Ephemeral sender key generated per transaction; combined with the recipient view key to produce a shared secret.
+- Derivation function that converts the shared secret into a stealth address and an optional view tag for fast scanning.
+- Optional registry or directory that publishes recipient view keys so senders can discover them.
+- Wallet or account-abstraction stack that can fund and operate the stealth address without re-linking it to the recipient's primary address.
 
-- **Standards**: ERC-20 (token transfers), optional EIP-5564 for standardized stealth addresses.
-- **Infra**: base L1/L2 chain; compatible wallets implementing view keys and spend keys.
-- **Off-chain services**: none required, but directory/registry may help with publishing public view keys.
+## Protocol
 
----
+1. [user] The recipient publishes a public view key via a directory or shares it with the sender directly.
+2. [user] The sender generates an ephemeral key and computes the Diffie-Hellman shared secret with the recipient view key.
+3. [user] The sender derives the one-time stealth address from the shared secret and transfers tokens to it.
+4. [user] The recipient scans new transactions using the private view key and detects transfers destined to their stealth addresses.
+5. [user] The recipient uses the spend key to authorise spending from the stealth address when needed.
+6. [auditor] The recipient can optionally share the private view key with an auditor for a specific scope or time window.
 
-## Protocol (concise)
+## Guarantees & threat model
 
-1. Receiver publishes a **public view key** (part of a stealth keypair).
-2. Sender generates an **ephemeral key**, computes shared secret with receiver’s view key.
-3. Derive a one-time **stealth address** from the secret.
-4. Sender transfers ERC-20 tokens (or ETH) to the stealth address.
-5. Receiver scans chain with their **private view key**, detects funds destined for them.
-6. Receiver uses their **spend key** to access/control funds.
-7. Optionally: receiver can disclose full transaction set to auditors via view key export.
+Guarantees:
 
----
+- On-chain observers do not see a direct link between sender and recipient identities.
+- The recipient can scan and spend without the sender needing further interaction.
+- Retrospective disclosure is possible by voluntarily sharing the view key with a specific auditor.
 
-## Guarantees
+Threat model:
 
-- **Hides**: direct link between sender and receiver; on-chain observers see only fresh addresses.
-- **Does not hide**: transfer amounts or token type.
-- **Audit**: receiver can share view keys for retrospective audit; no mandatory regulator path.
-- **Finality**: same as base L1/L2 ERC-20 transfer finality.
-
----
+- The hardness of elliptic-curve Diffie-Hellman; key compromise reveals all past and future stealth addresses derived from the same view key.
+- Wallet implementation correctness in handling view and spend keys and in funding the stealth address without re-linking it.
+- Metadata at the network layer (RPC provider logs, relayer identity, IP addresses) and repeated address reuse by the recipient are out of scope.
+- Amount and token type are visible on-chain by design.
 
 ## Trade-offs
 
-- **Performance/UX**: requires wallets to manage extra key material (view/spend keys, stealth derivations).
-- **Scanning cost**: receivers must scan chain for potential stealth addresses (mitigated with view tags).
-- **Amount leakage**: visible amounts still expose competitive data.
-- **Regulatory fit**: no built-in scoped regulator access; relies on voluntary disclosure.
-- **Interoperability**: limited unless EIP-5564 or similar standards are widely adopted.
-- **CROPS context (both)**: CR reaches `high` if user can self-relay and pay own gas from stealth address — could become practical after EIP-8141. Drops to `low` if relayer/paymaster dependency is unavoidable and centralized. In I2U, end-users are more likely to depend on relayers provided by institutions.
-- **Post-quantum exposure**: ECDH key derivation is broken by CRQC; HNDL risk is high — address linkages recorded now are retroactively compromised. Mitigation: ML-KEM + OMR sidecar for off-chain note discovery. See [Post-Quantum Threats](../domains/post-quantum.md).
-
----
+- Amount leakage: transfer values remain visible and can expose competitive information.
+- Scanning cost: recipients must scan all transactions, or use view tags and prefiltering to reduce load.
+- Funding the stealth address to cover gas can re-link the stealth address to a known source unless account abstraction or dedicated gas-payer flows are in place.
+- Interoperability depends on EIP-5564 adoption across wallets and on registry availability.
+- Regulator workflows require voluntary view-key sharing; there is no scoped access path by default.
 
 ## Example
 
-- Bank A owes Bank B €10m (tokenized ERC-20 stablecoin).
-- Bank B publishes a public view key in its directory entry.
-- Bank A derives a stealth address for Bank B using the shared secret, transfers 10m EURC to it.
-- On-chain: looks like a transfer to a random fresh address.
-- Bank B’s wallet detects the funds via its view key, then moves them to a custodian wallet.
-- For audit, Bank B can later disclose the view key to regulators.
-
----
+An institution owes a counterparty tokenised stablecoin. The recipient publishes a public view key in its directory entry. The sender derives a stealth address using the shared secret and transfers the stablecoin to that address. On-chain, the transfer looks like a payment to a fresh address. The recipient's wallet detects the funds via the private view key, then moves them to a custodian wallet. For audit, the recipient can later disclose the view key to a regulator for the relevant window.
 
 ## See also
 
-- [pattern-private-iso20022.md](pattern-private-iso20022.md) (messaging integration with stealth/hidden settlement)
-- pattern-aztec-privacy-l2-erc7573.md (shielded pool settlement)
-- pattern-confidential-erc20-fhe-l2-erc7573.md (amount-hiding tokens)
+- [EIP-5564 specification](https://eips.ethereum.org/EIPS/eip-5564)
+- [Vitalik on stealth addresses](https://vitalik.eth.limo/general/2023/01/20/stealth.html)
+- [Curvy](../vendors/curvy.md)

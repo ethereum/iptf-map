@@ -1,74 +1,103 @@
 ---
-title: "Pattern: TLS Payment Bridge"
+title: "Pattern: TLS payment bridge"
 status: draft
-maturity: PoC
+maturity: testnet
+type: standard
 layer: hybrid
-privacy_goal: Prove a fiat payment occurred without revealing full bank or payment account details
-assumptions: TLSNotary or similar notarization protocol, instant payment rail with TLS-accessible confirmation, onchain escrow contract
-last_reviewed: 2026-03-20
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - instant payment rails are available (PIX, UPI, Venmo, Revolut)
-  - peer-to-peer fiat-to-crypto swaps without custodial intermediary
-  - onramping to stablecoins or other onchain assets from fiat
+  - Instant payment rails (for example PIX, UPI, mobile money apps) are available in the target geography.
+  - Peer-to-peer fiat-to-crypto swaps are needed without a custodial intermediary.
+  - Onramping fiat to stablecoins or other on-chain assets is the workflow, rather than large institutional clearing.
 avoid-when:
-  - payment rail has no TLS-accessible confirmation endpoint
-  - high-value institutional settlement requiring formal clearing
-dependencies: []
+  - The payment rail has no TLS-accessible confirmation endpoint.
+  - High-value institutional settlement requiring formal clearing and dispute rails.
+  - Regulators in the target jurisdiction reject non-custodial fiat on-ramps.
+
 context: i2u
+
 crops_profile:
   cr: medium
-  os: partial
-  privacy: partial
-  security: medium
+  o: partial
+  p: partial
+  s: medium
+
+crops_context:
+  cr: "Censorship resistance is `medium` because settlement is anchored on-chain, but a notary or attestation service sits on the critical path and can delay or refuse proof generation."
+  o: "Core primitives such as TLSNotary are open source, and the escrow contracts are verifiable. Notary infrastructure and attestation services may be operated by a single vendor and are not always forkable without operational cost."
+  p: "Payment-attribute disclosure is scoped to what the zero-knowledge proof exposes (amount, payment status, counterparty identifier), but metadata about the payment rail, timing, and proof generation can still leak."
+  s: "Security depends on the notary assumption in the zero-knowledge TLS protocol, correct circuit binding to the payment-rail response format, and attestation integrity if a Trusted Execution Environment is used as an off-chain verifier."
+
+post_quantum:
+  risk: high
+  vector: "Zero-knowledge TLS constructions rely on multi-party computation or two-party computation over elliptic-curve Diffie-Hellman handshakes, all broken by a CRQC; a post-quantum key-exchange inside the same multi-party primitives is an open research problem."
+  mitigation: "Migrate to post-quantum-friendly zero-knowledge TLS constructions once the handshake inside multi-party computation is solved. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: [ERC-20, EIP-712, ERC-7573]
+
+related_patterns:
+  requires: [pattern-zk-tls]
+  composes_with: [pattern-shielding, pattern-tee-based-privacy]
+  see_also: [pattern-stealth-addresses, pattern-private-transaction-broadcasting]
+
+open_source_implementations:
+  - url: https://github.com/tlsnotary/tlsn
+    description: "TLSNotary reference implementation of zero-knowledge TLS"
+    language: "Rust"
 ---
 
 ## Intent
 
-Enable **trust-minimized fiat-to-onchain swaps** by combining instant payment rails with zk-TLS proofs. A taker proves they completed a fiat payment by generating a zero-knowledge proof over the payment provider's TLS response, which an onchain escrow contract verifies before releasing crypto to the taker.
+Enable trust-minimized fiat-to-on-chain swaps by combining instant payment rails with zero-knowledge TLS proofs. A taker pays fiat to a liquidity provider through a standard bank or payment-app rail, runs a zero-knowledge TLS session against the provider's confirmation page, and submits a proof to an on-chain escrow contract. The contract verifies that the payment occurred and releases crypto to the taker. No party custodies funds on behalf of the other, and full bank or account details are never revealed on-chain.
 
-## Ingredients
+## Components
 
-- **Cryptography**: [zk-TLS](pattern-zk-tls.md) (e.g. [TLSNotary](https://github.com/tlsnotary/tlsn)) for proving payment confirmation
-- **Infra**: Instant payment rail (PIX, UPI, Venmo, Revolut), onchain escrow smart contract, peer-to-peer orderbook or matching engine
-- **Verification**: Direct onchain proof verification, or offchain via [TEE](pattern-tee-based-privacy.md) attestation service (validates proofs and emits signed attestations checked onchain)
-- **Standards**: ERC-20 (escrowed asset), EIP-712 (typed attestations), optional ERC-7573 for structured settlement
+- Zero-knowledge TLS stack: a multi-party or two-party computation protocol, for example a TLSNotary-style construction, that proves statements about a TLS session transcript without revealing the transcript.
+- Instant payment rail: a retail payment system with a TLS-accessible confirmation endpoint (for example PIX, UPI, or a mobile money app).
+- On-chain escrow contract: locks the liquidity provider's crypto, publishes the accepted rails and rate, and releases funds on successful proof verification.
+- Order-matching layer: a peer-to-peer order book or matching service that pairs liquidity providers with takers.
+- Verification path: either direct on-chain proof verification with a verifier contract, or an off-chain Trusted Execution Environment attestation service that emits an EIP-712 signed payment attestation consumed by an on-chain verifier.
 
-## Protocol (concise)
+## Protocol
 
-1. **Liquidity provider** deposits crypto (e.g. USDC) into an onchain escrow contract and publishes an order specifying accepted payment rails and exchange rate.
-2. **Taker** selects an order and locks intent onchain, committing to the swap parameters.
-3. Taker sends fiat payment to the liquidity provider via the specified instant payment rail.
-4. Taker runs a TLS session with the payment provider (jointly with a Notary) and generates a **zk-TLS proof** attesting that the payment confirmation was received — without revealing full account details.
-5. Proof is verified — either directly onchain, or offchain by a TEE attestation service that emits a signed EIP-712 payment attestation checked by an onchain verifier.
-6. On successful verification, the escrow **releases** the crypto asset to the taker.
+1. [user] A liquidity provider deposits stablecoins into the escrow contract and publishes an order with accepted rails and rate.
+2. [user] A taker selects the order and locks intent on-chain, committing to the swap parameters.
+3. [user] The taker sends fiat to the provider through the specified payment rail.
+4. [user] The taker runs a zero-knowledge TLS session against the payment-rail confirmation endpoint, jointly with the notary, and generates a proof attesting that the expected payment confirmation was received.
+5. [contract] The verifier path validates the proof either directly on-chain or through a TEE attestation service that emits a signed attestation for an on-chain checker.
+6. [contract] The escrow releases the stablecoins to the taker on successful verification; if no valid proof is submitted within the timeout, funds return to the liquidity provider.
 
-## Guarantees
+## Guarantees & threat model
 
-- **No custodial intermediary**: Swap settles peer-to-peer; the escrow contract is the sole trusted onchain component.
-- **Payment privacy**: The zk-TLS proof reveals the necessary payment attributes (amount, status) — full bank details, account numbers, and transaction metadata remain hidden.
-- **Atomic settlement**: Crypto is locked in escrow before fiat payment; release is conditional on proof verification. If no valid proof is submitted within the timeout, funds return to the liquidity provider.
-- **Audit**: Proof artifacts can be stored offchain for dispute resolution.
+Guarantees:
+
+- No custodial intermediary: the escrow contract is the only trusted on-chain component, and settlement is peer-to-peer.
+- Scoped payment disclosure: only the attributes the zero-knowledge circuit exposes (amount, counterparty identifier, payment status) are revealed. Bank details, account numbers, and other transaction metadata stay hidden.
+- Conditional release: the crypto is locked before fiat payment, and release is conditional on a valid proof within the timeout window, so liveness failures revert cleanly.
+- Audit artefacts: proof artefacts can be stored off-chain for dispute resolution without exposing user data.
+
+Threat model:
+
+- Notary trust: TLSNotary-style protocols assume a non-colluding notary, so a malicious or unavailable notary can block proof generation or cause the proof to falsely validate under collusion.
+- Trusted Execution Environment exposure if used: attestation integrity, side-channel attacks on the underlying hardware, and firmware vulnerabilities affect proof verification.
+- Payment-rail dependency: downtime, API changes, or transport-layer upgrades at the payment provider can break proof generation without warning.
+- Circuit-binding correctness: the zero-knowledge circuit must match the exact response format and transport configuration of the payment rail; silent mismatches break soundness.
+- Out of scope: attacks on the fiat rail itself (for example reversing a payment after the proof is issued) are handled by timeouts and commercial remedies rather than the protocol.
 
 ## Trade-offs
 
-- **Notary trust**: The TLS notarization requires a trusted Notary to co-sign the TLS session. A malicious or unavailable Notary can block proof generation.
-- **TEE trust (if used)**: Offchain TEE attestation introduces hardware trust assumptions — side-channel attacks or firmware vulnerabilities could compromise attestation integrity.
-- **Payment rail dependency**: Availability and latency depend on the fiat payment rail. Downtime or API changes can break proof generation.
-- **Proof latency**: Generating zk-TLS proofs is computationally expensive; end-to-end swap time includes proof generation overhead (seconds to minutes).
-- **CROPS context (I2U)**: Primarily consumer-facing. Notary selection and payment rail coverage vary by geography. Open-source tooling (TLSNotary) exists but notary infrastructure may not be fully open.
-- **Post-quantum exposure**: Inherits zk-TLS vulnerability — MPC/2PC operates on ECDH key exchange broken by CRQC; ML-KEM handshake in MPC/2PC is unsolved. See [Post-Quantum Threats](../domains/post-quantum.md).
+- Proof generation is computationally heavy and can add seconds to minutes of latency, which affects retail UX for time-sensitive swaps.
+- Notary selection and availability vary by geography and payment rail, so coverage depends on operational support rather than purely on the cryptography.
+- TLS specification drift at the payment provider can break existing circuits; versioning and observability of the circuit are required to keep deployments stable.
+- Using a Trusted Execution Environment as an off-chain verifier reduces on-chain gas costs but introduces an additional hardware trust boundary and attestation lifecycle.
+- Post-quantum migration is blocked on an open research problem: running a post-quantum key exchange inside the multi-party computation handshake is not yet practical.
 
 ## Example
 
-- **Venmo-to-USDC swap**: Alice wants to buy 100 USDC. Bob has listed 100 USDC in the escrow at 1:1 rate, accepting Venmo.
-- Alice locks intent onchain, then sends $100 to Bob via Venmo.
-- Alice opens Venmo's payment confirmation page in a TLSNotary-enabled browser extension, generating a zero-knowledge proof that Venmo confirmed a $100 payment to Bob.
-- Alice submits the proof to the escrow contract, which verifies the payment amount and recipient match the order.
-- The contract releases 100 USDC to Alice's wallet. Bob received $100 via Venmo.
+A user wants to buy stablecoins without going through a custodial exchange. A liquidity provider lists stablecoins in the escrow at a fixed rate and accepts payments through a consumer payment app. The user locks their intent on-chain, then pays the provider through the payment app. Using a browser extension, the user opens the payment confirmation page over a zero-knowledge TLS session jointly with the notary and generates a proof that the expected amount was received by the specified recipient. The user submits the proof to the escrow, which verifies the amount and recipient against the order and releases the stablecoins to the user's wallet. The provider has already received fiat through the app and has no further obligation.
 
 ## See also
 
-- [Pattern: zk-TLS](pattern-zk-tls.md) — the underlying data-export primitive this pattern builds on
-- [Pattern: TEE-Based Privacy](pattern-tee-based-privacy.md) — TEE attestation as offchain verification layer
-- [Pattern: Shielding](pattern-shielding.md) — can be combined to shield the received crypto after the swap
-- [Post-Quantum Threats](../domains/post-quantum.md) — PQ risk inherited from zk-TLS
+- [TLSNotary project](https://github.com/tlsnotary/tlsn)
+- [Post-Quantum Threats](../domains/post-quantum.md)
