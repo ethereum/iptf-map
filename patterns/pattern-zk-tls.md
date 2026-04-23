@@ -54,11 +54,11 @@ Export verifiable data or identity attributes from a TLS-protected website into 
 
 ## Components
 
-- **Origin server** hosts the TLS-protected website holding the data of interest (account balance, identity attribute, certification).
-- **Notary** participates in the TLS session alongside the user under an MPC or 2PC protocol, so that neither party alone can forge the transcript. The notary signs the transcript output.
-- **User client** drives the session, produces the zero-knowledge proof over the signed transcript, and redacts the fields that should not be disclosed.
-- **Proof backend** (a zero-knowledge proof system) compiles the transcript predicate into a circuit and produces a proof a verifier can check.
-- **On-chain verifier contract or counterparty verifier** checks the notary signature on the transcript and the zero-knowledge proof that the disclosed fields follow from the signed content.
+- Origin server hosts the TLS-protected website holding the data of interest (account balance, identity attribute, certification).
+- Notary participates in the TLS session alongside the user under an MPC or 2PC protocol, so that neither party alone can forge the transcript. The notary signs the transcript output.
+- User client drives the session, produces the zero-knowledge proof over the signed transcript, and redacts the fields that should not be disclosed.
+- Proof backend (a zero-knowledge proof system) compiles the transcript predicate into a circuit and produces a proof a verifier can check.
+- On-chain verifier contract or counterparty verifier checks the notary signature on the transcript and the zero-knowledge proof that the disclosed fields follow from the signed content.
 
 ## Protocol
 

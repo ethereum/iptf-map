@@ -58,11 +58,11 @@ Publish identity claims on-chain that are backed by a zero-knowledge proof of an
 
 ## Components
 
-- **On-chain identity contract** (ERC-734 for key management, ERC-735 for claims) holds the subject's claims and exposes them to gated contracts.
-- **Claim issuer** performs the off-chain KYC, AML, or machine-learning check and generates a zero-knowledge proof attesting that the policy was followed.
-- **Proof verifier contract** checks the zero-knowledge proof against a public policy statement and, on success, writes the claim to the identity contract.
-- **Source-of-proof integration**: either a notarized TLS transcript of the external compliance system, a proof about an existing on-chain state, or a proof over a trusted dataset.
-- **Policy registry** binds policy identifiers to circuit or verifier versions so that verifiers can refuse out-of-date claims.
+- On-chain identity contract (ERC-734 for key management, ERC-735 for claims) holds the subject's claims and exposes them to gated contracts.
+- Claim issuer performs the off-chain KYC, AML, or machine-learning check and generates a zero-knowledge proof attesting that the policy was followed.
+- Proof verifier contract checks the zero-knowledge proof against a public policy statement and, on success, writes the claim to the identity contract.
+- Source-of-proof integration: either a notarized TLS transcript of the external compliance system, a proof about an existing on-chain state, or a proof over a trusted dataset.
+- Policy registry binds policy identifiers to circuit or verifier versions so that verifiers can refuse out-of-date claims.
 
 ## Protocol
 

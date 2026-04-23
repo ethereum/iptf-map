@@ -60,11 +60,11 @@ Give designers a decision framework for choosing a zero-knowledge proof system o
 
 ## Components
 
-- **Pairing-based SNARKs** rely on elliptic-curve pairings over curves such as BLS12-381 or BN254 and produce small constant-size proofs with low verifier cost. Groth16 requires a trusted setup per circuit; PLONK over KZG uses a universal setup.
-- **Elliptic-curve-based SNARKs** rely on discrete log over an elliptic curve without pairings. Transparent setup, moderate proof size, medium verifier cost. PLONK over IPA and the Halo2 family sit here.
-- **Hash-based proof systems** rely on collision-resistant hashes. STARKs over FRI and hash-based SNARKs (Plonky family, Binius) have transparent setup and remain sound against a CRQC, at the cost of larger proofs.
-- **Lattice-based SNARKs** rely on Module-SIS or LWE hardness. Emerging, transparent, and PQ-safe; no production deployment yet.
-- **Hybrid systems** compose a hash-based STARK with a pairing-based SNARK wrapper to achieve small on-chain proofs; the wrapper reintroduces pairing assumptions and the matching PQ exposure.
+- Pairing-based SNARKs rely on elliptic-curve pairings over curves such as BLS12-381 or BN254 and produce small constant-size proofs with low verifier cost. Groth16 requires a trusted setup per circuit; PLONK over KZG uses a universal setup.
+- Elliptic-curve-based SNARKs rely on discrete log over an elliptic curve without pairings. Transparent setup, moderate proof size, medium verifier cost. PLONK over IPA and the Halo2 family sit here.
+- Hash-based proof systems rely on collision-resistant hashes. STARKs over FRI and hash-based SNARKs (Plonky family, Binius) have transparent setup and remain sound against a CRQC, at the cost of larger proofs.
+- Lattice-based SNARKs rely on Module-SIS or LWE hardness. Emerging, transparent, and PQ-safe; no production deployment yet.
+- Hybrid systems compose a hash-based STARK with a pairing-based SNARK wrapper to achieve small on-chain proofs; the wrapper reintroduces pairing assumptions and the matching PQ exposure.
 
 ## Protocol
 
@@ -90,10 +90,10 @@ Benchmarks for Ethereum block-proving workloads are available at [ethproofs.org 
 
 ### Key dimensions
 
-- **Trust setup**: trusted setups carry toxic-waste risk; transparent systems eliminate it. For institutional adoption transparent is generally preferred.
-- **PQ safety**: pairing-based and elliptic-curve-based systems are broken by a CRQC (Shor's algorithm). Hash-based and lattice-based systems survive. Grover weakens but does not break hash-based soundness; parameter sizes can be raised to compensate.
-- **Proof size vs verification cost**: pairing-based SNARKs produce compact proofs that are cheap to verify on-chain. Hash-based systems produce larger proofs that are improving via recursive composition and proof compression.
-- **Prover cost**: hash-based systems are more expensive to prove but align well with GPU acceleration thanks to NTT-based arithmetic, a useful property for client-side proving.
+- Trust setup: trusted setups carry toxic-waste risk; transparent systems eliminate it. For institutional adoption transparent is generally preferred.
+- PQ safety: pairing-based and elliptic-curve-based systems are broken by a CRQC (Shor's algorithm). Hash-based and lattice-based systems survive. Grover weakens but does not break hash-based soundness; parameter sizes can be raised to compensate.
+- Proof size vs verification cost: pairing-based SNARKs produce compact proofs that are cheap to verify on-chain. Hash-based systems produce larger proofs that are improving via recursive composition and proof compression.
+- Prover cost: hash-based systems are more expensive to prove but align well with GPU acceleration thanks to NTT-based arithmetic, a useful property for client-side proving.
 
 ## Guarantees & threat model
 

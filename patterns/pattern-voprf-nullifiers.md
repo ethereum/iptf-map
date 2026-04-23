@@ -56,12 +56,12 @@ Generate deterministic, scope-bound nullifiers using a verifiable oblivious pseu
 
 ## Components
 
-- **Client-side input framing** combines a stable identifier (credential identifier, membership secret, device key), a scope (service identifier, action identifier, epoch), and a domain-separation tag into the OPRF input.
-- **Blinding and unblinding routines** implement the hash-to-curve and blind or unblind operations of the chosen OPRF instantiation.
-- **Threshold vOPRF committee** holds the server private key in t-of-n shares. Each node evaluates its share on the blinded input; the client combines t responses into a single evaluation.
-- **Committee public key** used by the client to verify that the combined evaluation corresponds to the advertised key.
-- **Rate-limit and abuse gate** in front of the committee (authenticated tokens, fees, proof-of-eligibility) to prevent exhaustive-query attacks that would reveal mappings.
-- **Nullifier registry** records used nullifiers to enforce one-use-per-scope semantics (on-chain contract or off-chain log).
+- Client-side input framing combines a stable identifier (credential identifier, membership secret, device key), a scope (service identifier, action identifier, epoch), and a domain-separation tag into the OPRF input.
+- Blinding and unblinding routines implement the hash-to-curve and blind or unblind operations of the chosen OPRF instantiation.
+- Threshold vOPRF committee holds the server private key in t-of-n shares. Each node evaluates its share on the blinded input; the client combines t responses into a single evaluation.
+- Committee public key used by the client to verify that the combined evaluation corresponds to the advertised key.
+- Rate-limit and abuse gate in front of the committee (authenticated tokens, fees, proof-of-eligibility) to prevent exhaustive-query attacks that would reveal mappings.
+- Nullifier registry records used nullifiers to enforce one-use-per-scope semantics (on-chain contract or off-chain log).
 
 ## Protocol
 

@@ -57,13 +57,13 @@ Let smart contracts verify claims about an identity or off-chain fact without th
 
 ## Components
 
-- **Attestation registry** stores on-chain records of issued attestations, revocations, and issuer metadata. Deployable on L1 or L2.
-- **Issuer keys** held by a regulated party (bank, KYC provider, regulator) to sign structured attestation payloads.
-- **Typed signing format** binds attestation fields to the issuer signature so that replay and field substitution are infeasible.
-- **Subject identifier** (on-chain address, decentralized identifier, or pseudonymous handle) links the attestation to the party presenting it.
-- **Revocation list or on-chain state** lets issuers invalidate a previously issued attestation.
-- **Verifier contract** checks the issuer signature, the revocation state, and expiry, and emits a gate decision.
-- **Zero-knowledge wrapper** (optional) lets the subject prove a predicate over the attestation without revealing the attestation itself.
+- Attestation registry stores on-chain records of issued attestations, revocations, and issuer metadata. Deployable on L1 or L2.
+- Issuer keys held by a regulated party (bank, KYC provider, regulator) to sign structured attestation payloads.
+- Typed signing format binds attestation fields to the issuer signature so that replay and field substitution are infeasible.
+- Subject identifier (on-chain address, decentralized identifier, or pseudonymous handle) links the attestation to the party presenting it.
+- Revocation list or on-chain state lets issuers invalidate a previously issued attestation.
+- Verifier contract checks the issuer signature, the revocation state, and expiry, and emits a gate decision.
+- Zero-knowledge wrapper (optional) lets the subject prove a predicate over the attestation without revealing the attestation itself.
 
 ## Protocol
 

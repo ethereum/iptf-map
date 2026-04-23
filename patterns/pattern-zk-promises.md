@@ -55,12 +55,12 @@ Let a service enforce mutable compliance, moderation, or rate-limit rules on ano
 
 ## Components
 
-- **Zk-object commitment** stored on the bulletin board; the owner holds the plaintext state locally.
-- **Append-only bulletin board** (on-chain contract or off-chain log with integrity anchoring) records commitments, nullifiers, and encrypted callback tickets.
-- **Predicate circuits** let the user prove predicates over state (reputation above threshold, not banned, callbacks ingested) without revealing the state itself.
-- **Pubkey-rerandomizable signatures** give each interaction a fresh public key so that actions by the same user are unlinkable.
-- **Callback ticket** is a pseudorandom handle produced during interaction; the provider can later post an encrypted update against it.
-- **Client-side prover** generates proofs at interaction time and rebuilds state when ingesting callbacks.
+- Zk-object commitment stored on the bulletin board; the owner holds the plaintext state locally.
+- Append-only bulletin board (on-chain contract or off-chain log with integrity anchoring) records commitments, nullifiers, and encrypted callback tickets.
+- Predicate circuits let the user prove predicates over state (reputation above threshold, not banned, callbacks ingested) without revealing the state itself.
+- Pubkey-rerandomizable signatures give each interaction a fresh public key so that actions by the same user are unlinkable.
+- Callback ticket is a pseudorandom handle produced during interaction; the provider can later post an encrypted update against it.
+- Client-side prover generates proofs at interaction time and rebuilds state when ingesting callbacks.
 
 ## Protocol
 
