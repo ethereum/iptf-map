@@ -29,7 +29,7 @@ Verify an off-chain digital signature over an existing credential inside a ZK ci
 
 ## Ingredients
 
-- **Signature primitive in-circuit**: RSA-PKCS1v1.5 and RSA-PSS (up to 4096-bit), ECDSA over P-256 / P-521 / Brainpool curves, EdDSA.
+- **Signature verification in-circuit**: RSA-PKCS1v1.5 and RSA-PSS (up to 4096-bit), ECDSA over P-256 / P-521 / Brainpool curves, EdDSA.
 - **Hash primitive**: SHA-256, SHA-384, SHA-512 depending on credential format.
 - **Issuer public key source**: passport CSCA master list, UIDAI RSA key, DKIM DNS records, EAS issuer address, W3C VC issuer DID.
 - **Proof system**: Noir with Barretenberg (UltraHonk over BN254), Circom with Groth16, Halo2, SP1 zkVM.
@@ -47,6 +47,7 @@ Verify an off-chain digital signature over an existing credential inside a ZK ci
 
 - **Hides**: credential content, signature bytes, full signed payload, and the holder's direct link to the issuer.
 - **Proves**: a valid signature from a specific issuer key over a payload satisfying the declared predicates.
+- **Selective disclosure**: predicates reveal only the chosen attributes (nationality, age threshold, domain) while the remaining credential fields stay hidden.
 - **I2I**: the wrapped credential is usually a KYC document, national ID, or regulated attestation with a published issuer key. Counterparties accept the zero-knowledge proof instead of the raw document.
 - **I2U**: holders prove attributes like age, jurisdiction, or email domain to any verifier without exposing the source credential.
 
