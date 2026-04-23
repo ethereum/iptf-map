@@ -2,7 +2,7 @@
 title: "Pattern: Social Recovery"
 status: draft
 maturity: production
-layer: L1|L2
+layer: hybrid
 privacy_goal: Restore account control or identity anchor through a guardian quorum without issuer or custodian involvement
 assumptions: Smart-contract account or identity anchor exposes an owner-rotation entry point, guardian set fixed before key loss, on-chain timelock for cancellation
 last_reviewed: 2026-04-23

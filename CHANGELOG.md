@@ -4,8 +4,8 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
-- feat(pattern): [ZK Wrappers](patterns/pattern-zk-wrappers.md) -- verify off-chain signatures (passport, DKIM, attestation) inside a ZK circuit for attribute proofs without credential disclosure ([#148](https://github.com/ethereum/iptf-map/issues/148))
-- feat(pattern): [Social Recovery](patterns/pattern-social-recovery.md) -- guardian-quorum rotation of account keys or identity anchors without issuer or custodian involvement ([#149](https://github.com/ethereum/iptf-map/issues/149))
+- feat(pattern): [ZK Wrappers](patterns/pattern-zk-wrappers.md) -- verify off-chain signatures (passport, DKIM, attestation) inside a ZK circuit for attribute proofs without credential disclosure ([#153](https://github.com/ethereum/iptf-map/pull/153))
+- feat(pattern): [Social Recovery](patterns/pattern-social-recovery.md) -- guardian-quorum rotation of account keys or identity anchors without issuer or custodian involvement ([#153](https://github.com/ethereum/iptf-map/pull/153))
 - feat(pattern): [Onion Routing](patterns/pattern-onion-routing.md) -- Tor-based multi-hop relay for sender IP anonymity (PSE tor-js, Flashbots .onion) ([#146](https://github.com/ethereum/iptf-map/pull/146))
 - feat(pattern): [Mixnet Anonymity](patterns/pattern-mixnet-anonymity.md) -- batching, reordering, and cover traffic for strongest network anonymity (Nym, HOPR) ([#146](https://github.com/ethereum/iptf-map/pull/146))
 - refactor(pattern): split [Network-Level Anonymity](patterns/pattern-network-anonymity.md) into umbrella pattern linking onion routing, mixnet, and TEE sub-patterns ([#146](https://github.com/ethereum/iptf-map/pull/146))

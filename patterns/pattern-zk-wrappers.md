@@ -47,7 +47,7 @@ Verify an off-chain digital signature over an existing credential inside a ZK ci
 
 - **Hides**: credential content, signature bytes, full signed payload, and the holder's direct link to the issuer.
 - **Proves**: a valid signature from a specific issuer key over a payload satisfying the declared predicates.
-- **I2I**: the wrapped credential is usually a KYC document, national ID, or regulated attestation with a published issuer key. Counterparties accept the ZK proof instead of the raw document.
+- **I2I**: the wrapped credential is usually a KYC document, national ID, or regulated attestation with a published issuer key. Counterparties accept the zero-knowledge proof instead of the raw document.
 - **I2U**: holders prove attributes like age, jurisdiction, or email domain to any verifier without exposing the source credential.
 
 ## Trade-offs

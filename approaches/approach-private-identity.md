@@ -131,7 +131,7 @@ When sources are honest, the cryptographic layer enforces one-to-one binding. Wh
 
 **Recovery:** Threshold (Shamir) secret splitting across devices/custodians (t-of-n, no on-chain tx). [Social recovery](../patterns/pattern-social-recovery.md) (guardian-based quorum) authorizes key rotation under the same enrollment; anti-coercion mechanism is an open question.
 
-**Verification:** Any verifier checks a ZK proof against the on-chain root. Public inputs: root, scope-bound nullifier, predicate parameters. No registry lookup, no issuer contact.
+**Verification:** Any verifier checks a zero-knowledge proof against the on-chain root. Public inputs: root, scope-bound nullifier, predicate parameters. No registry lookup, no issuer contact.
 
 **When to use:** Issuer may become unavailable, hostile, or destroyed. Sanctions compliance across jurisdictional disruptions. Multi-source enrollment with issuer-free verification.
 **Deployment:** [Resilient Private Identity PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity) (Noir/UltraHonk, BN254)
