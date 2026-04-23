@@ -27,11 +27,11 @@ crops_context:
   cr: "Reaches `high` when settlement runs on a single-chain shielded pool without a trusted relayer or gatekeeper. Drops to `low` when the private rail is operator-controlled or depends on a proprietary coprocessor with no open submission path."
   o: "ISO 20022 schemas are open and widely adopted. SWIFT infrastructure is licensed and proprietary. The settlement rail determines overall openness: an open shielded pool improves the score, a proprietary FHE coprocessor degrades it. Reaches `yes` only when every component, including the ISO extension carriers and the settlement rail, is open-source."
   p: "Cash-leg amounts and counterparties are hidden on-chain. The ISO instruction layer is off-chain and covered by existing bank-to-bank confidentiality practice. Metadata at intermediaries (correspondent banks that pass the message without understanding the extension) may still leak timing or existence."
-  s: "Rides on the settlement rail's cryptography (ZK proofs, FHE, threshold keys) and on signing conventions agreed between banks. Reaches `high` when signing algorithms, PKI, and the ISO extension registration are formally published and jointly governed."
+  s: "Rides on the settlement rail's cryptography (zero-knowledge proofs, FHE, threshold keys) and on signing conventions agreed between banks. Reaches `high` when signing algorithms, PKI, and the ISO extension registration are formally published and jointly governed."
 
 post_quantum:
   risk: high
-  vector: "Cash-leg settlement rail typically uses EC-based ZK proofs (Groth16, PLONK/KZG) or pairing-based threshold encryption, all broken by CRQC. HNDL risk is high because correspondent-banking payloads are archived for years."
+  vector: "Cash-leg settlement rail typically uses EC-based zero-knowledge proofs (Groth16, PLONK/KZG) or pairing-based threshold encryption, all broken by CRQC. HNDL risk is high because correspondent-banking payloads are archived for years."
   mitigation: "Migrate the settlement rail to STARK-based shielded pools with hash commitments; use lattice-based threshold encryption for any encrypted message envelopes."
 
 visibility:
@@ -76,7 +76,7 @@ The pattern admits three variants for the cash leg. They share steps 1 to 3 and 
 6. [contract] Variant C: both cash legs are temporarily bridged to a shared privacy L2. A single shielded DvP or PvP transaction referencing `C_msg` executes, then assets bridge back to their origin chains.
 7. [regulator] The supervisor holds view keys for scoped audits (amounts, parties, routes as needed) and can decrypt selected fields or inspect shielded transfers.
 
-The commitment and any ZK proof can be embedded in the ISO message using `<SplmtryData>`, with `<PlcAndNm>` pointing to the extended element. ISO 20022's "can ignore" semantics mean intermediaries that do not support the extension process the message normally, while endpoints that understand it verify the proof.
+The commitment and any zero-knowledge proof can be embedded in the ISO message using `<SplmtryData>`, with `<PlcAndNm>` pointing to the extended element. ISO 20022's "can ignore" semantics mean intermediaries that do not support the extension process the message normally, while endpoints that understand it verify the proof.
 
 ## Guarantees & threat model
 
@@ -89,7 +89,7 @@ Guarantees:
 
 Threat model:
 
-- Settlement rail soundness (ZK proof system, FHE scheme, or confidential VM).
+- Settlement rail soundness (zero-knowledge proof system, FHE scheme, or confidential VM).
 - Signing-convention agreement between banks. Algorithm choice, PKI, and canonicalization (full ISO hash versus reduced settlement tuple) must be jointly specified.
 - Cross-chain atomicity under partition. Variants A and B can strand one leg if the two sides sit on different chains without an atomic bridge; variant C mitigates via single-domain execution but introduces bridge risk.
 - Intermediate-correspondent exposure. Non-participating intermediaries pass the message unchanged but cannot verify the proof in transit, so they must trust endpoints to catch invalid extensions.

@@ -55,7 +55,7 @@ Make every Ethereum account natively programmable by replacing the hardcoded ECD
 ## Components
 
 - **Frame transaction**: ordered list of frames per transaction. Each frame specifies a mode (`VERIFY`, `SENDER`, `DEFAULT`), target address, gas limit, and data. Frames execute sequentially with independent gas metering.
-- **Account validation code**: per-account logic executed inside `VERIFY` frames. It can validate any signature scheme (ECDSA, ML-DSA, SLH-DSA, passkeys, multisig) or any ZK proof.
+- **Account validation code**: per-account logic executed inside `VERIFY` frames. It can validate any signature scheme (ECDSA, ML-DSA, SLH-DSA, passkeys, multisig) or any zero-knowledge proof.
 - **`APPROVE` opcode**: called inside `VERIFY` frames to authorise execution (`0x0`), payment (`0x1`), or both (`0x2`). Payment approval decides who pays gas at runtime, decoupling authorisation of execution from gas payment.
 - **Regular mempool**: carries frame transactions alongside legacy transactions. No separate mempool or bundler network.
 

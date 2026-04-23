@@ -39,7 +39,7 @@ open_source_implementations:
 
 ## Intent
 
-Give institutions a vendor-neutral, sourced methodology for comparing privacy-preserving L2 solutions across performance and cost, privacy and data availability, and security and governance. The framework defines a common workload so that self-reported metrics can be placed next to independent benchmarks on the same axes.
+Give institutions a vendor-neutral, sourced methodology for comparing privacy-preserving L2 solutions across performance and cost, privacy and Data Availability, and security and governance. The framework defines a common workload so that self-reported metrics can be placed next to independent benchmarks on the same axes.
 
 > Note: this card is an evaluation framework, not a reusable privacy primitive. `pattern-privacy-l2s` is the actual L2 pattern; this one documents how to compare privacy L2s. Candidate for relocation to `approaches/` or a methodology section in a follow-up.
 
@@ -71,7 +71,7 @@ Give institutions a vendor-neutral, sourced methodology for comparing privacy-pr
 | **Finality time**          | `Soft Finality` (L2 inclusion), `Hard Finality` (L1 commitment + proof), `Challenge Period`                                  |
 | **Transaction retrieval**  | Sync mechanism (`Trial decryption`, `Detection Keys`, `Server-side filtering`) and sync speed                                |
 
-### 2. Privacy and data availability
+### 2. Privacy and Data Availability
 
 | Metric                    | Discrete metrics                                                                                                                      |
 | :------------------------ | :------------------------------------------------------------------------------------------------------------------------------------ |

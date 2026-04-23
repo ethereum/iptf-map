@@ -29,8 +29,8 @@ crops_profile:
 crops_context:
   cr: "Medium while sequencer election is centralised. Reaches `high` once sequencing becomes permissionless."
   o: "Contracts, DSL, and prover backend are open-source. Client-side proving lets anyone run the stack locally."
-  p: "Private state, private function inputs, and private logs are hidden from sequencers and observers. Public state and function calls remain transparent by design. Selective disclosure is supported through viewing keys or ZK proofs."
-  s: "Rides on the soundness of the ZK proof system and the validity-proof pipeline that settles to L1. Could reach `high` by replacing admin keys with DAO-governed upgrade paths."
+  p: "Private state, private function inputs, and private logs are hidden from sequencers and observers. Public state and function calls remain transparent by design. Selective disclosure is supported through viewing keys or zero-knowledge proofs."
+  s: "Rides on the soundness of the zero-knowledge proof system and the validity-proof pipeline that settles to L1. Could reach `high` by replacing admin keys with DAO-governed upgrade paths."
 
 post_quantum:
   risk: high
@@ -57,7 +57,7 @@ open_source_implementations:
 
 ## Intent
 
-Give developers a privacy-focused DSL to write smart contracts that blend public logic with confidential private computation in the same contract. Private functions execute client-side and produce ZK proofs; public functions execute on the sequencer transparently. Private and public state can be composed in a single application.
+Give developers a privacy-focused DSL to write smart contracts that blend public logic with confidential private computation in the same contract. Private functions execute client-side and produce zero-knowledge proofs; public functions execute on the sequencer transparently. Private and public state can be composed in a single application.
 
 ## Components
 
@@ -71,7 +71,7 @@ Give developers a privacy-focused DSL to write smart contracts that blend public
 
 1. [user] Write a contract in the DSL with private and public functions. Compile to the circuit intermediate representation.
 2. [user] Deploy the contract to the privacy rollup.
-3. [user] Execute a private function locally, generating a ZK proof of correct execution over private inputs and state.
+3. [user] Execute a private function locally, generating a zero-knowledge proof of correct execution over private inputs and state.
 4. [user] Submit the proof and any public inputs to the sequencer.
 5. [sequencer] Verify the proof, update the encrypted private state, and apply any public state changes.
 6. [sequencer] Batch transactions periodically and settle to Ethereum L1 with a validity proof.
@@ -84,12 +84,12 @@ Guarantees:
 - Private state stays encrypted and hidden from sequencers and observers. Private function inputs and outputs are not revealed on-chain.
 - Public state, public function calls, and contract source remain transparent and auditable.
 - Validity proofs ensure state transitions follow contract rules; L1 finality comes via periodic batch settlement.
-- Selective disclosure to auditors is possible through viewing keys or targeted ZK proofs.
+- Selective disclosure to auditors is possible through viewing keys or targeted zero-knowledge proofs.
 - Encrypted event logs enable note discovery without leaking content to the public.
 
 Threat model:
 
-- Soundness of the ZK proof system and the circuit compiler.
+- Soundness of the zero-knowledge proof system and the circuit compiler.
 - Non-censoring sequencer set. A censoring sequencer can stall user transactions; forced-withdrawal paths to L1 are required to bound this.
 - Client-side key management: compromise of local proving or viewing keys exposes the user's private state.
 - Note discovery relies on scanning; a malicious or buggy indexer can cause notes to be missed, though funds are not lost.
@@ -104,7 +104,7 @@ Threat model:
 ## Example
 
 - A corporate treasury shields stablecoins into a private contract, receiving private notes.
-- It pays a supplier privately; the client generates a ZK proof of sufficient balance and note ownership.
+- It pays a supplier privately; the client generates a zero-knowledge proof of sufficient balance and note ownership.
 - The transaction emits an encrypted log; only the supplier can decrypt and discover the payment.
 - The rollup verifies the proof, updates balances in encrypted form, and includes the transaction in a batch settled to L1. Observers see that a valid transaction occurred but not amounts or parties.
 - The supplier can then spend the received notes privately; the treasury's remaining position stays hidden.

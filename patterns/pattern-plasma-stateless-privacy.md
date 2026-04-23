@@ -19,7 +19,7 @@ avoid-when:
 context: both
 context_differentiation:
   i2i: "Institutions already run reliable off-chain infrastructure, so data custody is a known cost. The value of stateless Plasma at I2I scale is minimal L1 footprint and no shared pool state, which avoids revealing portfolio sizes via gas patterns or commitment volumes. Forced exits via the L1 anchor let either counterparty settle unilaterally if the block producer stalls."
-  i2u: "End users cannot reliably custody their own data long-term. This pattern is only safe for user-facing deployments when paired with redundant self-hosted or trust-minimized data availability. Forced withdrawal is critical: the L1 anchor must accept unilateral exit proofs so a censoring block producer cannot freeze user funds."
+  i2u: "End users cannot reliably custody their own data long-term. This pattern is only safe for user-facing deployments when paired with redundant self-hosted or trust-minimized Data Availability. Forced withdrawal is critical: the L1 anchor must accept unilateral exit proofs so a censoring block producer cannot freeze user funds."
 
 crops_profile:
   cr: medium
@@ -31,7 +31,7 @@ crops_context:
   cr: "Reaches `high` when the L1 anchor enforces forced exits via cryptographic proof-based withdrawals that bypass block producer liveness. Drops to `low` if the only withdrawal path depends on a single block producer's cooperation."
   o: "Reaches `yes` when the block producer software, circuit code, and client software are all published under permissive or copyleft licenses in forkable repositories."
   p: "Transaction amounts, sender, and receiver are hidden from chain observers; only block commitments and per-block sender lists are visible on L1. Network-layer metadata (IP, timing against the block producer) remains out of scope."
-  s: "Rides on L1 security for deposit and exit, on the ZK proof system for transfer validity, and on the user's ability to preserve their own data. Reaches `high` with post-quantum hash-based ZK primitives and robust self-hosted data availability."
+  s: "Rides on L1 security for deposit and exit, on the zero-knowledge proof system for transfer validity, and on the user's ability to preserve their own data. Reaches `high` with post-quantum hash-based ZK primitives and robust self-hosted Data Availability."
 
 post_quantum:
   risk: medium
@@ -66,13 +66,13 @@ Use a stateless Plasma architecture to enable private token transfers where tran
 - **L1 anchor contract**: stores block commitments (Merkle roots of transaction hashes) and handles deposits, withdrawals, and forced exits.
 - **Block producer**: aggregates transactions, collects signatures, and posts the block commitment to L1. Stateless with respect to transaction contents.
 - **Client-side prover**: users generate ZK balance and transfer proofs locally (e.g., recursive FRI-based proofs).
-- **User-held data availability**: users custody their own note and transfer history. Optional trust-minimized DA layer for redundancy.
+- **User-held Data Availability**: users custody their own note and transfer history. Optional trust-minimized DA layer for redundancy.
 - **Forced-exit mechanism**: L1 contract accepts exit proofs independently of the block producer, bypassing liveness failure.
 
 ## Protocol
 
 1. [user] Deposit an ERC-20 to the L1 anchor contract, which credits a balance commitment on L2.
-2. [user] Generate a ZK proof of a valid transfer client-side; send the proof and an encrypted note to the recipient.
+2. [user] Generate a zero-knowledge proof of a valid transfer client-side; send the proof and an encrypted note to the recipient.
 3. [operator] The block producer collects signatures and proofs, builds a Merkle tree of the new state, and verifies correctness.
 4. [operator] The block producer posts the state root to L1 as a minimal block commitment.
 5. [user] The recipient stores the received note locally and can spend it in future transactions.
@@ -84,13 +84,13 @@ Use a stateless Plasma architecture to enable private token transfers where tran
 Guarantees:
 
 - Transaction amounts, sender, and receiver are hidden from chain observers; only commitments and per-block sender lists are visible.
-- ZK proofs ensure no double-spend or inflation without revealing transaction details.
+- zero-knowledge proofs ensure no double-spend or inflation without revealing transaction details.
 - Users control their own data; no operator can freeze specific balances if forced exit is implemented.
 - Funds are secured by L1; users can always exit with a valid proof.
 
 Threat model:
 
-- Soundness of the ZK proof system.
+- Soundness of the zero-knowledge proof system.
 - Correct implementation of the L1 anchor, especially the forced-exit path.
 - User data loss. A user who loses their local transaction history loses access to their funds; there is no protocol-level recovery.
 - Block producer liveness. A stalled producer halts new transactions; users can still exit unilaterally with their own proofs.

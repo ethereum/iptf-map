@@ -33,7 +33,7 @@ crops_context:
 
 post_quantum:
   risk: high
-  vector: "Any private leg using EC-based ZK proofs (Groth16, PLONK over BN254) is broken by a CRQC. HNDL risk is high for encrypted view-key material shared between counterparties."
+  vector: "Any private leg using EC-based zero-knowledge proofs (Groth16, PLONK over BN254) is broken by a CRQC. HNDL risk is high for encrypted view-key material shared between counterparties."
   mitigation: "Route private legs through STARK-based shielded pools with hash commitments. Rotate long-lived view keys and prefer post-quantum signatures for cross-mode settlement oracles."
 
 standards: [ERC-7573, ERC-3643, ERC-5564]
@@ -62,7 +62,7 @@ Allow institutions to select public or private execution mode on a per-transacti
 1. [operator] Configure policy rules covering counterparty whitelist, asset thresholds, and jurisdictional routing.
 2. [operator] When a trade arrives, the policy engine evaluates rules and assigns each leg to public or private execution.
 3. [user] Prepare assets in the appropriate environment. Public legs stay on the transparent chain; private legs are shielded into a private pool or bridged to a privacy L2.
-4. [contract] Execute legs in parallel or sequence. Each leg runs in its assigned environment; private legs generate ZK proofs or use FHE, public legs execute standard transfers.
+4. [contract] Execute legs in parallel or sequence. Each leg runs in its assigned environment; private legs generate zero-knowledge proofs or use FHE, public legs execute standard transfers.
 5. [contract] Coordinate cross-mode settlement via ERC-7573 outcome keys or commit-and-prove so both legs settle atomically or both fail.
 6. [regulator] Receive disclosure artifacts from private legs: view keys or ZK attestations delivered per policy.
 7. [operator] Finalize and reconcile. Internal systems map public chain events to private proofs for the audit trail.
@@ -87,7 +87,7 @@ Threat model:
 
 - Metadata leakage. Mode selection itself reveals information: choosing private signals sensitivity. Timing correlation between legs may link transactions.
 - Operational complexity. Dual infrastructure requires expertise in both transparent and privacy systems; failure modes multiply.
-- Cost asymmetry. Private execution incurs ZK proof generation costs; public execution is cheaper but exposes data. Mixed-mode trades pay both overheads.
+- Cost asymmetry. Private execution incurs zero-knowledge proof generation costs; public execution is cheaper but exposes data. Mixed-mode trades pay both overheads.
 - Tooling maturity. Cross-mode settlement is less battle-tested than single-environment flows. Limited production deployments exist.
 - Policy drift risk. Rules must stay synchronized across systems; misconfigurations can route sensitive transactions to public mode.
 

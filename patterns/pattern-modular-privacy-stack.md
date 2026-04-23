@@ -68,7 +68,7 @@ Compose a privacy architecture from four distinct layers: Data, Execution, Settl
 ## Components
 
 - **Data layer** stores and retrieves encrypted payloads. Options include off-chain encrypted storage, data-availability layers, L1 blob data, and content-addressed networks with encryption.
-- **Execution layer** runs private computation. Options include zero-knowledge execution environments, fully homomorphic encryption, and trusted execution environments.
+- **Execution layer** runs private computation. Options include zero-knowledge execution environments, Fully Homomorphic Encryption, and trusted execution environments.
 - **Settlement layer** provides finality and atomicity. Options include L1, validity-proof rollups, optimistic rollups, and cross-chain atomic swap protocols.
 - **Disclosure layer** exposes scoped access for audit and compliance. Options include viewing keys, zero-knowledge proofs of properties, threshold key management, and on-chain attestations.
 - **Interface contracts** define what each layer consumes and emits: encrypted reads and writes for Data, state transitions for Execution, proofs and signed transactions for Settlement, and disclosure artifacts for Disclosure.

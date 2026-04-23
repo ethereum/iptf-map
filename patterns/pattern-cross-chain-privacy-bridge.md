@@ -66,7 +66,7 @@ Move assets between chains while preserving privacy on the destination by mintin
 
 1. [user] Generate a destination note commitment `C = hash(value, recipient_pubkey, randomness)`. The recipient is not revealed on the source chain.
 2. [contract] Lock or burn the assets in the source escrow. Emit an event containing the amount, `C`, and a nonce. The lock is public on the source chain.
-3. [relayer] Obtain finality evidence for the source lock: operator signature, threshold signature, optimistic claim, ZK proof of source consensus, light-client header, or TEE attestation, depending on the bridge's trust model.
+3. [relayer] Obtain finality evidence for the source lock: operator signature, threshold signature, optimistic claim, zero-knowledge proof of source consensus, light-client header, or TEE attestation, depending on the bridge's trust model.
 4. [contract] The destination bridge contract verifies the finality evidence and mints a note into the shielded pool with commitment `C`.
 5. [user] The recipient spends the note privately within the destination pool using standard shielded-pool semantics (nullifier reveal, proof of membership and ownership).
 6. [user] For the return path, burn the shielded note on the destination, prove the burn to the source, and unlock the escrowed assets. The return leg can also be private if the source supports it.
@@ -94,7 +94,7 @@ Threat model:
 ## Trade-offs
 
 - Two-phase commit workflow, not instant atomic settlement. Latency depends on source finality and any challenge window.
-- Cost scales with the verification mechanism. ZK proofs are expensive to generate; optimistic systems impose challenge delays; custodial designs are cheap but centralized.
+- Cost scales with the verification mechanism. zero-knowledge proofs are expensive to generate; optimistic systems impose challenge delays; custodial designs are cheap but centralized.
 - Reorg handling and cross-domain confusion (wrong chain ID, token mismatch) are recurring failure modes that must be guarded at the contract layer.
 - Griefing through deposits that are never minted locks funds until timeout. The recovery path must be robust and well-documented.
 - Key and governance risks: TSS or MPC signer collusion, view-key misuse, and malicious contract upgrades each sit outside the cryptographic trust model and require operational controls.

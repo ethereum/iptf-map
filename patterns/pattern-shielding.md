@@ -27,7 +27,7 @@ crops_context:
   cr: "Reaches `high` on L1 permissionless shielded pools where users can deposit and withdraw without a gatekeeper. Drops to `low` on permissioned L2s with operator-controlled exit. Relies on relayer and paymaster for transaction submission, both of which can censor."
   o: "Open-source contracts are available; users can fork and run their own relayer. Some L2 deployments are closed or operator-controlled."
   p: "Plausible deniability on amounts, sender, and receiver. Metadata (contract-level patterns, IP addresses, gas payer, timing) remains visible and must be covered at the network layer."
-  s: "Rides on the soundness of the ZK proof system and on-chain state integrity. Operator honesty matters on permissioned deployments."
+  s: "Rides on the soundness of the zero-knowledge proof system and on-chain state integrity. Operator honesty matters on permissioned deployments."
 
 post_quantum:
   risk: high
@@ -86,7 +86,7 @@ Guarantees:
 
 Threat model:
 
-- Soundness of the ZK proof system.
+- Soundness of the zero-knowledge proof system.
 - Non-censoring sequencer or validator set on shielded L2s.
 - Non-compromised relayer and paymaster. The relayer sees raw transaction data (nullifier, commitment, proof) and can link user IPs to shielded activity even though the contents stay hidden. A colluding paymaster can selectively censor.
 - Network-layer metadata (timing, gas payer, IP) is out of scope for the shielding layer; combine with network-level anonymity to cover it.

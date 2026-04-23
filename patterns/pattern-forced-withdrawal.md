@@ -51,7 +51,7 @@ When an L2 sequencer, relayer, or operator becomes unavailable, users need a uni
 ## Components
 
 - **Data availability source** lets the user reconstruct their position. Can be L1 calldata, L1 blobs, an external DA layer, a validium DA committee, or client-side storage.
-- **L1 state-root oracle** stores the last verified L2 state root. Validity rollups anchor with a ZK proof; optimistic rollups anchor after a challenge period survives.
+- **L1 state-root oracle** stores the last verified L2 state root. Validity rollups anchor with a zero-knowledge proof; optimistic rollups anchor after a challenge period survives.
 - **Proof verifier contract** accepts Merkle proofs (transparent systems) or zero-knowledge proofs (privacy systems) and checks them against the anchored root.
 - **Nullifier registry** records completed withdrawals to prevent double-claims.
 - **Bridge liquidity contract** holds the locked deposits that forced exits draw from; no new funds are created.

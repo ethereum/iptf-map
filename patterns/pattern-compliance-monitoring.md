@@ -28,12 +28,12 @@ crops_profile:
 crops_context:
   cr: "The screening oracle is a single point of censorship by design. Reaches `medium` if replaced with a threshold consensus oracle network that includes appeal routes and cannot unilaterally block transactions."
   o: "Rule engines are often proprietary and bundled with screening vendors. Improves to `yes` by open-sourcing the rule engine under a copyleft license and making rule updates auditable."
-  p: "The oracle sees some transaction metadata by design. Reaches `full` when enforced screening uses ZK proofs (prove amount under threshold, prove counterparty not on sanctions list) so the oracle validates attestations without seeing amounts or identities."
+  p: "The oracle sees some transaction metadata by design. Reaches `full` when enforced screening uses zero-knowledge proofs (prove amount under threshold, prove counterparty not on sanctions list) so the oracle validates attestations without seeing amounts or identities."
   s: "Rides on a single operator's honesty and availability. Improves to `high` by replacing single-operator trust with threshold KMS and timelocked recovery for rule updates."
 
 post_quantum:
   risk: medium
-  vector: "Signatures on screening attestations inherit host-chain and oracle signature assumptions. ZK proofs used in privacy-preserving screening inherit their proof system's exposure."
+  vector: "Signatures on screening attestations inherit host-chain and oracle signature assumptions. zero-knowledge proofs used in privacy-preserving screening inherit their proof system's exposure."
   mitigation: "Hash-based signatures and STARK-based screening proofs. See [Post-Quantum Threats](../domains/post-quantum.md)."
 
 standards: [EAS, ERC-3643]
@@ -49,22 +49,22 @@ open_source_implementations: []
 
 Enable institutions to screen private transactions for regulatory compliance (AML, sanctions, fraud) without exposing transaction details to unauthorized parties. Balance privacy preservation with auditability through selective screening approaches and tiered disclosure, so settlement can proceed under compliance controls while counterparty identities and amounts remain shielded from public view.
 
-This is an orchestration pattern that composes primitives (viewing keys, ZK proofs, threshold KMS, attestations) into a compliance workflow. The unique contribution is the rule engine, alert pipeline, and audit trail that hold the workflow together; the underlying disclosure primitives are linked via `related_patterns`.
+This is an orchestration pattern that composes primitives (viewing keys, zero-knowledge proofs, threshold KMS, attestations) into a compliance workflow. The unique contribution is the rule engine, alert pipeline, and audit trail that hold the workflow together; the underlying disclosure primitives are linked via `related_patterns`.
 
 ## Components
 
 - **Compliance oracle or screening service** evaluates transactions against sanctions lists, AML rules, and internal policies. Can be centralized, federated, or threshold-operated.
 - **Rule engine** stores jurisdiction-specific rules with versioning. Rule updates are logged and auditable.
 - **Threshold key management** issues and rotates viewing keys distributed to authorized parties, so no single operator can unilaterally decrypt transaction contents.
-- **ZK proof verifiers** (optional) validate compliance attestations such as "amount below reporting threshold" or "counterparty not on sanctions list" without revealing the underlying values.
+- **zero-knowledge proof verifiers** (optional) validate compliance attestations such as "amount below reporting threshold" or "counterparty not on sanctions list" without revealing the underlying values.
 - **Alert and case management system** handles flagged transactions through severity tiers with defined response times.
 - **Audit log** records every screening decision with timestamp, rule version, and decision hash. Typically anchored on-chain via attestations for tamper evidence.
 
 ## Protocol
 
-1. [user] Sender constructs a transaction and generates a compliance attestation (viewing key or ZK proof) alongside the encrypted payload.
+1. [user] Sender constructs a transaction and generates a compliance attestation (viewing key or zero-knowledge proof) alongside the encrypted payload.
 2. [operator] Compliance oracle pre-screens the recipient against sanctions lists and internal policies before the transaction is submitted.
-3. [operator] Oracle verifies the transaction against AML rules using the attestation, without seeing the full plaintext when ZK proofs are used.
+3. [operator] Oracle verifies the transaction against AML rules using the attestation, without seeing the full plaintext when zero-knowledge proofs are used.
 4. [operator] If screening passes, the oracle emits a cleared attestation; if flagged, an alert is generated with severity level.
 5. [operator] High-severity alerts trigger a hold and manual review; low-severity cases are logged for batch review.
 6. [contract] Cleared transactions settle on the host chain; flagged transactions remain held pending resolution.
@@ -81,7 +81,7 @@ Guarantees:
 
 Threat model:
 
-- Soundness of any ZK proofs used for screening attestations.
+- Soundness of any zero-knowledge proofs used for screening attestations.
 - Non-colluding oracle operators. A single compromised or coerced operator in a centralized deployment can leak transaction metadata or unilaterally block transactions.
 - Rule engine integrity. A tampered rule set can allow prohibited transactions or block legitimate ones.
 - Key management for viewing keys. Compromised keys enable unauthorized decryption of historical transactions.
@@ -99,7 +99,7 @@ Threat model:
 
 - An institution initiates a large bond purchase on a privacy L2.
 - The sender's compliance node pre-screens the counterparty against the sanctions list (clear).
-- The transaction is submitted with an encrypted amount and a ZK proof that the amount is within the reporting threshold.
+- The transaction is submitted with an encrypted amount and a zero-knowledge proof that the amount is within the reporting threshold.
 - The oracle verifies the proof, checks the counterparty risk score (medium), and clears the transaction.
 - Settlement executes. The audit log records timestamp, screening version, result, and proof hash.
 - A monthly report aggregates cleared transactions for the regulatory filing.

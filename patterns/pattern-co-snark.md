@@ -7,7 +7,7 @@ layer: hybrid
 last_reviewed: 2026-04-23
 
 works-best-when:
-  - A user or institution lacks the compute, memory, or battery to generate a ZK proof client-side and wants to offload the work without disclosing the witness.
+  - A user or institution lacks the compute, memory, or battery to generate a zero-knowledge proof client-side and wants to offload the work without disclosing the witness.
   - The delegatee set can be run by independent operators so no single party sees the full witness.
 avoid-when:
   - Client-side proving is feasible and low-latency is critical.
@@ -50,7 +50,7 @@ open_source_implementations:
 
 ## Intent
 
-Offload ZK proof generation to a distributed prover network without revealing the witness. The user secret-shares their witness across several proving nodes; the nodes jointly run an MPC protocol to compute a single SNARK proof; no individual node ever reconstructs the full witness. The resulting proof is identical to one produced client-side and is verified on-chain or off-chain with no changes on the verifier side.
+Offload zero-knowledge proof generation to a distributed prover network without revealing the witness. The user secret-shares their witness across several proving nodes; the nodes jointly run an MPC protocol to compute a single SNARK proof; no individual node ever reconstructs the full witness. The resulting proof is identical to one produced client-side and is verified on-chain or off-chain with no changes on the verifier side.
 
 This pattern covers **delegated proving for a single prover's witness**. For multi-party joint computation over shared secret inputs (e.g. a consortium ledger), see `pattern-private-shared-state-cosnark`.
 

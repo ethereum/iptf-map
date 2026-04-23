@@ -69,10 +69,10 @@ Provide confidential balances and transfers for an existing ERC-20 on an origin 
 
 1. [user] Deposit ERC-20 into the origin locking contract.
 2. [contract] Emit a cross-chain message crediting the user's encrypted balance on the confidentiality layer.
-3. [user] Submit a confidential transfer: ciphertext amount, ZK proof of correctness, and recipient identifier.
+3. [user] Submit a confidential transfer: ciphertext amount, zero-knowledge proof of correctness, and recipient identifier.
 4. [relayer] Carry the transfer packet to the confidentiality layer.
 5. [operator] The confidentiality layer verifies the proof and homomorphically updates encrypted balances of sender and receiver.
-6. [user] Submit a withdrawal request with a ZK proof of sufficient encrypted balance.
+6. [user] Submit a withdrawal request with a zero-knowledge proof of sufficient encrypted balance.
 7. [contract] On receipt of the debit acknowledgement, unlock the corresponding ERC-20 to the user on the origin chain.
 8. [auditor] Under a deployment-defined policy, receive a scoped decryption key or proof for a specific account or transaction; access events are logged if required.
 
