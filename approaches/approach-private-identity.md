@@ -86,7 +86,7 @@ ZK proofs over cryptographic data from government-issued identity documents, pro
 
 **Primary Pattern:** [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md)
 
-Trusted issuers publish signed claims on-chain ([EAS](https://attest.org/), [ONCHAINID](https://www.erc3643.org/) (ERC-734/735), W3C VCs). With ZK wrappers, attestations support selective disclosure without revealing content. [OpenAC](https://eprint.iacr.org/2026/251) adds unlinkable presentations over existing VCs (SD-JWT, mDL) with transparent ZK proofs, no trusted setup; EUDI ARF compatible.
+Trusted issuers publish signed claims on-chain ([EAS](https://attest.org/), [ONCHAINID](https://www.erc3643.org/) (ERC-734/735), W3C VCs). With [ZK wrappers](../patterns/pattern-zk-wrappers.md), attestations support selective disclosure without revealing content. [OpenAC](https://eprint.iacr.org/2026/251) adds unlinkable presentations over existing VCs (SD-JWT, mDL) with transparent ZK proofs, no trusted setup; EUDI ARF compatible.
 
 **When to use:** Permissioned token compliance (ERC-3643), cross-institutional credential sharing, regulatory registry mirroring. Add OpenAC for cross-verifier unlinkability.
 **Deployment:** EAS (production). OpenAC (PoC, moving to pilot).
@@ -129,9 +129,9 @@ Issuer-hostile model: issuer may be unavailable, hostile, or destroyed. Pluralit
 
 When sources are honest, the cryptographic layer enforces one-to-one binding. When compromised, the economic layer bounds sybil creation to capital.
 
-**Recovery:** Threshold (Shamir) secret splitting across devices/custodians (t-of-n, no on-chain tx). Social (guardian-based) quorum authorizes key rotation under same enrollment; anti-coercion mechanism is an open question.
+**Recovery:** Threshold (Shamir) secret splitting across devices/custodians (t-of-n, no on-chain tx). [Social recovery](../patterns/pattern-social-recovery.md) (guardian-based quorum) authorizes key rotation under the same enrollment; anti-coercion mechanism is an open question.
 
-**Verification:** Any verifier checks a ZK proof against the on-chain root. Public inputs: root, scope-bound nullifier, predicate parameters. No registry lookup, no issuer contact.
+**Verification:** Any verifier checks a zero-knowledge proof against the on-chain root. Public inputs: root, scope-bound nullifier, predicate parameters. No registry lookup, no issuer contact.
 
 **When to use:** Issuer may become unavailable, hostile, or destroyed. Sanctions compliance across jurisdictional disruptions. Multi-source enrollment with issuer-free verification.
 **Deployment:** [Resilient Private Identity PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity) (Noir/UltraHonk, BN254)

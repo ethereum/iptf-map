@@ -30,7 +30,7 @@ Enable smart contracts to verify claims about identities, credentials, or off-ch
 - **Standards:** EAS (Ethereum Attestation Service), W3C Verifiable Credentials, ONCHAINID (ERC-734/735), EIP-712 for typed data signing
 - **Infra:** Ethereum L1/L2 for attestation registry, wallet support for signing/verifying credentials
 - **Off-chain:** Issuer services (banks, KYC providers, regulators), credential storage (IPFS, private databases)
-- **Optional:** ZK wrappers (prove a well formed signature for selective disclosure)
+- **Optional:** [ZK wrappers](pattern-zk-wrappers.md) (prove a well-formed signature for selective disclosure)
 
 ## Protocol (concise)
 
@@ -45,7 +45,7 @@ Enable smart contracts to verify claims about identities, credentials, or off-ch
 - **Privacy:**
 
   - Minimal disclosure: only necessary claims verified on-chain (e.g., "is accredited" not full financial details)
-  - With ZK wrappers: can prove properties without revealing attestation content
+  - With [ZK wrappers](pattern-zk-wrappers.md): can prove properties without revealing attestation content
   - Issuer identity typically public (necessary for trust), but subject can use pseudonymous addresses
 
 - **Correctness:**
@@ -62,9 +62,9 @@ Enable smart contracts to verify claims about identities, credentials, or off-ch
 
 ## Trade-offs
 
-- Performance: On-chain verification adds gas cost for signature checks and registry lookups. ZK proof verification increases preprocessing cost but improves privacy and reduces on-chain gas.
+- Performance: On-chain verification adds gas cost for signature checks and registry lookups. Zero-knowledge proof verification increases preprocessing cost but improves privacy and reduces on-chain gas.
 - Infrastructure: Relies on trusted issuers for attestation quality. Issuers' keys needs to be mapped (e.g., on-chain PKI).
-- Privacy: On-chain verification reveals which contracts user interacts with and transaction timing. Mitigate using privacy L2s or ZK proofs.
+- Privacy: On-chain verification reveals which contracts user interacts with and transaction timing. Mitigate using privacy L2s or zero-knowledge proofs.
 - Standards: Multiple competing standards (EAS, W3C VC, ONCHAINID) limit cross-chain portability. Use adapters or multi-standard support.
 - **CROPS context (both)**: In I2U, CR is especially constrained — user cannot self-attest and depends on issuer willingness. CR improves if multiple competing issuers exist and credential portability is supported (W3C VC). In I2I, peers can cross-attest or use mutual recognition frameworks.
 
