@@ -14,12 +14,15 @@ avoid-when:
   - Threat model does not include network observers
   - Running own node eliminates RPC provider trust
   - High-latency anonymity networks (Tor, Nym) are acceptable
-dependencies: [TEE (client-side), Secret sharing, Additive homomorphic commitments]
+dependencies:
+  - TEE (client-side)
+  - Secret sharing
+  - Additive homomorphic commitments
 context: both
 crops_profile:
   cr: medium
   os: partial
-  privacy: full
+  privacy: partial
   security: medium
 ---
 
@@ -54,8 +57,8 @@ Hide *who* is sending transactions or querying state at the network layer. Exist
 - Anonymity trilemma: anonymity set size, latency, and bandwidth (cover traffic) are in tension. Pure-crypto approaches (Tor, Nym, DC-Nets) must sacrifice at least one. TEE-assisted designs like Flashnet relax the trilemma by offloading verification to hardware, but introduce a hardware trust assumption for liveness.
 - Client TEEs required for liveness; hardware trust for availability only, not privacy.
 - Requires semi-honest majority among servers; colluding majority can break liveness.
-- Research-stage (Flashbots Flashnet); no production deployment yet.
-- **CROPS context (both)**: In I2U, end-users leak identity to RPC providers operated by institutions without this layer. In I2I, institutions may already run their own nodes, reducing the need.
+- Research-stage (Flashbots Flashnet); no production deployment as of 2026-04.
+- **CROPS context (both)**: Privacy is `partial` because anonymity rests on a client-side TEE and a semi-honest server majority; a TEE compromise or majority collusion breaks liveness (the system stalls) rather than anonymity, since the cryptographic layer preserves unlinkability. Defense in depth (pairing with Tor or a mixnet) strengthens guarantees when the TEE trust assumption is weakened. In I2U, end-users leak identity to RPC providers operated by institutions without this layer. In I2I, institutions may already run their own nodes, reducing the need.
 
 ## Example
 
@@ -67,12 +70,14 @@ Hide *who* is sending transactions or querying state at the network layer. Exist
 
 ## See also
 
-- [Network-Level Anonymity](pattern-network-anonymity.md) — general problem and alternative approaches (Tor, mixnets, VPNs)
-- [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md) — content privacy for writes (complementary)
-- [Threshold Encrypted Mempool](pattern-threshold-encrypted-mempool.md) — content privacy via threshold encryption
-- [TEE-Based Privacy](pattern-tee-based-privacy.md) — broader TEE trust model analysis
-- [RFP: Private Reads](../rfps/rfp-private-reads.md) — read-side privacy gap this pattern addresses
-- [Vendor: Flashbots](../vendors/flashbots.md) — Flashnet development
+- [Network-Level Anonymity](pattern-network-anonymity.md) - umbrella pattern and approach comparison
+- [Onion Routing](pattern-onion-routing.md) - Tor-based alternative, higher latency but no hardware trust
+- [Mixnet Anonymity](pattern-mixnet-anonymity.md) - strongest anonymity, highest latency
+- [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md) - content privacy for writes (complementary)
+- [Threshold Encrypted Mempool](pattern-threshold-encrypted-mempool.md) - content privacy via threshold encryption
+- [TEE-Based Privacy](pattern-tee-based-privacy.md) - broader TEE trust model analysis
+- [RFP: Private Reads](../rfps/rfp-private-reads.md) - read-side privacy gap this pattern addresses
+- [Vendor: Flashbots](../vendors/flashbots.md) - Flashnet development
 
 ## See also (external)
 

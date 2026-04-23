@@ -89,6 +89,7 @@ These problems interact because traditional payment transparency conflicts with 
    - Cross-tier bridges: Secure movement between L1 and L2 privacy domains
 
 2. **Selective Disclosure Layer**
+   - [User-controlled viewing keys](../patterns/pattern-user-controlled-viewing-keys.md) for I2U contexts where the user retains key custody
    - Regulator viewing keys for scoped audit access
    - Time-bound, threshold-controlled disclosure mechanisms
    - [Attestation logging](../patterns/pattern-verifiable-attestation.md) for compliance trails (EAS, W3C VC, or ONCHAINID)
@@ -243,7 +244,7 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 
 - **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573), [ISO 20022](https://www.iso20022.org/), [ERC-20](https://ercs.ethereum.org/ERCS/erc-20)
 - **Infrastructure:** [Railgun](https://railgun.org/), [Aztec Network](https://docs.aztec.network/), [Zama fhEVM](https://docs.zama.org/fhevm), [Intmax](https://www.intmax.io/)
-- **Patterns:** [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md), [Network-Level Anonymity](../patterns/pattern-network-anonymity.md), [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md)
+- **Patterns:** [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md), [Network-Level Anonymity](../patterns/pattern-network-anonymity.md), [User-Controlled Viewing Keys](../patterns/pattern-user-controlled-viewing-keys.md), [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md)
 - **Regulatory:** [MiCA Framework](../jurisdictions/eu-MiCA.md), [SEC - GENIUS Act](../jurisdictions/us-SEC.md)
 - **Related Approaches:** [Private Trade Settlement](../approaches/approach-private-trade-settlement.md), [Private Derivatives](../approaches/approach-private-derivatives.md)
 - **Reference Implementation:** [Private Payment PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment)
