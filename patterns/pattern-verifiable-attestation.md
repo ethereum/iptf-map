@@ -30,7 +30,7 @@ Enable smart contracts to verify claims about identities, credentials, or off-ch
 - **Standards:** EAS (Ethereum Attestation Service), W3C Verifiable Credentials, ONCHAINID (ERC-734/735), EIP-712 for typed data signing
 - **Infra:** Ethereum L1/L2 for attestation registry, wallet support for signing/verifying credentials
 - **Off-chain:** Issuer services (banks, KYC providers, regulators), credential storage (IPFS, private databases)
-- **Optional:** ZK wrappers (prove a well formed signature for selective disclosure)
+- **Optional:** [ZK wrappers](pattern-zk-wrappers.md) (prove a well formed signature for selective disclosure)
 
 ## Protocol (concise)
 
@@ -45,7 +45,7 @@ Enable smart contracts to verify claims about identities, credentials, or off-ch
 - **Privacy:**
 
   - Minimal disclosure: only necessary claims verified on-chain (e.g., "is accredited" not full financial details)
-  - With ZK wrappers: can prove properties without revealing attestation content
+  - With [ZK wrappers](pattern-zk-wrappers.md): can prove properties without revealing attestation content
   - Issuer identity typically public (necessary for trust), but subject can use pseudonymous addresses
 
 - **Correctness:**
