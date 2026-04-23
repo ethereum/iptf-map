@@ -1,69 +1,109 @@
 ---
-title: "Pattern: Shielded ERC-20 Transfers"
-status: draft
-maturity: PoC
+title: "Pattern: Shielding"
+status: ready
+maturity: production
+type: standard
 layer: hybrid
-privacy_goal: Confidential ERC-20 transfers hiding balances and metadata with selective disclosure
-assumptions: Shielded pool contracts or privacy L2, wallet support for shielded keys
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - You need confidential transfer amounts/counterparties.
-  - Selective disclosure/auditing is required.
+  - You need confidential transfer amounts and counterparties.
+  - Selective disclosure or auditing is required.
 avoid-when:
   - Transparency is mandated by design.
-dependencies:
-  - ERC-20
-  - Optional: ERC-5564 (stealth addresses), ERC-3643 (eligibility gating), [Attestations](pattern-verifiable-attestation.md) for audit
+
 context: both
+context_differentiation:
+  i2i: "Between institutions, both counterparties have legal recourse and KYC-aligned identities. A shielded pool can be permissioned to institutional participants once the anonymity set is large enough to preserve unlinkability within the set. Shielding hides positions from competitors while viewing keys cover audit."
+  i2u: "User is asymmetric to the operator. The shielded pool's CR must not depend on an operator who can block withdrawals. Forced withdrawal is required to make the privacy guarantee meaningful; without it, CR is effectively `low`."
+
 crops_profile:
   cr: medium
-  os: partial
-  privacy: full
-  security: medium
+  o: partial
+  p: full
+  s: medium
+
+crops_context:
+  cr: "Reaches `high` on L1 permissionless shielded pools where users can deposit and withdraw without a gatekeeper. Drops to `low` on permissioned L2s with operator-controlled exit. Relies on relayer and paymaster for transaction submission, both of which can censor."
+  o: "Open-source contracts are available; users can fork and run their own relayer. Some L2 deployments are closed or operator-controlled."
+  p: "Plausible deniability on amounts, sender, and receiver. Metadata (contract-level patterns, IP addresses, gas payer, timing) remains visible and must be covered at the network layer."
+  s: "Rides on the soundness of the ZK proof system and on-chain state integrity. Operator honesty matters on permissioned deployments."
+
+post_quantum:
+  risk: high
+  vector: "EC-based commitments (Groth16, PLONK/KZG) broken by CRQC; HNDL risk high for encrypted notes."
+  mitigation: "STARK-based shielded pools with hash commitments. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: [ERC-20, ERC-5564, ERC-3643]
+
+related_patterns:
+  composes_with: [pattern-stealth-addresses, pattern-erc3643-rwa, pattern-regulatory-disclosure-keys-proofs]
+  see_also: [pattern-forced-withdrawal, pattern-user-controlled-viewing-keys, pattern-network-anonymity]
+
+open_source_implementations:
+  - url: https://github.com/Railgun-Privacy/contract
+    description: "Railgun shielded pool (L1, production)"
+    language: "Solidity, Circom"
+  - url: https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment
+    description: "IPTF PoC (UltraHonk/Noir, research)"
+    language: "Noir, Solidity"
+  - url: https://github.com/AztecProtocol/aztec-packages
+    description: "Aztec Network, privacy L2 with native shielding (production)"
+    language: "Noir"
 ---
 
 ## Intent
 
-Enable **confidential ERC-20 transfers** by shielding balances and transfer metadata, while still allowing regulators/auditors to verify via selective disclosure (view keys, proofs).
+Enable **confidential transfers** by shielding balances, sender, and receiver, while still allowing regulators and auditors to verify via selective disclosure (viewing keys, proofs). The logic generalizes beyond ERC-20 to any transferable asset.
 
-## Ingredients
+## Components
 
-- **Standards**: ERC-20 base; optional ERC-5564 (stealth addresses)
-- **Implementations**:
-  - **L1/L2 contracts** (e.g., Railgun-style shielded pools).
-  - **Privacy L2/app-chains** (e.g., Aztec, Zama fhEVM, Fhenix) with native shielding.
-- **Wallet/KMS**: Management of shielded keys and optional viewing keys.
+- **Shielded pool contract** stores commitments, the nullifier set, and a ZK verifier. Deployable on L1 or a shielded L2.
+- **Hash-based commitments** (e.g. Poseidon) hide note contents; notes represent spendable state.
+- **Nullifier set** prevents double-spends by tracking spent notes.
+- **Prover and verifier**, with circuit logic authored in a DSL (Noir, Circom, Halo2, Gnark, etc.); the prover runs client-side.
+- **Wallet/KMS** manages shielded keys and optional viewing keys.
+- **Relayer/paymaster** (optional) for gas abstraction.
+- **Stealth addresses** (optional, ERC-5564) for recipient unlinkability.
 
-## Protocol (concise)
+## Protocol
 
-1. Deposit ERC-20 tokens into shielded pool contract.
-2. Receive private notes/commitments representing the deposit.
-3. Execute shielded transfers by spending notes and creating new ones.
-4. Generate ZK proof for each transfer (balance validity, no double-spend).
-5. Optionally use stealth addresses (ERC-5564) for recipient unlinkability.
-6. Provide viewing keys to auditors for selective disclosure.
-7. Withdraw by proving ownership of notes and burning them.
+1. [user] Deposit assets into the shielded pool contract.
+2. [contract] Store the commitment submitted by the user in the commitment set.
+3. [user] Construct a shielded transfer: generate a zero-knowledge proof that (a) nullifiers for spent notes are not already in the nullifier set, (b) commitments for spent notes are members of the commitment set, (c) the sum of output note amounts does not exceed the sum of input note amounts, and (d) the sender owns the spending keys.
+4. [relayer] Submit the shielded transaction for gas abstraction (optional).
+5. [contract] Verify the proof, add new commitments, and add spent nullifiers.
+6. [auditor] Verify a specific transfer via the recipient's viewing key.
+7. [user] Withdraw by proving ownership of notes and burning them.
 
-## Guarantees
+## Guarantees & threat model
 
-- Hides amounts + counterparties from non-participants.
-- Enables scoped disclosures to auditors.
-- Anchors commitments on L1 for integrity.
+Guarantees:
+
+- Hides amounts, sender, and receiver from non-participants within the anonymity set.
+- Enables scoped disclosures to auditors via viewing keys.
+- Anchors state on the underlying chain (L1 or L2) for integrity.
+
+Threat model:
+
+- Soundness of the ZK proof system.
+- Non-censoring sequencer or validator set on shielded L2s.
+- Non-compromised relayer and paymaster. The relayer sees raw transaction data (nullifier, commitment, proof) and can link user IPs to shielded activity even though the contents stay hidden. A colluding paymaster can selectively censor.
+- Network-layer metadata (timing, gas payer, IP) is out of scope for the shielding layer; combine with network-level anonymity to cover it.
 
 ## Trade-offs
 
-- Cost/latency of ZK/FHE proofs.
-- Metadata leakage possible (timing, gas payer).
-- Tooling immaturity compared to ERC-20.
-- **CROPS context (both)**: CR reaches `high` on L1 shielded pools (Railgun) where users can deposit/withdraw permissionlessly. Drops to `low` on permissioned L2s with operator-controlled exit. Relies on relayer and paymaster for transaction submission, both of which can censor. In I2U, the exit path guarantee is critical — without forced withdrawal, CR is effectively `low`.
-- **Post-quantum exposure**: underlying ZK proof system may use EC-based commitments (Groth16, PLONK/KZG) broken by CRQC; HNDL risk is high for encrypted notes. Mitigation: STARK-based shielded pools with hash commitments. See [Post-Quantum Threats](../domains/post-quantum.md).
+- Cost and latency of zero-knowledge proofs (prover time, calldata/blobspace).
+- Metadata leakage at the network layer.
+- Gas abstraction is mandatory in practice: paying gas from the user's own EOA links the exit address back to the entry, breaking entry-to-exit unlinkability. A relayer or paymaster is required to break that link.
+- Monotonic state growth: commitments accumulate indefinitely, so pool state bloats and proof costs drift up over time.
 
 ## Example
 
-- Alice shields USDC into Railgun; transfers to Bob privately; regulator later verifies the transfer via Bob’s viewing key.
+- A user shields stablecoins into the pool, transfers them privately to a recipient, and the regulator later verifies the transfer via the recipient's viewing key.
 
 ## See also
 
-- Railgun: https://docs.railgun.org/wiki
-- Aztec docs: https://docs.aztec.network/
-- Zama fhEVM: https://docs.zama.org/protocol/protocol/overview
+- [Railgun](../vendors/railgun.md)
+- [Hinkal](../vendors/hinkal.md)
+- [Aztec](../vendors/aztec.md)

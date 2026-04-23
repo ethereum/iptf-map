@@ -1,86 +1,107 @@
 ---
 title: "Pattern: Mixnet Anonymity"
 status: draft
-maturity: PoC
+maturity: testnet
+type: standard
 layer: offchain
-privacy_goal: Hide sender identity by batching, delaying, reordering, and padding messages with cover traffic
-assumptions: Threshold trust across mix nodes; sufficient cover traffic and adoption to raise timing-correlation cost
-last_reviewed: 2026-04-14
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - The threat model includes a global passive adversary capable of traffic correlation
-  - Strongest possible anonymity guarantees are required
-  - Higher latency (seconds to minutes) is acceptable
+  - The threat model includes a global passive adversary capable of traffic correlation.
+  - Strong sender-anonymity guarantees are required against network-level observers.
+  - Latency of seconds to minutes is acceptable for the target workload.
 avoid-when:
-  - Low latency is critical (real-time DeFi, intraday trading)
-  - Bandwidth overhead from cover traffic is prohibitive
-  - Simpler approaches (onion routing, TEE-assisted) meet the threat model
-dependencies:
-  - Mix node network (Nym, HOPR)
-  - Client-side cover-traffic generation
+  - Real-time latency is required (interactive DeFi, intraday trading).
+  - Bandwidth overhead from cover traffic is prohibitive for the deployment.
+  - A lower-overhead network-anonymity primitive already meets the threat model.
+
 context: both
+context_differentiation:
+  i2i: "Between institutions the mixnet hides query patterns and transaction timing from counterparty infrastructure and from network-level observers. Both parties can adopt the same routing discipline, and the anonymity set includes other institutional traffic."
+  i2u: "For user-facing deployments the operator of the RPC endpoint or the wallet backend is often the adversary. The mixnet reduces the operator's ability to correlate incoming queries with specific users by disrupting timing and ordering. Protection strength depends on cover traffic volume, adoption, and route quality, none of which the user can verify unilaterally."
+
 crops_profile:
   cr: medium
-  os: partial
-  privacy: partial
-  security: medium
+  o: partial
+  p: partial
+  s: medium
+
+crops_context:
+  cr: "Operating a mix node typically requires staking, so the node set is gated by economic participation. On-chain censorship of mix-routed transactions is no easier than for direct transactions."
+  o: "Core mixnet stacks are open source, but live networks have governance constraints on who can operate mix nodes and how rewards are distributed."
+  p: "Sender-anonymity against traffic correlation is strong under sufficient cover volume. Content privacy must be handled by a separate layer; on-chain side channels also persist."
+  s: "Resistance to correlation depends on sustained cover traffic, correct network operation, and the anonymity-set size during the mixing window."
+
+post_quantum:
+  risk: medium
+  vector: "Sphinx packet encryption today uses EC-based key exchange; HNDL risk applies to anyone recording mix traffic."
+  mitigation: "Migrate the key-encapsulation step of the packet format to a post-quantum KEM such as ML-KEM."
+
+standards: []
+
+related_patterns:
+  alternative_to: [pattern-onion-routing, pattern-tee-network-anonymity]
+  composes_with: [pattern-private-transaction-broadcasting, pattern-threshold-encrypted-mempool, pattern-shielding]
+  see_also: [pattern-network-anonymity, pattern-modular-privacy-stack]
+
+open_source_implementations:
+  - url: https://github.com/nymtech/nym
+    description: "Nym mixnet reference implementation (Sphinx packets, Loopix-style mixing)"
+    language: Rust
+  - url: https://github.com/hoprnet/hoprnet
+    description: "HOPR mixnet protocol stack"
+    language: Rust
 ---
 
 ## Intent
 
-Hide *who* is sending transactions or querying state by routing messages through a network of mix nodes that batch, delay, reorder, and pad traffic with cover messages. Mixnets provide stronger anonymity than onion routing against global passive adversaries because timing correlation is defeated by design. This comes at the cost of higher latency and bandwidth overhead.
+Hide who is sending a transaction or querying state by routing messages through a network of mix nodes that batch, delay, reorder, and pad traffic with cover messages. Mixnets provide stronger sender anonymity than onion routing against global passive adversaries because timing correlation is defeated by design, at the cost of higher latency and bandwidth overhead.
 
-## Ingredients
+## Components
 
-- Cryptographic: Sphinx packet format, cover traffic generation, mix-and-shuffle
-- Infra: mix node network (Nym, HOPR), SOCKS5 proxy or SDK integration
-- Standards: Loopix architecture, Sphinx packet specification
+- Sphinx packet format: layered, constant-size encryption so that intermediate nodes cannot tell packets apart by size or content.
+- Mix-and-shuffle discipline at each node: incoming packets are batched, reordered, delayed, and then forwarded.
+- Cover traffic generated by clients and by the mix nodes themselves to keep traffic volume constant regardless of real demand.
+- Client SDK or SOCKS5 proxy that wraps outgoing RPC or transaction traffic before submission.
+- Mix node network with reward and slashing mechanics that gate participation and fund cover-traffic generation.
 
-## Protocol (concise)
+## Protocol
 
-1. Client wraps the message (RPC query or transaction) in a Sphinx packet with layered encryption.
-2. Client sends the packet to the entry mix node in a randomly selected route.
-3. Each mix node collects incoming packets, adds random delay, reorders the batch, and strips one encryption layer before forwarding.
-4. Cover traffic (dummy packets) is injected at each hop to maintain constant traffic volume.
-5. Final mix node delivers the message to the destination (RPC node, mempool).
-6. Response returns through a separate mixnet route.
+1. [user] Wrap the outbound message (RPC query or transaction) in a Sphinx packet with layered encryption.
+2. [user] Send the packet to the entry mix node on a randomly chosen multi-hop route.
+3. [mix-node] Collect incoming packets, add a random delay, reorder the batch, strip one encryption layer, and forward.
+4. [mix-node] Inject cover packets at each hop to maintain constant traffic volume.
+5. [exit-mix] Deliver the unwrapped message to its destination (RPC node, mempool, or application endpoint).
+6. [user] Receive any response through a separate mixnet route.
 
-## Guarantees
+## Guarantees & threat model
 
-- Under sufficient cover-traffic volume and wide adoption, mixnets substantially raise the cost of timing correlation and can resist global passive adversaries, threats that onion routing is vulnerable to. Guarantees degrade as cover traffic and anonymity-set size shrink.
-- Anonymity set includes all clients active during the mixing window.
-- Does not hide message content; pair with content-privacy patterns for full-stack privacy.
-- **I2U**: the anonymity set is external to the institution. Even if the institution operates the RPC endpoint, mixnets reduce its ability to correlate incoming queries with specific users by disrupting timing and ordering signals; protection strength depends on cover volume, adoption, and route quality.
-- **I2I**: institutions can hide query patterns and transaction timing from counterparty infrastructure and from network-level observers.
+Guarantees:
+
+- Sender anonymity against timing correlation when cover traffic volume and anonymity-set size are sufficient.
+- Anonymity set covers all clients active during the mixing window.
+- The pattern does not hide message content; pair it with content-privacy patterns for a full stack.
+
+Threat model:
+
+- Global passive adversaries who record all links: mitigated by cover traffic and mixing delays, subject to enough active users.
+- Active adversaries that compromise a full route of mix nodes; resistance comes from route diversity and from requiring the adversary to control every hop.
+- Low-adoption regimes: when the anonymity set is small the effective guarantee degrades sharply.
+- On-chain metadata (contract calls, account reuse, exit addresses) is out of scope and must be handled at other layers.
 
 ## Trade-offs
 
-- Very high latency (seconds to minutes by design) makes mixnets unsuitable for real-time use cases.
+- Latency is high by design, often in seconds to minutes; real-time use cases are not a fit.
 - Cover traffic adds bandwidth cost proportional to the desired anonymity level.
-- Anonymity set size depends on actual usage volume; low adoption creates a chicken-and-egg problem.
-- No production Ethereum-specific deployment as of 2026-04. Nym mainnet is live as a general-purpose mixnet as of 2026-04; blockchain integrations are in development.
-- HOPR's RPCh (private RPC via mixnet) had a working prototype but [development is paused](https://github.com/Rpc-h/RPCh) as of 2026-04 (team redirected to [Gnosis VPN](https://gnosisvpn.com/)).
-- CROPS: CR is `medium` because mix node participation requires staking. OS is `partial` (Nym and HOPR are open-source but the live networks have governance constraints). Privacy is `partial` because on-chain side channels persist. Security is `medium` because resistance to correlation depends on sustained cover traffic volume, adoption, and correct network operation.
+- Effective anonymity depends on adoption; low-usage deployments face a chicken-and-egg problem.
+- Ethereum-native integration is still maturing: live general-purpose mixnets exist but dedicated blockchain integrations are in development or paused. Some mixnet-based private RPC projects were prototyped and then paused as teams redirected effort to VPN-style products.
 
 ## Example
 
-1. Compliance team at a custodian needs to query transaction histories for regulatory reporting without revealing which accounts they monitor.
-2. Queries are routed through a 5-hop mixnet: each hop batches, delays, and reorders traffic.
-3. Cover traffic ensures the RPC provider sees constant query volume regardless of actual activity.
-4. RPC provider cannot determine when the custodian queried, which queries came from the same source, or how many real queries were made.
-5. Latency (several seconds per query) is acceptable for batch compliance reporting.
+A compliance team at a custodian needs to query transaction histories for regulatory reporting without revealing which accounts are being monitored. Queries are routed through a five-hop mixnet where each hop batches, delays, and reorders traffic. Cover traffic keeps the RPC provider's view of query volume constant. The provider cannot determine when the custodian queried, which queries came from the same source, or how many real queries were made. Several seconds of latency per query is acceptable for batch compliance reporting.
 
 ## See also
 
-- [Network-Level Anonymity](pattern-network-anonymity.md) - umbrella pattern and approach comparison
-- [Onion Routing](pattern-onion-routing.md) - lower latency but weaker against global adversaries
-- [TEE-Assisted Network Anonymity](pattern-tee-network-anonymity.md) - low-latency alternative using hardware trust
-- [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md) - complementary content-privacy pattern for mempool-level protection
-- [Threshold Encrypted Mempool](pattern-threshold-encrypted-mempool.md) - complementary content-privacy pattern for pre-inclusion encryption
-- [Modular Privacy Stack](pattern-modular-privacy-stack.md) - where network anonymity fits in the four-layer architecture
-
-## See also (external)
-
 - Nym Network: https://nym.com/network
-- Nym + Aztec partnership: https://nym.com/blog/nym-partners-with-aztec-to-provide-integral-infrastructure-privacy-in-ethereum-chains
-- NymVPN dApp mode (wallet RPC routing): https://nym.com/blog/nymvpn-dapp-mode
 - HOPR protocol: https://hoprnet.org/
+- Loopix paper (mixnet design): https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/piotrowska

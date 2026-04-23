@@ -1,82 +1,106 @@
 ---
 title: "Pattern: FOCIL - Fork-Choice Enforced Inclusion Lists"
 status: draft
-maturity: experimental
+maturity: testnet
+type: standard
 layer: L1
-privacy_goal: No privacy; provides censorship resistance via forced transaction inclusion
-assumptions: EIP-7805 adoption, 1-of-16 honest IL committee member, consensus layer changes
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-22
 rollout-plan: glamsterdam or later forks
+
 works-best-when:
-  - Censorship resistance is critical
-  - Block builders concentrate power and may censor transactions
-  - Same-slot transaction inclusion guarantees needed
+  - Censorship resistance is critical and must not depend on builder honesty.
+  - Block builders concentrate power and may selectively censor transactions.
+  - Same-slot inclusion guarantees are required (no one-slot delay).
 avoid-when:
-  - Mempool visibility of transaction details is unacceptableh
-dependencies: [EIP-7805]
+  - Mempool visibility of transaction details is unacceptable (combine with encrypted mempools instead).
+
 context: both
+context_differentiation:
+  i2i: "Between institutions, inclusion guarantees protect bilateral settlement against builder-level censorship, but trade details remain publicly visible in the mempool. Acceptable where counterparties already publish identities and amounts; inadequate where institutional trades must stay confidential from competitors. Pair with encrypted-mempool patterns to cover trade details between institutional counterparties."
+  i2u: "The user is asymmetric to block builders and cannot negotiate inclusion directly. The 1-of-16 committee honesty assumption provides protocol-level protection against OFAC-style censorship or MEV-motivated exclusion. Public transaction details still expose end-user activity to front-running and surveillance; encrypted submission is a priority for user-facing deployments."
+
 crops_profile:
   cr: high
-  os: yes
-  privacy: none
-  security: high
+  o: yes
+  p: none
+  s: high
+
+crops_context:
+  cr: "Reaches `high` through a 1-of-16 committee honesty assumption: a single honest IL committee member suffices to force-include a transaction. Drops if the P2P gossip network is partitioned or if committee selection is subverted."
+  o: "Fully open specification (EIP-7805) implemented in consensus layer clients. Any staked validator rotates through the committee, and any node can verify IL satisfaction."
+  p: "No privacy: transaction details remain fully visible in the mempool and on chain. Could reach `partial` by combining with encrypted mempools so inclusion lists carry ciphertexts rather than plaintext transactions."
+  s: "Inherits the security of Ethereum consensus. Fork-choice enforcement means non-compliant blocks cannot become canonical, so the guarantee is as strong as the underlying finality mechanism."
+
+post_quantum:
+  risk: medium
+  vector: "BLS signatures used for committee IL signatures and attestations are broken by a CRQC. HNDL risk is low since IL contents are public."
+  mitigation: "Migrate consensus signatures to a post-quantum scheme (hash-based or lattice-based) as part of the broader Ethereum consensus PQ transition."
+
+standards: [EIP-7805]
+
+related_patterns:
+  composes_with: [pattern-pretrade-privacy-encryption, pattern-threshold-encrypted-mempool, pattern-private-stablecoin-shielded-payments]
+  alternative_to: [pattern-private-transaction-broadcasting]
+  see_also: [pattern-verifiable-attestation, pattern-privacy-l2s]
+
+open_source_implementations:
+  - url: https://eips.ethereum.org/EIPS/eip-7805
+    description: "EIP-7805 specification and reference implementation notes."
+    language: Specification
 ---
 
 ## Intent
 
-FOCIL (Fork-Choice Enforced Inclusion Lists) is an EIP that enables a committee of 16 validators to force-include transactions in blocks, preventing censorship by sophisticated block builders. FOCIL itself does not provide privacy, transactions remain fully visible in the public mempool and on-chain. It only guarantees that transactions cannot be censored once submitted to the mempool.
+Prevent censorship of Ethereum transactions by sophisticated block builders. A committee of 16 validators per slot can force-include transactions in the next block; non-compliant blocks fail fork-choice and cannot reach finality. The pattern provides no privacy on its own: transactions remain fully visible in the mempool and on chain. It guarantees only that a transaction cannot be censored once it reaches the public mempool.
 
-## Ingredients
+## Components
 
-- **Standards**: EIP-7805 (FOCIL specification)
-- **Infra**: Ethereum consensus layer with fork-choice enforcement, P2P gossip network for IL propagation
-- **Off-chain**: IL committee selection mechanism, equivocation detection
+- **IL committee** of 16 validators selected per slot to construct inclusion lists for the following slot.
+- **Inclusion list** is a signed, bounded set of transactions (8 KiB max per member) that the next block must include.
+- **P2P gossip network** propagates signed inclusion lists across the validator set.
+- **Fork-choice enforcement** is the consensus-layer rule: attesters refuse to attest to blocks that fail to satisfy observed ILs.
+- **Equivocation detection** identifies committee members publishing conflicting ILs and discards their contributions.
 
-## Protocol (concise)
+## Protocol
 
-1. Committee Selection (Slot N), a committee of 16 validators is selected for slot N to build ILs for slot N+1
-2. IL Construction (t=0-8s), committee members monitor the public mempool and construct ILs (max 8 KiB) containing transactions they want force-included
-3. IL Broadcasting (t=8s), Committee members gossip their signed ILs over the P2P network after processing slot N's block
-4. View Freeze (t=9s), All validators freeze their view of ILs; no new ILs accepted after this deadline; equivocation detection active
-5. Block Building (t=11s), Builder for slot N+1 collects all ILs and updates execution payload to include IL transactions (anywhere in block)
-6. Block Proposal (Slot N+1, t=0s), Proposer broadcasts block with IL transactions included
-7. Attestation (t=4s), Attesters verify all non-equivocated IL transactions are included (or invalid); only attest if satisfied
-8. Fork-Choice Enforcement, Blocks failing to satisfy ILs receive no attestations and cannot become canonical
+1. [sequencer] A committee of 16 validators is selected for slot N to build inclusion lists for slot N+1.
+2. [sequencer] Between t=0s and t=8s of slot N, committee members monitor the public mempool and assemble inclusion lists of transactions they want force-included.
+3. [sequencer] At t=8s, committee members broadcast signed inclusion lists over the P2P network after processing slot N's block.
+4. [sequencer] At t=9s, validators freeze their view of inclusion lists; later ILs are rejected, and equivocators are flagged.
+5. [sequencer] At t=11s, the builder for slot N+1 collects observed inclusion lists and constructs an execution payload that includes their transactions anywhere in the block.
+6. [sequencer] At t=0s of slot N+1, the proposer broadcasts the block containing the IL transactions.
+7. [sequencer] At t=4s, attesters verify that every non-equivocated IL transaction is included or provably invalid; otherwise they withhold attestations.
+8. [contract] Fork-choice rejects any block that fails IL satisfaction, so a non-compliant block cannot become canonical.
 
-## Guarantees
+## Guarantees & threat model
 
-- **Censorship Resistance Under Builder Centralization:** 1-out-of-16 honesty assumption—single honest IL committee member prevents transaction censorship by decoupling block building from validation
-- **Same-Slot:** No delay—constraints for slot N+1 include transactions from slot N (vs 1-slot delay in forward ILs)
-- **Anywhere-in-Block:** Builder chooses transaction placement, reducing incentive for side channels
-- **Fork-Choice Enforced:** Non-compliant blocks cannot achieve finality; attesters reject blocks not satisfying ILs
-- **No Privacy:** Transaction details remain fully visible in mempool and on-chain
+Guarantees:
+
+- Censorship resistance under builder centralization via a 1-of-16 committee honesty assumption.
+- Same-slot inclusion: constraints for slot N+1 include transactions visible in slot N (no one-slot delay).
+- Builder flexibility: the builder chooses placement of IL transactions within the block, reducing incentives for side channels.
+- Fork-choice enforced: non-compliant blocks receive no attestations and cannot finalize.
+
+Threat model:
+
+- At least one honest and well-connected IL committee member per slot; the P2P network reliably delivers their list before the view-freeze deadline.
+- Non-malicious builder with sufficient bandwidth between view freeze (t=9s) and block broadcast; builders disconnected from the committee can miss IL transactions.
+- No privacy protection. Transaction details remain publicly visible throughout the process.
+- Out of scope: builders that censor the entire mempool before any committee member sees a transaction; encrypted mempools are required to defend against that.
 
 ## Trade-offs
 
-- **Performance:** Additional bandwidth for IL gossip (up to 16 × 8 KiB per slot); potential O(n²) validity checks if naively implemented
-- **Liveness Risk:** Builder must be well-connected to IL committee; insufficient time between view freeze (t=9s) and block broadcast risks missed ILs
-- **Equivocation Handling:** P2P rule allows forwarding up to 2 ILs per committee member; equivocators ignored but bandwidth can double in worst case
-- **No Direct Incentives:** Relies on altruistic behavior—no explicit rewards for IL committee members
-- **Complexity:** Requires consensus layer fork-choice changes, execution layer validation, and coordinated P2P network updates
-- **CROPS context (both)**: Privacy could reach `full` by combining with encrypted mempools, where transactions in inclusion lists remain encrypted until post-commitment, hiding amounts and counterparties while preserving censorship resistance. In I2I, encrypted inclusion lists protect trade details between institutional counterparties from competing firms. In I2U, end users gain protection against front-running and transaction surveillance by block builders.
+- Additional bandwidth: up to 16 × 8 KiB inclusion-list gossip per slot, plus potential O(n^2) validity checks if naively implemented.
+- Liveness risk: insufficient time between view freeze and block broadcast can cause builders to miss ILs, especially for poorly-connected builders.
+- Equivocation handling: the P2P rule allows forwarding up to two inclusion lists per committee member, so bandwidth can double in the worst case.
+- No explicit incentives: the pattern relies on altruistic behavior; there are no direct rewards for IL committee members.
+- Complexity: requires coordinated changes across consensus-layer fork-choice rules, execution-layer validation, and the P2P network.
 
 ## Example
 
-**Institutional Payment Censorship Resistance (No Privacy):**
-
-1. Bank A submits stablecoin payment transaction (€5M EURC transfer) to public mempool at t=0s of slot N, transaction details fully visible to all observers
-2. IL committee member (validator 42) sees Bank A's public transaction and includes it in their IL, broadcasts at t=8s
-3. View freezes at t=9s—all validators store validator 42's IL containing Bank A's payment
-4. Builder for slot N+1 collects IL at t=11s, verifies Bank A has sufficient balance/correct nonce, includes payment in block
-5. Attesters at t=4s verify Bank A's payment is in block (or invalid); all attest to block
-6. Result: Even if builder wants to censor Bank A (OFAC compliance, MEV extraction, competitive intelligence), fork-choice enforcement prevents censorship
-7. Privacy impact: NONE, amount (€5M), counterparty, and timing remain publicly visible throughout the process
-
-**Note:** For privacy-preserving institutional payments, FOCIL must be combined with other patterns like [Private Stablecoin Shielded Payments](./pattern-private-stablecoin-shielded-payments.md) or [Privacy L2s](./pattern-privacy-l2s.md).
+A bank submits a €5M stablecoin transfer to the public mempool at t=0s of slot N. Transaction details are fully visible to all observers. An IL committee member includes it in their inclusion list and broadcasts at t=8s. At t=9s the view freezes. The slot N+1 builder collects the IL at t=11s and includes the transfer in the block. Attesters verify inclusion at t=4s. Even if the builder would have preferred to censor the payment (for OFAC compliance, MEV extraction, or competitive intelligence), fork-choice enforcement makes censorship non-viable. Privacy impact is zero: the €5M amount, counterparty, and timing remain publicly visible throughout.
 
 ## See also
 
-- [Pre-trade Privacy (Shutter/SUAVE)](./pattern-pretrade-privacy-encryption.md) — complementary pattern for hiding transaction content before inclusion
-- [EIP-7547](https://eips.ethereum.org/EIPS/eip-7547) — forward inclusion lists (1-slot delay vs same-slot in FOCIL)
-- [Private Payments Approach](../approaches/approach-private-payments.md) — FOCIL ensures inclusion; private payments hide content
-- [Verifiable Attestation](./pattern-verifiable-attestation.md) — attesters validate IL satisfaction before attesting
+- [EIP-7547: forward inclusion lists](https://eips.ethereum.org/EIPS/eip-7547) for a one-slot-delay alternative
+- [Private Payments Approach](../approaches/approach-private-payments.md)

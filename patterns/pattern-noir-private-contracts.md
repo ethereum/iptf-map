@@ -1,136 +1,116 @@
 ---
-title: "Pattern: Aztec Noir Private Contracts"
+title: "Pattern: Noir Private Contracts"
 status: ready
-maturity: pilot
+maturity: production
+type: standard
 layer: L2
-privacy_goal: Enable composable private and public state in single contracts via ZK proofs
-assumptions: Aztec rollup infrastructure, client-side proving capability (8GB RAM), Barretenberg prover
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Applications need composable private and public state in a single contract
-  - Developers want privacy without abandoning familiar programming paradigms
-  - Use cases require selective privacy layers around existing DeFi protocols
+  - Applications need composable private and public state in a single contract.
+  - Developers want a privacy-focused DSL without abandoning familiar paradigms.
+  - Use cases require selective privacy layers around existing DeFi protocols.
 avoid-when:
-  - Application requires low-latency execution (client-side proving adds overhead)
-  - Team lacks capacity to adopt new tooling and non-Solidity development
-  - Simple shielding or anonymity is sufficient (lighter alternatives exist)
-dependencies: [Aztec Protocol, Noir, Barretenberg Prover]
+  - Application requires low-latency execution; client-side proving adds overhead.
+  - Team lacks capacity to adopt new tooling and non-Solidity development.
+  - Simple shielding or anonymity is sufficient; lighter alternatives exist.
+
 context: both
+context_differentiation:
+  i2i: "Institutions can co-deploy contracts that hide positions and trade details from competitors while exposing public logic for counterparty verification. Both parties rely on the sequencer and the validity proof pipeline for liveness; legal recourse is symmetric."
+  i2u: "End users execute private functions locally and only submit proofs, so the sequencer and observers cannot see inputs, outputs, or log contents. The deployment must still guarantee forced-withdrawal paths and decentralised sequencing so users are not held hostage by an operator."
+
 crops_profile:
   cr: medium
-  os: yes
-  privacy: full
-  security: medium
+  o: yes
+  p: full
+  s: medium
+
+crops_context:
+  cr: "Medium while sequencer election is centralised. Reaches `high` once sequencing becomes permissionless."
+  o: "Contracts, DSL, and prover backend are open-source. Client-side proving lets anyone run the stack locally."
+  p: "Private state, private function inputs, and private logs are hidden from sequencers and observers. Public state and function calls remain transparent by design. Selective disclosure is supported through viewing keys or ZK proofs."
+  s: "Rides on the soundness of the ZK proof system and the validity-proof pipeline that settles to L1. Could reach `high` by replacing admin keys with DAO-governed upgrade paths."
+
+post_quantum:
+  risk: high
+  vector: "PLONK-family backends (Barretenberg) rely on EC pairings and KZG commitments, broken by CRQC. HNDL risk is high for encrypted notes."
+  mitigation: "Hash-based commitments and STARK-based proving. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: [ERC-20]
+
+related_patterns:
+  composes_with: [pattern-shielding, pattern-co-snark, pattern-privacy-l2s]
+  see_also: [pattern-forced-withdrawal, pattern-regulatory-disclosure-keys-proofs]
+
+open_source_implementations:
+  - url: https://github.com/AztecProtocol/aztec-packages
+    description: "Aztec Network with Noir DSL, Barretenberg backend, and private execution runtime"
+    language: "Noir, Rust, TypeScript"
+  - url: https://github.com/noir-lang/noir
+    description: "Noir language compiler and standard library"
+    language: "Rust"
+  - url: https://github.com/noir-lang/awesome-noir
+    description: "Curated catalogue of Noir libraries and example circuits"
+    language: "Noir"
 ---
 
 ## Intent
 
-Noir is the DSL developed by Aztec, enable developers to write Ethereum-compatible smart contracts that blend transparent public logic with confidential private computations, using a Rust-like language that compiles to zero-knowledge circuits verified on Aztec's privacy-preserving rollup.
+Give developers a privacy-focused DSL to write smart contracts that blend public logic with confidential private computation in the same contract. Private functions execute client-side and produce ZK proofs; public functions execute on the sequencer transparently. Private and public state can be composed in a single application.
 
-## Ingredients
+## Components
 
-- Aztec Protocol (private rollup)
-- ACIR (Abstract Circuit Intermediate Representation)
-- Aztec Sandbox or Testnet node (Docker-based), Ethereum L1 for settlement
-- Noir DSL for contract logic, TypeScript for client-side integration via `@aztec/aztec.js`
-- Proving Backend: Barretenberg (ZK backend, modular and backend-agnostic)
-- `aztec` CLI, `nargo` CLI for Noir project management, Node.js/Yarn for dApp development
-- Client-side proof generation (CPU-intensive, 8GB RAM minimum recommended)
+- **Private contract DSL**: Rust-inspired language for authoring functions, compiling to a circuit intermediate representation.
+- **Circuit intermediate representation**: backend-agnostic IR that the prover backend compiles into proving and verification keys.
+- **Client-side prover**: generates proofs for private-function executions on the user's machine (typically 8 GB RAM recommended).
+- **Privacy rollup**: private execution runtime, public execution VM, note-discovery infrastructure, and validity-proof pipeline to Ethereum L1.
+- **Encrypted logs**: note discovery mechanism; only the holders of decryption keys can read log contents.
 
 ## Protocol
 
-1. Write Contract: Developer writes smart contract in Noir (`.nr` files) with both private and public functions
-2. Compile to ACIR: Noir compiler translates contract logic into Abstract Circuit Intermediate Representation
-3. Deploy to Aztec: Contract deployed to Aztec rollup (testnet or mainnet)
-4. Client Execution: User executes private function locally, generating zero-knowledge proof of correct execution
-5. Submit Proof: Client submits proof and public inputs to Aztec sequencer
-6. Verification: Aztec rollup verifies proof on-chain using Barretenberg verifier
-7. State Update: Private state updated in encrypted form, public state updated transparently
-8. L1 Settlement: Batch of transactions periodically settled to Ethereum L1 with validity proof
+1. [user] Write a contract in the DSL with private and public functions. Compile to the circuit intermediate representation.
+2. [user] Deploy the contract to the privacy rollup.
+3. [user] Execute a private function locally, generating a ZK proof of correct execution over private inputs and state.
+4. [user] Submit the proof and any public inputs to the sequencer.
+5. [sequencer] Verify the proof, update the encrypted private state, and apply any public state changes.
+6. [sequencer] Batch transactions periodically and settle to Ethereum L1 with a validity proof.
+7. [user] Scan encrypted logs to discover incoming notes and decrypt them with local keys.
 
-## Guarantees
+## Guarantees & threat model
 
-**Privacy:**
+Guarantees:
 
-- Private state remains encrypted and hidden from sequencers and observers
-- Private function logic and inputs/outputs are not revealed on-chain
-- Public and private logic can be composed in the same contract
+- Private state stays encrypted and hidden from sequencers and observers. Private function inputs and outputs are not revealed on-chain.
+- Public state, public function calls, and contract source remain transparent and auditable.
+- Validity proofs ensure state transitions follow contract rules; L1 finality comes via periodic batch settlement.
+- Selective disclosure to auditors is possible through viewing keys or targeted ZK proofs.
+- Encrypted event logs enable note discovery without leaking content to the public.
 
-**Correctness:**
+Threat model:
 
-- Zero-knowledge proofs guarantee computational integrity without revealing private data
-- Validity proofs ensure state transitions follow contract rules
-
-**Atomicity:**
-
-- Transactions are atomic within the Aztec rollup execution environment
-- L1 finality achieved through periodic batch settlement with validity proofs
-
-**Audit & Observability:**
-
-- Public state and function calls remain transparent and auditable
-- Private state can support selective disclosure through viewing keys or ZK proofs
-- Contract logic is open-source and auditable in Noir
-- Private logs enable encrypted event emission for note discovery and auditing
-
-**Private Logs**
-
-- Encrypted logs enable private event emission and while maintaining confidentiality
-- Recipients scan encrypted onchain logs to identify private transactions meant for them. This is known as **note discovery**.
-- Only parties with decryption keys can read log contents; observers see encrypted data only
+- Soundness of the ZK proof system and the circuit compiler.
+- Non-censoring sequencer set. A censoring sequencer can stall user transactions; forced-withdrawal paths to L1 are required to bound this.
+- Client-side key management: compromise of local proving or viewing keys exposes the user's private state.
+- Note discovery relies on scanning; a malicious or buggy indexer can cause notes to be missed, though funds are not lost.
 
 ## Trade-offs
 
-**Performance:**
-
-- Client-side proving is CPU-intensive, adding latency compared to Solidity execution
-- Proof generation time depends on circuit complexity and hardware capabilities
-- Barretenberg optimizations and parallel proving are reducing this overhead
-
-**Developer Experience:**
-
-- Requires learning Noir DSL (though syntax is Rust-inspired and developer-friendly)
-- Cannot directly reuse Solidity contracts or tooling
-- Standard Ethereum functions must be reimplemented in Noir or imported from community libraries
-
-**Ecosystem Maturity:**
-
-- Noir ecosystem is rapidly growing but less mature than Solidity
-- Some primitives and libraries still need to be built or ported
-- Limited production deployments compared to established L2s
-
-**Mitigations:**
-
-- Use Aztec as privacy bridge to existing DeFi without full rewrites
-- Leverage growing [Awesome Noir](https://github.com/noir-lang/awesome-noir) ecosystem for shared libraries
-- Start with selective privacy layers, expand as tooling matures
-- Optimize circuit design to minimize proving time
-- **CROPS context (both)**: CR could reach `high` if sequencer election shifts to a permissionless model. Security could reach `high` by replacing admin keys with DAO-governed upgrade paths. In I2I, censorship resistance matters for ensuring no counterparty can block settlement transactions. In I2U, decentralized sequencing protects end users from unilateral transaction exclusion.
-- **Post-quantum exposure**: Barretenberg (PLONK variant with EC commitments) is broken by CRQC; HNDL risk is high for encrypted notes. Mitigation: hash-based commitments and STARK-based proving. See [Post-Quantum Threats](../domains/post-quantum.md).
+- Performance: client-side proving is CPU-intensive and adds latency compared to transparent L2 execution. Proof generation time depends on circuit complexity and hardware.
+- Developer experience: requires learning a new DSL. Solidity contracts cannot be reused directly, and standard library coverage is still maturing.
+- Ecosystem maturity: DSL and tooling are improving quickly, but primitive and library coverage is thinner than for Solidity.
+- Failure modes: a bug in a private-state update path can burn notes irrecoverably because replay from encrypted logs requires the original sender's cooperation.
 
 ## Example
 
-**Private Corporate Stablecoin Transfer:**
-
-1. Bank A shields $10M USDC on Aztec, receiving private notes
-2. Bank A pays Bank B $2M privately - client generates ZK proof of sufficient balance
-3. Transaction emits encrypted log; only Bank B can decrypt and discover the payment
-4. Aztec network verifies proof and updates balances - observers only see verification occurred, not amounts or parties
-5. Bank B can now spend their $2M privately; Bank A's remaining $8M position stays hidden
+- A corporate treasury shields stablecoins into a private contract, receiving private notes.
+- It pays a supplier privately; the client generates a ZK proof of sufficient balance and note ownership.
+- The transaction emits an encrypted log; only the supplier can decrypt and discover the payment.
+- The rollup verifies the proof, updates balances in encrypted form, and includes the transaction in a batch settled to L1. Observers see that a valid transaction occurred but not amounts or parties.
+- The supplier can then spend the received notes privately; the treasury's remaining position stays hidden.
 
 ## See also
 
-- [Pattern: Privacy L2s](pattern-privacy-l2s.md) - General privacy rollup architectures
-- [Pattern: Shielding](pattern-shielding.md) - Shielded ERC-20 transfers and balance privacy
-- [Pattern: Co-SNARK](pattern-co-snark.md) - Multi-party ZK proofs for compliance
-- [Vendor: Aztec Network](../vendors/aztec.md) - Aztec protocol details
-- [Approach: Private Bonds](../approaches/approach-private-bonds.md) - Tokenized securities with privacy
-- [Approach: Private Derivatives](../approaches/approach-private-derivatives.md) - Private derivatives trading
-
-**Links:**
-
-- [Aztec Documentation](https://docs.aztec.network)
-- [Noir Language](https://noir-lang.org)
-- [Aztec.js SDK](https://www.npmjs.com/package/@aztec/aztec.js)
-- [Awesome Noir](https://github.com/noir-lang/awesome-noir)
-- [Nethermind's Noir Deep Dive](https://www.nethermind.io/blog/our-first-deep-dive-into-noir-what-zk-auditors-learned)
+- [Aztec](../vendors/aztec.md)
+- [Approach: Private Bonds](../approaches/approach-private-bonds.md)
+- [Approach: Private Derivatives](../approaches/approach-private-derivatives.md)

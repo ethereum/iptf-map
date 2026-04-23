@@ -1,202 +1,154 @@
 ---
 title: "Pattern: L2 Privacy Evaluation Framework"
 status: draft
-maturity: PoC
+maturity: concept
+type: standard
 layer: L2
-privacy_goal: Structured methodology for institutions to compare privacy-preserving L2 solutions
-assumptions: L2 teams provide self-reported metrics with sources; independent verification where possible
-last_reviewed: 2026-01-27
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Evaluating multiple privacy L2s for institutional deployment
-  - Comparing throughput, security, and censorship-resistance across systems
-  - Need consistent criteria across heterogeneous architectures
+  - Multiple privacy L2s must be compared for an institutional deployment decision.
+  - Throughput, security, and censorship resistance have to be placed side by side across heterogeneous architectures.
+  - A consistent, sourced methodology is needed so that procurement and risk teams can review the same evidence.
 avoid-when:
-  - Evaluating general-purpose L2s without privacy features
-  - Single-vendor evaluation (use vendor docs directly)
-dependencies: []
+  - The L2 under review has no privacy features; use a general L2 scorecard instead.
+  - A single vendor is already chosen and only vendor docs need verification.
+
+context: both
+context_differentiation:
+  i2i: "Between institutions the framework is used by procurement, risk, and ops teams to weigh counterparty-aligned criteria such as force-inclusion SLAs, compliance features, and DA trust assumptions. Both sides can cross-review the filled table."
+  i2u: "For user-facing deployments the framework surfaces asymmetries that matter to end users: client proving cost, availability of forced exits without operator cooperation, and whether disclosure can be compelled unilaterally by the operator."
+
 crops_profile: "n/a"
+
+post_quantum:
+  risk: low
+  vector: "The framework itself is a methodology, not a cryptographic primitive. One of its rows (`PQ Security`) flags HNDL exposure in the evaluated systems."
+  mitigation: "Encourage each system to report post-quantum readiness in its row, and re-evaluate as systems migrate proof systems."
+
+standards: []
+
+related_patterns:
+  see_also: [pattern-privacy-l2s, pattern-hybrid-public-private-modes, pattern-shielding, pattern-forced-withdrawal]
+
+open_source_implementations:
+  - url: https://github.com/l2beat/l2beat
+    description: "L2Beat open dataset and risk methodology used as a baseline for independently verified metrics"
+    language: TypeScript
 ---
 
 ## Intent
 
-Provide institutions with a structured, vendor-neutral framework to compare privacy-preserving L2 solutions across performance, privacy/DA, and security dimensions. Enables apples-to-apples comparison despite architectural differences.
+Give institutions a vendor-neutral, sourced methodology for comparing privacy-preserving L2 solutions across performance and cost, privacy and data availability, and security and governance. The framework defines a common workload so that self-reported metrics can be placed next to independent benchmarks on the same axes.
 
-## Ingredients
+> Note: this card is an evaluation framework, not a reusable privacy primitive. `pattern-privacy-l2s` is the actual L2 pattern; this one documents how to compare privacy L2s. Candidate for relocation to `approaches/` or a methodology section in a follow-up.
 
-- Self-reported metrics from L2 teams (with sources)
-- Independent benchmarks where available (L2Beat, academic papers)
-- Standardized workload definitions (Simple Value Transfer)
-- Clear disclosure of what each metric measures
+## Components
+
+- Self-reported metric sheets collected from each L2 team, with a source link per cell.
+- Independent benchmarks and risk reviews used to cross-check the self-reported values.
+- A standardized workload (Simple Value Transfer) that fixes what a transaction means across heterogeneous architectures.
+- A disclosure convention that records what each metric measures, what is excluded, and whether a value is `Pending` or `N/A`.
 
 ## Protocol
 
-1. **Define workload**: Use [Simple Value Transfer](#simple-value-transfer) as baseline
-2. **Collect metrics**: Request L2 teams fill in the three evaluation tables
-3. **Verify sources**: Each claim must link to benchmark, docs, or paper
-4. **Flag gaps**: Mark "Pending" for missing data, "N/A" for inapplicable metrics
-5. **Compare**: Use tables to identify trade-offs relevant to your use case
-6. **Re-evaluate**: Update as systems mature (hard forks, client updates)
+1. [evaluator] Adopt Simple Value Transfer as the baseline workload.
+2. [evaluator] Request each L2 team to fill the three evaluation tables (performance, privacy and DA, security and governance).
+3. [evaluator] Require a source link for every claim (benchmark run, docs page, or paper).
+4. [evaluator] Mark `Pending` where data is missing and `N/A` where the metric does not apply to that architecture.
+5. [evaluator] Produce the comparative view; highlight trade-offs that matter for the target use case.
+6. [evaluator] Re-run the exercise on hard forks, client updates, or when a new benchmark is published.
 
-## Evaluation Criteria
+## Evaluation criteria
 
-### 1. Performance & Cost
+### 1. Performance and cost
 
-| Metric                     | What is Measured                          | Discrete Metrics                                                                                                             |
-| :------------------------- | :---------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
-| **Max Throughput**         | Maximum sustained TPS                     | Max theoretical TPS, Tested Peak TPS (with benchmark link). Report TPS<sub>Public</sub> and TPS<sub>Private</sub> separately |
-| **Transaction Cost**       | Total cost per L2 transaction             | Gas usage in `L1 gas units` + `L2 gas units` for Simple Value Transfer                                                       |
-| **Bridging & Exit Costs**  | Cost of L1↔L2 asset movement              | L2→L1 withdrawal (gas units), Forced Exit to L1 (gas units)                                                                  |
-| **Economic Finality Time** | Time until L1 validation                  | `Soft Finality` (L2 inclusion), `Hard Finality` (L1 commitment + proof), `Challenge Period`                                  |
-| **Transaction Retrieval**  | Bandwidth/time to retrieve incoming funds | Sync mechanism (`Trial decryption`, `Detection Keys`, `Server-side filtering`), Sync speed (e.g., "time to sync 10k blocks") |
+| Metric                     | Discrete metrics                                                                                                             |
+| :------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| **Max Throughput**         | Max theoretical TPS, tested peak TPS (with benchmark link). Report TPS<sub>Public</sub> and TPS<sub>Private</sub> separately |
+| **Transaction cost**       | Gas usage in `L1 gas units` + `L2 gas units` for Simple Value Transfer                                                       |
+| **Bridging and exit**      | L2 to L1 withdrawal and forced exit cost (gas units)                                                                         |
+| **Finality time**          | `Soft Finality` (L2 inclusion), `Hard Finality` (L1 commitment + proof), `Challenge Period`                                  |
+| **Transaction retrieval**  | Sync mechanism (`Trial decryption`, `Detection Keys`, `Server-side filtering`) and sync speed                                |
 
-### 2. Privacy & Data Availability
+### 2. Privacy and data availability
 
-| Metric                    | What is Measured                             | Discrete Metrics                                                                                                                      |
-| :------------------------ | :------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------ |
-| **Level of Privacy**      | Scope of hidden information                  | **What**: `Balance`, `Sender/Receiver`, `Amount`, `Code/Function`, `Contract Bytecode`. **Who sees**: `Public`, `Sequencer`, `Prover` |
-| **DA Layer\***            | Where state reconstruction data is posted    | `L1 Call Data`, `L1 Data Blobs (EIP-4844)`, `External DAC`                                                                            |
-| **DA Trust Assumption\*** | Parties user must trust for data access      | `Trustless/L1-secured`, `Trusted DAC`                                                                                                 |
-| **Data Posted to L1\***   | Information broadcast for state verification | `Full Transaction Data`, `State Diff`, `Validity Proof Only`                                                                          |
-| **Compliance Features**   | Selective disclosure mechanisms              | `Incoming Viewing Key`, `Outgoing Viewing Key`, `Full History Viewing Key`                                                            |
-| **Privacy Trust Model**   | Fundamental privacy guarantee                | **Base**: `Cryptographic`, `Threshold (MPC/FHE)`. **Collusion threshold**: m-of-n                                                     |
-| **Network Privacy**       | Transport layer metadata protection          | RPC privacy options (`Tor/I2P`, `Oblivious HTTP`, `Mixnet`)                                                                           |
+| Metric                    | Discrete metrics                                                                                                                      |
+| :------------------------ | :------------------------------------------------------------------------------------------------------------------------------------ |
+| **Level of privacy**      | **What**: `Balance`, `Sender/Receiver`, `Amount`, `Code/Function`, `Contract Bytecode`. **Who sees**: `Public`, `Sequencer`, `Prover` |
+| **DA layer**              | `L1 Call Data`, `L1 Data Blobs (EIP-4844)`, `External DAC`                                                                            |
+| **DA trust**              | `Trustless/L1-secured`, `Trusted DAC`                                                                                                 |
+| **Data posted to L1**     | `Full Transaction Data`, `State Diff`, `Validity Proof Only`                                                                          |
+| **Compliance features**   | `Incoming Viewing Key`, `Outgoing Viewing Key`, `Full History Viewing Key`                                                            |
+| **Privacy trust model**   | **Base**: `Cryptographic`, `Threshold (MPC/FHE)`. **Collusion threshold**: m-of-n                                                     |
+| **Network privacy**       | RPC privacy options (`Tor/I2P`, `Oblivious HTTP`, `Mixnet`)                                                                           |
 
-_`_` L2Beat direct match\*
+### 3. Security and governance
 
-### 3. Security & Governance
-
-| Metric                         | What is Measured                        | Discrete Metrics                                                                                                                                                                       |
-| :----------------------------- | :-------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Sequencer Decentralization** | Decentralization of tx ordering         | `Centralized`, `Permissioned Set`, `Decentralized Auction`, `Based (L1 Sequencing)`                                                                                                    |
-| **Censorship Resistance**      | Mechanism to bypass censoring sequencer | **Mechanism**: `Force inclusion`, `Escape Hatch`, `Council`. **User burden**: `Stateless`, `Merkle Witness`, `Full State Reconstruction`. **Latency**: `Immediate`, `Challenge Period` |
-| **Prover Mechanism**           | Proof generation and verification       | **Access**: `Whitelist`, `Permissionless`. **System**: `Plonk`, `Stark`, `FHE`, `Groth16`                                                                                              |
-| **Upgrade Process**            | L1 contract update mechanism            | **Governance**: `Multisig (m-of-n)`, `Immutable`, `DAO Vote`. **Timelock**: delay in days/hours                                                                                        |
-| **Client-Side Requirements**   | End-user computational cost             | **Client proving**: `Yes`/`No`. **Features**: `Mobile Proving`, `Trusted Delegation`, `Blind Delegation`. **Benchmark**: proof duration/size/memory for ERC-20 transfer                |
-| **Finality Security**          | Validity guarantee type                 | `Validity (ZK)`, `Optimistic (Fraud Proofs)`                                                                                                                                           |
-| **Proof System Setup**         | Initial setup requirement               | `Trusted Ceremony`, `Transparent`                                                                                                                                                      |
-| **Programmability**            | Developer environment                   | **Language**: `EVM/Solidity`, `DSL`, `WASM`. **Deployment**: `Permissionless`, `Whitelisted`                                                                                           |
-| **PQ Security**                | Post-quantum vulnerability              | Susceptible to HNDL attacks? (`Yes`/`No`)                                                                                                                                              |
+| Metric                         | Discrete metrics                                                                                                                                                                       |
+| :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Sequencer decentralization** | `Centralized`, `Permissioned Set`, `Decentralized Auction`, `Based (L1 Sequencing)`                                                                                                    |
+| **Censorship resistance**      | **Mechanism**: `Force inclusion`, `Escape Hatch`, `Council`. **User burden**: `Stateless`, `Merkle Witness`, `Full State Reconstruction`. **Latency**: `Immediate`, `Challenge Period` |
+| **Prover mechanism**           | **Access**: `Whitelist`, `Permissionless`. **System**: `Plonk`, `Stark`, `FHE`, `Groth16`                                                                                              |
+| **Upgrade process**            | **Governance**: `Multisig (m-of-n)`, `Immutable`, `DAO Vote`. **Timelock**: delay in days or hours                                                                                     |
+| **Client-side requirements**   | **Client proving**: `Yes`/`No`. **Features**: `Mobile Proving`, `Trusted Delegation`, `Blind Delegation`                                                                               |
+| **Finality security**          | `Validity (ZK)`, `Optimistic (Fraud Proofs)`                                                                                                                                           |
+| **Proof system setup**         | `Trusted Ceremony`, `Transparent`                                                                                                                                                      |
+| **Programmability**            | **Language**: `EVM/Solidity`, `DSL`, `WASM`. **Deployment**: `Permissionless`, `Whitelisted`                                                                                           |
+| **PQ security**                | Susceptible to HNDL attacks? (`Yes`/`No`)                                                                                                                                              |
 
 ## Simple Value Transfer
 
-A protocol-native payment where a sender transfers an ERC-20 amount to a single recipient, resulting in a valid state transition.
+A protocol-native payment where a sender transfers an ERC-20 amount to a single recipient, resulting in a valid state transition. TPS<sub>Public</sub> measures transfer semantics that are publicly observable (L2 inclusion plus validity). TPS<sub>Private</sub> measures a full privacy mode that hides sender, recipient, and amount as applicable; optional features are excluded unless they are mandatory in the protocol. Features excluded when reporting TPS must not be implicitly assumed elsewhere. The definition does not equalize DA models, finality, confirmation UX, compliance features, or off-chain coordination.
 
-**TPS<sub>Public</sub>**: Transfer semantics publicly observable. Completion = L2 inclusion + validity.
+## Guarantees & threat model
 
-**TPS<sub>Private</sub>**: Full privacy mode (hiding sender, recipient, amount as applicable). Optional features excluded unless protocol-mandatory.
+Guarantees:
 
-**Consistency requirement**: Features excluded when reporting TPS must not be implicitly assumed elsewhere.
+- Consistent comparison criteria across heterogeneous L2 architectures.
+- Separation of self-reported metrics from independently verified metrics.
+- Clear visibility into what each system hides and from whom.
+- Traceable claims: every metric requires a source.
 
-**Non-goals**: This definition does not equalize DA models, finality, confirmation UX, compliance features, or offchain coordination.
+Threat model:
 
-## Guarantees
-
-- Consistent comparison criteria across heterogeneous L2 architectures
-- Separation of self-reported vs independently verified metrics
-- Clear visibility into what each system hides from whom
-- Traceable claims (all metrics require sources)
+- Self-reported metrics may be optimistic; the source link is what anchors them.
+- Some systems do not map cleanly to every row; the `N/A` marker is load-bearing.
+- Criteria drift over time; periodic re-evaluation is required.
 
 ## Trade-offs
 
-- Self-reported metrics may be optimistic; prefer independent benchmarks
-- Some systems may not map cleanly to all criteria
-- Metrics change as systems mature; requires periodic re-evaluation
-- Does not capture all institutional requirements (legal, operational)
+- The exercise is labor-intensive; automation via a benchmark pipeline helps.
+- Architectural heterogeneity makes equal-weight scoring misleading; use the tables as input to a weighted decision, not an output score.
+- Frozen snapshots age quickly; timestamp every filled table and link back to source commits where possible.
 
-## Targeted Protocols
+## Targeted systems
 
-**Privacy L2s**: Aztec, Miden, Intmax, Prividium, Scroll Cloak, EY Nightfall
+Privacy L2s currently in scope: Aztec, Miden, Intmax, Prividium, Scroll Cloak, EY Nightfall. The framework also applies to privacy app layers on existing chains (shielded pools, enterprise privacy layers, FHE coprocessors), which share DA but not sequencer assumptions.
 
-## Results (Public Data)
+## Results snapshot
 
-> Metrics below are from public documentation and independent sources. Empty cells indicate data not yet publicly available.
+Results below are drawn from public documentation and independent sources. Empty cells indicate data not yet publicly available; each published snapshot must be timestamped.
 
-### Deployment Model
+| Protocol         | Deployment   | Privacy model      | Proof system       | DA                      | Client proving          | Censorship resistance |
+| :--------------- | :----------- | :----------------- | :----------------- | :---------------------- | :---------------------- | :-------------------- |
+| **Aztec**        | Public L2    | Cryptographic (ZK) | UltraHonk          | L1 Blobs                | Yes (heavy)             | Escape Hatch          |
+| **Miden**        | Public L2    | Cryptographic (ZK) | STARK (Winterfell) | L1 Blobs                | Yes (can be delegated)  | TBD                   |
+| **Intmax**       | Public L2    | Cryptographic (ZK) | Plonk/Gnark        | Stateless (Client-Side) | Yes (light)             | Force Inclusion       |
+| **Prividium**    | AppChain SDK | Cryptographic (ZK) | Boojum/Plonk       | External (Private DB)   | No (server)             | Operator-dependent    |
+| **Scroll Cloak** | AppChain SDK | Cryptographic (ZK) | Scroll zkEVM       | Host chain              | No (prover service)     | Force Exit to host    |
+| **EY Nightfall** | AppChain SDK | Cryptographic (ZK) | UltraPlonk         | L1 Call Data            | Yes                     | TBD                   |
 
-| Protocol         | Type         | Description                                                   |
-| :--------------- | :----------- | :------------------------------------------------------------ |
-| **Aztec**        | Public L2    | Hybrid public/private network with native privacy             |
-| **Miden**        | Public L2    | Hybrid public/private network with optional delegated proving |
-| **Intmax**       | Public L2    | Stateless public network, client holds data                   |
-| **Prividium**    | AppChain SDK | Private Validium on ZKsync Stack for institutional deployment |
-| **Scroll Cloak** | AppChain SDK | L3 validium appchain on Scroll/EVM chains                     |
-| **EY Nightfall** | AppChain SDK | ZK-Rollup stack for enterprise deployment                     |
+AppChain SDKs have deployment-dependent assumptions (sequencer, DA, governance) that vary by operator. Public L2s offering hybrid modes (Aztec, Miden) let the developer choose between a public account model and a private UTXO note model; stateless or validium designs (Intmax, Prividium, Scroll Cloak) hide balances and transfer data by default.
 
-_AppChain SDKs have deployment-dependent assumptions (sequencer, DA, governance) that vary by operator._
-
-### Privacy & Architecture Overview
-
-| Protocol         | Type         | Privacy Model      | Proof System       | DA Layer                | Finality |
-| :--------------- | :----------- | :----------------- | :----------------- | :---------------------- | :------- |
-| **Aztec**        | Public L2    | Cryptographic (ZK) | UltraHonk          | L1 Blobs                | Validity |
-| **Miden**        | Public L2    | Cryptographic (ZK) | STARK (Winterfell) | L1 Blobs                | Validity |
-| **Intmax**       | Public L2    | Cryptographic (ZK) | Plonk/Gnark        | Stateless (Client-Side) | Validity |
-| **Prividium**    | AppChain SDK | Cryptographic (ZK) | Boojum/Plonk       | External (Private DB)   | Validity |
-| **Scroll Cloak** | AppChain SDK | Cryptographic (ZK) | Scroll zkEVM       | Host chain              | Validity |
-| **EY Nightfall** | AppChain SDK | Cryptographic (ZK) | UltraPlonk         | L1 Call Data            | Validity |
-
-### Privacy Visibility Matrix
-
-| Protocol         |      Balance       |       Sender       |      Receiver      |       Amount       |   Code/Function    |
-| :--------------- | :----------------: | :----------------: | :----------------: | :----------------: | :----------------: |
-| **Aztec**        | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> |
-| **Miden**        | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> | Hybrid<sup>1</sup> |
-| **Intmax**       |       Hidden       |       Hidden       |       Hidden       |       Hidden       | Public<sup>2</sup> |
-| **Prividium**    |       Hidden       |       Hidden       |       Hidden       |       Hidden       |       Hidden       |
-| **Scroll Cloak** |       Hidden       |       Hidden       |       Hidden       |       Hidden       |       Hidden       |
-| **EY Nightfall** |       Hidden       |       Hidden       |       Hidden       |       Hidden       |      Limited       |
-
-<sup>1</sup> Both Aztec and Miden let the developer choose to store assets in Public (Account model) or in Private (UTXO note).
-
-<sup>2</sup> Predicate is public; inputs/balances are stateless/hidden. Intmax only performs value transfers.
-
-### Security & Governance
-
-| Protocol         | Sequencer                   | Censorship Resistance |     Client Proving     | Upgrade Mechanism   |
-| :--------------- | :-------------------------- | :-------------------- | :--------------------: | :------------------ |
-| **Aztec**        | Decentralized (Ignition)    | Escape Hatch          |      Yes (heavy)       | Multisig            |
-| **Miden**        | Operator (Centralized)      | TBD                   | Yes (can be delegated) | Multisig            |
-| **Intmax**       | Decentralized (Aggregators) | Force Inclusion       |      Yes (light)       | TBD                 |
-| **Prividium**    | Permissioned (Owner)        | Operator-dependent    |      No (server)       | Operator-controlled |
-| **Scroll Cloak** | Permissioned (Owner)        | Force Exit to host    |  No (prover service)   | Operator-controlled |
-| **EY Nightfall** | TBD                         | TBD                   |          Yes           | TBD                 |
-
-**Client Proving**: "Yes (heavy)" = client-side ZK proof. "No (server)" = server proves.
-
-### Compliance Features
-
-| Protocol         | Viewing Keys | Selective Disclosure | Audit Support               |
-| :--------------- | :----------: | :------------------: | :-------------------------- |
-| **Aztec**        |     Yes      |         Yes          | Incoming/Outgoing keys      |
-| **Miden**        |     Yes      |         Yes          | Note-based disclosure       |
-| **Prividium**    |     TBD      |         TBD          | TBD                         |
-| **Scroll Cloak** |     Yes      |    Access control    | Operator + regulator access |
-| **EY Nightfall** |     Yes      |         Yes          | Enterprise audit trail      |
-
-_Tables generated via LLM synthesis of sources below. Last updated: 2026-01-27_
-
-**Sources**: [L2Beat](https://l2beat.com/), [Aztec Docs](https://docs.aztec.network/), [Miden VM](https://0xmiden.github.io/miden-vm/), [Intmax](https://intmax.io/), [Intmax2 Paper](https://eprint.iacr.org/2023/1082.pdf), [Prividium Docs](https://docs.zksync.io/zk-stack/prividium), [Cloak Docs](https://scroll-tech.github.io/cloak-documentation/), [Nightfall_4](https://github.com/EYBlockchain/nightfall_4_CE)
-
-## Related: Privacy App Layers
-
-Privacy solutions for existing chains (no separate L2 state/sequencer):
-
-| Solution              | Type             | Description                           |
-| :-------------------- | :--------------- | :------------------------------------ |
-| **Railgun**           | L1 Shielded Pool | Shielded transfers on Ethereum L1     |
-| **Kaleido (Paladin)** | L1 Privacy Layer | Enterprise privacy on Ethereum L1     |
-| **Zama fhEVM**        | Coprocessor      | FHE confidentiality for any EVM chain |
-
-See [RFP: Living Benchmark Dashboard](../rfps/rfp-benchmark-dashboard.md).
+Snapshot last refreshed 2026-01-27. Sources: [L2Beat](https://l2beat.com/), [Aztec Docs](https://docs.aztec.network/), [Miden VM](https://0xmiden.github.io/miden-vm/), [Intmax](https://intmax.io/), [Intmax2 Paper](https://eprint.iacr.org/2023/1082.pdf), [Prividium Docs](https://docs.zksync.io/zk-stack/prividium), [Cloak Docs](https://scroll-tech.github.io/cloak-documentation/), [Nightfall_4](https://github.com/EYBlockchain/nightfall_4_CE).
 
 ## Example
 
-OTC settlement: filter by Cryptographic privacy, require Viewing Keys for audit, compare Client Proving vs trust, check Censorship Resistance SLAs.
+An OTC settlement team filters the table for cryptographic privacy, requires viewing keys for audit support, compares client proving cost against trust assumptions, and reviews censorship-resistance SLAs before choosing between an AppChain SDK and a public privacy L2.
 
 ## See also
 
-- [RFP: Living Benchmark Dashboard](../rfps/rfp-benchmark-dashboard.md) - Automated benchmark pipeline
-- [L2Beat](https://l2beat.com/) - Independent L2 risk analysis
-- [Pattern: Hybrid Public-Private Modes](pattern-hybrid-public-private-modes.md)
-- [Pattern: Shielding](pattern-shielding.md)
+- [RFP: Living Benchmark Dashboard](../rfps/rfp-benchmark-dashboard.md) - automated benchmark pipeline.
+- [L2Beat](https://l2beat.com/) - independent L2 risk analysis.
 - [Post-Quantum Threats](../domains/post-quantum.md)
