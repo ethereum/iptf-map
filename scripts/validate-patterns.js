@@ -301,11 +301,13 @@ function validateV2Fields(frontmatter, fileWarnings) {
     }
   }
 
-  // type: meta requires sub_patterns.
+  // type: meta requires sub_patterns; conversely, only meta patterns may set it.
   if (frontmatter.type === 'meta') {
     if (!Array.isArray(frontmatter.sub_patterns) || frontmatter.sub_patterns.length === 0) {
       fileWarnings.push(`v2: type is 'meta' but sub_patterns is empty.`);
     }
+  } else if (Array.isArray(frontmatter.sub_patterns) && frontmatter.sub_patterns.length > 0) {
+    fileWarnings.push(`v2: sub_patterns is populated but type is not 'meta'. Remove sub_patterns or set type: meta.`);
   }
 
   // related_patterns slugs must resolve to an existing pattern file.
@@ -455,6 +457,12 @@ function validatePattern(filePath) {
         fileErrors.push(`Missing required section: ${label}`);
       } else {
         fileWarnings.push(`Missing required section: ${label}`);
+      }
+    } else if (alternatives.length > 1) {
+      // Deprecation nudge: v1 heading present but v2 heading absent.
+      const [v1Heading, v2Heading] = alternatives;
+      if (content.includes(v1Heading) && !content.includes(v2Heading)) {
+        fileWarnings.push(`v2: section '${v1Heading}' is deprecated; rename to '${v2Heading}'.`);
       }
     }
   }
