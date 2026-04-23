@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://iptf-map.ethereum.org/schemas/pattern.json",
   "title": "IPTF Pattern Frontmatter (v2)",
-  "description": "Schema for pattern document frontmatter in IPTF Map. v2 adds structured context_differentiation, crops_context, post_quantum, related_patterns, open_source_implementations, and meta-pattern support. Backward-compatible: v1 fields (dependencies, old maturity values) still validate until the strict-mode flip.",
+  "description": "Schema for pattern document frontmatter in IPTF Map. All v1 aliases have been removed. Structured context_differentiation, crops_context, post_quantum, related_patterns, open_source_implementations, and meta-pattern support are the canonical shape.",
   "type": "object",
   "required": ["title", "status", "maturity", "crops_profile"],
   "properties": {
@@ -18,17 +18,8 @@
     },
     "maturity": {
       "type": "string",
-      "enum": [
-        "research",
-        "concept",
-        "testnet",
-        "production",
-        "experimental",
-        "PoC",
-        "pilot",
-        "prod"
-      ],
-      "description": "Technology maturity. v2 values: research | concept | testnet | production. v1 values (experimental, PoC, pilot, prod) are accepted during migration and will be removed in the strict-mode flip."
+      "enum": ["research", "concept", "testnet", "production"],
+      "description": "Technology maturity. research (paper only), concept (spec, no code), testnet (PoC/pilot), production (mainnet with real usage)."
     },
     "type": {
       "type": "string",
@@ -39,18 +30,6 @@
       "type": "string",
       "enum": ["L1", "L2", "offchain", "hybrid"],
       "description": "Primary architectural layer"
-    },
-    "privacy_goal": {
-      "type": "string",
-      "maxLength": 200,
-      "description": "DEPRECATED (v1). Not carried into v2 — the Intent paragraph covers this. Accepted during migration."
-    },
-    "assumptions": {
-      "oneOf": [
-        { "type": "string" },
-        { "type": "array", "items": { "type": "string" } }
-      ],
-      "description": "DEPRECATED (v1). Not carried into v2 — assumptions belong in body/Components. Accepted during migration."
     },
     "last_reviewed": {
       "type": "string",
@@ -71,46 +50,41 @@
       ],
       "description": "Conditions when to avoid this pattern"
     },
-    "dependencies": {
-      "type": "array",
-      "items": { "type": "string" },
-      "description": "DEPRECATED (v1). Use `standards` and `related_patterns` in v2. Accepted during migration."
-    },
     "standards": {
       "type": "array",
       "items": { "type": "string" },
-      "description": "Standards this pattern relies on (ERC-20, EIP-7573, etc.). Top-level replacement for v1 ingredients.standards."
+      "description": "Standards this pattern relies on (ERC-20, EIP-7573, ISO-20022, etc.)."
     },
     "related_patterns": {
       "type": "object",
-      "description": "Cross-references to other patterns. Slugs match pattern-<slug>.md. Replaces v1 `dependencies` for pattern refs.",
+      "description": "Cross-references to other patterns. Slugs match patterns/pattern-<slug>.md.",
       "properties": {
         "requires": {
           "type": "array",
           "items": { "type": "string", "pattern": "^pattern-[a-z0-9-]+$" },
-          "description": "Hard dependencies — can't implement this without them"
+          "description": "Hard dependencies. Can't implement this without them."
         },
         "composes_with": {
           "type": "array",
           "items": { "type": "string", "pattern": "^pattern-[a-z0-9-]+$" },
-          "description": "Works well together, optional"
+          "description": "Works well together, optional."
         },
         "alternative_to": {
           "type": "array",
           "items": { "type": "string", "pattern": "^pattern-[a-z0-9-]+$" },
-          "description": "Competing approach to the same problem"
+          "description": "Competing approach to the same problem."
         },
         "see_also": {
           "type": "array",
           "items": { "type": "string", "pattern": "^pattern-[a-z0-9-]+$" },
-          "description": "Related for context"
+          "description": "Related for context."
         }
       },
       "additionalProperties": false
     },
     "open_source_implementations": {
       "type": "array",
-      "description": "Known open-source implementations. Plural, neutral — multiple entries allowed.",
+      "description": "Known open-source implementations. Plural, neutral.",
       "items": {
         "type": "object",
         "required": ["url", "description"],
@@ -178,25 +152,7 @@
         },
         {
           "type": "object",
-          "required": ["cr"],
-          "anyOf": [
-            { "required": ["o"] },
-            { "required": ["os"] }
-          ],
-          "allOf": [
-            {
-              "anyOf": [
-                { "required": ["p"] },
-                { "required": ["privacy"] }
-              ]
-            },
-            {
-              "anyOf": [
-                { "required": ["s"] },
-                { "required": ["security"] }
-              ]
-            }
-          ],
+          "required": ["cr", "o", "p", "s"],
           "properties": {
             "cr": {
               "type": "string",
@@ -208,30 +164,15 @@
               "enum": ["yes", "partial", "no"],
               "description": "Openness: source availability, open standards, exit paths, forkability. The 'O' in CROPS — broader than just open source."
             },
-            "os": {
-              "type": "string",
-              "enum": ["yes", "partial", "no"],
-              "description": "DEPRECATED (v1). Renamed to 'o' in v2 to match the CROPS acronym. 'O' stands for Openness, not Open Source. Accepted during migration."
-            },
             "p": {
               "type": "string",
               "enum": ["full", "partial", "none"],
               "description": "Privacy: full (private from everyone), partial (selective disclosure required), none (public or institution sees all)"
             },
-            "privacy": {
-              "type": "string",
-              "enum": ["full", "partial", "none"],
-              "description": "DEPRECATED (v1). Renamed to 'p' in v2 to match the CROPS acronym. Accepted during migration."
-            },
             "s": {
               "type": "string",
               "enum": ["high", "medium", "low"],
               "description": "Security: strength of guarantees (cryptographic assumptions, decentralization, trust model)"
-            },
-            "security": {
-              "type": "string",
-              "enum": ["high", "medium", "low"],
-              "description": "DEPRECATED (v1). Renamed to 's' in v2 to match the CROPS acronym. Accepted during migration."
             }
           },
           "additionalProperties": false
@@ -240,21 +181,18 @@
     },
     "crops_context": {
       "type": "object",
-      "description": "Narrative context for each CROPS dimension — where the badges drift up or down in practice. Replaces the ad-hoc 'CROPS context' bullet in Trade-offs. v2 uses single-letter keys (cr, o, p, s) to match crops_profile.",
+      "description": "Narrative context for each CROPS dimension. Explains where the badges drift up or down in practice.",
       "properties": {
         "cr": { "type": "string" },
         "o": { "type": "string" },
-        "os": { "type": "string", "description": "DEPRECATED: use 'o' in v2." },
         "p": { "type": "string" },
-        "privacy": { "type": "string", "description": "DEPRECATED: use 'p' in v2." },
-        "s": { "type": "string" },
-        "security": { "type": "string", "description": "DEPRECATED: use 's' in v2." }
+        "s": { "type": "string" }
       },
       "additionalProperties": false
     },
     "visibility": {
       "type": "object",
-      "description": "Optional four-slot visibility matrix for transaction-level patterns: who sees what. Skip for infrastructure or primitive patterns where the model does not apply.",
+      "description": "Optional four-slot visibility matrix for transaction-level patterns: who sees what.",
       "properties": {
         "counterparty": { "type": "array", "items": { "type": "string" } },
         "chain": { "type": "array", "items": { "type": "string" } },
@@ -265,7 +203,7 @@
     },
     "post_quantum": {
       "type": "object",
-      "description": "Post-quantum exposure summary. Replaces the ad-hoc 'Post-quantum' bullet in Trade-offs.",
+      "description": "Post-quantum exposure summary.",
       "properties": {
         "risk": {
           "type": "string",
