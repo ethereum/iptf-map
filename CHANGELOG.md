@@ -4,6 +4,7 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
+- feat(schema): pattern template v2 -- structured `crops_context`, `post_quantum`, `context_differentiation`, `related_patterns`, `open_source_implementations`, `sub_patterns`, and `type: meta` flag in [_template.md](patterns/_template.md), [pattern.json](scripts/schemas/pattern.json), and [validate-patterns.js](scripts/validate-patterns.js). Validator stays permissive during migration; existing v1 patterns continue to pass with deprecation warnings. ([#152](https://github.com/ethereum/iptf-map/pull/152), [#150](https://github.com/ethereum/iptf-map/issues/150))
 - feat(pattern): [ZK Wrappers](patterns/pattern-zk-wrappers.md) -- verify off-chain signatures (passport, DKIM, attestation) inside a ZK circuit for attribute proofs without credential disclosure ([#153](https://github.com/ethereum/iptf-map/pull/153))
 - feat(pattern): [Social Recovery](patterns/pattern-social-recovery.md) -- guardian-quorum rotation of account keys or identity anchors without issuer or custodian involvement ([#153](https://github.com/ethereum/iptf-map/pull/153))
 - feat(pattern): [Onion Routing](patterns/pattern-onion-routing.md) -- Tor-based multi-hop relay for sender IP anonymity (PSE tor-js, Flashbots .onion) ([#146](https://github.com/ethereum/iptf-map/pull/146))
