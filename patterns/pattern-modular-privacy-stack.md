@@ -51,7 +51,7 @@ sub_patterns:
     crops_summary: "Hardware trust; mitigates prover cost but introduces vendor attestation dependency"
   - name: "Settlement layer"
     pattern: pattern-dvp-erc7573
-    crops_summary: "Atomic DvP via outcome-key commitments and oracle-driven decryption; assumes non-colluding trade-setup oracle"
+    crops_summary: "Atomic DvP via outcome-key commitments and oracle-driven decryption; assumes non-colluding decryption oracle operators"
   - name: "Disclosure layer"
     pattern: pattern-regulatory-disclosure-keys-proofs
     crops_summary: "View keys, ZK proofs, and attestations for scoped audit access"
