@@ -75,7 +75,7 @@ Pure-cryptographic approaches (onion routing, mixnets) must sacrifice at least o
 | Approach | Latency | Anonymity strength | Trust assumption |
 | --- | --- | --- | --- |
 | Onion routing | Moderate (100-500ms) | Strong | No single relay sees full path |
-| Mixnet | High (seconds to minutes) | Strongest | Threshold mix nodes and cover traffic |
+| Mixnet | High (seconds to minutes) | Higher under cover-traffic assumptions | Threshold mix nodes and cover traffic |
 | TEE-assisted | Low | Medium | Client TEE and server majority |
 
 ## Guarantees & threat model

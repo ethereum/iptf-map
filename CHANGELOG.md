@@ -13,6 +13,7 @@ All notable changes to the IPTF Map are documented here.
 - feat(pattern): [zk-promises](patterns/pattern-zk-promises.md) -- stateful anonymous credentials with async callbacks for blind compliance enforcement ([#132](https://github.com/ethereum/iptf-map/pull/132))
 - feat(pattern): [Proof of Innocence](patterns/pattern-proof-of-innocence.md) -- association set membership/exclusion proofs for compliance without surveillance ([#132](https://github.com/ethereum/iptf-map/pull/132))
 - feat(approach|use-case): [Resilient Identity Continuity](use-cases/resilient-identity-continuity.md) and [added approach](approaches/approach-private-identity.md) ([#145](https://github.com/ethereum/iptf-map/pull/145))
+- refactor(pattern): rename `pattern-noir-private-contracts` to [Private Contract DSL](patterns/pattern-private-contract-dsl.md) for vendor-neutral naming ([#154](https://github.com/ethereum/iptf-map/pull/154))
 
 ### Removed
 
@@ -130,7 +131,7 @@ All notable changes to the IPTF Map are documented here.
 - feat(pattern): [FOCIL-EIP7805](patterns/pattern-focil-eip7805.md) ([#26](https://github.com/ethereum/iptf-map/pull/26))
 - feat(pattern): [Lean Ethereum](patterns/pattern-lean-ethereum.md) ([#26](https://github.com/ethereum/iptf-map/pull/26))
 - feat(pattern): [OIF](patterns/pattern-oif.md) - Optimized Integrity Framework ([#26](https://github.com/ethereum/iptf-map/pull/26))
-- feat(pattern): [Private Contract DSL](patterns/pattern-private-contract-dsl.md) ([#21](https://github.com/ethereum/iptf-map/pull/21))
+- feat(pattern): [Noir private contracts](patterns/pattern-private-contract-dsl.md) ([#21](https://github.com/ethereum/iptf-map/pull/21))
 - feat(vendor): [Paladin](vendors/paladin.md) ([#19](https://github.com/ethereum/iptf-map/pull/19))
 - feat(vendor): [State Labs](vendors/tx-shield.md) - Tx Shield, OpenTMP LLM, Collab-Key ([#7](https://github.com/ethereum/iptf-map/pull/7))
 - feat(vendor): [Soda Labs](vendors/soda-labs.md)

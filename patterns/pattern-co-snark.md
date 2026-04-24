@@ -58,7 +58,7 @@ This pattern covers delegated proving for a single prover's witness. For multi-p
 
 - User or application holds the witness and wants a proof generated without exposing the witness.
 - Share-distribution layer splits the witness using secret-sharing (additive or Shamir) and routes shares to proving nodes.
-- Distributed prover network runs the MPC protocol to jointly compute the SNARK. Each node sees only its share.
+- Distributed prover network runs the MPC protocol to jointly compute the SNARK. Each node sees its share; the full witness is never reconstructed.
 - Coordinator sequences MPC rounds and assembles the final proof. Can be one of the proving nodes or a separate role.
 - Verifier checks the final proof exactly as it would check a client-side SNARK. No changes on the verification side.
 

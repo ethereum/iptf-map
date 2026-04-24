@@ -117,7 +117,7 @@ Threat model:
 ## Example
 
 - Bond issuance and secondary trading on native shielded notes.
-- An FHE-based L2 running a private credit risk model where inputs remain encrypted end-to-end and only the final attestation is revealed to the counterparty.
+- An FHE-based L2 running a private credit risk model where inputs remain encrypted end-to-end and the final attestation is revealed to the counterparty.
 
 ## See also
 

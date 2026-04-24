@@ -20,17 +20,13 @@ context_differentiation:
   i2i: "Between institutions the layered model lets counterparties agree on interfaces (data references, settlement proofs, disclosure artifacts) without locking the stack to one vendor per layer. Decentralized orchestration prevents any single provider from gatekeeping settlement."
   i2u: "For user-facing deployments per-layer exit paths matter: a user must be able to withdraw assets even if one layer's operator becomes unresponsive. Disclosure controls should protect the user from forced correlation across layers."
 
-crops_profile:
-  cr: medium
-  o: partial
-  p: partial
-  s: medium
+crops_profile: "n/a"
 
 crops_context:
-  cr: "Reaches `high` when routing is permissionless and each layer offers an independent exit path. Drops when orchestration concentrates in a single operator or when a settlement layer uses permissioned sequencing."
-  o: "Improves to `yes` when reference implementations of each layer interface are published and orchestration logic is open source; today vendor SDKs dominate."
-  p: "Layer isolation contains data leaks, but cross-layer routing reveals timing and access patterns. Reaches `full` only with end-to-end encryption between layers and metadata scrubbing at routing boundaries."
-  s: "Depends on the weakest layer plus the orchestrator. Threshold cryptography for cross-layer key management and elimination of single-operator trust in orchestration raise this to `high`."
+  cr: "Inherited from sub-patterns; the meta-pattern itself does not implement CR. Overall CR is bounded by the weakest layer plus orchestration. See each sub-pattern's crops_context."
+  o: "Inherited from sub-patterns; the meta-pattern itself does not implement openness. Reaches `yes` when every layer's reference implementation is open source."
+  p: "Inherited from sub-patterns; the meta-pattern itself does not implement privacy. Cross-layer routing can leak timing and access patterns regardless of per-layer choices."
+  s: "Inherited from sub-patterns; the meta-pattern itself does not implement security. Depends on the weakest layer plus the orchestrator."
 
 post_quantum:
   risk: medium

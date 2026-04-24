@@ -51,9 +51,6 @@ open_source_implementations:
   - url: https://pse.dev/projects/tor-js
     description: "Tor-in-WASM library for browser-side onion routing from dApps (EF PSE)"
     language: "TypeScript, WASM"
-  - url: https://docs.flashbots.net/flashbots-protect/quick-start
-    description: "Public .onion endpoint for private transaction submission"
-    language: "Service"
 ---
 
 ## Intent
@@ -85,7 +82,7 @@ Guarantees:
 
 Threat model:
 
-- A global passive adversary able to observe both ends of a circuit can correlate traffic and deanonymise sessions.
+- A global passive adversary able to observe both ends of a circuit can correlate traffic and deanonymize sessions.
 - Exit relays see the final unencrypted payload unless transport-layer encryption (HTTPS, .onion service) is used.
 - RPC providers that block exit-node IPs degrade the guarantee; pair with decentralised or P2P RPC access.
 - Does not hide message content. Pair with content-privacy patterns for full-stack privacy.
@@ -110,3 +107,4 @@ Threat model:
 
 - [Tor Project Arti](https://gitlab.torproject.org/tpo/core/arti)
 - [Tor specification](https://spec.torproject.org/)
+- [Flashbots Protect (.onion endpoint for private transaction submission)](https://docs.flashbots.net/flashbots-protect/quick-start)

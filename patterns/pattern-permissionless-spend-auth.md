@@ -77,7 +77,7 @@ Guarantees:
 - Unified anonymity set. All auth methods share one note tree; spends using different methods are indistinguishable on-chain.
 - Auth method privacy. Observers cannot determine which inner circuit was used.
 - No fund migration. Changing or adding auth methods does not require moving notes.
-- Ownership isolation. A bug in an inner circuit cannot forge ownership; it can produce false authorization claims but nothing else. The outer circuit independently enforces ownership, value conservation, and nullifier correctness.
+- Ownership isolation. A bug in an inner circuit can produce false authorization claims but cannot forge ownership: the outer circuit independently enforces ownership, value conservation, and nullifier correctness. The blast radius of an inner-circuit flaw is therefore limited to auth-method bypass within the affected circuit, not fund theft.
 
 Threat model:
 

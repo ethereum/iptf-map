@@ -55,7 +55,7 @@ Plan a long-range redesign of the Ethereum consensus layer, targeting a single m
 
 - Post-quantum hash-based multisignatures, with an aggregation scheme suited to large validator sets.
 - Minimal zkVMs used to compress aggregated signatures and consensus proofs into succinct artifacts.
-- Networking upgrades: Gossipsub v2 for throughput and DOS resilience, and rateless set reconciliation to support very large validator sets.
+- Networking upgrades: Gossipsub v2 for throughput and DOS resilience, and rateless set reconciliation to support large validator sets.
 - Lower validator thresholds in hardware, bandwidth, and stake, making solo staking accessible on commodity devices.
 - Formal verification tooling (Lean 4) used to prove key properties of the signature aggregation and consensus logic.
 - Approximately fifteen client teams implementing the specification across Rust, Zig, C, C++, Go, Java, .NET, TypeScript, Nim, and Elixir.
