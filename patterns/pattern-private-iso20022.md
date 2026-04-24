@@ -1,116 +1,119 @@
 ---
 title: "Pattern: Private ISO 20022 Messaging & Settlement"
 status: draft
-maturity: experimental
+maturity: concept
+type: standard
 layer: hybrid
-privacy_goal: Private ERC-20 settlements linked to ISO 20022 instructions with regulator-only visibility
-assumptions: ISO 20022 schema, shielded pool or confidential token infrastructure, threshold KMS
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Institutions already exchange ISO 20022 messages (pacs.008/009/002, camt.\*).
-  - On-chain settlement (ERC-20, tokenized deposits) must link to SWIFT/ISO workflows.
+  - Institutions already exchange ISO 20022 messages (pacs.008, pacs.009, pacs.002, camt.\*).
+  - On-chain settlement (ERC-20, tokenized deposits) must link to existing ISO or correspondent banking workflows.
   - Regulators require selective audit, not full transparency.
+
 avoid-when:
-  - Institutions are not ISO-native (retail/DeFi-native apps).
-  - Privacy is not a requirement (public stablecoins acceptable).
-dependencies:
-  - ISO 20022 schema (pacs.008/009/002, camt.\*)
-  - ERC-20 / ERC-3643 (tokenized cash/RWA)
-  - Optional: ERC-7573 (conditional settlement), ZK proof system
+  - Institutions are not ISO-native (retail or DeFi-native apps).
+  - Privacy is not a requirement and a public stablecoin is acceptable.
+
 context: i2i
+
 crops_profile:
   cr: medium
-  os: partial
-  privacy: full
-  security: medium
+  o: partial
+  p: full
+  s: medium
+
+crops_context:
+  cr: "Reaches `high` when settlement runs on a single-chain shielded pool without a trusted relayer or gatekeeper. Drops to `low` when the private rail is operator-controlled or depends on a proprietary coprocessor with no open submission path."
+  o: "ISO 20022 schemas are open and widely adopted. SWIFT infrastructure is licensed and proprietary. The settlement rail determines overall openness: an open shielded pool improves the score, a proprietary FHE coprocessor degrades it. Reaches `yes` only when every component, including the ISO extension carriers and the settlement rail, is open-source."
+  p: "Cash-leg amounts and counterparties are hidden on-chain. The ISO instruction layer is off-chain and covered by existing bank-to-bank confidentiality practice. Metadata at intermediaries (correspondent banks that pass the message without understanding the extension) may still leak timing or existence."
+  s: "Rides on the settlement rail's cryptography (zero-knowledge proofs, FHE, threshold keys) and on signing conventions agreed between banks. Reaches `high` when signing algorithms, PKI, and the ISO extension registration are formally published and jointly governed."
+
+post_quantum:
+  risk: high
+  vector: "Cash-leg settlement rail typically uses EC-based zero-knowledge proofs (Groth16, PLONK/KZG) or pairing-based threshold encryption, all broken by CRQC. HNDL risk is high because correspondent-banking payloads are archived for years."
+  mitigation: "Migrate the settlement rail to STARK-based shielded pools with hash commitments; use lattice-based threshold encryption for any encrypted message envelopes."
+
+visibility:
+  counterparty: [amounts, terms, identities]
+  chain: [message_type, commitment, status]
+  regulator: [full_tx with view keys]
+  public: []
+
+standards: [ISO-20022, ERC-20, ERC-3643, ERC-7573]
+
+related_patterns:
+  composes_with: [pattern-shielding, pattern-privacy-l2s, pattern-dvp-erc7573, pattern-regulatory-disclosure-keys-proofs]
+  see_also: [pattern-crypto-registry-bridge-ewpg-eas, pattern-permissioned-ledger-interoperability]
+
+open_source_implementations: []
 ---
 
 ## Intent
 
-Coordinate **private ERC-20 settlements** between banks using ISO 20022 as the instruction layer.  
-ISO messages are linked to the cash leg, while the **cash leg itself settles privately** via a shielded mechanism (privacy L2 / shielded pool / confidential token) with regulator-only visibility.
+Coordinate private ERC-20 settlements between banks using ISO 20022 as the instruction layer. The ISO message binds to the on-chain cash leg, while the cash leg itself settles privately via a shielded mechanism (privacy L2, shielded pool, or confidential token) with regulator-only visibility.
 
----
+## Components
 
-## Ingredients
+- ISO 20022 schema and envelopes: pacs.008, pacs.009, pacs.002, camt.\* messages plus the `<SplmtryData>` extension mechanism used to carry commitments and proofs.
+- Message commitment `C_msg`: hash of the canonical ISO message used to bind the settlement on-chain to the off-chain instruction.
+- Private settlement rail: a shielded pool, a confidential token layer, or a privacy L2 that performs the cash-leg transfer with amounts and counterparties hidden on-chain.
+- Rollup or validium anchor for minimal on-chain metadata (message type, coarse time bucket, status).
+- Off-chain services: ISO parsing and canonicalization (XML to canonical JSON), KMS for bank and regulator keys, and a selective-disclosure service.
+- Settlement controller: optional permissioned actor that authorizes confidential transfers on a permissioned confidential-token rail.
 
-- **Standards**:
-  - [ISO 20022 schema](https://www.iso20022.org/iso-20022-message-definitions) (pacs.008/009/002, camt.\*)
-  - [ERC-20](https://eips.ethereum.org/EIPS/eip-20) / [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643) (tokenized cash/RWA)
-  - (Optional) [ERC-7573](https://eips.ethereum.org/EIPS/eip-7573) (conditional settlement / atomic coupling)
-  - [`<SplmtryData>`](https://www.iso20022.org/supplementary_data.page) extension mechanism (proof/commitment carrier within ISO messages)
-- **Infra**
-  - Privacy settlement rail: **shielded pool** (e.g., Aztec/Railgun/Penumbra) **or** **confidential token** (e.g., fhEVM-style)
-  - Rollup/validium for anchoring minimal metadata (msg type, status, coarse time bucket)
-- **Off-chain**
-  - ISO parsing/normalization (XML → canonical JSON)
-  - KMS for bank/regulator keys; selective-disclosure service
+The shielded pool details live in `pattern-shielding`; the privacy L2 option in `pattern-privacy-l2s`; DvP coupling in `pattern-dvp-erc7573`.
 
----
+## Protocol
 
-## Protocol (private cash-leg variants)
+The pattern admits three variants for the cash leg. They share steps 1 to 3 and diverge at settlement.
 
-### A1. Shielded Pool Settlement
+1. [user] Bank A issues an ISO 20022 message (e.g., `pacs.008` for a customer credit transfer) to Bank B.
+2. [user] Off-chain, both banks compute `C_msg` from the canonical form of the ISO message.
+3. [contract] Minimal ISO metadata and `C_msg` are anchored on a rollup or validium.
+4. [contract] Variant A: the cash-leg ERC-20 is wrapped into a shielded pool and held as notes. A shielded transfer executes from Bank A's note to Bank B's note with `C_msg` bound inside the spend circuit.
+5. [contract] Variant B: a confidential ERC-20 with encrypted balances executes a confidential transfer authorized by the settlement controller, referencing `C_msg`.
+6. [contract] Variant C: both cash legs are temporarily bridged to a shared privacy L2. A single shielded DvP or PvP transaction referencing `C_msg` executes, then assets bridge back to their origin chains.
+7. [regulator] The supervisor holds view keys for scoped audits (amounts, parties, routes as needed) and can decrypt selected fields or inspect shielded transfers.
 
-1. Anchor minimal ISO metadata (e.g., `msgType`, `timeBucket`) and a **message commitment** `C_msg` on-chain.
-2. Wrap/mint the ERC-20 into a **shielded pool** and hold balances as **notes**.
-3. Execute a **shielded transfer** from Bank A’s note to Bank B’s note, **binding** the transfer to `C_msg` (e.g., include `C_msg` in the spend circuit).
-4. Regulator holds **view keys** for scoped audits (amounts/parties/routes if needed).
+The commitment and any zero-knowledge proof can be embedded in the ISO message using `<SplmtryData>`, with `<PlcAndNm>` pointing to the extended element. ISO 20022's "can ignore" semantics mean intermediaries that do not support the extension process the message normally, while endpoints that understand it verify the proof.
 
-### A2. Confidential Token Settlement (permissioned L2)
+## Guarantees & threat model
 
-1. Anchor minimal ISO metadata + `C_msg`.
-2. Use a **confidential ERC-20** where balances and amounts are encrypted.
-3. Settlement controller authorizes a **confidential transfer** (encrypted state update) referencing `C_msg`.
-4. Regulator can view via scoped keys or field-level selective reveal.
+Guarantees:
 
-### A3. Single-Domain Private Settle (roll-in, settle, roll-out)
+- Privacy: cash-leg amounts and counterparties are hidden on-chain.
+- Integrity and linkage: settlement references `C_msg` so the cash leg is cryptographically tied to the ISO instruction.
+- Auditability: regulators can decrypt selected fields or use view keys to audit shielded transfers.
+- Interoperability: ISO schema provides consistent mapping across banks and corridors.
 
-1. Temporarily bridge both legs to a **common privacy L2** (e.g.; Aztec).
-2. Perform a **single-tx shielded DvP/PvP** referencing `C_msg`.
-3. Bridge assets back to their origin chains as needed.
+Threat model:
 
-### Proof Transport via `<SplmtryData>`
-
-`C_msg` (and an optional ZK proof) can be embedded in the ISO message using `<SplmtryData>/<Envlp>`, with `<PlcAndNm>` pointing to the extended element (e.g., `/Document/FIToFICstmrCdtTrf/CdtTrfTxInf`).
-
-This leverages ISO 20022's **"can ignore" semantics**: intermediaries that do not support the extension process the message normally, only endpoints that understand the extension verify the proof. This enables **incremental adoption** across correspondent chains.
-
-To formalize, institutions can submit a **Change Request (CR)** to the relevant SEG to register an Extension `MessageDefinition` carrying proof data (commitments, ZK proofs, verification keys) as first-class ISO 20022 components.
-
----
-
-## Guarantees
-
-- **Privacy:** cash-leg amounts and counterparties are hidden on-chain (B1/B2/B3).
-- **Integrity & linkage:** settlement references `C_msg` so the cash leg is cryptographically linked to the ISO instruction.
-- **Auditability:** regulator can decrypt selected fields or use view keys to audit shielded transfers.
-- **Interoperability:** ISO schema provides consistent mapping across banks/corridors.
-
----
+- Settlement rail soundness (zero-knowledge proof system, FHE scheme, or confidential VM).
+- Signing-convention agreement between banks. Algorithm choice, PKI, and canonicalization (full ISO hash versus reduced settlement tuple) must be jointly specified.
+- Cross-chain atomicity under partition. Variants A and B can strand one leg if the two sides sit on different chains without an atomic bridge; variant C mitigates via single-domain execution but introduces bridge risk.
+- Intermediate-correspondent exposure. Non-participating intermediaries pass the message unchanged but cannot verify the proof in transit, so they must trust endpoints to catch invalid extensions.
+- Regulator key custody. Compromised view keys expose historical audit scope.
 
 ## Trade-offs
 
-- Privacy rails (B1/B2) introduce **infra complexity** (shielded circuits or confidential VM) and **key governance**.
-- **Signing convention** (algorithm, PKI) must be agreed (full ISO hash vs reduced settlement tuple) for on-chain authorization.
-- **Cross-chain atomicity** (if the two legs span different chains) requires **zk-SPV** or **single-domain execution** (B3).
-- **Incremental rollout**: `<SplmtryData>` "can ignore" semantics mean non-participating intermediaries pass messages through unchanged, but they also cannot verify proofs in transit.
-- **CROPS context (I2I)**: CR improves to `high` if settlement uses single-chain shielded pool without relayer. OS depends on privacy rail: Railgun (open) vs proprietary FHE coprocessor. SWIFT infrastructure is licensed/proprietary; ISO schema is open.
-
----
+- The private rails in variants A and B add infra complexity (shielded circuits or confidential VM) and require key governance.
+- Cross-chain atomicity requires zk-SPV-style bridges or single-domain execution. Two-chain designs without an atomic bridge can fail partially.
+- Incremental rollout via `<SplmtryData>` "can ignore" semantics works but limits correspondent-chain visibility until endpoints upgrade.
+- Formalizing the extension requires a Change Request to the relevant ISO SEG to register an Extension `MessageDefinition` for proof data as a first-class component; without this, adoption remains bilateral.
 
 ## Example
 
-- Bank A issues `pacs.008` “pay 10m EURC from DEUTDEFFXXX → BNPAFRPPXXX”.
-- Off-chain: compute `C_msg` from the canonical ISO message.
-- **B1:** Wrap EURC into a shielded pool, execute a note-to-note transfer bound to `C_msg`.  
-  **or B2:** Call confidential-token transfer (encrypted state), referencing `C_msg`.  
-  **or B3:** Bridge to a shared privacy L2, do one-tx shielded DvP, bridge out.
-- Regulator later audits via view keys / selective disclosure.
-
----
+- Bank A issues `pacs.008` to pay 10m EURC from `DEUTDEFFXXX` to `BNPAFRPPXXX`.
+- Off-chain, both banks compute `C_msg` from the canonical ISO message.
+- Variant A: EURC is wrapped into a shielded pool and a note-to-note transfer bound to `C_msg` executes.
+- Variant B: a confidential-token transfer with encrypted state references `C_msg`.
+- Variant C: both legs bridge to a shared privacy L2, a single shielded DvP executes referencing `C_msg`, and assets bridge out.
+- The supervisor later audits via view keys and selective disclosure.
 
 ## See also
 
-- [Pattern: DvP using ERC-7573](./pattern-dvp-erc7573.md): conditional coupling
-- [Pattern: Privacy L2](./pattern-privacy-l2s.md): privacy rails
+- [ISO 20022 message definitions](https://www.iso20022.org/iso-20022-message-definitions)
+- [ISO 20022 `<SplmtryData>` extension mechanism](https://www.iso20022.org/supplementary_data.page)
+- [ERC-7573 (conditional settlement)](https://eips.ethereum.org/EIPS/eip-7573)
+- [ERC-3643 (tokenized RWA)](https://eips.ethereum.org/EIPS/eip-3643)

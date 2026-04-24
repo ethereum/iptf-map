@@ -1,84 +1,110 @@
 ---
 title: "Pattern: Onion Routing"
 status: draft
-maturity: PoC
+maturity: testnet
+type: standard
 layer: offchain
-privacy_goal: Hide sender IP by routing traffic through multiple relay nodes, each peeling one encryption layer
-assumptions: No single relay sees both sender and destination; vulnerable to global passive adversary
-last_reviewed: 2026-04-14
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Metadata leakage (IP, timing) is a threat model concern
-  - Higher latency is acceptable (batch queries, end-of-day valuations)
-  - A large external anonymity set is desirable (Tor's global relay network)
+  - Metadata leakage (IP, timing) is a threat model concern.
+  - Higher latency is acceptable (batch queries, end-of-day valuations, non-real-time flows).
+  - A large external anonymity set is desirable.
 avoid-when:
-  - Sub-second latency is required (DeFi trading, real-time pricing)
-  - The threat model includes a global passive adversary with traffic correlation capability
-  - Users cannot run additional software or route through external networks
-dependencies:
-  - Tor relay network (or equivalent onion-routing overlay)
-  - Client-side routing library (PSE tor-js, Arti)
+  - Sub-second latency is required (DeFi trading, real-time pricing).
+  - The threat model includes a global passive adversary capable of traffic correlation.
+  - Users cannot run additional software or route through external networks.
+
 context: both
+context_differentiation:
+  i2i: "Institutions querying counterparty state or submitting settlement transactions can hide their IP from counterparty infrastructure. Both sides typically run their own relays or nodes, and the external anonymity set is not under either party's control."
+  i2u: "When the institution operates the RPC endpoint or sequencer, onion routing prevents it from correlating user IPs with on-chain activity. The anonymity set is external, so the institution cannot shrink it. Does not address censorship at the RPC or sequencer layer; see forced-withdrawal."
+
 crops_profile:
   cr: medium
-  os: yes
-  privacy: partial
-  security: medium
+  o: yes
+  p: partial
+  s: medium
+
+crops_context:
+  cr: "Medium overall. Reaches `high` when paired with direct P2P or decentralised RPC access because no single entity gates requests. Drops to `low` when routed through a centralised RPC provider that can block exit-node IPs."
+  o: "Both the Tor protocol and Rust reimplementations are open-source. Clients and relays are forkable."
+  p: "Hides sender IP and which RPC endpoint was queried. On-chain side channels (transaction timing, gas patterns, address reuse) persist even when IP is hidden."
+  s: "Vulnerable to a global passive adversary performing end-to-end traffic correlation. Strong against single relay observers and local network adversaries."
+
+post_quantum:
+  risk: medium
+  vector: "Circuit establishment uses ECDH-based key exchange that a CRQC can break. HNDL risk exists for recorded circuit handshakes, allowing retrospective deanonymisation."
+  mitigation: "Tor is adopting hybrid post-quantum key exchange; deployments should track and enable it as it becomes available."
+
+standards: []
+
+related_patterns:
+  alternative_to: [pattern-mixnet-anonymity, pattern-tee-network-anonymity]
+  composes_with: [pattern-private-transaction-broadcasting, pattern-threshold-encrypted-mempool]
+  see_also: [pattern-network-anonymity, pattern-modular-privacy-stack]
+
+open_source_implementations:
+  - url: https://gitlab.torproject.org/tpo/core/arti
+    description: "Rust reimplementation of the Tor protocol"
+    language: "Rust"
+  - url: https://pse.dev/projects/tor-js
+    description: "Tor-in-WASM library for browser-side onion routing from dApps (EF PSE)"
+    language: "TypeScript, WASM"
 ---
 
 ## Intent
 
-Hide *who* is sending transactions or querying state by routing traffic through a chain of relay nodes. Each relay peels one layer of encryption, so no single relay sees both the sender's IP and the destination. Onion routing closes the metadata gap left by content-privacy patterns (ZK, FHE, MPC), which hide *what* is in a transaction but not *who* submitted it.
+Hide who is sending transactions or querying state by routing traffic through a chain of relay nodes. Each relay peels one layer of encryption, so no single relay sees both the sender's IP and the destination. Onion routing closes the metadata gap left by content-privacy patterns, which hide what is in a transaction but not who submitted it.
 
-## Ingredients
+## Components
 
-- Cryptographic: layered (onion) encryption, circuit establishment
-- Infra: relay network (Tor), SOCKS5 proxy or WASM-embedded client
-- Standards: Tor protocol specification, Arti (Rust implementation)
+- Circuit of relays: three or more nodes selected from a relay directory, each holding one encryption layer.
+- Layered (onion) encryption: the client wraps the message once per relay; each hop decrypts its own layer, starting with the entry hop.
+- Client routing library: negotiates the circuit, applies the encryption layers, and exposes a local proxy (SOCKS5 or WASM) to the dApp or wallet.
+- Exit relay: decrypts the last layer and forwards the message to the destination (RPC node, mempool, .onion service).
 
-## Protocol (concise)
+## Protocol
 
-1. Client selects a circuit of 3+ relay nodes from the Tor directory.
-2. Client wraps the message (RPC query or transaction) in multiple encryption layers, one per relay.
-3. Each relay decrypts its layer, learns the next hop, and forwards the message.
-4. Exit relay delivers the message to the destination (RPC node, mempool).
-5. Response returns through the same circuit in reverse.
+1. [user] Select a circuit of three or more relay nodes from the relay directory.
+2. [user] Wrap the message (RPC query or signed transaction) in one encryption layer per relay.
+3. [relayer] Each relay decrypts its layer, learns the next hop, and forwards the message. No relay sees both the sender and the destination.
+4. [relayer] The exit relay decrypts the final layer and delivers the message to the destination.
+5. [user] The response returns through the same circuit in reverse.
 
-## Guarantees
+## Guarantees & threat model
 
-- Hides sender IP from the destination (RPC provider, block builder).
+Guarantees:
+
+- Hides the sender's IP from the destination (RPC provider, block builder, mempool peer).
 - No single relay sees both sender identity and message content.
-- Draws from a large, external anonymity set (global Tor network) that neither the institution nor RPC provider controls.
-- Does not hide message content; pair with content-privacy patterns for full-stack privacy.
-- **I2U**: prevents the institution (when it operates the RPC endpoint) from correlating user IPs with on-chain activity. The anonymity set is external to the institution, so the institution cannot shrink it.
-- **I2I**: institutions querying counterparty state or submitting settlement transactions can hide their IP from the counterparty's infrastructure.
+- Draws from a large external anonymity set that neither the institution nor the RPC provider controls.
+
+Threat model:
+
+- A global passive adversary able to observe both ends of a circuit can correlate traffic and deanonymize sessions.
+- Exit relays see the final unencrypted payload unless transport-layer encryption (HTTPS, .onion service) is used.
+- RPC providers that block exit-node IPs degrade the guarantee; pair with decentralised or P2P RPC access.
+- Does not hide message content. Pair with content-privacy patterns for full-stack privacy.
+- No Ethereum execution client natively supports onion routing as of 2026-04, unlike Bitcoin Core. Integration requires external tooling.
 
 ## Trade-offs
 
-- High latency (3+ hops, ~200-500ms added per request) makes it unsuitable for latency-sensitive DeFi.
-- Exit relays can observe unencrypted traffic; HTTPS to the RPC endpoint mitigates this.
-- Vulnerable to traffic correlation attacks by a well-resourced adversary who can observe both ends of the circuit.
-- No native Tor support in any Ethereum execution client (Geth, Erigon, Reth) as of 2026-04, unlike Bitcoin Core which has had built-in Tor since 2016. Integration requires external tooling.
-- CROPS: CR is `medium` overall: when paired with direct P2P or decentralized RPC access, censorship resistance is strong (no single entity gates requests). When routed through a centralized RPC provider, CR drops because the provider can block Tor exit node IPs. OS is `yes` (Tor and Arti are open-source). Privacy is `partial` because on-chain side channels (transaction timing, gas patterns) persist even when IP is hidden. Security is `medium` due to vulnerability to global passive adversaries performing traffic correlation.
+- High latency: three or more hops add ~100-500 ms per request, making it unsuitable for latency-sensitive DeFi.
+- Exit-relay visibility: plaintext traffic is observable at the exit. HTTPS to the RPC endpoint or .onion services mitigate this.
+- Operational complexity: running a reliable circuit requires relay discovery, retry logic, and health checks.
+- On-chain side channels (timing, gas patterns, address reuse) persist and must be addressed separately.
 
 ## Example
 
-1. Fund manager needs to query 50 token balances to value a portfolio at end of day.
-2. Without network anonymity, the RPC provider sees all queried addresses, revealing holdings and strategy.
-3. Fund manager routes queries through Tor: each query traverses 3 relays before reaching the RPC endpoint.
-4. RPC provider sees requests arriving from a Tor exit relay, not the fund manager's IP.
-5. Added latency (~300ms per query) is acceptable for end-of-day valuation.
+- A fund manager needs to query 50 token balances to value a portfolio at end of day.
+- Without network anonymity, the RPC provider sees all queried addresses, revealing holdings and strategy.
+- With onion routing, each query traverses three relays before reaching the RPC endpoint.
+- The RPC provider sees requests arriving from an exit relay, not the fund manager's IP.
+- The added latency (~300 ms per query) is acceptable for end-of-day valuation.
 
 ## See also
 
-- [Network-Level Anonymity](pattern-network-anonymity.md) - umbrella pattern and approach comparison
-- [Mixnet Anonymity](pattern-mixnet-anonymity.md) - stronger anonymity guarantees but higher latency
-- [TEE-Assisted Network Anonymity](pattern-tee-network-anonymity.md) - low-latency alternative using hardware trust
-- [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md) - complementary content-privacy pattern for mempool-level protection
-- [Threshold Encrypted Mempool](pattern-threshold-encrypted-mempool.md) - complementary content-privacy pattern for pre-inclusion encryption
-- [Modular Privacy Stack](pattern-modular-privacy-stack.md) - where network anonymity fits in the four-layer architecture
-
-## See also (external)
-
-- PSE tor-js: https://pse.dev/projects/tor-js (Tor-in-WASM for Ethereum dApps, EF team)
-- Flashbots Protect .onion endpoint: https://docs.flashbots.net/flashbots-protect/quick-start
-- Arti (Tor Project Rust implementation): https://gitlab.torproject.org/tpo/core/arti
+- [Tor Project Arti](https://gitlab.torproject.org/tpo/core/arti)
+- [Tor specification](https://spec.torproject.org/)
+- [Flashbots Protect (.onion endpoint for private transaction submission)](https://docs.flashbots.net/flashbots-protect/quick-start)

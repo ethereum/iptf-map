@@ -1,106 +1,104 @@
 ---
-title: Lean Ethereum
+title: "Pattern: Lean Ethereum"
 status: draft
-maturity: experimental
+maturity: research
+type: standard
 layer: L1
-privacy_goal: No direct privacy; consensus redesign enabling light client verification
-assumptions: Post-quantum signatures, minimal zkVMs, 4-5 year research timeline, ~15 client teams
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Long-term Ethereum consensus redesign needed
-  - Solo validation accessibility matters
+  - A long-term redesign of Ethereum consensus is on the table.
+  - Solo-validator accessibility and light-client verifiability matter.
+  - Post-quantum resilience of the consensus layer is a design goal.
 avoid-when:
-  - Near-term deployment required (4–5 year horizon)
-dependencies: [Post-quantum signatures, minimal zkVMs, P2P networking upgrades]
+  - Near-term deployment is required; the research horizon is multi-year.
+  - Only execution-layer scaling or transaction privacy is in scope.
+
 context: both
+context_differentiation:
+  i2i: "Between institutions the relevant properties are validator economics, finality guarantees, and post-quantum signature aggregation. Institutions running staking nodes benefit from lower hardware requirements and from formal verification of the signature scheme."
+  i2u: "For end users the relevant property is trustworthy light-client verification on minimal devices. A user who runs a mobile light client can verify consensus independently, without relying on a hosted RPC. Validator decentralization also reduces the risk that a small operator set can collude against users."
+
 crops_profile:
   cr: high
-  os: yes
-  privacy: none
-  security: medium
+  o: yes
+  p: none
+  s: medium
+
+crops_context:
+  cr: "Lowering the solo-staking threshold and expanding the validator set raises censorship resistance at the consensus layer. Execution-layer CR still depends on the application stack above."
+  o: "Specifications and reference implementations are developed in the open across many client teams; formal verification artifacts (Lean 4) are public."
+  p: "The pattern does not add transaction privacy. Privacy is handled by separate execution-layer tracks that can run on top of a Lean consensus."
+  s: "Strength of the final construction depends on the cryptanalysis of the chosen post-quantum signature, the correctness of the minimal zkVM, and the stability of networking upgrades. Each of these is an open research question."
+
+post_quantum:
+  risk: low
+  vector: "The pattern itself targets post-quantum resilience by replacing EC signatures with hash-based multisignatures, so it reduces the core signature-layer PQ risk."
+  mitigation: "Hash-based multisignatures (XMSS/Winternitz-family candidates) aggregated via a minimal zkVM."
+
+standards: []
+
+related_patterns:
+  see_also: [pattern-eil, pattern-focil-eip7805, pattern-native-account-abstraction]
+
+open_source_implementations:
+  - url: https://github.com/leanEthereum/leanSpec
+    description: "Lean specification repository with work-in-progress drafts across consensus, signatures, and networking"
+    language: Markdown
 ---
 
 ## Intent
 
-A long-range redesign of Ethereum’s consensus layer aiming to enter in action around 2030. Lean consolidates multiple research tracks into a single major fork, reducing hardware requirements, improving validator accessibility, enabling fully verifying light clients on minimal devices, and preparing for a post-quantum world.
+Plan a long-range redesign of the Ethereum consensus layer, targeting a single major fork around 2030 that consolidates several research tracks: post-quantum signatures, minimal zkVMs for signature aggregation and proof compression, reduced hardware and stake thresholds for validators, and networking upgrades that support a larger validator set. The goal is a consensus protocol that is stable for decades, resilient against quantum adversaries, and verifiable on minimal devices.
 
-## Ingredients
+## Components
 
-- Specifications (in development)
+- Post-quantum hash-based multisignatures, with an aggregation scheme suited to large validator sets.
+- Minimal zkVMs used to compress aggregated signatures and consensus proofs into succinct artifacts.
+- Networking upgrades: Gossipsub v2 for throughput and DOS resilience, and rateless set reconciliation to support large validator sets.
+- Lower validator thresholds in hardware, bandwidth, and stake, making solo staking accessible on commodity devices.
+- Formal verification tooling (Lean 4) used to prove key properties of the signature aggregation and consensus logic.
+- Approximately fifteen client teams implementing the specification across Rust, Zig, C, C++, Go, Java, .NET, TypeScript, Nim, and Elixir.
 
-  - Post-quantum hash-based multisignatures
-  - Minimal zkVMs for signature aggregation & proof compression
-  - Networking upgrades: Gossipsub v2, rateless set reconciliation
-  - Finality research (e.g., low-slot-count fast finality variants)
-  - Validator set expansion & economics (lower thresholds under discussion)
+## Protocol
 
-- Infrastructure
+1. [researcher] Select and cryptanalyze a post-quantum hash-based multisignature scheme suited to aggregation.
+2. [researcher] Design a minimal zkVM that verifies and compresses aggregated signatures.
+3. [client-team] Prototype the consensus upgrade across independent client teams to stress-test the specification.
+4. [validator] Run consensus at lower hardware and stake thresholds; participate with reduced bandwidth requirements.
+5. [network] Deploy Gossipsub v2 and rateless set reconciliation to support the expanded validator set.
+6. [light-client] Verify consensus proofs independently on mobile or IoT-class hardware.
 
-  - ~15 client teams prototyping implementations across Rust, Zig, C, C++, Go, Java, .NET, TypeScript, Nim, Elixir
-  - Formal verification tooling (Lean 4)
-  - Cryptanalysis and protocol correctness research (Poseidon, hash-based schemes)
+## Guarantees & threat model
 
-- Research tracks
+Guarantees:
 
-  - Post-quantum signature design & aggregation
-  - Minimal zkVM architecture
-  - Formal methods & proof automation
-  - Set reconciliation & P2P efficiency
+- Protocol stability: after the upgrade, consensus enters a phase of minimal change.
+- Post-quantum resilience for the core signature layer.
+- Lower barriers to solo validation, improving validator decentralization.
+- Light-client verification of full consensus rules on minimal hardware.
+- Clear scope: limited to consensus; execution-layer scaling and privacy are handled by separate tracks.
 
-## Protocol (concise)
+Threat model:
 
-1. Introduce post-quantum multisignatures
-
-   - Hash-based multisig schemes explored (e.g., XMSS/Winternitz variants).
-
-2. Use minimal zkVMs for signature aggregation
-
-   - Off-chain aggregation verified via succinct proofs.
-   - Exact workflow under active research.
-
-3. Expand validator participation
-
-   - Lower hardware & bandwidth requirements.
-   - Reduced stake requirements to 1 ETH.
-   - Tiered validator responsibilities under exploration.
-
-4. Shorter slot times & faster finality
-
-   - Targeting ~4s slot times (as explored in roadmap).
-   - Fast-finality schemes (e.g., 3-slot variants) under evaluation; parameters TBD.
-
-5. Deploy upgraded networking
-
-   - Gossipsub v2 for throughput and DOS-resilience.
-   - Rateless set reconciliation to support large validator sets.
-
-6. Enable full light-client verification on minimal devices
-
-   - Small-footprint consensus proofs verifiable on mobile/IoT class hardware.
-
-## Guarantees (intended outcomes)
-
-- Protocol ossification, after the Lean fork, consensus enters long-term stability / minimal changes.
-- Post-quantum resilience, core signatures hardened against quantum adversaries.
-- Validator decentralization, vastly increased solo staking due to lower hardware & stake requirements.
-- Universal light clients, full consensus verification without trust assumptions.
-  DOUBT
-- Clear boundaries, lean modifies consensus _only_, execution-layer scaling & privacy handled by separate tracks.
+- Cryptanalysis of the chosen hash-based multisignature and its aggregation must hold.
+- The minimal zkVM must be sound and formally verified; a flaw compromises the compressed proofs.
+- Networking upgrades must preserve liveness under large validator counts and adversarial churn.
+- Coordination risk: if one research track fails to ship, the bundled fork is delayed.
+- Out of scope: transaction privacy, execution scaling, MEV dynamics.
 
 ## Trade-offs
 
-- Timeline risk: 4–5 year horizon with heavy reliance on open research questions
-- Single large fork: Failure at any component delays entire bundle
-- Research coupling: PQ signatures, zkVMs, and P2P upgrades must all reach production readiness
-- Consensus-only scope: Does not address L1 execution scaling or transaction privacy
-- **CROPS context (both)**: Privacy could reach `full` by incorporating post-quantum-safe ZK primitives for private validator participation and confidential state proofs. Security could reach `high` once formal verification of PQ signature aggregation and full cryptanalysis of hash-based schemes are completed. In I2I, post-quantum privacy primitives enable institutions to participate in validation without exposing staking positions to competitors. In I2U, formally verified consensus gives end users stronger guarantees that light-client proofs on minimal devices are trustworthy.
+- Multi-year horizon with heavy dependence on open research questions across cryptography, proof systems, and networking.
+- Single bundled fork means a failure in one component delays the entire upgrade.
+- Consensus-scoped: does not address execution-layer scaling or transaction privacy.
+- Coordination across many client teams adds engineering overhead but also resilience.
 
-## Example (illustrative)
+## Example
 
-A consumer-grade laptop runs a solo validator at a much lower stake threshold. A minimal zkVM compresses committee signatures off-chain into a single proof verifiable in milliseconds. The network operates at ~4-second slots with low-slot-count fast finality. A mobile phone verifies the full consensus rules independently. After rollout, Ethereum’s consensus remains stable for decades.
+A consumer-grade laptop runs a solo validator at a stake threshold around 1 ETH. A minimal zkVM compresses committee signatures off-chain into a single proof that any node verifies in milliseconds. The network operates at roughly four-second slots with a fast-finality variant under evaluation. A mobile phone verifies the full consensus rules independently.
 
 ## See also
 
 - [Lean Roadmap](https://leanroadmap.org/)
 - [Lean Specification repository](https://github.com/leanEthereum/leanSpec)
-- [Post-Quantum Threats](../domains/post-quantum.md)
