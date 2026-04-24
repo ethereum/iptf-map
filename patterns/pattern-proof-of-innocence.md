@@ -1,98 +1,124 @@
 ---
 title: "Pattern: Proof of Innocence (Association Set Proofs)"
 status: draft
-maturity: PoC
+maturity: production
+type: standard
 layer: L1
-privacy_goal: Prove funds are not associated with illicit activity without revealing transaction history
-assumptions: Shielded pool with commitment/nullifier model, Association Set Providers, zk-SNARKs
-last_reviewed: 2026-04-08
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Users need to prove compliance (clean funds) to an institution or exchange
-  - Privacy within a compliant population is acceptable
-  - Association sets can be maintained by credible, independent providers
+  - Users need to prove compliance (clean funds) to an institution or exchange.
+  - Privacy within a compliant population is acceptable.
+  - Association sets can be maintained by credible, independent providers.
 avoid-when:
-  - Full transaction transparency is required by regulation
-  - The anonymity set is too small for meaningful privacy
-  - No credible ASP exists for the relevant jurisdiction
-dependencies:
-  - zk-SNARKs (Groth16 or equivalent)
-  - Shielded pool contract (commitment/nullifier model)
-  - Association Set Providers (ASPs)
+  - Full transaction transparency is required by regulation.
+  - The anonymity set is too small for meaningful privacy.
+  - No credible association-set provider exists for the relevant jurisdiction.
+
 context: both
+context_differentiation:
+  i2i: "Between institutions, the compliance signal is an artefact of bilateral reporting obligations. Counterparties typically agree on a shared set of providers whose jurisdictional coverage matches their obligations, and disagreements are resolved through contract. Opinionated curation is tolerated as long as the selection criteria are disclosed."
+  i2u: "For end users, provider neutrality and plurality are non-negotiable. A single institution mandating one provider collapses CR to `low` because that provider can exclude a user from settlement. User-side privacy requires that the chosen set does not itself become a de facto allowlist."
+
 crops_profile:
   cr: medium
-  os: partial
-  privacy: partial
-  security: medium
+  o: partial
+  p: partial
+  s: medium
+
+crops_context:
+  cr: "L1 deposit and withdrawal remain permissionless, but set providers can effectively exclude users by refusing to include their deposits in a set. Reaches `high` when multiple competing providers are routinely accepted by relying parties. Drops to `low` when an institution mandates a single provider."
+  o: "Shielded-pool contracts and proof circuits are typically open source. Set-curation logic and blocklist-provider data pipelines are often proprietary, which limits independent reproduction of the compliance signal."
+  p: "The compliance signal is a structured disclosure; the verifier learns `clean` or `not proven clean` against a specific set but not the deposit, the transaction history, or counterparties. Set choice itself leaks coarse information about the user's jurisdictional context."
+  s: "Rides on the soundness of the zero-knowledge proof system and on the integrity of the set root commitment. Stale or adversarial set updates can cause false positives or false negatives."
+
+post_quantum:
+  risk: high
+  vector: "Groth16 and PLONK/KZG Merkle-branch proofs rely on elliptic-curve pairings broken by a CRQC. HNDL risk applies if historical proofs are later reused to infer deposit-withdrawal linkages."
+  mitigation: "Migrate proof systems to STARKs with hash-based commitments. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: []
+
+related_patterns:
+  requires: [pattern-shielding, pattern-zk-proof-systems]
+  composes_with: [pattern-compliance-monitoring, pattern-regulatory-disclosure-keys-proofs]
+  alternative_to: [pattern-zk-promises]
+  see_also: [pattern-user-controlled-viewing-keys]
+
+open_source_implementations:
+  - url: https://github.com/ameensol/privacy-pools
+    description: "Privacy Pools reference implementation with association-set proofs at withdrawal"
+    language: "Solidity, Circom"
+  - url: https://github.com/Railgun-Privacy/contract
+    description: "Railgun shielded pool with PPOI exclusion proofs at deposit and proof inheritance"
+    language: "Solidity, Circom"
 ---
 
 ## Intent
 
-Allow users to prove their funds are not associated with illicit activity, without revealing their deposit, transaction history, or counterparties. Two protocol variants exist: prove at withdrawal (Privacy Pools) or prove at deposit with proof propagation (Railgun PPOI). Both use Merkle tree membership/exclusion proofs with zk-SNARKs; they differ in timing, proof direction, and set management.
+Let users prove their funds are not associated with illicit activity without revealing the deposit, transaction history, or counterparties. Two protocol variants exist: prove at withdrawal against a curated set root, or prove at deposit with proof propagation through subsequent transfers. Both rely on Merkle tree membership or exclusion proofs with zero-knowledge proofs and differ in timing, proof direction, and set management.
 
-Introduced in [Buterin et al. (2023)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4563364) and deployed in [Privacy Pools](../vendors/privacypools.md). [Railgun](../vendors/railgun.md) implements a separate proof-of-innocence mechanism (PPOI) with a different set-management model.
+## Components
 
-## Ingredients
-
-- **Cryptography**: zk-SNARKs (Groth16) for Merkle-branch proofs; commitments + nullifiers for deposit unlinkability; proof inheritance tracking for intermediate transfers (Railgun variant)
-- **On-chain**: shielded pool contract storing deposit commitments and nullifier sets; proof verifier contract
-- **Off-chain**: set providers that define and publish curated lists. Two models:
-  - **Association Set Providers (ASPs)** (Privacy Pools): flexible, jurisdiction-specific sets. Sets can be inclusion-based ("low-risk deposits permitted"), exclusion-based ("all except sanctioned"), or hybrid.
-  - **Blocklist providers** (Railgun PPOI): Chainalysis Sanctions Oracle, Elliptic, SlowMist, ScamSniffer, PureFi. Exclusion-based lists of flagged addresses/transactions.
-- **Data availability**: commitments and proofs on-chain; full set data on IPFS or off-chain with integrity anchoring
+- Shielded pool contract that stores deposit commitments and nullifier sets.
+- Zero-knowledge proof verifier that checks Merkle-branch statements against set roots.
+- Set providers that publish curated set roots. Two models:
+  - Association-set providers publish flexible, jurisdiction-specific sets. Sets can be inclusion-based ("low-risk deposits permitted"), exclusion-based ("all except sanctioned"), or hybrid.
+  - Blocklist providers publish exclusion-based lists of flagged addresses and transactions (for example, sanctions-oracle feeds).
+- Data-availability path for the full set data (IPFS or off-chain storage with on-chain integrity anchors).
+- Proof-inheritance tracker (deposit-side variant) that carries forward the proof status of a commitment through intermediate transfers.
 
 ## Protocol
 
-Two variants share the same primitive but differ in protocol flow:
+Two variants share the same primitive but differ in flow.
 
-**Variant A: prove at withdrawal (Privacy Pools)**
+Variant A, prove at withdrawal:
 
-1. User deposits tokens into a shielded pool. The contract stores a commitment in a global Merkle tree.
-2. ASPs publish curated association sets, each defined by a Merkle root `R_A` over a subset of deposits. Different ASPs may serve different jurisdictions or risk models.
-3. On withdrawal, the user selects an ASP set and generates a zk-SNARK proof: "my deposit is in the global tree AND is a member of set `R_A`" (membership) or "my deposit is NOT in illicit set `R_B`" (exclusion).
-4. The verifier checks the proof against the on-chain pool root and the ASP's set root. The verifier does not learn which deposit, when it was made, or any linked transaction.
-5. User completes the withdrawal with a clean compliance signal.
+1. [user] Deposit tokens into a shielded pool; the contract stores a commitment in the global Merkle tree.
+2. [operator] Set providers publish curated association sets, each defined by a Merkle root over a subset of deposits.
+3. [user] Select a set and generate a zero-knowledge proof that the deposit is in the global tree and is a member of the chosen set root, or that the deposit is not in an exclusion set.
+4. [contract] Verify the proof against the pool root and the set root; the verifier learns neither which deposit nor when it was made.
+5. [user] Complete the withdrawal carrying a clean compliance signal.
 
-**Variant B: prove at deposit with proof inheritance (Railgun PPOI)**
+Variant B, prove at deposit with proof inheritance:
 
-1. User shields (deposits) tokens into the Railgun contract.
-2. A Groth16 exclusion proof is auto-generated: "these tokens are not part of any blocklist provider's dataset."
-3. A 1-hour standby period follows, during which tokens can be unshielded exclusively back to the original wallet. This gives list providers time to update their datasets.
-4. After standby, the proof status carries forward through intermediate 0zk transfers. Recipients inherit valid proof status without regenerating proofs; the PPOI node tracks which UTXOs have been checked.
-5. On unshield (withdrawal), the proof chain from initial deposit through intermediate transfers is verifiable by any external party.
+1. [user] Shield tokens into the pool contract.
+2. [prover] Auto-generate an exclusion proof that the deposited tokens are not present in any blocklist provider's dataset.
+3. [contract] Enforce a standby window during which the deposit may only be unshielded back to the original address; this gives list providers time to update.
+4. [user] Subsequent shielded transfers inherit the proof status of their inputs; the tracking service records which commitments have been checked.
+5. [user] On unshield, any external verifier can reconstruct the proof chain from initial deposit through intermediate transfers.
 
-## Guarantees
+## Guarantees & threat model
 
-- **Compliance signal without surveillance**: the verifier gets "clean" or "not proven clean," never the transaction graph.
-- **Deposit unlinkability**: the proof does not reveal which deposit belongs to the user.
-- **Voluntary disclosure**: the user chooses which set to prove against. No mandatory global allowlist.
-- **Separating equilibrium**: honest users benefit from proving (lower friction at exchanges). Dishonest users cannot produce valid proofs against well-curated sets.
+Guarantees:
+
+- Compliance signal without surveillance: the verifier learns `clean` or `not proven clean` for a specified set, never the transaction graph.
+- Deposit unlinkability: the proof does not reveal which deposit belongs to the user.
+- Voluntary disclosure: the user chooses which set to prove against, avoiding a single mandatory global allowlist.
+- Separating equilibrium: honest users benefit from proving; users excluded from credible sets cannot produce valid proofs against them.
+
+Threat model:
+
+- Set-provider integrity. A malicious or compromised provider can include or exclude specific deposits, effectively censoring users or diluting the compliance signal.
+- Soundness of the zero-knowledge proof system and its trusted setup if applicable.
+- Stale sets. Between set updates, newly flagged deposits still produce valid proofs.
+- Small anonymity sets. Even a valid proof conveys little privacy when the set is tiny.
+- Metadata such as relayer IPs, timing, and gas payer is out of scope for this pattern.
 
 ## Trade-offs
 
-- **Set provider trust**: whoever curates the sets controls who is "clean." Mitigation: multiple competing providers; user choice; on-chain governance.
-- **Set freshness**: stale sets miss recent sanctions. Railgun's 1-hour standby mitigates this at deposit time; Privacy Pools depend on ASP update cadence.
-- **Assumed guilty by default**: non-provers are treated as non-compliant, penalizing users with limited compute or connectivity.
-- **Anonymity set size**: small sets provide weak privacy even with valid proofs.
-- **Regulatory acceptance**: ZK exclusion proofs are not yet universally accepted as equivalent to traditional KYC/AML. Varies by jurisdiction.
-- **CROPS context (both)**: CR `medium` because L1 deposit/withdrawal is permissionless, but set providers can effectively exclude users. In I2U, CR drops if the institution mandates a single provider. Privacy `partial`: compliance signal is structured disclosure. OS `partial`: pool contracts are open source; set curation logic may be proprietary.
-- **Post-quantum exposure**: Groth16 relies on EC pairings broken by CRQC. Mitigation: STARK-based pool. See [Post-Quantum Threats](../domains/post-quantum.md).
+- Multiple providers introduce governance and coordination overhead for relying parties that accept proofs.
+- Non-provers may be treated as non-compliant, penalising users with limited compute or connectivity.
+- Regulatory acceptance of exclusion proofs as equivalent to traditional screening varies by jurisdiction and is still evolving.
+- Set-update cadence trades off freshness against availability: standby windows delay usable funds, while long refresh intervals widen the window in which newly flagged deposits remain provable as clean.
 
 ## Example
 
-A user withdraws from a shielded pool to an institutional exchange. The exchange requires proof of non-association with OFAC-sanctioned addresses. The user generates a ZK exclusion proof against the relevant set and submits it with the withdrawal. The exchange verifies the proof, accepts the deposit, and never learns which deposit the user made or when.
+A user withdraws from a shielded pool to an institutional exchange. The exchange requires proof of non-association with sanctioned addresses. The user generates a zero-knowledge exclusion proof against the relevant set and submits it with the withdrawal. The exchange verifies the proof, accepts the deposit, and never learns which deposit the user made or when.
 
 ## See also
 
-- [Shielded ERC-20 Transfers](pattern-shielding.md): the underlying shielded pool mechanism
-- [Compliance Monitoring](pattern-compliance-monitoring.md): institutional screening logic (this pattern provides the user-side compliance signal)
-- [zk-promises](pattern-zk-promises.md): stateful anonymous credentials with async enforcement
-- [Selective Disclosure](pattern-regulatory-disclosure-keys-proofs.md): viewing-key-based disclosure for regulators
-- [Vendor: Privacy Pools](../vendors/privacypools.md)
-- [Vendor: Railgun](../vendors/railgun.md)
-
-## See also (external)
-
 - [Privacy Pools paper (Buterin et al. 2023)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4563364)
 - [Vitalik on Privacy Pools](https://vitalik.eth.limo/general/2023/09/06/privacy.html)
-- [Privacy Pools GitHub](https://github.com/ameensol/privacy-pools)
+- [Privacy Pools](../vendors/privacypools.md)
+- [Railgun](../vendors/railgun.md)

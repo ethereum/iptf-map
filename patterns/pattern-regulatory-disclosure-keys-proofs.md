@@ -1,59 +1,102 @@
 ---
-title: "Pattern: Selective disclosure (viewing keys + ZK proofs)"
+title: "Pattern: Selective disclosure (viewing keys + zero-knowledge proofs)"
 status: ready
-maturity: pilot
+maturity: testnet
+type: standard
 layer: hybrid
-privacy_goal: Provide on-demand scoped visibility into confidential trades via threshold keys or ZK proofs
-assumptions: Threshold KMS, EAS for access logging, ZK predicate circuits
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Regulator needs targeted visibility without blanket transparency.
+  - A regulator needs targeted visibility into specific trades or accounts without blanket transparency.
+  - The workflow can require an approval step that is logged and revocable.
+  - Zero-knowledge predicates can answer most regulator questions without releasing raw data.
 avoid-when:
-  - Policy requires full public plaintext.
-dependencies:
-  - EAS
-  - Threshold-crypto/KMS
-  - ZK predicate circuits
+  - Policy requires fully public plaintext of all transactions.
+  - The organisation cannot support the operational complexity of threshold key custody and audit storage.
+
 context: both
+context_differentiation:
+  i2i: "Between institutions, regulator-initiated disclosure is a normal part of compliance. Both the subject and requester have audit obligations and legal recourse, and the approval workflow sits inside established supervisory channels."
+  i2u: "For end users, disclosure should remain user-controlled wherever possible; see `pattern-user-controlled-viewing-keys`. When disclosure is imposed on users without their consent or knowledge the pattern collapses to `cr: low` because the institution can reveal user activity unilaterally."
+
 crops_profile:
   cr: medium
-  os: partial
-  privacy: partial
-  security: medium
+  o: partial
+  p: full
+  s: medium
+
+crops_context:
+  cr: "Regulator-mandated disclosure is normal institutional operation and does not block transaction flow, so CR stays `medium`. Drops to `low` when disclosure is imposed on end users outside the institution's governance boundary. Threshold custody with independent operators can push CR toward `high` by preventing any single party from forcing a reveal."
+  o: "Openness depends on the implementation. Pool-native viewing keys and open predicate circuits are inspectable; proprietary threshold KMS deployments are not. Disclosure policy code, mandate verification logic, and revocation flows should be auditable for the pattern to remain interoperable."
+  p: "Disclosure is scoped: the regulator learns only what the mandate authorises. Zero-knowledge predicate responses leak no raw data. Viewing-key responses leak everything inside the key's scope, so key segmentation and time-boxing are important."
+  s: "Rides on threshold key custody, hardware-rooted policy engines, correct mandate parsing, and tamper-evident audit storage. Key compromise yields retroactive loss of privacy across the key's scope."
+
+post_quantum:
+  risk: high
+  vector: "Viewing keys typically derive from EC-based key exchange and are stored as long-lived secrets; HNDL risk is high since ciphertexts and proofs can be archived now and broken later. Predicate circuits built on pairing-based proof systems are also affected."
+  mitigation: "Migrate key-encapsulation to post-quantum KEMs (for example, ML-KEM) and move predicate circuits to STARK-based systems with hash commitments. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: []
+
+related_patterns:
+  composes_with: [pattern-shielding, pattern-user-controlled-viewing-keys, pattern-compliance-monitoring]
+  alternative_to: [pattern-proof-of-innocence]
+  see_also: [pattern-l2-encrypted-offchain-audit, pattern-private-pvp-stablecoins-erc7573]
+
+open_source_implementations:
+  - url: https://github.com/ethereum-attestation-service/eas-contracts
+    description: "Ethereum Attestation Service contracts, useful for logging disclosure grants"
+    language: "Solidity"
 ---
 
 ## Intent
-Provide **on-demand, scoped visibility** into confidential trades/positions via **threshold-controlled viewing keys** and/or **ZK proofs** answering regulator questions.
 
-## Ingredients
-- **Standards**: EAS for access logging
-- **Infra**: Threshold KMS, policy engine
-- **Off-chain**: Request/approval workflow; audit storage
+Provide on-demand, scoped visibility into confidential trades and positions via threshold-controlled viewing keys or zero-knowledge predicate proofs that answer specific regulator questions. The institution keeps plaintext private by default and releases only the minimum information required to satisfy a specific, logged mandate.
 
-## Protocol (concise)
-1. Regulator requests scope (account/ISIN/time).
-2. Policy engine checks mandate; emits EAS access-grant.
-3. Assemble **time-limited viewing key** or produce **zero-knowledge proof**.
-4. Deliver result; log disclosure (hash + who/when).
+## Components
 
-## Guarantees
-- Least-privilege, revocable access; full audit trail.
-- Zero-knowledge responses when raw data isn’t needed.
+- Threshold key management that holds viewing-key shares across independent operators and releases material only under policy.
+- Policy engine that checks each request against the active mandate (jurisdiction, scope, time window, requester identity) before assembling a response.
+- Predicate circuit library that can answer common regulator questions ("total volume in ISIN X on date Y"; "no trades with sanctioned parties in quarter Q") without releasing raw data.
+- Attestation log that records every access grant as a signed, hashed entry; a public registry can anchor these hashes for tamper-evidence without revealing content.
+- Approval workflow used by the institution's compliance team to review and sign off on requests before the policy engine acts.
+
+## Protocol
+
+1. [regulator] Submit a scoped request specifying account, instrument, time window, and mandate.
+2. [operator] The policy engine checks the request against the active mandate and approvals; an attestation logs the grant.
+3. [operator] Assemble the response: either a time-limited viewing key reconstituted from threshold shares, or a zero-knowledge proof generated by the predicate circuit over the relevant private state.
+4. [operator] Deliver the response to the regulator over an authenticated channel.
+5. [auditor] Verify the disclosure record against the anchored hash to confirm that the response matches the approved mandate.
+
+## Guarantees & threat model
+
+Guarantees:
+
+- Least-privilege, revocable access: viewing keys are time-boxed; predicate proofs leak no raw data.
+- Full audit trail: every grant is recorded, signed, and anchored.
+- Predicate proofs can answer common compliance questions without exposing transaction content.
+
+Threat model:
+
+- Threshold key custody integrity. A coalition of operators above the threshold can forge responses or leak keys.
+- Mandate parsing correctness. A bug in the policy engine can widen scope beyond what the mandate authorises.
+- Attestation log availability. If the log is rewritable or unobserved, disclosures can be retroactively denied.
+- Predicate circuit soundness and input binding. A misbound predicate may answer a different question than the one logged.
+- Side channels in custody infrastructure are out of scope for this pattern.
 
 ## Trade-offs
-- Operational complexity (key custody/rotation).
-- Proof authoring/UX requires discipline.
-- **CROPS context (both)**: Regulator-mandated disclosure is normal institutional operation and protects end-users (CR `medium`). In I2U, CR drops to `low` when disclosure is imposed on users without their control. OS depends on whether the viewing key implementation is open and composable (e.g. Aztec viewing keys are open) vs proprietary KMS. Security varies by implementation — audited threshold KMS could reach `high`.
+
+- Operational complexity: threshold key custody, rotation, and incident response need dedicated runbooks.
+- Predicate authoring requires discipline: circuits must mirror mandate semantics exactly, and changes need auditable version control.
+- Response latency increases with threshold reconstitution or proof generation time; batch workflows absorb this better than real-time supervisory queries.
+- Regulator tooling maturity varies: some supervisory authorities still require raw data formats, limiting applicable use cases.
 
 ## Example
-- BaFin asks for Jan-15 trades in ISIN X.
-- System issues 24-hour read token; EAS logs event; auto-revokes.
+
+A supervisory authority asks for trades on a given date in a specific instrument. The policy engine matches the request against the institution's active mandate, an approval record is logged, and a 24-hour viewing key reconstituted from threshold shares is issued. The regulator reviews the trades during the window; at expiry the key is revoked automatically, and the attestation log retains a hashed record for future audit.
 
 ## See also
-- [User-Controlled Viewing Keys](pattern-user-controlled-viewing-keys.md): user-held key custody for I2U privacy sovereignty; this pattern covers the institution-side workflow once keys are shared
-- pattern-confidential-erc20-fhe-l2-erc7573.md
-- [Low-cost L2 + Off-chain Encrypted Audit Log](pattern-l2-encrypted-offchain-audit.md)
 
-## See also (external)
-- EAS docs: https://easscan.org/docs
-- EAS contracts: https://github.com/ethereum-attestation-service/eas-contracts
+- [EAS documentation](https://easscan.org/docs)
+- [Aztec](../vendors/aztec.md)
