@@ -27,7 +27,7 @@ sub_patterns:
     crops_summary: "Medium CR, partial privacy, medium latency. Large external anonymity set; vulnerable to global passive adversaries."
   - name: "Mixnet anonymity"
     pattern: pattern-mixnet-anonymity
-    crops_summary: "Medium CR, partial privacy, very high latency. Strongest resistance to traffic correlation via cover traffic."
+    crops_summary: "Medium CR, partial privacy, very high latency. Higher resistance to traffic correlation under cover-traffic assumptions."
   - name: "TEE-assisted network anonymity"
     pattern: pattern-tee-network-anonymity
     crops_summary: "Medium CR, partial privacy, low latency. Hardware trust assumption relaxes the anonymity trilemma."

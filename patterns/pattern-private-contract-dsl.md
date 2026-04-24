@@ -1,5 +1,5 @@
 ---
-title: "Pattern: Noir Private Contracts"
+title: "Pattern: Private Contract DSL"
 status: ready
 maturity: production
 type: standard
@@ -111,6 +111,5 @@ Threat model:
 
 ## See also
 
-- [Aztec](../vendors/aztec.md)
-- [Approach: Private Bonds](../approaches/approach-private-bonds.md)
-- [Approach: Private Derivatives](../approaches/approach-private-derivatives.md)
+- [Noir language documentation](https://noir-lang.org/)
+- [Aztec protocol specification](https://docs.aztec.network/aztec/concepts)

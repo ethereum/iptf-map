@@ -116,4 +116,3 @@ These extensions do not change how the contracts decide outcomes: the asset cont
 ## See also
 
 - [ERC-7573 specification](https://ercs.ethereum.org/ERCS/erc-7573)
-- [Private Trade Settlement approach](../approaches/approach-private-trade-settlement.md)

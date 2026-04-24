@@ -16,14 +16,14 @@ context: i2i
 
 crops_profile:
   cr: none
-  o: yes
-  p: full
+  o: no
+  p: none
   s: high
 
 crops_context:
   cr: "Schema governance sits with a single standards body (ICMA). Could reach `medium` if the schema is published as a permissionless open registry with attestation-anchored contributions and no approval gate."
-  o: "Open specification, publicly documented. Implementations can reuse the schema without licensing barriers, though schema evolution is gated by the standards body."
-  p: "Schema itself contains no participant data; only field definitions. Raw bond data stays off-chain, with only hashes anchored on-chain, so the pattern does not expose confidential details."
+  o: "Specification is publicly documented but governance is centralized under ICMA; no explicit open license or forkability guarantee is established. Reaches `partial` or `yes` if the schema is published under a permissive or copyleft license with a forkable reference implementation."
+  p: "The taxonomy standardizes structure only; it is not a confidentiality primitive. Privacy outcomes depend entirely on companion patterns (selective disclosure, ZK proofs, controlled access, hash anchoring)."
   s: "Rides on the correctness of off-chain validators and the integrity of hash anchoring. Well-defined schemas reduce integration errors and make regulator reconciliation straightforward."
 
 post_quantum:

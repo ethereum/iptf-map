@@ -113,7 +113,7 @@ A bank issues a tokenized bond on Ethereum under a 2-of-3 custody policy across 
 - The policy engine checks the destination allowlist and the transaction limit, then notifies compliance for approval.
 - Compliance approves via the dashboard; the two signing nodes run the threshold-signing protocol and emit a combined signature.
 - The signed transaction is broadcast; bond tokens move to the investor address.
-- The audit log records the approval path, the quorum members that signed, and the resulting transaction hash.
+- The audit log records the approval path, the quorum members who signed, and the resulting transaction hash.
 
 ## See also
 

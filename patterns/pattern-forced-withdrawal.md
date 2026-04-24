@@ -26,7 +26,7 @@ crops_profile:
   s: high
 
 crops_context:
-  cr: "Reaches `high` only when the escape-hatch contract has meaningful upgrade delays (Stage 1 or higher, 7+ days). Instant upgrades let the operator remove the hatch, which invalidates the rating entirely. DA withholding and proving liveness are liveness constraints documented under Trade-offs; they do not change the CR score, which measures whether a single party can exclude a user at the protocol level."
+  cr: "Reaches `high` when the escape-hatch contract has meaningful upgrade delays (Stage 1 or higher, 7+ days). Instant upgrades let the operator remove the hatch, which invalidates the rating entirely. DA withholding and proving liveness are liveness constraints documented under Trade-offs; they do not change the CR score, which measures whether a single party can exclude a user at the protocol level."
   o: "Forced-withdrawal contracts are typically open-source and verifiable. Users can run their own prover and submit directly to L1. Proving-key hosting for Groth16 constructions is a soft dependency: if hosting goes offline, users may struggle to generate valid proofs."
   p: "For privacy systems, the zero-knowledge proof hides which commitment is withdrawn; no KYC disclosure or transaction history reveal is needed. The L1 withdrawal still reveals that an exit happened at a specific time for a specific amount."
   s: "Rides on the soundness of the proof system, correctness of the verifier, and honest state-root anchoring on L1. For optimistic constructions, a 7-day challenge window plus honest challengers are required. PQ exposure applies to ZK systems over BN254."

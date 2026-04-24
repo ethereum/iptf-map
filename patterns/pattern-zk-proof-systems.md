@@ -86,6 +86,6 @@ Benchmarks for Ethereum block proving workloads available at [ethproofs.org CSP 
 ## See also
 
 - [Post-Quantum Threats](../domains/post-quantum.md) — why SNARK-to-STARK migration matters
-- [Noir Private Contracts](pattern-noir-private-contracts.md) — PLONK-based ZK (PQ-vulnerable)
+- [Private Contract DSL](pattern-private-contract-dsl.md) — PLONK-based ZK (PQ-vulnerable)
 - [Shielding](pattern-shielding.md) — proof system choice affects shielded pool PQ safety
 - [Plasma Stateless Privacy](pattern-plasma-stateless-privacy.md) — hash-based ZK (PQ-safe)

@@ -59,13 +59,13 @@ Run settlement on a low-cost L2, publish commitments and hashes on-chain, and ke
 - Append-only encrypted off-chain log, replicated across regions, storing per-trade records keyed by a content address.
 - Per-trade symmetric key, wrapped to a threshold set of authorities so that disclosure requires a quorum rather than a single custodian.
 - Atomic settlement contract implementing cross-leg delivery-versus-payment over cash and asset legs.
-- Access-logging attestations emitted on chain whenever a scoped key is issued or used.
+- Access-logging attestations emitted on-chain whenever a scoped key is issued or used.
 
 ## Protocol
 
-1. [user] Negotiate and match the trade off chain; optionally encrypt the routing metadata.
-2. [operator] Write the encrypted record to the log, compute its commitment, and submit `AuditCommit` on chain.
-3. [operator] Aggregate the window's commitments into a Merkle root and anchor it on chain at the configured cadence.
+1. [user] Negotiate and match the trade off-chain; optionally encrypt the routing metadata.
+2. [operator] Write the encrypted record to the log, compute its commitment, and submit `AuditCommit` on-chain.
+3. [operator] Aggregate the window's commitments into a Merkle root and anchor it on-chain at the configured cadence.
 4. [contract] Escrow both legs and finalize atomically through the delivery-versus-payment contract.
 5. [regulator] Receive a scoped decryption key or predicate proof for a specific record; the issuance is logged through an on-chain attestation.
 6. [auditor] Replay the log against the anchored roots to confirm that no record has been rewritten after the fact.

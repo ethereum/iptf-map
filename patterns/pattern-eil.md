@@ -31,7 +31,7 @@ crops_context:
   cr: "Reaches `high` through a permissionless P2P UserOp mempool where a single honest node is sufficient to propagate intents. Drops if the mempool becomes operator-gated or if liquidity providers coordinate to ignore specific users."
   o: "Open specifications (ERC-4337, EIP-7701, RIP-7859) and open-source SDKs. Any actor can register as a liquidity provider by staking on L1, and users can bypass providers by paying gas directly."
   p: "No privacy. Token amounts, gas limits, and call targets are visible pre-execution across all involved chains. Could reach `partial` by integrating encrypted UserOps via threshold encryption where cross-L2 intents remain encrypted until ordering is finalized."
-  s: "Inherits the security of each underlying chain. Liquidity providers face L1 slashing on misbehavior, so user funds cannot be stolen, only face short-term delays. An 8-day unstake window bounds the economic risk window."
+  s: "Inherits the security of each underlying chain. Liquidity providers face L1 slashing on misbehavior, so user funds cannot be stolen; worst case is a short-term delay. An 8-day unstake window bounds the economic risk window."
 
 post_quantum:
   risk: medium

@@ -130,7 +130,7 @@ All notable changes to the IPTF Map are documented here.
 - feat(pattern): [FOCIL-EIP7805](patterns/pattern-focil-eip7805.md) ([#26](https://github.com/ethereum/iptf-map/pull/26))
 - feat(pattern): [Lean Ethereum](patterns/pattern-lean-ethereum.md) ([#26](https://github.com/ethereum/iptf-map/pull/26))
 - feat(pattern): [OIF](patterns/pattern-oif.md) - Optimized Integrity Framework ([#26](https://github.com/ethereum/iptf-map/pull/26))
-- feat(pattern): [Noir private contracts](patterns/pattern-noir-private-contracts.md) ([#21](https://github.com/ethereum/iptf-map/pull/21))
+- feat(pattern): [Private Contract DSL](patterns/pattern-private-contract-dsl.md) ([#21](https://github.com/ethereum/iptf-map/pull/21))
 - feat(vendor): [Paladin](vendors/paladin.md) ([#19](https://github.com/ethereum/iptf-map/pull/19))
 - feat(vendor): [State Labs](vendors/tx-shield.md) - Tx Shield, OpenTMP LLM, Collab-Key ([#7](https://github.com/ethereum/iptf-map/pull/7))
 - feat(vendor): [Soda Labs](vendors/soda-labs.md)

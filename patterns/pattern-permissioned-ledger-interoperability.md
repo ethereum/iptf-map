@@ -63,7 +63,7 @@ Enable atomic transactions and data exchange across distinct permissioned ledger
 
 - Permissioned ledger domains, each with its own consensus, identity set, and privacy boundary.
 - Synchronization protocol that coordinates commits across domains (two-phase or view-based atomic commit).
-- Smart contract language with explicit participant visibility controls, so contract state is replicated only to actual stakeholders.
+- Smart contract language with explicit participant visibility controls, so contract state is replicated to the relevant stakeholders.
 - Governance model for validator or participant node admission, rotation, and exit.
 - Selective disclosure mechanism for supervisors and auditors to access relevant state without full replication.
 
@@ -82,7 +82,7 @@ Enable atomic transactions and data exchange across distinct permissioned ledger
 Guarantees:
 
 - Atomicity: cross-ledger operations settle consistently or abort.
-- Counterparty privacy: only transacting parties see payload state; other domains observe only commitment envelopes.
+- Counterparty privacy: transacting parties see payload state; other domains observe commitment envelopes.
 - Regulatory audit: scoped access for supervisory entities via dedicated disclosure paths.
 
 Threat model:
