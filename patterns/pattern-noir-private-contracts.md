@@ -65,7 +65,7 @@ Give developers a privacy-focused DSL to write smart contracts that blend public
 - Circuit intermediate representation: backend-agnostic IR that the prover backend compiles into proving and verification keys.
 - Client-side prover: generates proofs for private-function executions on the user's machine (typically 8 GB RAM recommended).
 - Privacy rollup: private execution runtime, public execution VM, note-discovery infrastructure, and validity-proof pipeline to Ethereum L1.
-- Encrypted logs: note discovery mechanism; only the holders of decryption keys can read log contents.
+- Encrypted logs: note discovery mechanism readable by holders of the decryption keys.
 
 ## Protocol
 
@@ -105,7 +105,7 @@ Threat model:
 
 - A corporate treasury shields stablecoins into a private contract, receiving private notes.
 - It pays a supplier privately; the client generates a zero-knowledge proof of sufficient balance and note ownership.
-- The transaction emits an encrypted log; only the supplier can decrypt and discover the payment.
+- The transaction emits an encrypted log that the supplier decrypts to discover the payment.
 - The rollup verifies the proof, updates balances in encrypted form, and includes the transaction in a batch settled to L1. Observers see that a valid transaction occurred but not amounts or parties.
 - The supplier can then spend the received notes privately; the treasury's remaining position stays hidden.
 

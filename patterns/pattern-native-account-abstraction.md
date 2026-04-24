@@ -83,14 +83,14 @@ Threat model:
 
 ## Trade-offs
 
-- Draft status: EIP-8141 is being discussed as a potential headliner for a future fork but is not finalised. Production use is not available.
+- Draft status: EIP-8141 is being discussed as a candidate for a future fork but is not finalised. Production use is not available.
 - Migration path: wallets, dApps, indexers, and tooling must be updated. Existing EOAs need an upgrade path.
 - Validation code risk: custom validation logic introduces a new class of account-level vulnerabilities. Standardised, audited libraries mitigate this.
 - Mempool propagation: nodes need to validate frame transactions before relaying, which slightly increases propagation cost compared to legacy transactions.
 
 ## Example
 
-- A user receives funds at a stealth address. A sponsor (or the user's main account) approves payment for the stealth account's first transaction. No relayer, no paymaster, and no on-chain link between the stealth address and the funding account. The stealth account uses passkey validation initially. Later, the user rotates validation logic to ML-DSA for post-quantum safety: same address, same funds, new signature scheme.
+- A user receives funds at a stealth address. A sponsor (or the user's main account) approves payment for the stealth account's initial transaction. No relayer, no paymaster, and no on-chain link between the stealth address and the funding account. The stealth account uses passkey validation initially. Later, the user rotates validation logic to ML-DSA for post-quantum safety: same address, same funds, new signature scheme.
 
 ## See also
 

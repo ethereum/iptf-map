@@ -7,7 +7,7 @@ layer: offchain
 last_reviewed: 2026-04-22
 
 works-best-when:
-  - An institution needs regulated-grade custody for digital assets.
+  - An institution needs institutional custody under regulatory controls for digital assets.
   - Key material must never exist in one place while signing must still be quick.
   - Policy-based approvals (role, limit, allowlist) are required before signing.
 avoid-when:
@@ -117,7 +117,6 @@ A bank issues a tokenized bond on Ethereum under a 2-of-3 custody policy across 
 
 ## See also
 
-- [Fireblocks](../vendors/fireblocks.md)
 - [FROST specification](https://datatracker.ietf.org/doc/draft-irtf-cfrg-frost/)
 - [CGGMP21 paper](https://eprint.iacr.org/2021/060)
-- [Post-Quantum Threats](../domains/post-quantum.md)
+- [Fireblocks (vendor docs)](https://www.fireblocks.com/)

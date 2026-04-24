@@ -30,7 +30,7 @@ crops_profile:
 crops_context:
   cr: "Reaches `high` when the L1 anchor enforces forced exits via cryptographic proof-based withdrawals that bypass block producer liveness. Drops to `low` if the only withdrawal path depends on a single block producer's cooperation."
   o: "Reaches `yes` when the block producer software, circuit code, and client software are all published under permissive or copyleft licenses in forkable repositories."
-  p: "Transaction amounts, sender, and receiver are hidden from chain observers; only block commitments and per-block sender lists are visible on L1. Network-layer metadata (IP, timing against the block producer) remains out of scope."
+  p: "Transaction amounts, sender, and receiver are hidden from chain observers; only block commitments are visible on L1. Sender-list data stays off-chain with the block producer and included users. Network-layer metadata (IP, timing against the block producer) remains out of scope."
   s: "Rides on L1 security for deposit and exit, on the zero-knowledge proof system for transfer validity, and on the user's ability to preserve their own data. Reaches `high` with post-quantum hash-based ZK primitives and robust self-hosted Data Availability."
 
 post_quantum:
@@ -40,7 +40,7 @@ post_quantum:
 
 visibility:
   counterparty: [amounts, identities]
-  chain: [block_commitments, sender_lists]
+  chain: [block_commitments]
   regulator: [full_tx with user-provided viewing material]
   public: [block_commitments]
 
@@ -66,7 +66,7 @@ Use a stateless Plasma architecture to enable private token transfers where tran
 - L1 anchor contract: stores block commitments (Merkle roots of transaction hashes) and handles deposits, withdrawals, and forced exits.
 - Block producer: aggregates transactions, collects signatures, and posts the block commitment to L1. Stateless with respect to transaction contents.
 - Client-side prover: users generate ZK balance and transfer proofs locally (e.g., recursive FRI-based proofs).
-- User-held Data Availability: users custody their own note and transfer history. Optional trust-minimized DA layer for redundancy.
+- User-held Data Availability: users custody their own note and transfer history. Optional trust-minimized DA Layer for redundancy.
 - Forced-exit mechanism: L1 contract accepts exit proofs independently of the block producer, bypassing liveness failure.
 
 ## Protocol
@@ -83,7 +83,7 @@ Use a stateless Plasma architecture to enable private token transfers where tran
 
 Guarantees:
 
-- Transaction amounts, sender, and receiver are hidden from chain observers; only commitments and per-block sender lists are visible.
+- Transaction amounts, sender, and receiver are hidden from chain observers; only block commitments are visible on L1.
 - zero-knowledge proofs ensure no double-spend or inflation without revealing transaction details.
 - Users control their own data; no operator can freeze specific balances if forced exit is implemented.
 - Funds are secured by L1; users can always exit with a valid proof.
@@ -118,4 +118,3 @@ Threat model:
 - [Plasma original paper](https://plasma.io/)
 - [Plasma-free paper (eprint 2023/1670)](https://eprint.iacr.org/2023/1670)
 - [Intmax2 paper (eprint 2025/021)](https://eprint.iacr.org/2025/021)
-- [Post-Quantum Threats](../domains/post-quantum.md)

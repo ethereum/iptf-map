@@ -59,8 +59,8 @@ Allow institutions to select public or private execution mode on a per-transacti
 
 ## Protocol
 
-1. [operator] Configure policy rules covering counterparty whitelist, asset thresholds, and jurisdictional routing.
-2. [operator] When a trade arrives, the policy engine evaluates rules and assigns each leg to public or private execution.
+1. [operator] Publish policy rules (counterparty whitelist, asset thresholds, jurisdictional routing) to the on-chain policy contract through governed, auditable change controls.
+2. [contract] When a trade arrives, the on-chain policy contract evaluates rules and assigns each leg to public or private execution. Routing is deterministic and not subject to unilateral operator override.
 3. [user] Prepare assets in the appropriate environment. Public legs stay on the transparent chain; private legs are shielded into a private pool or bridged to a privacy L2.
 4. [contract] Execute legs in parallel or sequence. Each leg runs in its assigned environment; private legs generate zero-knowledge proofs or use FHE, public legs execute standard transfers.
 5. [contract] Coordinate cross-mode settlement via ERC-7573 outcome keys or commit-and-prove so both legs settle atomically or both fail.
@@ -97,5 +97,4 @@ A bank sells a tokenized bond (public asset leg on L1) to a counterparty for a s
 
 ## See also
 
-- [Private Bonds Approach](../approaches/approach-private-bonds.md)
 - [ERC-7573 specification](https://eips.ethereum.org/EIPS/eip-7573)

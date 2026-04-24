@@ -1,6 +1,6 @@
 ---
 title: "Pattern: Open Intent Framework (OIF)"
-status: draft
+status: ready
 maturity: production
 type: standard
 layer: hybrid

@@ -77,7 +77,7 @@ Guarantees:
 - Post-quantum resilience for the core signature layer.
 - Lower barriers to solo validation, improving validator decentralization.
 - Light-client verification of full consensus rules on minimal hardware.
-- Clear scope: consensus only; execution-layer scaling and privacy are handled by separate tracks.
+- Clear scope: limited to consensus; execution-layer scaling and privacy are handled by separate tracks.
 
 Threat model:
 
@@ -91,12 +91,12 @@ Threat model:
 
 - Multi-year horizon with heavy dependence on open research questions across cryptography, proof systems, and networking.
 - Single bundled fork means a failure in one component delays the entire upgrade.
-- Consensus-only scope: does not address execution-layer scaling or transaction privacy.
+- Consensus-scoped: does not address execution-layer scaling or transaction privacy.
 - Coordination across many client teams adds engineering overhead but also resilience.
 
 ## Example
 
-A consumer-grade laptop runs a solo validator at a stake threshold around 1 ETH. A minimal zkVM compresses committee signatures off chain into a single proof that any node verifies in milliseconds. The network operates at roughly four-second slots with a fast-finality variant under evaluation. A mobile phone verifies the full consensus rules independently.
+A consumer-grade laptop runs a solo validator at a stake threshold around 1 ETH. A minimal zkVM compresses committee signatures off-chain into a single proof that any node verifies in milliseconds. The network operates at roughly four-second slots with a fast-finality variant under evaluation. A mobile phone verifies the full consensus rules independently.
 
 ## See also
 

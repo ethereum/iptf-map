@@ -80,7 +80,7 @@ Guarantees:
 
 - Censorship resistance via a permissionless mempool where a single honest node is sufficient to propagate intents.
 - No trusted intermediaries: users execute their own calls, and disputes resolve on L1.
-- Inherits the security of each underlying chain. Providers cannot steal funds, only face slashing risk.
+- Inherits the security of each underlying chain. Providers cannot steal funds; misbehavior is addressed via slashing.
 - One signature authorizes operations across all involved chains.
 - Latency matches the slowest underlying chain.
 
@@ -94,7 +94,7 @@ Threat model:
 
 ## Trade-offs
 
-- Not suitable for contract-to-contract composability. The model is account-based only.
+- Not suitable for contract-to-contract composability. The model is account-based.
 - ERC-4337 bundler overhead persists until EIP-7701 (Native AA) adoption.
 - Dispute mechanism adds complexity compared to simple bridges; wallets must track open vouchers and their dispute windows.
 - Requires wallet-side coordination to discover providers and construct cross-chain Merkle roots before signing.

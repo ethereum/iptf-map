@@ -40,7 +40,6 @@ All notable changes to the IPTF Map are documented here.
 - feat(pattern): Private Shared State split into [co-SNARKs](patterns/pattern-private-shared-state-cosnark.md), [FHE](patterns/pattern-private-shared-state-fhe.md), [TEE](patterns/pattern-private-shared-state-tee.md) — each with distinct CROPS profile and trust model ([#104](https://github.com/ethereum/iptf-map/issues/104))
 - feat(pattern): Enhanced [Hybrid TEE + ZK Settlement](patterns/pattern-tee-zk-settlement.md) with trust framework, TEE API surface, stealth address design, anti-pattern table, and PoC learnings ([#79](https://github.com/ethereum/iptf-map/issues/79))
 - feat(pattern): [Compliance Monitoring](patterns/pattern-compliance-monitoring.md) - Transaction screening with privacy-preserving audit trails ([#73](https://github.com/ethereum/iptf-map/pull/73))
-- feat(pattern): [L2 Privacy Evaluation Framework](patterns/pattern-l2-privacy-evaluation.md) - Methodology for institutions to compare privacy L2s (PR-011)
 - feat(pattern): [Cross-chain Privacy Bridge](patterns/pattern-cross-chain-privacy-bridge.md) - Bridge assets between chains while preserving privacy
 - feat(pattern): [Stateless Plasma Privacy](patterns/pattern-plasma-stateless-privacy.md) - Client-side proving with minimal on-chain footprint (Intmax-style)
 - feat(pattern): [vOPRF Nullifiers](patterns/pattern-voprf-nullifiers.md) - Threshold vOPRF-based nullifier generation for credentials/signals ([#61](https://github.com/ethereum/iptf-map/pull/61))

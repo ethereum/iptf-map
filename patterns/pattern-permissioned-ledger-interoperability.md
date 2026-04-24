@@ -18,13 +18,13 @@ context: i2i
 
 crops_profile:
   cr: none
-  o: no
+  o: partial
   p: partial
   s: low
 
 crops_context:
   cr: "Each ledger operator controls participation, so CR is structurally `none` for non-members. Could reach `medium` if validators join permissionlessly via bonding with protocol-enforced exit rights."
-  o: "Sync protocols exist as open specifications (e.g., Canton Network) but core implementations are often proprietary or tightly coupled to a vendor stack. Reaches `yes` when the full protocol and reference implementation are published under permissive or copyleft licenses."
+  o: "Core frameworks are open-source (DAML under Apache-2.0, Besu under Apache-2.0), and sync protocols exist as open specifications (e.g., Canton Network). However, individual ledger deployments built on these frameworks are often proprietary or tightly coupled to a vendor stack, and some runtime components (Canton Network production deployments) remain commercial. Reaches `yes` when both the protocol and a production-grade reference runtime are published under permissive or copyleft licenses."
   p: "Counterparty-only visibility of transaction payloads between the two transacting domains. Cross-domain messages reveal the existence of interactions. Reaches `full` with end-to-end encryption of cross-domain messages and scoped view keys for regulators."
   s: "Rides on each domain's local consensus and on the sync protocol's commit coordination. Reaches `high` with proven Byzantine consensus liveness under partition and honest-minority thresholds on the sync coordinator."
 

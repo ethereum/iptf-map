@@ -100,4 +100,3 @@ Threat model:
 ## See also
 
 - [EIP-8182 draft](https://github.com/ethereum/EIPs/pull/11373)
-- [Post-Quantum Threats](../domains/post-quantum.md)

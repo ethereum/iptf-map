@@ -100,5 +100,5 @@ Threat model:
 
 ## See also
 
-- [Modular Privacy Stack](pattern-modular-privacy-stack.md): where network anonymity fits in the four-layer architecture.
-- [RFP: Private Reads](../rfps/rfp-private-reads.md): read-side privacy gap.
+- [Tor Project documentation](https://spec.torproject.org/)
+- [Nym mixnet documentation](https://nymtech.net/docs/)

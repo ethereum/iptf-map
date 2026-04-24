@@ -108,5 +108,5 @@ Threat model:
 
 ## See also
 
-- [Network-Level Anonymity](pattern-network-anonymity.md): meta-pattern and sub-pattern comparison.
 - [Tor Project Arti](https://gitlab.torproject.org/tpo/core/arti)
+- [Tor specification](https://spec.torproject.org/)

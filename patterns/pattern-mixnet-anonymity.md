@@ -55,7 +55,7 @@ open_source_implementations:
 
 ## Intent
 
-Hide who is sending a transaction or querying state by routing messages through a network of mix nodes that batch, delay, reorder, and pad traffic with cover messages. Mixnets provide stronger sender anonymity than onion routing against global passive adversaries because timing correlation is defeated by design, at the cost of higher latency and bandwidth overhead.
+Hide who is sending a transaction or querying state by routing messages through a network of mix nodes that batch, delay, reorder, and pad traffic with cover messages. Mixnets can provide stronger sender anonymity than onion routing against global passive adversaries by reducing timing-correlation leakage, at the cost of higher latency and bandwidth overhead.
 
 ## Components
 

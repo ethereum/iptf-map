@@ -51,12 +51,12 @@ open_source_implementations:
 
 ## Intent
 
-Run settlement on a low-cost L2, publish only commitments and hashes on chain, and keep the full transaction facts in an append-only encrypted log off chain. Integrity is anchored by periodic Merkle roots submitted on chain. Regulators and auditors receive scoped decryption keys or predicate proofs. Delivery-versus-payment is expressed through an atomic settlement standard.
+Run settlement on a low-cost L2, publish commitments and hashes on-chain, and keep the full transaction facts in an append-only encrypted off-chain log. Integrity is anchored by periodic Merkle roots submitted on-chain. Regulators and auditors receive scoped decryption keys or predicate proofs. Delivery-versus-payment is expressed through an atomic settlement standard.
 
 ## Components
 
 - On-chain audit contract that accepts `AuditCommit(bytes32)` entries and records hourly Merkle roots over the off-chain log.
-- Append-only encrypted log, replicated across regions, storing per-trade records keyed by a content address.
+- Append-only encrypted off-chain log, replicated across regions, storing per-trade records keyed by a content address.
 - Per-trade symmetric key, wrapped to a threshold set of authorities so that disclosure requires a quorum rather than a single custodian.
 - Atomic settlement contract implementing cross-leg delivery-versus-payment over cash and asset legs.
 - Access-logging attestations emitted on chain whenever a scoped key is issued or used.
@@ -74,7 +74,7 @@ Run settlement on a low-cost L2, publish only commitments and hashes on chain, a
 
 Guarantees:
 
-- Public observers see only commitments and hashes; amounts, identities, and positions remain off chain.
+- Public observers see commitments and hashes; amounts, identities, and positions remain off-chain.
 - Merkle anchoring makes the log tamper-evident: any silent rewrite breaks the on-chain root.
 - Atomic delivery-versus-payment prevents one-sided settlement failure.
 - Disclosure is scoped and logged, so access is auditable after the fact.
@@ -95,7 +95,7 @@ Threat model:
 
 ## Example
 
-A dealer sells a bond to an asset manager on the L2. The chain records only the commitment and the hourly Merkle root; full trade details sit encrypted in the log. Delivery-versus-payment finalizes atomically on chain. The national supervisor later receives a 24-hour scoped key for that record, and the issuance is attested on chain so the disclosure is itself auditable.
+A dealer sells a bond to an asset manager on the L2. The chain records the commitment and the hourly Merkle root; full trade details sit encrypted in the log. Delivery-versus-payment finalizes atomically on-chain. The national supervisor later receives a 24-hour scoped key for that record, and the issuance is attested on-chain so the disclosure is itself auditable.
 
 ## See also
 

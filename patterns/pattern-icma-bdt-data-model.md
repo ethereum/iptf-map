@@ -62,9 +62,9 @@ Use the ICMA Bond Data Taxonomy as the canonical schema for bond terms and lifec
 
 Guarantees:
 
-- Interoperable, regulator-friendly bond data across platforms.
-- Easier proofs and attestations over common fields without bespoke per-issuer schemas.
-- Clean baseline for composing with hash-anchored registries and zero-knowledge disclosure patterns.
+- Interoperable bond data representation across platforms and supervisory workflows.
+- Common fields that reduce per-issuer schema translation for proofs and attestations.
+- Baseline compatibility with hash-anchored registries and zero-knowledge disclosure patterns.
 
 Threat model:
 

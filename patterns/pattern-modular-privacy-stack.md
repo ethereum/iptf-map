@@ -41,7 +41,7 @@ standards: [ERC-7573, ERC-3643, EIP-4844, EAS]
 
 related_patterns:
   composes_with: [pattern-privacy-l2s, pattern-commit-and-prove, pattern-dvp-erc7573, pattern-regulatory-disclosure-keys-proofs, pattern-tee-based-privacy, pattern-l2-encrypted-offchain-audit]
-  see_also: [pattern-shielding, pattern-l2-privacy-evaluation]
+  see_also: [pattern-shielding]
 
 sub_patterns:
   - name: "Data layer"
@@ -55,7 +55,7 @@ sub_patterns:
     crops_summary: "Hardware trust; mitigates prover cost but introduces vendor attestation dependency"
   - name: "Settlement layer"
     pattern: pattern-dvp-erc7573
-    crops_summary: "Atomic cross-chain settlement anchored to L1 finality"
+    crops_summary: "Atomic DvP via outcome-key commitments and oracle-driven decryption; assumes non-colluding trade-setup oracle"
   - name: "Disclosure layer"
     pattern: pattern-regulatory-disclosure-keys-proofs
     crops_summary: "View keys, ZK proofs, and attestations for scoped audit access"
