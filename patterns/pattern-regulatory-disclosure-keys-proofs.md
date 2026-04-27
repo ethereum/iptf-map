@@ -5,7 +5,7 @@ maturity: pilot
 layer: hybrid
 privacy_goal: Provide on-demand scoped visibility into confidential trades via threshold keys or ZK proofs
 assumptions: Threshold KMS, EAS for access logging, ZK predicate circuits
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-27
 works-best-when:
   - Regulator needs targeted visibility without blanket transparency.
 avoid-when:
