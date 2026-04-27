@@ -5,7 +5,7 @@ maturity: PoC
 layer: hybrid
 privacy_goal: Confidential ERC-20 transfers hiding balances and metadata with selective disclosure
 assumptions: Shielded pool contracts or privacy L2, wallet support for shielded keys
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-27
 works-best-when:
   - You need confidential transfer amounts/counterparties.
   - Selective disclosure/auditing is required.

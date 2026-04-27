@@ -5,7 +5,7 @@ maturity: PoC
 layer: L2
 privacy_goal: Execute financial logic with private state enabling confidential value and unlinkable identity
 assumptions: Privacy-native rollup (ZK or FHE), L1 bridge contracts, viewing key infrastructure
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-27
 works-best-when:
   - Strong privacy is required beyond value-hiding: identity unlinkability, programmable access.
   - Institutions want to embed compliance hooks (view keys, audit proofs).

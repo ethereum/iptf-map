@@ -5,7 +5,7 @@ maturity: PoC
 layer: L2
 privacy_goal: Private transfers with client-side proving and minimal on-chain footprint
 assumptions: Client-side proof generation, block producer availability, user data custody
-last_reviewed: 2026-01-27
+last_reviewed: 2026-04-27
 works-best-when:
   - High transaction volume with privacy requirements
   - Users can manage their own transaction data (institutional clients with infrastructure)

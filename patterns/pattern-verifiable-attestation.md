@@ -5,7 +5,7 @@ maturity: production
 layer: hybrid
 privacy_goal: Verify claims about identities/credentials on-chain with minimal data disclosure
 assumptions: Trusted issuers (banks, KYC providers), EAS/ONCHAINID infrastructure, wallet support
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-27
 works-best-when:
   - Some logic has to be embedded onchain and relies on off-chain attested data
   - A user wants to prove a statement about his identity (membership, KYC,...)

@@ -5,7 +5,7 @@ maturity: experimental
 layer: hybrid
 privacy_goal: Private ERC-20 settlements linked to ISO 20022 instructions with regulator-only visibility
 assumptions: ISO 20022 schema, shielded pool or confidential token infrastructure, threshold KMS
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-27
 works-best-when:
   - Institutions already exchange ISO 20022 messages (pacs.008/009/002, camt.\*).
   - On-chain settlement (ERC-20, tokenized deposits) must link to SWIFT/ISO workflows.
@@ -30,8 +30,6 @@ crops_profile:
 Coordinate **private ERC-20 settlements** between banks using ISO 20022 as the instruction layer.  
 ISO messages are linked to the cash leg, while the **cash leg itself settles privately** via a shielded mechanism (privacy L2 / shielded pool / confidential token) with regulator-only visibility.
 
----
-
 ## Ingredients
 
 - **Standards**:
@@ -45,8 +43,6 @@ ISO messages are linked to the cash leg, while the **cash leg itself settles pri
 - **Off-chain**
   - ISO parsing/normalization (XML → canonical JSON)
   - KMS for bank/regulator keys; selective-disclosure service
-
----
 
 ## Protocol (private cash-leg variants)
 
@@ -78,16 +74,12 @@ This leverages ISO 20022's **"can ignore" semantics**: intermediaries that do no
 
 To formalize, institutions can submit a **Change Request (CR)** to the relevant SEG to register an Extension `MessageDefinition` carrying proof data (commitments, ZK proofs, verification keys) as first-class ISO 20022 components.
 
----
-
 ## Guarantees
 
 - **Privacy:** cash-leg amounts and counterparties are hidden on-chain (B1/B2/B3).
 - **Integrity & linkage:** settlement references `C_msg` so the cash leg is cryptographically linked to the ISO instruction.
 - **Auditability:** regulator can decrypt selected fields or use view keys to audit shielded transfers.
 - **Interoperability:** ISO schema provides consistent mapping across banks/corridors.
-
----
 
 ## Trade-offs
 
@@ -97,8 +89,6 @@ To formalize, institutions can submit a **Change Request (CR)** to the relevant 
 - **Incremental rollout**: `<SplmtryData>` "can ignore" semantics mean non-participating intermediaries pass messages through unchanged, but they also cannot verify proofs in transit.
 - **CROPS context (I2I)**: CR improves to `high` if settlement uses single-chain shielded pool without relayer. OS depends on privacy rail: Railgun (open) vs proprietary FHE coprocessor. SWIFT infrastructure is licensed/proprietary; ISO schema is open.
 
----
-
 ## Example
 
 - Bank A issues `pacs.008` “pay 10m EURC from DEUTDEFFXXX → BNPAFRPPXXX”.
@@ -107,8 +97,6 @@ To formalize, institutions can submit a **Change Request (CR)** to the relevant 
   **or B2:** Call confidential-token transfer (encrypted state), referencing `C_msg`.  
   **or B3:** Bridge to a shared privacy L2, do one-tx shielded DvP, bridge out.
 - Regulator later audits via view keys / selective disclosure.
-
----
 
 ## See also
 
