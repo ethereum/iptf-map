@@ -2,7 +2,7 @@
 
 **Use Case Links:** [Private Stablecoins](../use-cases/private-stablecoins.md), [Resilient Disbursement Rails](../use-cases/resilient-disbursement-rails.md)
 
-**High-level goal:** Enable confidential payment transfers using stablecoins and other digital assets while hiding amounts, counterparties, and transaction patterns, with selective regulatory disclosure capabilities. Extends to humanitarian disbursement to recipients in adversarial jurisdictions, where every party in the path between funder and recipient may be breached, compelled, or inherited by a hostile successor.
+**High-level goal:** Enable confidential payment transfers using stablecoins and other digital assets while hiding amounts, counterparties, and transaction patterns, with selective regulatory disclosure capabilities. Extends to humanitarian disbursement under adversarial-jurisdiction threat models.
 
 ## Overview
 
@@ -14,9 +14,9 @@ Private payment systems address five interconnected challenges:
 2. **Security vs Cost Trade-offs**: L1 provides maximum security but higher costs, while L2s offer efficiency but different trust assumptions
 3. **Regulatory Compliance**: Financial institutions require auditability and selective disclosure capabilities across varying jurisdictions
 4. **User Onboarding**: Institutions need practical paths to onboard their users (corporates, funds, counterparties) onto private stablecoin infrastructure while integrating with existing fiat rails and compliance workflows
-5. **Resilience under adversarial jurisdiction**: Off-ramp unlinkability and forward secrecy under a threat model that includes compelled-partner data transfer, successor-regime database inheritance, device seizure, and account-level coercion
+5. **Resilience under adversarial jurisdiction**: Off-ramp unlinkability and forward secrecy when intermediaries may be breached, compelled, or inherited by a hostile successor
 
-The first four assume cooperative counterparties: confidentiality must coexist with compliance, efficiency, and onboarding paths. The fifth collapses that assumption: when the implementing partner, identity-layer operator, custodian, or exchange is the adversary's pivot, the architecture has to minimize what each party holds rather than rely on key-management hygiene.
+The first four assume cooperative counterparties; the fifth does not. When intermediaries become the adversary's pivot, the architecture minimizes what each party holds rather than relying on key-management hygiene.
 
 ### Key Constraints
 
@@ -38,9 +38,9 @@ The first four assume cooperative counterparties: confidentiality must coexist w
 
 ### TLDR for Different Personas
 
-- **Business:** Execute private treasury operations with maximum security while maintaining regulatory compliance. For humanitarian programs, deliver disbursements that survive partner compromise, regime succession, and recipient device seizure.
-- **Technical:** Implement privacy-preserving payment infrastructure using L1 shielding or privacy L2s with selective disclosure. For adversarial-jurisdiction recipients, compose smartcard-bound forward-secure signing, recipient-derived destinations, mesh delivery, and relay-mediated proving over a shielded pool.
-- **Legal:** Maintain regulatory compliance through controlled access mechanisms and audit trails while protecting commercial confidentiality. For humanitarian disbursement, the protocol architecturally limits the data each party holds, so compelled disclosure cannot reveal state the party never had.
+- **Business:** Execute private treasury operations with regulatory compliance. Humanitarian programs survive partner compromise and recipient device seizure.
+- **Technical:** Privacy-preserving payment infrastructure (L1 shielding or privacy L2s with selective disclosure). For adversarial jurisdictions: forward-secure signing, recipient-derived destinations, mesh delivery, and relay-mediated proving over a shielded pool.
+- **Legal:** Regulatory compliance through controlled access mechanisms while protecting commercial confidentiality. For humanitarian disbursement, the protocol minimizes data each party holds, so compelled disclosure cannot reveal state the party never had.
 
 ## Architecture and Design Choices
 
@@ -142,17 +142,17 @@ The recommended architecture for institutional treasury and payment operations: 
 **Supporting Patterns:** [Shielding](../patterns/pattern-shielding.md), [Private MTP Auth](../patterns/pattern-private-mtp-auth.md), [Network Anonymity](../patterns/pattern-network-anonymity.md), [Proof of Innocence](../patterns/pattern-proof-of-innocence.md), [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md)
 **Identity Layer Dependency:** [Approach: Private Identity, Section F](approach-private-identity.md#f-issuer-independent-enrollment-via-distributed-oprf) (`IResilientIdentity` interface)
 
-Adversarial-jurisdiction model: a humanitarian funder disburses to recipients facing a threat surface where every party in the path (implementing partner, identity-layer operator, relay, custodian, exchange) will eventually be breached, compelled, or inherited by a hostile successor. The recipient's operating envelope is a tamper-resistant smartcard with no client-side ZK proving capability, intermittent or absent internet, and a high probability of device loss or seizure. Off-ramp unlinkability is the primary cryptographic requirement.
+Adversarial-jurisdiction model: a humanitarian funder disburses to recipients whose envelope is a tamper-resistant smartcard with no client-side ZK, intermittent internet, and high seizure probability; every party in the path may be breached, compelled, or inherited by a hostile successor. Off-ramp unlinkability is the primary cryptographic requirement.
 
-[Forward-secure signing](../patterns/pattern-forward-secure-signatures.md) puts a SHA-256 hash chain on the smartcard so per-epoch signing keys cannot be recovered from a seized card after the epoch closes. [Recipient-derived receive addresses](../patterns/pattern-recipient-derived-receive-addresses.md) push destination derivation onto the card itself, dropping the published view-key step that EIP-5564 stealth requires. [Relay-mediated proving](../patterns/pattern-relay-mediated-proving.md) lets a relay generate the cohort-membership SNARK on the recipient's behalf, with a submitter-bound public input that prevents proof-stealing front-running. [Mesh store-and-forward submission](../patterns/pattern-mesh-store-forward-submission.md) carries encrypted vouchers from offline companion devices to relays without persistent IP transport.
+The composition: forward-secure signing on the smartcard so per-epoch keys cannot be recovered from a seized card; on-card recipient-derived destinations (no published view-key step); relay-mediated proving with submitter-bound public input that defeats proof-stealing front-running; mesh store-and-forward from offline companion devices to relays.
 
-Settlement is a thin orchestration over [shielded pools](../patterns/pattern-shielding.md): a funder publishes a round atomically (pull `perRecipientAmount × cohortSize` ERC-20, shield, emit a multisig-signed header), and the claim contract unshields per-recipient under a single-use nullifier. The cohort attestation is built per [Private MTP Auth](../patterns/pattern-private-mtp-auth.md) with ECDSA-pubkey leaves; the smartcard signs ECDSA only, while the cohort tree's Poseidon hashing is performed in-circuit by the relay. Relay submissions go through Tor or Nym ([Network Anonymity](../patterns/pattern-network-anonymity.md)) with rotating relay submission EOAs funded via shielded unshield to avoid long-lived funding trails.
+Settlement orchestrates over shielded pools: the funder atomically shields the round total under a multisig-signed header; the claim contract unshields per-recipient under a single-use nullifier. Cohort attestation uses ECDSA-pubkey leaves so the smartcard signs ECDSA only; in-circuit Poseidon hashing happens at the relay. Relay submissions go through Tor or Nym with rotating EOAs funded via shielded unshield.
 
-**Trust separations.** The `IResilientIdentity` operator and the implementing partner running field distribution must be distinct legal entities, jurisdictions, and personnel. Co-located deployments collapse the threat-model coverage to rhetoric. The relay set has minimum size and jurisdictional-diversity floors (pilot N≥8 across ≥2 operators / ≥2 jurisdictions; production N≥16 across ≥4 operators / ≥3 jurisdictions) so within-epoch per-relay linkability is bounded by recipient-side fan-out.
+**Trust separations.** `IResilientIdentity` operator and implementing partner must be distinct legal entities, jurisdictions, and personnel; co-located deployments collapse coverage. Relay-set floors: pilot N≥8 / ≥2 operators / ≥2 jurisdictions; production N≥16 / ≥4 operators / ≥3 jurisdictions.
 
-**When to use:** Disbursement programs in jurisdictions where the protocol's threat model (compelled-partner data transfer, successor-regime database inheritance, off-ramp KYC pivot) is documented. Programs at ICRC / UN agency / NGO scale.
-**Deployment:** Spec draft (April 2026); component dependencies are production (Railgun PPoI, Tor, Briar, Meshtastic, EAL4+ AVA_VAN.5 secure elements with ECDSA-secp256k1, Noir + UltraHonk) or research-grade (smartcard applet with forward-secure hash chain + transactional erase, mesh-to-Ethereum relay software, ECDSA-in-SNARK on-chain verifier at humanitarian volume). PoC: forthcoming.
-**Limitations:** Relay economic recovery model unresolved; long-lived per-card secret exposes past + future destinations on card seizure (forward secrecy is on the per-epoch hash chain, not the card secret); on-card destination derivation has no view-key audit channel; within-epoch per-relay linkability bounded but not cryptographically eliminated.
+**When to use:** Programs where compelled-partner transfer, successor-regime inheritance, or off-ramp KYC pivots are documented threats.
+**Deployment:** PoC forthcoming. Production dependencies: Tor, Briar, Meshtastic, EAL4+ secure elements, Noir + UltraHonk. Research-grade: forward-secure smartcard applet, mesh-to-Ethereum relay software, ECDSA-in-SNARK verifier.
+**Limitations:** Relay economic recovery model unresolved; long-lived per-card secret exposes past and future destinations on card seizure; on-card destination derivation has no view-key audit channel; within-epoch per-relay linkability bounded but not cryptographically eliminated.
 
 ---
 
@@ -206,10 +206,9 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 
 **Adversarial-Jurisdiction (Section G):**
 
-- **Mesh transport:** [Briar](https://briarproject.org/) (mesh over Bluetooth LE and Tor), [Meshtastic](https://meshtastic.org/) (LoRa mesh)
-- **Smartcards:** Keycard-class EAL4+ AVA_VAN.5 secure elements (IDEMIA, Infineon, NXP, G+D product lines) with ECDSA-secp256k1 + HMAC-SHA256
-- **Relay proving stack:** [Noir](https://noir-lang.org/) + [Barretenberg UltraHonk](https://github.com/AztecProtocol/barretenberg) for ECDSA-in-SNARK with on-chain Solidity verifier
-- **Anonymous transport:** [Tor](https://www.torproject.org/) (production), [Nym](https://nymtech.net/) (Ethereum wallet integration immature as of April 2026)
+- **Transport:** [Briar](https://briarproject.org/) (Bluetooth LE + Tor), [Meshtastic](https://meshtastic.org/) (LoRa), [Tor](https://www.torproject.org/), [Nym](https://nymtech.net/)
+- **Smartcards:** Keycard-class EAL4+ AVA_VAN.5 secure elements (IDEMIA, Infineon, NXP, G+D)
+- **Relay proving:** [Noir](https://noir-lang.org/) + [Barretenberg UltraHonk](https://github.com/AztecProtocol/barretenberg) for ECDSA-in-SNARK
 
 ### Implementation Strategy
 
@@ -234,10 +233,8 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 
 **Phase 4: Adversarial-Jurisdiction Disbursement**
 
-- Smartcard applet with forward-secure hash chain and transactional secure-erase (per-epoch and per-re-enrollment boundaries)
-- Mesh-to-Ethereum relay software with submitter-bound proof generation, voucher-decryption-key rotation, and submission-EOA rotation
-- Round-factory contract performing atomic shield + funder-multisig-signed header
-- Deployment-gate audits (claim contract, ECDSA-in-SNARK circuit, Solidity verifier, smartcard applet); attestation of organizational separation between identity-layer operator and field-distribution partner; relay-set roster meeting size and jurisdictional-diversity floors
+- Smartcard applet (forward-secure hash chain, transactional erase), mesh-to-Ethereum relay software with submitter-bound proof generation, and round-factory contract performing atomic shield
+- Deployment-gate audits across applet, circuit, verifier, and claim contract; attestation of organizational separation between identity-layer operator and field-distribution partner; relay-set roster meeting size and jurisdictional-diversity floors
 
 ## More Details
 
@@ -255,12 +252,6 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 - **FHE Approach:** More flexible computation, higher costs, emerging technology
 - **Recommendation:** ZK for basic payments, FHE for complex payment logic
 
-**Shielding vs Native Privacy:**
-
-- **Shielding:** Works with existing stablecoins, established patterns
-- **Native Privacy:** Better performance, requires new stablecoin deployments
-- **Hybrid:** Use both based on operational needs
-
 **Operator Complexity:**
 
 - **Shielded Pool:** No protocol-level operator needed; users interact directly with L1 contracts. Private transactions depend on a first/third-party gas relayer to avoid linking the sender's funded address
@@ -270,14 +261,14 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 
 **Institutional Treasury vs. Adversarial-Jurisdiction Disbursement:**
 
-| Dimension | Institutional Treasury (A-F) | Adversarial-Jurisdiction Disbursement (G) |
+| Dimension | Institutional Treasury (A-F) | Adversarial-Jurisdiction (G) |
 | --- | --- | --- |
-| Counterparty assumption | Cooperative; legally identifiable | Adversarial; every party in the path eventually compelled or breached |
-| Recipient envelope | Modern wallet, HSM, or cloud KMS | EAL4+ AVA_VAN.5 smartcard, no internet, no client-side ZK |
-| Transport | IP, optionally Tor/Nym for I2U | Mesh / store-and-forward + Tor or Nym at the relay |
+| Counterparty | Cooperative | Adversarial; every party eventually compelled or breached |
+| Recipient envelope | Modern wallet / HSM / KMS | EAL4+ smartcard, no internet, no client-side ZK |
+| Transport | IP, optionally Tor/Nym | Mesh / store-and-forward + Tor or Nym at relay |
 | Proof generation | Client-side | Relay-mediated, submitter-bound |
-| Off-ramp posture | KYC'd venue acceptable | Off-ramp unlinkability is the primary cryptographic requirement |
-| Regulatory disclosure | Selective, viewing-key based | Architectural minimization at funder layer; no central beneficiary list |
+| Off-ramp | KYC'd venue acceptable | Unlinkability is the primary requirement |
+| Regulatory disclosure | Selective, viewing-key based | Architectural minimization at funder layer |
 
 ### Open Questions
 
@@ -301,15 +292,15 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 
 **Section G, Adversarial-Jurisdiction:**
 
-8. **Relay economic recovery model:** Spec declares this out of scope. Each candidate (commission encoded in round header, L2 settlement, funder reimbursement) has distinct privacy consequences; without a follow-on document the protocol is not production-shippable.
+8. **Relay economic recovery:** Spec out of scope. Each candidate (commission, L2 settlement, funder reimbursement) has distinct privacy consequences.
 
-9. **On-card audit-friendly view-key extension:** Recipient-derived destinations have no view-key split. Can a view-only credential be added without re-introducing an interactive sender step?
+9. **Audit-friendly view-key extension:** Recipient-derived destinations have no view-key split; can a view-only credential be added without an interactive sender step?
 
-10. **Smartcard supply-chain attestation:** Reproducible builds, multi-party signing of applet-loading keys, perso-bureau personnel vetting. What attestation suffices for donor-policy CC composite evaluation?
+10. **Smartcard supply-chain attestation:** Reproducible builds, multi-party applet-key signing, perso-bureau vetting; what satisfies donor-policy CC composite evaluation?
 
-11. **Cross-cohort metadata leakage:** Funder identity, cohort-size evolution, and round cadence fingerprint deployments. How aggressively should funders rotate on-chain identities or pool programs?
+11. **Cross-cohort metadata leakage:** Funder identity, cohort-size evolution, and round cadence fingerprint deployments; how aggressively should funders rotate identities or pool programs?
 
-12. **Forced-withdrawal interaction with stealth destinations:** During an L1 escape hatch (when relays are unavailable), can the recipient still hit an unlinkable destination, or does forced exit collapse to a publicly visible destination? See [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md).
+12. **Forced-withdrawal interaction:** During an L1 escape hatch, can the recipient still hit an unlinkable destination, or does forced exit collapse to a public address? See [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md).
 
 ### Alternative Approaches Considered
 
@@ -330,12 +321,10 @@ Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO m
 
 ### Adversarial-Jurisdiction Disbursement
 
-- Humanitarian funder publishes a disbursement round for a cohort of recipients in a target jurisdiction; the round-factory atomically shields the round total and emits the funder-multisig-signed header
-- Recipient receives the header out-of-band (telco SMS, printed QR at a kiosk, mesh propagation) and verifies the funder signature on a companion device; the smartcard signs an offline voucher under its per-epoch ECDSA key, binding the round, the on-card-derived destination, the amount, and the claim contract address
-- Companion device computes the forward-secure nullifier off-card, encrypts the voucher to a relay's current decryption key, and submits via Briar or Meshtastic; the recipient fans out to k < N relays
-- A relay generates the cohort-membership SNARK with submitter binding, submits through Tor; the claim contract verifies and unshields to the destination
-- Recipient redeems at a local agent network; the chain trail does not pivot to the recipient's identity through any party in the path
-- Threat coverage: a compelled implementing partner cannot disclose a beneficiary list (none exists at the funder layer); a successor regime cannot retroactively identify past claimants (forward-secure epoch keys); off-ramp KYC pivot is bounded by the shielded pool's association-set k-anonymity and recipient relay diversity
+- Humanitarian funder atomically shields a round total and emits a multisig-signed header; recipients receive it out-of-band (SMS, printed QR, mesh)
+- Recipient's smartcard signs an offline voucher under its per-epoch ECDSA key bound to the round and on-card destination; the companion device encrypts to a relay's current key and submits via Briar or Meshtastic, fanning out to k < N relays
+- A relay generates the cohort-membership SNARK with submitter binding and submits through Tor; the claim contract verifies and unshields to the destination, where the recipient redeems via a local agent network
+- Threat coverage: no central beneficiary list at the funder layer (compelled-partner pivot cuts off); forward-secure epoch keys block retroactive successor-regime identification; off-ramp KYC pivot is bounded by the shielded pool's association-set k-anonymity and recipient relay diversity
 
 ## Links and Notes
 
