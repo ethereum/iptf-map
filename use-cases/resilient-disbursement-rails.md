@@ -6,20 +6,18 @@ secondary_domain: Identity
 
 ## 1) Use Case
 
-Deliver private humanitarian disbursements to recipients in adversarial jurisdictions, with off-ramp unlinkability as the primary cryptographic requirement. Recipients hold tamper-resistant smartcards with no client-side ZK proving capability, intermittent or absent internet connectivity, and a high probability of device loss or seizure. Every party in the path between funder and recipient (implementing partner, identity-layer operator, relay, custodian, exchange) is assumed to eventually be breached, compelled, or inherited by a hostile successor.
+Deliver private humanitarian disbursements to recipients in adversarial jurisdictions, with off-ramp unlinkability as the primary cryptographic requirement. Off-ramp unlinkability matters because every documented financial-surveillance prosecution in the public record pivoted on a KYC'd exchange account, a merchant identifier visible to a domestic bank, or a subpoenaed exchange record; chain analytics on its own has not deanonymized a specific recipient. The cash-out point is therefore the load-bearing privacy boundary in the field, not the on-chain transfer. Recipients hold tamper-resistant smartcards with no client-side ZK proving capability, intermittent or absent internet connectivity, and a high probability of device loss or seizure. Every party in the path between funder and recipient (implementing partner, identity-layer operator, relay, custodian, exchange) is assumed to eventually be breached, compelled, or inherited by a hostile successor.
 
 ## 2) Additional Business Context
 
-Cash and Voucher Assistance (CVA) is a standard humanitarian modality. Major donors and implementers including ICRC, UN agencies, and the [CALP Network](https://www.calpnetwork.org/) ship CVA at scale; the [Sphere Handbook](https://spherestandards.org/) sets minimum standards across cash, voucher, and in-kind modalities; the [ICRC Handbook on Data Protection in Humanitarian Action (2nd ed, 2020)](https://www.icrc.org/en/data-protection-humanitarian-action-handbook) is the authoritative guide on data protection in humanitarian operations.
-
-The threat model is grounded in the 2013 to 2026 public record: eleven distinct adversary capabilities have been used against humanitarian recipients, refugees, dissidents, and civil-society actors (full incident catalog in Notes And Links). The identification pivot in every documented prosecution that used financial surveillance was a KYC'd exchange account, a merchant identifier visible to a domestic bank, or a subpoena'd exchange record; no public prosecution pivoted on pure on-chain clustering to identify a specific person.
+Cash and Voucher Assistance (CVA) is the humanitarian sector's term for delivering aid as money or vouchers instead of physical goods. Major donors and implementers including ICRC, UN agencies, and the [CALP Network](https://www.calpnetwork.org/) ship CVA at scale; the [Sphere Handbook](https://spherestandards.org/) sets minimum standards across cash, voucher, and in-kind aid; the [ICRC Handbook on Data Protection in Humanitarian Action (2nd ed, 2020)](https://www.icrc.org/en/data-protection-humanitarian-action-handbook) is the authoritative guide on data protection in humanitarian operations.
 
 **Related work and deployments:**
 
 - **Voucher and CVA programs:** WFP SCOPE (Yemen), UNHCR cash assistance, ICRC cash transfer programming
-- **Privacy infrastructure already at production:** [Railgun](https://railgun.org/) with [Private Proofs of Innocence](https://www.railgun.org/) on Ethereum mainnet, the [Tor](https://www.torproject.org/) network
+- **Privacy infrastructure already at production:** [Railgun](https://railgun.org/) with [Private Proofs of Innocence](https://www.railgun.org/) and [Privacy Pools](https://privacypools.com/) on Ethereum mainnet, the [Tor](https://www.torproject.org/) network
 - **Recipient-device prior art:** [Keycard](https://keycard.tech/) (open-source secure-element wallet), shipping EAL4+ AVA_VAN.5 secure elements (IDEMIA, Infineon, NXP, G+D)
-- **Sibling protocol:** [Resilient Identity Continuity](resilient-identity-continuity.md) provides the `IResilientIdentity` enrollment layer that this use case depends on
+- **Sibling protocol:** [Resilient Identity Continuity](resilient-identity-continuity.md) provides the `IResilientIdentity` enrollment interface this use case depends on. Minimum requirements: per-epoch cohort root publication, organizational separation from the implementing partner, forward-secure per-epoch keys, issuer-backed re-enrollment with retired-identity exclusion, and substitutability so any conforming implementation interoperates
 
 ## 3) Actors
 

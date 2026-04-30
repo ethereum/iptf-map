@@ -28,7 +28,7 @@ The first four assume cooperative counterparties; the fifth does not. When inter
 - Support for high-frequency institutional operations with predictable costs
 - Composability with broader DeFi and settlement infrastructure
 
-**Adversarial Jurisdiction:**
+**Hostile Operating Environment:**
 
 - EAL4+ AVA_VAN.5 smartcard envelope (no client-side ZK proving capability)
 - Intermittent or absent internet connectivity at the recipient
