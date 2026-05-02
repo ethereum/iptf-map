@@ -139,6 +139,8 @@ When sources are honest, the cryptographic layer enforces one-to-one binding. Wh
 
 **Alternative strategies:** Distributed re-issuance (threshold committee produces credentials; limitation: committee sees content, bootstrapping post-failure is open). TEE-based credential vault (survives issuer destruction; limitation: manufacturer trust, side-channel risk; see [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md)).
 
+**See also:** [Approach: Private Payments, Section G](approach-private-payments.md#g-resilient-disbursement-rails-adversarial-jurisdiction-recipients). The Resilient Disbursement Rails approach uses `IResilientIdentity` (this section) as its identity-layer dependency for humanitarian disbursement under adversarial-jurisdiction threat models.
+
 ---
 
 ### Vendor Recommendations
