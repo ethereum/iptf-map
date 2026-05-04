@@ -1,152 +1,115 @@
 ---
-title: "Pattern: Threshold Encrypted Mempool"
+title: "Pattern: Threshold-encrypted mempool"
 status: draft
-maturity: pilot
+maturity: testnet
+type: standard
 layer: L1
-privacy_goal: Hide transaction content until block inclusion via threshold encryption
-assumptions: Honest threshold committee (k-of-n), timely key release, compatible block builder
-last_reviewed: 2026-01-14
+
 works-best-when:
-  - MEV protection required at protocol level
-  - Users cannot or prefer not to trust private relays
-  - Censorship resistance combined with pre-trade privacy needed
+  - Miner Extractable Value protection is needed at the protocol level rather than through a trusted relay.
+  - Users cannot or do not want to trust a private relay as a single point of trust.
+  - Censorship resistance must be combined with pre-inclusion content privacy.
 avoid-when:
-  - Committee liveness requirements unacceptable
-  - Decryption latency incompatible with use case
-  - Single trusted party acceptable (simpler private relay)
-dependencies: [Threshold cryptography, Distributed key generation, Block builder integration]
+  - The committee liveness dependency is unacceptable for the target use case.
+  - Decryption latency is incompatible with the workload.
+  - A single trusted operator is acceptable, in which case a private relay is simpler.
+
+last_reviewed: 2026-04-22
+
 context: both
+context_differentiation:
+  i2i: "The protocol-level design treats every participant identically, so institutional submitters get the same guarantee as anyone else. Institutions may still prefer bilateral private-relay integrations where contractual recourse is available, but the threshold scheme removes any single-operator trust."
+  i2u: "End users are protected by the same k-of-n threshold as institutions, which is the main user-facing benefit: MEV protection does not require trusting a sequencer or a private-order-flow relay. The guarantee is only as strong as the committee's independence, so a committee captured by institutional interests degrades the user-side protection."
+
 crops_profile:
   cr: high
-  os: partial
-  privacy: partial
-  security: medium
+  o: partial
+  p: partial
+  s: medium
+
+crops_context:
+  cr: "Censorship resistance is `high` because encrypted transactions can be included by any block builder without inspecting content, and no single relay can suppress them."
+  o: "Reference implementations are open source; keyper-network governance and participation criteria vary by deployment and may be gated."
+  p: "Content privacy is `partial`: the payload is hidden until decryption, but sender address, gas limit, and transaction size remain visible pre-inclusion, and post-decryption MEV on the resulting state is still possible."
+  s: "Security rides on the k-of-n honest-committee assumption, correct distributed key generation, and timely key release after block commitment. Premature decryption reduces the guarantee to that of a transparent mempool."
+
+post_quantum:
+  risk: high
+  vector: "Pairing-based threshold encryption schemes rely on elliptic-curve primitives broken by a CRQC; pre-inclusion ciphertext collected today has Harvest-Now-Decrypt-Later exposure."
+  mitigation: "Lattice-based threshold encryption schemes. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: [ERC-20, EIP-7573]
+
+related_patterns:
+  requires: [pattern-private-transaction-broadcasting]
+  composes_with: [pattern-focil-eip7805, pattern-pretrade-privacy-encryption, pattern-shielding]
+  alternative_to: [pattern-tee-based-privacy]
+  see_also: [pattern-network-anonymity, pattern-modular-privacy-stack]
+
+open_source_implementations:
+  - url: https://github.com/shutter-network/shutter
+    description: "Shutter threshold-encryption toolkit for Ethereum-compatible chains"
+    language: "Go"
 ---
 
 ## Intent
 
-> **Sub-pattern of [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md)** — This pattern provides detailed coverage of threshold encryption specifically. See the parent pattern for alternative approaches (private relays, TEE-based builders).
+Prevent miner-extractable-value extraction by encrypting transaction content before mempool submission and releasing the decryption key only after block ordering is committed. A distributed committee holds threshold key shares, so no single party can decrypt prematurely. The result is cryptographic protection against front-running, back-running, and sandwich attacks, without handing trust to any one relay.
 
-Prevent MEV extraction by encrypting transaction content before mempool submission, with decryption occurring only after block ordering is committed. A distributed committee holds threshold key shares; no single party can decrypt prematurely. This provides cryptographic (not trust-based) protection against front-running while maintaining censorship resistance.
+This pattern is the cryptographic sub-pattern of [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md). See that pattern for alternative approaches (trust-based private relays, hardware-assisted builders).
 
-## Ingredients
+## Components
 
-- **Cryptographic Primitives**:
-  - **Threshold encryption**: k-of-n scheme where k committee members must cooperate to decrypt
-  - **Distributed Key Generation (DKG)**: Committee jointly generates threshold public key without any party knowing full private key
-  - **Identity-Based Encryption (IBE)** or **timelock encryption**: Optional variants for slot-based decryption
+- Threshold encryption scheme: a k-of-n construction so that k committee members must cooperate to decrypt.
+- Distributed key generation: the committee jointly produces the threshold public key without any party ever holding the full private key.
+- Keyper committee: a distributed set of key holders drawn from validators, independent operators, or a delegated governance process.
+- Block builder integration: the builder accepts encrypted payloads and includes them without inspecting contents.
+- Decryption oracle: publishes decryption key shares after block commitment so execution can proceed.
+- Identity-based encryption or timelock-encryption variants are optional when slot-based decryption is required without a committee round trip.
 
-- **Infrastructure**:
-  - **Keyper committee**: Distributed set of key holders (validators, independent operators, or DAOs)
-  - **Sequencer/proposer integration**: Block builder must support encrypted transaction inclusion
-  - **Decryption oracle**: Publishes decryption keys after inclusion commitment
+## Protocol
 
-- **Standards**:
-  - No ERC standard yet; Shutter uses custom protocol
-  - Compatible with ERC-20, ERC-7573, and other token standards at application layer
+1. [operator] Keypers run distributed key generation to produce a threshold public key and individual key shares.
+2. [operator] The threshold public key is published so users can encrypt transactions to it.
+3. [user] The user encrypts a transaction under the threshold public key and submits the ciphertext to the mempool.
+4. [operator] The block builder includes the ciphertext in a block without seeing its contents.
+5. [contract] The block is proposed and finalized; slot commitment is now immutable.
+6. [operator] At least k keypers release their decryption key shares for the slot.
+7. [operator] Shares are aggregated into the slot decryption key, which reveals the transactions, and execution proceeds on the decrypted payloads.
 
-## Protocol (concise)
+## Guarantees & threat model
 
-### Encryption Phase
+Guarantees:
 
-1. **Committee setup**: Keypers run DKG to generate threshold public key `PK` and individual key shares `sk_i`.
-2. **Key publication**: Threshold public key `PK` published; users encrypt transactions with `PK`.
-3. **Transaction encryption**: User encrypts transaction `tx` as `E(PK, tx)` and submits to mempool.
-4. **Encrypted inclusion**: Block builder includes `E(PK, tx)` in block without seeing contents.
+- Pre-inclusion content privacy: transaction contents are hidden from block builders, searchers, and validators until after block commitment.
+- Cryptographic enforcement: no single party can decrypt, so front-running and sandwiching at the mempool stage are prevented without trusting a relay.
+- Censorship resistance: encrypted payloads carry no application-layer signal, so content-based censorship is not possible at the builder.
+- Post-decryption auditability: once the slot key is released, transaction history becomes public and fully verifiable.
 
-### Decryption Phase
+Threat model:
 
-5. **Inclusion commitment**: Block is proposed/finalized with encrypted transactions.
-6. **Decryption key release**: After slot commitment, k-of-n keypers release decryption key shares.
-7. **Key aggregation**: Shares combined to produce decryption key `DK` for that slot/block.
-8. **Transaction reveal**: `DK` decrypts all transactions in block; execution proceeds with revealed content.
-
-## Committee Assumptions
-
-| Assumption | Requirement | Failure Impact |
-|------------|-------------|----------------|
-| **Honest threshold** | At least k of n keypers are honest | <k honest → premature decryption possible |
-| **Liveness** | k keypers must be online to release keys | <k online → transactions stuck encrypted |
-| **No collusion** | Keypers don't collude with block builders | Collusion → MEV extraction possible |
-| **Timely release** | Keys released promptly after commitment | Delayed release → execution delays |
-
-### Committee Models
-
-| Model | Trust Distribution | Example |
-|-------|-------------------|---------|
-| **Validator subset** | Tied to consensus security | Shutter on Gnosis Chain |
-| **Independent operators** | Separate from validators | Dedicated keyper network |
-| **DAO-elected** | Community governance | Threshold signature DAOs |
-| **Rotating committee** | Time-bounded participation | Epoch-based rotation |
-
-## Guarantees
-
-- **Pre-inclusion privacy**: Transaction content hidden from all observers until block commitment
-- **Cryptographic enforcement**: No single party can decrypt; requires threshold cooperation
-- **Censorship resistance**: Encrypted transactions can be included without content inspection
-- **MEV prevention**: Front-running, sandwich attacks impossible without decryption
-- **Auditability**: Post-decryption, full transaction history is public and verifiable
+- Honest-threshold assumption: fewer than k honest keypers allows premature decryption and restores mempool-stage MEV.
+- Liveness: fewer than k online keypers leaves encrypted transactions stuck; operators must decide between a longer liveness timeout and forfeiting the transactions.
+- Collusion: keypers colluding with block builders can front-run after decryption, so economic penalties and reputation controls are required.
+- Metadata leakage: size, gas limit, and sender address remain visible before decryption and can still enable inference attacks on large or identifiable trades.
+- Coverage gap: only the mempool phase is protected; ordering-based extraction that happens after decryption on the public state is out of scope.
 
 ## Trade-offs
 
-- **Latency**: Decryption adds delay after block inclusion (typically <1 second)
-- **Liveness dependency**: If <k keypers online, encrypted transactions cannot execute
-- **Committee trust**: Security degrades to k-of-n assumption; not fully trustless
-- **Complexity**: Additional infrastructure (DKG, keyper network, decryption oracle)
-- **Metadata leakage**: Transaction size, gas limit, sender address may still be visible
-- **Incomplete coverage**: Only protects mempool phase; post-decryption MEV still possible
-- **CROPS context (both)**: CROPS profile is symmetric across I2I and I2U — the protocol-level design gives equal guarantees to all participants. Shutter is open source; keyper infrastructure is not universally available.
-- **Post-quantum exposure**: pairing-based threshold encryption schemes and assumptions are broken by CRQC; pre-inclusion ciphertext has HNDL risk. Mitigation: lattice-based threshold encryption. See [Post-Quantum Threats](../domains/post-quantum.md).
-
-## Failure Modes
-
-| Failure | Description | Impact | Mitigation |
-|---------|-------------|--------|------------|
-| **Threshold breach** | <k honest keypers | Premature decryption, MEV extraction | Increase k, diverse keyper set |
-| **Liveness failure** | <k keypers online | Stuck transactions | Redundant keypers, timeout fallback |
-| **Key leakage** | Keyper share compromised | Reduced threshold security | Key rotation, secure enclaves |
-| **Collusion** | Keypers collude with builders | MEV extraction | Economic penalties, reputation |
-| **DKG failure** | Key generation compromised | Invalid threshold key | Verifiable DKG, ceremony audits |
+- Decryption adds latency after block inclusion, typically sub-second, which can be acceptable for settlement but borderline for latency-sensitive trading.
+- Infrastructure complexity is significant: distributed key generation, keyper-network operation, and decryption oracle must all be built and kept live.
+- Committee capture is the primary attack surface; diverse keyper sets, time-bounded rotations, and economic bonding mitigate but do not remove the k-of-n trust assumption.
+- Common failure modes, such as a compromised share, a distributed key generation ceremony flaw, or an offline committee, must be addressed with key rotation, verifiable distributed key generation, and redundancy with timeout fallbacks.
+- Cryptographic protection stops at the mempool boundary; integration with shielding or stealth-address patterns is needed to close the post-decryption visibility gap.
 
 ## Example
 
-**Shutter on Gnosis Chain**
-
-1. Gnosis validators run Shutter keyper nodes alongside consensus clients.
-2. DKG produces threshold public key for each epoch.
-3. User encrypts DEX swap with epoch's public key, submits to mempool.
-4. Validator includes encrypted transaction in block without seeing swap details.
-5. After block finalization, keypers release decryption key shares.
-6. Swap is decrypted and executed; no front-running possible during mempool phase.
-7. Result: User gets fair execution price without MEV extraction.
-
-**Institutional Settlement**
-
-1. Bank A encrypts $100M stablecoin transfer with threshold key.
-2. Transaction included in block; competitors cannot see amount or destination.
-3. After block commitment, decryption reveals transfer.
-4. Settlement executes with no advance warning to market.
-5. Regulator can audit full transaction post-decryption.
-
-## Comparison with Alternatives
-
-| Approach | Trust Model | Latency | MEV Protection |
-|----------|-------------|---------|----------------|
-| **Threshold encrypted mempool** | k-of-n committee | +decryption delay | Cryptographic |
-| **Private relay (Flashbots)** | Single relay operator | Minimal | Trust-based |
-| **Timelock encryption** | Time-based, no committee | Fixed delay | Cryptographic |
-| **TEE-based builders** | Hardware vendor | Minimal | Hardware trust |
+A trading desk submits a large stablecoin trade on a chain that runs a threshold-encryption layer. The desk encrypts the transaction under the current-epoch threshold public key and submits it to the public mempool. Validators include the ciphertext in the next block without seeing the destination or amount. After finalization, the keyper committee releases its shares and the trade is decrypted and executed; competing searchers have no opportunity to front-run or sandwich the trade during the mempool phase. On the same chain, a retail swap user encrypts a token swap to the same public key and obtains the same pre-inclusion privacy without having to trust a specialised private relay.
 
 ## See also
 
-- [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md) - Broader MEV protection overview
-- [Pre-trade Privacy (Shutter/SUAVE)](pattern-pretrade-privacy-encryption.md) - RFQ-focused pre-trade privacy
-- [FOCIL Inclusion Lists](pattern-focil-eip7805.md) - Censorship resistance complement
-- [Vendor: Shutter](../vendors/shutter.md) - Primary implementation
-
-## See also (external)
-
-- Shutter Network: https://shutter.network/
-- Shutter docs: https://docs.shutter.network/
-- Threshold encryption primer: https://blog.shutter.network/introducing-shutter-network-combating-frontrunning-and-malicious-mev-using-threshold-cryptography/
-- Gnosis Shutter integration: https://docs.gnosischain.com/about/specs/shutter/
+- [Shutter Network overview](https://shutter.network/)
+- [Shutter documentation](https://docs.shutter.network/)
+- [Gnosis Chain Shutter integration](https://docs.gnosischain.com/about/specs/shutter/)
+- [Shutter](../vendors/shutter.md)
+- [Fairblock](../vendors/fairblock.md)

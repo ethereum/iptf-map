@@ -1,87 +1,108 @@
 ---
 title: "Pattern: Private Set Intersection (DH-based)"
 status: draft
-maturity: PoC
+maturity: testnet
+type: standard
 layer: offchain
-privacy_goal: Two parties discover shared set elements without revealing non-matching entries
-assumptions: Bilateral communication channel, DDH hardness, sets contain exact-match identifiers
-last_reviewed: 2026-03-18
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Both parties hold private sets of comparable size (< 10k elements)
-  - Matching is bilateral (exactly two parties)
-  - Elements are exact-match identifiers (addresses, ISINs, LEIs)
+  - Both parties hold private sets of comparable size (under 10k elements).
+  - Matching is bilateral (exactly two parties).
+  - Elements are exact-match identifiers (addresses, ISINs, LEIs).
 avoid-when:
-  - More than two parties need to participate (use circuit-based or MPC variant)
-  - Fuzzy or approximate matching is required
-  - One party's set is already public (use Merkle inclusion proof instead)
-dependencies: [ECDH, hash-to-curve]
+  - More than two parties need to participate.
+  - Fuzzy or approximate matching is required.
+  - One party's set is already public (use a Merkle inclusion proof instead).
+
 context: both
+context_differentiation:
+  i2i: "Between institutions, both parties run the protocol bilaterally over an authenticated channel. Minimum-set-size policies are negotiated up front. Semi-honest security is usually sufficient when both parties have legal recourse; malicious security can be added when the relationship is less established."
+  i2u: "For end users, the user runs their side on commodity hardware. The institution cannot learn the user's other identifiers beyond the submitted set. Users should submit sets larger than the minimum-set-size threshold to avoid turning the protocol into a yes/no membership oracle for a single identifier."
+
 crops_profile:
   cr: high
-  os: yes
-  privacy: full
-  security: high
+  o: yes
+  p: full
+  s: high
+
+crops_context:
+  cr: "Both parties run the protocol directly without an intermediary that could censor or filter matches. No on-chain component is required, so chain-level censorship does not apply."
+  o: "Open-source implementations exist across multiple languages and the underlying primitives (ECDH, hash-to-curve) are standard."
+  p: "Non-intersecting elements are computationally hidden under DDH. Privacy degrades from `full` to `partial` when a party submits a very small set, because intersection membership becomes attributable to specific elements."
+  s: "Semi-honest by default. Malicious security requires additional commitments and zero-knowledge proofs binding the blinded set to a committed set."
+
+post_quantum:
+  risk: high
+  vector: "DDH is broken by Shor's algorithm on a CRQC; commutative ECDH blinding no longer hides non-intersecting elements. HNDL applies to recorded exchanges."
+  mitigation: "Migrate to lattice-based or isogeny-based PSI constructions. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: []
+
+related_patterns:
+  alternative_to: [pattern-private-set-intersection-oprf, pattern-private-set-intersection-circuit, pattern-private-set-intersection-fhe]
+  composes_with: [pattern-dvp-erc7573, pattern-pretrade-privacy-encryption]
+  see_also: [pattern-voprf-nullifiers, pattern-mpc-custody, pattern-private-shared-state-cosnark]
+
+open_source_implementations:
+  - url: https://github.com/google/private-join-and-compute
+    description: "Google Private Join and Compute: ECDH-PSI plus homomorphic encryption for aggregate computation over intersections"
+    language: "C++"
+  - url: https://github.com/OpenMined/PSI
+    description: "OpenMined PSI: ECDH-PSI with Bloom filters, bindings for C++, Python, Go, and JavaScript"
+    language: "C++"
+  - url: https://github.com/encryptogroup/PSI
+    description: "Encrypto Group PSI: benchmarking implementations of multiple PSI protocol variants including ECDH"
+    language: "C++"
 ---
 
 ## Intent
 
-Two parties each hold a private set of identifiers and want to learn which elements they share without exposing the rest. This variant uses commutative encryption via ECDH: both parties blind their inputs with secret scalars, and the commutativity of scalar multiplication lets them compare double-blinded values without revealing the originals. The protocol runs bilaterally between the two parties.
+Two parties each hold a private set of identifiers and want to learn which elements they share without exposing the rest. This variant uses commutative encryption via elliptic-curve Diffie-Hellman: both parties blind their inputs with secret scalars, and the commutativity of scalar multiplication lets them compare double-blinded values without revealing the originals. The protocol runs bilaterally between the two parties.
 
-## Ingredients
+## Components
 
-- **Cryptography**: ECDH (commutative scalar multiplication), hash-to-curve
-- **Infra**: Authenticated bilateral channel (TLS, Noise, or similar)
-- **Off-chain**: Ephemeral computation, no persistent infrastructure required
+- Elliptic curve and hash-to-curve function, agreed by both parties at session setup.
+- Ephemeral secret scalars, one per party, freshly sampled per session.
+- Authenticated bilateral channel for exchanging blinded and double-blinded sets.
+- Local matcher that compares double-blinded points and maps matches back to plaintext on each side.
 
 ## Protocol
 
-1. **Agree**: Parties A and B fix an elliptic curve and hash-to-curve function. Each generates an ephemeral secret scalar (a, b).
-2. **Blind**: A hashes each element to a curve point and multiplies by a, sending {aH(x)} to B. B does the same with scalar b, sending {bH(y)} to A.
-3. **Double-blind**: B multiplies A's blinded set by b, sending {abH(x)} to A. A multiplies B's blinded set by a, sending {abH(y)} to B.
-4. **Match**: Each party now holds both {abH(x)} and {abH(y)}. Each compares the two sets; equal points are the intersection.
-5. **Output**: Each party maps matched points back to their own plaintext elements. Non-matching elements stay hidden behind the other party's scalar.
+1. [counterparty] Parties A and B fix the curve and hash-to-curve function and each sample an ephemeral secret scalar (a for A, b for B).
+2. [counterparty] A hashes each element to a curve point and multiplies by a, sending the blinded set to B. B does the same with scalar b, sending its blinded set to A.
+3. [counterparty] B multiplies A's blinded set by b and returns the double-blinded points. A does the same with B's blinded set and returns them.
+4. [counterparty] Each party now holds both double-blinded sets and locally compares points. Equal points identify the intersection.
+5. [counterparty] Each party maps matched points back to its own plaintext elements. Non-matching elements stay hidden behind the other party's scalar.
 
-## Guarantees
+## Guarantees & threat model
 
-- **Input privacy**: Non-intersecting elements are computationally hidden under DDH.
-- **Bilateral**: Runs directly between two parties without a server or operator.
-- **Completeness**: All shared elements are found (zero false negatives).
-- **Soundness**: Minimal false positives (collision-resistant hash-to-curve).
-- **I2I**: Institutions match order books, reconcile settlement, or deduplicate KYC without revealing full client lists.
-- **I2U**: A user checks if their address appears in an institution's eligibility list without the institution learning the user's other addresses.
+Guarantees:
+
+- Input privacy: non-intersecting elements are computationally hidden under DDH.
+- Bilateral: runs directly between the two parties without a server or operator.
+- Completeness: all shared elements are found (zero false negatives).
+- Soundness: negligible false-positive rate under a collision-resistant hash-to-curve.
+
+Threat model:
+
+- DDH hardness on the chosen curve.
+- Honest execution by both parties. A malicious party can craft blinded sets that do not correspond to a committed input; mitigate with commit-and-prove variants.
+- Authenticated transport between the parties; otherwise a network attacker can swap blinded sets.
+- Set-size hygiene: a singleton or near-singleton set turns the protocol into a yes/no oracle on that element. Enforce a minimum-set-size policy.
 
 ## Trade-offs
 
-- O(n + m) curve points exchanged. Practical for sets under 10k; for larger sets, use the OT/OPRF-based variant.
+- O(n + m) curve points exchanged. Practical for sets under 10k; for larger sets, use an OT/OPRF-based variant.
 - 2(n + m) scalar multiplications. Seconds for 10k elements on commodity hardware.
-- Limited to equality checks. Aggregates over the intersection require the circuit-based variant.
-- Semi-honest security by default. Malicious security requires additional ZK commitments proving the blinded set matches a committed set.
-- Privacy degrades if a party submits a singleton set (reveals whether that element is in the other's set). Mitigate with a minimum set-size policy.
-- **CROPS context**: Applies to both I2I and I2U. CR is `high` because both parties run the protocol directly without an intermediary that could censor or filter matches. In I2I, institutions execute the protocol bilaterally over an authenticated channel. In I2U, the user runs their side independently on commodity hardware. Privacy degrades from `full` to `partial` if either party submits a very small set, since intersection membership becomes attributable to specific elements.
-- **Post-quantum exposure**: DDH assumption (commutative ECDH encryption) is broken by CRQC. Mitigation: lattice-based PSI protocols. See [Post-Quantum Threats](../domains/post-quantum.md).
+- Equality-only: aggregates over the intersection require a circuit-based variant.
+- Limited to two parties: for more than two, use an MPC-based variant.
 
 ## Example
 
-- Bank A holds 500 ISINs it wants to buy.
-- Bank B holds 300 ISINs it wants to sell.
-- Both run ECDH-PSI bilaterally.
-- They discover 12 ISINs overlap as potential trades.
-- The remaining 488 and 288 non-overlapping ISINs stay hidden.
-- The 12 matched ISINs feed into [ERC-7573 DvP](pattern-dvp-erc7573.md) for execution.
+Bank A holds 500 ISINs it wants to buy and Bank B holds 300 ISINs it wants to sell. Both run the bilateral ECDH intersection protocol. They discover 12 ISINs overlap as potential trades; the remaining 488 and 288 non-overlapping identifiers stay hidden from the counterparty. The 12 matched ISINs feed into an ERC-7573 DvP flow for execution.
 
 ## See also
 
-- [Private Set Intersection (OPRF-based)](pattern-private-set-intersection-oprf.md): OT/OPRF variant for large sets (10k+ elements)
-- [Private Set Intersection (Circuit-based)](pattern-private-set-intersection-circuit.md): garbled circuit variant for computing functions over intersections
-- [Private Set Intersection (FHE-based)](pattern-private-set-intersection-fhe.md): FHE variant for asymmetric set sizes with post-quantum security
-- [Private Shared State (co-SNARKs)](pattern-private-shared-state-cosnark.md): MPC for ongoing shared state, vs one-shot matching here
-- [VOPRF Nullifiers](pattern-voprf-nullifiers.md): OPRF is a building block in OT-based PSI variants
-- [DvP (ERC-7573)](pattern-dvp-erc7573.md): downstream consumer, matched trade to settlement
-- [Pre-trade Privacy Encryption](pattern-pretrade-privacy-encryption.md): alternative approach for pre-trade discovery
-- [MPC Custody](pattern-mpc-custody.md): shares the MPC trust model family
-
-## See also (external)
-
-- [Google Private Join and Compute](https://github.com/google/private-join-and-compute): ECDH-PSI + homomorphic encryption for aggregate computation over intersections
-- [OpenMined PSI](https://github.com/OpenMined/PSI): ECDH-PSI with Bloom filters, available in C++, Python, Go, and JavaScript
-- [Encrypto Group PSI](https://github.com/encryptogroup/PSI): benchmarking implementations of multiple PSI protocol variants
+- [RFC 9497: Oblivious Pseudorandom Functions (OPRFs) using Prime-Order Groups](https://datatracker.ietf.org/doc/rfc9497/)
+- [Meadows 1986: A more efficient cryptographic matchmaking protocol for use in the absence of a continuously available third party](https://ieeexplore.ieee.org/document/6234898): early treatment of the DH-based intersection construction

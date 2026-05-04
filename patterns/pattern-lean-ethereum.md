@@ -49,13 +49,13 @@ open_source_implementations:
 
 ## Intent
 
-Lean Ethereum is a long-range redesign of the Ethereum consensus layer, targeting a single major fork around 2030 that consolidates several research tracks: post-quantum signatures, minimal zkVMs for signature aggregation and proof compression, reduced hardware and stake thresholds for validators, and networking upgrades that support a larger validator set. The goal is a consensus protocol that is stable for decades, resilient against quantum adversaries, and verifiable on minimal devices.
+Plan a long-range redesign of the Ethereum consensus layer, targeting a single major fork around 2030 that consolidates several research tracks: post-quantum signatures, minimal zkVMs for signature aggregation and proof compression, reduced hardware and stake thresholds for validators, and networking upgrades that support a larger validator set. The goal is a consensus protocol that is stable for decades, resilient against quantum adversaries, and verifiable on minimal devices.
 
 ## Components
 
 - Post-quantum hash-based multisignatures, with an aggregation scheme suited to large validator sets.
 - Minimal zkVMs used to compress aggregated signatures and consensus proofs into succinct artifacts.
-- Networking upgrades: Gossipsub v2 for throughput and DOS resilience, and rateless set reconciliation to support large validator sets.
+- Networking upgrades: Gossipsub v2 for throughput and DOS resilience, and rateless set reconciliation to support very large validator sets.
 - Lower validator thresholds in hardware, bandwidth, and stake, making solo staking accessible on commodity devices.
 - Formal verification tooling (Lean 4) used to prove key properties of the signature aggregation and consensus logic.
 - Approximately fifteen client teams implementing the specification across Rust, Zig, C, C++, Go, Java, .NET, TypeScript, Nim, and Elixir.
@@ -77,7 +77,7 @@ Guarantees:
 - Post-quantum resilience for the core signature layer.
 - Lower barriers to solo validation, improving validator decentralization.
 - Light-client verification of full consensus rules on minimal hardware.
-- Clear scope: limited to consensus; execution-layer scaling and privacy are handled by separate tracks.
+- Clear scope: consensus only; execution-layer scaling and privacy are handled by separate tracks.
 
 Threat model:
 
@@ -91,14 +91,15 @@ Threat model:
 
 - Multi-year horizon with heavy dependence on open research questions across cryptography, proof systems, and networking.
 - Single bundled fork means a failure in one component delays the entire upgrade.
-- Consensus-scoped: does not address execution-layer scaling or transaction privacy.
+- Consensus-only scope: does not address execution-layer scaling or transaction privacy.
 - Coordination across many client teams adds engineering overhead but also resilience.
 
 ## Example
 
-A consumer-grade laptop runs a solo validator at a stake threshold around 1 ETH. A minimal zkVM compresses committee signatures off-chain into a single proof that any node verifies in milliseconds. The network operates at roughly four-second slots with a fast-finality variant under evaluation. A mobile phone verifies the full consensus rules independently.
+A consumer-grade laptop runs a solo validator at a stake threshold around 1 ETH. A minimal zkVM compresses committee signatures off chain into a single proof that any node verifies in milliseconds. The network operates at roughly four-second slots with a fast-finality variant under evaluation. A mobile phone verifies the full consensus rules independently.
 
 ## See also
 
 - [Lean Roadmap](https://leanroadmap.org/)
 - [Lean Specification repository](https://github.com/leanEthereum/leanSpec)
+- [Post-Quantum Threats](../domains/post-quantum.md)

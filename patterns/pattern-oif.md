@@ -1,6 +1,6 @@
 ---
 title: "Pattern: Open Intent Framework (OIF)"
-status: ready
+status: draft
 maturity: production
 type: standard
 layer: hybrid
@@ -30,11 +30,6 @@ crops_context:
   o: "Reference contracts, solver implementation, and the underlying intent standard are open-source and composable with alternative settlement, oracle, and messaging layers."
   p: "None by default. Intents are visible during solver discovery. Could reach `full` by adopting encrypted intent encoding with sealed-bid commitments via threshold encryption, revealed only after solver execution and L1 finality."
   s: "Medium while cross-chain atomicity depends on external settlement and oracle assumptions. Reaches `high` once settlement atomicity and oracle integrity are hardened."
-
-post_quantum:
-  risk: medium
-  vector: "Intent signatures use ECDSA, broken by a CRQC. HNDL risk is moderate because intents can carry value-bearing commitments; however, intents are short-lived and public, limiting the harvest-now-decrypt-later window."
-  mitigation: "Migrate intent signing to post-quantum signatures (hash-based or lattice-based) once standardized. Settlement-contract verification paths must be updated in step."
 
 standards: [ERC-7683]
 

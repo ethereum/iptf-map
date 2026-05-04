@@ -18,7 +18,7 @@ avoid-when:
 context: both
 context_differentiation:
   i2i: "Between institutions the mixnet hides query patterns and transaction timing from counterparty infrastructure and from network-level observers. Both parties can adopt the same routing discipline, and the anonymity set includes other institutional traffic."
-  i2u: "For user-facing deployments the operator of the RPC endpoint or the wallet backend is often the adversary. The mixnet reduces the operator's ability to correlate incoming queries with specific users by disrupting timing and ordering. If a route or gateway censors traffic, users can switch to alternate routes/providers or fall back to direct submission (losing anonymity but preserving execution). Protection strength depends on cover traffic volume, adoption, and route quality, none of which the user can verify unilaterally."
+  i2u: "For user-facing deployments the operator of the RPC endpoint or the wallet backend is often the adversary. The mixnet reduces the operator's ability to correlate incoming queries with specific users by disrupting timing and ordering. Protection strength depends on cover traffic volume, adoption, and route quality, none of which the user can verify unilaterally."
 
 crops_profile:
   cr: medium
@@ -27,7 +27,7 @@ crops_profile:
   s: medium
 
 crops_context:
-  cr: "Operating a mix node typically requires staking, so the node set is gated by economic participation. In I2U deployments, users retain escape paths (alternate routes/providers or direct submission) if a mix path is censored, though privacy degrades under direct fallback. On-chain censorship of mix-routed transactions is no easier than for direct transactions."
+  cr: "Operating a mix node typically requires staking, so the node set is gated by economic participation. On-chain censorship of mix-routed transactions is no easier than for direct transactions."
   o: "Core mixnet stacks are open source, but live networks have governance constraints on who can operate mix nodes and how rewards are distributed."
   p: "Sender-anonymity against traffic correlation is strong under sufficient cover volume. Content privacy must be handled by a separate layer; on-chain side channels also persist."
   s: "Resistance to correlation depends on sustained cover traffic, correct network operation, and the anonymity-set size during the mixing window."
@@ -55,7 +55,7 @@ open_source_implementations:
 
 ## Intent
 
-Hide who is sending a transaction or querying state by routing messages through a network of mix nodes that batch, delay, reorder, and pad traffic with cover messages. Mixnets can provide stronger sender anonymity than onion routing against global passive adversaries by reducing timing-correlation leakage, at the cost of higher latency and bandwidth overhead.
+Hide who is sending a transaction or querying state by routing messages through a network of mix nodes that batch, delay, reorder, and pad traffic with cover messages. Mixnets provide stronger sender anonymity than onion routing against global passive adversaries because timing correlation is defeated by design, at the cost of higher latency and bandwidth overhead.
 
 ## Components
 
@@ -98,7 +98,7 @@ Threat model:
 
 ## Example
 
-A compliance team at a custodian needs to query transaction histories for regulatory reporting without revealing which accounts are being monitored. Queries are routed through a five-hop mixnet where each hop batches, delays, and reorders traffic. Cover traffic stabilizes the RPC provider's view of query volume. Under sufficient adoption and cover volume, the provider is less able to infer query timing, link queries to the same source, or estimate the number of real queries. Several seconds of latency per query is acceptable for batch compliance reporting.
+A compliance team at a custodian needs to query transaction histories for regulatory reporting without revealing which accounts are being monitored. Queries are routed through a five-hop mixnet where each hop batches, delays, and reorders traffic. Cover traffic keeps the RPC provider's view of query volume constant. The provider cannot determine when the custodian queried, which queries came from the same source, or how many real queries were made. Several seconds of latency per query is acceptable for batch compliance reporting.
 
 ## See also
 

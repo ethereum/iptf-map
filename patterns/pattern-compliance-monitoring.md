@@ -49,7 +49,7 @@ open_source_implementations: []
 
 Enable institutions to screen private transactions for regulatory compliance (AML, sanctions, fraud) without exposing transaction details to unauthorized parties. Balance privacy preservation with auditability through selective screening approaches and tiered disclosure, so settlement can proceed under compliance controls while counterparty identities and amounts remain shielded from public view.
 
-This is an orchestration pattern that composes primitives (viewing keys, zero-knowledge proofs, threshold KMS, attestations) into a compliance workflow. The pattern's contribution is the rule engine, alert pipeline, and audit trail that hold the workflow together; the underlying disclosure primitives are linked via `related_patterns`.
+This is an orchestration pattern that composes primitives (viewing keys, zero-knowledge proofs, threshold KMS, attestations) into a compliance workflow. The unique contribution is the rule engine, alert pipeline, and audit trail that hold the workflow together; the underlying disclosure primitives are linked via `related_patterns`.
 
 ## Components
 
@@ -74,7 +74,7 @@ This is an orchestration pattern that composes primitives (viewing keys, zero-kn
 
 Guarantees:
 
-- Transaction details are exposed solely to the compliance function and authorized parties.
+- Transaction details are visible only to the compliance function and authorized parties.
 - All transactions are screened against current sanctions lists and jurisdiction rules before settlement.
 - Screening decisions produce an immutable, timestamped audit trail suitable for regulator review.
 - Counterparty identities are protected from public view; disclosure is scoped to authorized auditors via viewing keys.

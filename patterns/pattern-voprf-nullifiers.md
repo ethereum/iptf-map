@@ -1,147 +1,107 @@
 ---
 title: "Pattern: vOPRF Nullifiers"
 status: draft
-maturity: PoC
+maturity: testnet
+type: standard
 layer: hybrid
-privacy_goal: Generate deterministic, scope-bound nullifiers without revealing identifiers or enabling offline linkage from client key compromise
-assumptions: Threshold MPC network for vOPRF, client-side blinding, on-chain nullifier registry
-last_reviewed: 2026-01-22
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - You need deterministic per-scope nullifiers (or pseudonyms) for credentials/signals without revealing the underlying identifier.
-  - You want to limit the damage from client key compromise—without the server key, an attacker cannot reconstruct past nullifiers offline from a leaked client secret alone.
-  - You can operate (or rely on) a threshold service with clear governance, uptime, and abuse controls.
+  - You need deterministic per-scope nullifiers or pseudonyms for credentials and signals without revealing the underlying identifier.
+  - You want to bound the damage from client-key compromise. Without the server key, an attacker cannot reconstruct past nullifiers from a leaked client secret alone.
+  - You can operate or rely on a threshold committee with clear governance, uptime, and abuse controls.
 avoid-when:
-  - A simple local nullifier (hash of user secret + scope) is sufficient and compromise/linkage is acceptable.
-  - You cannot tolerate an online dependency (latency, availability, or regional deployment requirements).
-  - You cannot establish an acceptable trust/compliance posture for the threshold committee or operator set.
-dependencies:
-  - vOPRF implementation (e.g., IETF OPRF/VOPRF constructions in prime-order groups).
-  - Threshold/MPC or threshold signature infrastructure (t-of-n) to hold the server key without a single custodian.
-  - A nullifier registry / replay protection mechanism in the target system (contract or service).
+  - A local nullifier (hash of user secret with scope) is sufficient and offline linkage from client compromise is acceptable.
+  - An online dependency is not acceptable for latency, availability, or regional deployment reasons.
+  - Trust and compliance for the threshold committee or operator set cannot be established.
+
 context: both
+context_differentiation:
+  i2i: "Between institutions the committee is typically contracted between known parties with SLAs and legal recourse. The online dependency is a liveness concern for high-frequency operations and needs active-active deployment. Governance of the committee key material is bilateral or consortium-based."
+  i2u: "For users the committee must be permissionless or operator-diverse so that no coalition can recover the base identifier. Economic bonding with slashing and a public audit log of evaluation requests protect against silent collusion. Without operator diversity the user has no recourse if the committee is coerced."
+
 crops_profile:
   cr: medium
-  os: partial
-  privacy: full
-  security: medium
+  o: partial
+  p: full
+  s: medium
+
+crops_context:
+  cr: "Reaches `high` when the committee is permissionless and bond-backed with slashing. Drops to `low` when a single operator controls the evaluation pipeline or the rate-limit gate."
+  o: "The vOPRF construction itself is specified in open IETF standards; threshold implementations vary in licensing. Production deployments may bundle proprietary orchestration and rate-limit logic."
+  p: "Input privacy holds against the committee in the vOPRF model. Metadata about when and how often a user requests an evaluation remains visible to the committee and can leak usage patterns."
+  s: "Security rides on the OPRF scheme soundness, the threshold key-generation ceremony, and the honest-threshold assumption (fewer than t colluding nodes)."
+
+post_quantum:
+  risk: high
+  vector: "Current OPRF constructions rely on the DDH assumption in a prime-order elliptic-curve group, which is broken by a CRQC. HNDL risk applies to any recorded blinded request, since a future adversary with quantum capability plus the committee key could de-blind and reconstruct nullifiers."
+  mitigation: "Post-quantum OPRF constructions (lattice-based, VDF-based) are in research. Migration requires re-keying the committee, versioning scopes with a key identifier, and accepting larger message sizes. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: [RFC-9497, RFC-9576]
+
+related_patterns:
+  composes_with: [pattern-shielding, pattern-private-mtp-auth, pattern-verifiable-attestation]
+  alternative_to: [pattern-private-set-intersection-oprf]
+  see_also: [pattern-zk-promises, pattern-compliance-monitoring]
+
+open_source_implementations:
+  - url: https://core.taceo.io/articles/taceo-oprf/
+    description: "TACEO threshold vOPRF writeup with reference implementation (research)"
+    language: "Rust"
 ---
 
 ## Intent
 
-Generate deterministic, scope-bound nullifiers for credential and signal mechanisms using a verifiable OPRF (vOPRF),
-optionally thresholdized, so that nullifier generation does not depend on a single client secret alone and the client can
-verify correctness.
+Generate deterministic, scope-bound nullifiers using a verifiable oblivious pseudorandom function (vOPRF) whose secret key is held by a threshold committee. The client blinds its input, the committee jointly evaluates the OPRF, and the client unblinds the response to derive a nullifier. The server key prevents offline reconstruction from a leaked client secret; verifiability lets the client detect a malicious committee response.
 
-On public networks, deterministic nullifiers derived solely from client secrets create a linkability risk: the same nullifier for a given scope reveals the same underlying user, and a leaked client secret allows offline reconstruction of all past nullifiers. A vOPRF adds a server-side component that breaks this offline linkability while preserving determinism for legitimate use.
+## Components
 
-This pattern describes "nullifier generation as a service" that preserves privacy of the input while allowing a
-deterministic output for one-per-scope limits, anti-replay, or persistent pseudonyms.
-
-## Ingredients
-
-- Client-side input framing:
-  - A stable identifier: credential_id, membership secret, device key, or an issuer-provided handle.
-  - A scope/context: service_id, action_id, epoch/time-bucket, chain_id, contract_id.
-  - Domain separation: explicit tags to prevent cross-protocol reuse.
-- vOPRF service:
-  - Server public key (for verifiability) and a private key held by a committee/service.
-  - Threshold/MPC variant (recommended) so no single node holds the full key.
-  - Abuse controls: authentication gates, rate limits, and logging policy.
-- Client blinding/unblinding:
-  - Hash-to-curve and blind/unblind operations per the chosen vOPRF instantiation.
-- Integration points (credential/signal mechanisms):
-  - Credential usage: "one claim per credential per scope" using a nullifier registry.
-  - Rate limiting: "k actions per epoch" using time-bucketed scopes.
-  - Signals: "same user across sessions" (persistent pseudonym) without revealing the base identifier.
-- Optional verification packaging:
-  - Include a proof that the output corresponds to the advertised server public key.
-  - Optionally include a ZK proof that the vOPRF input follows correct formatting (e.g., derived from a valid credential)
-    without revealing the credential_id.
+- Client-side input framing combines a stable identifier (credential identifier, membership secret, device key), a scope (service identifier, action identifier, epoch), and a domain-separation tag into the OPRF input.
+- Blinding and unblinding routines implement the hash-to-curve and blind or unblind operations of the chosen OPRF instantiation.
+- Threshold vOPRF committee holds the server private key in t-of-n shares. Each node evaluates its share on the blinded input; the client combines t responses into a single evaluation.
+- Committee public key used by the client to verify that the combined evaluation corresponds to the advertised key.
+- Rate-limit and abuse gate in front of the committee (authenticated tokens, fees, proof-of-eligibility) to prevent exhaustive-query attacks that would reveal mappings.
+- Nullifier registry records used nullifiers to enforce one-use-per-scope semantics (on-chain contract or off-chain log).
 
 ## Protocol
 
-1. Define scope and input x:
-   - x = Hash(tag || base_id || scope || epoch || chain_context)
-   - Choose scope so outputs link where intended (service-specific, action-specific, or epoch-specific) and nowhere else.
-2. Blind:
-   - Client hashes x to a curve point and blinds it with a random scalar r.
-   - Client sends the blinded point plus any required metadata (scope, epoch, rate-limit token) to the service.
-3. Threshold evaluation (service side):
-   - Each committee node evaluates its share on the blinded input.
-   - The client combines responses once t shares arrive and receives the combined blinded evaluation.
-4. Verifiability check (client side):
-   - Client verifies the service proof that the evaluation corresponds to the service public key.
-   - If verification fails, the client discards the result.
-5. Unblind and derive seed:
-   - Client unblinds using r to get y = vOPRF(k, x).
-   - Client derives a seed: seed = Hash(tag2 || y || scope || chain_context).
-6. Derive the nullifier:
-   - nullifier = Hash(tag3 || seed)
-   - Optionally derive more values (nullifier, pseudonym, encryption_key) by domain-separated hashing.
-7. Register / use:
-   - Submit nullifier to a registry (on-chain or off-chain) to prevent double-use, or attach it to a proof/credential
-     presentation as the anti-replay handle.
-   - If required, prove in ZK that the nullifier came from a valid credential and the correct scope.
+1. [user] Derive the scoped input x by hashing a domain tag with the base identifier, the scope descriptor, epoch, and chain context.
+2. [user] Hash x to a curve point, blind it with a random scalar, and submit the blinded point and scope metadata to the committee along with any required rate-limit token.
+3. [operator] Each committee node evaluates its key share on the blinded point and returns its share plus a verifiability proof.
+4. [user] Combine t shares, verify the response against the committee public key, and discard the result if verification fails.
+5. [user] Unblind the response to obtain y, then derive a domain-separated seed and the final nullifier by hashing.
+6. [contract] Register the nullifier in the on-chain registry, or attach it to a zero-knowledge proof or credential presentation as the anti-replay handle.
 
-## Guarantees
+## Guarantees & threat model
 
-- Determinism (per scope):
-  - Same (base_id, scope, epoch, chain_context) yields the same nullifier.
-- Input privacy against the service (in the vOPRF model):
-  - The service does not learn x (or base_id) from the blinded request.
-- Output correctness (verifiable):
-  - The client can verify the response corresponds to the service public key (reduces "malicious server returns junk").
-- Reduced offline linkage from client compromise (qualified):
-  - If an attacker leaks the client secret/base_id, they still cannot reconstruct vOPRF outputs offline without access to
-    the service and the full input framing.
-- Not guaranteed:
-  - If an attacker who compromises the client can also query the service with the same inputs, they can regenerate the
-    same nullifiers (determinism is the feature). Mitigate with scoped epochs, access controls, and/or proof-of-eligibility.
-  - If the threshold committee becomes fully compromised (>= t colluding), the adversary can compute outputs.
+Guarantees:
+
+- Deterministic per-scope output: the same base identifier under the same scope always produces the same nullifier.
+- Input privacy against the committee: the committee does not learn the base identifier in the vOPRF model.
+- Verifiability: the client can detect a committee response that does not correspond to the advertised public key.
+- Reduced offline linkage: a leaked client secret alone cannot reconstruct past nullifiers without live committee access.
+
+Threat model:
+
+- Honest-threshold assumption on the committee. A coalition of t or more nodes can evaluate arbitrary inputs offline and reconstruct all nullifiers for any recorded base identifier.
+- An attacker who compromises the client can reissue evaluation requests with the same inputs and regenerate nullifiers. Determinism is a feature, and this path must be mitigated with scoped epochs, access controls, or proof-of-eligibility.
+- Abuse and denial of service on the committee. The evaluation endpoint must be gated to prevent committee exhaustion or mapping attacks that brute-force small identifier spaces.
+- Committee metadata (timing, IP, volume) is out of scope for the vOPRF layer and must be handled by a network-anonymity layer.
 
 ## Trade-offs
 
-- Online dependency:
-  - Adds latency and availability requirements; failure of the service can block nullifier generation.
-- Trust model:
-  - Threshold/MPC reduces single-operator custody but introduces committee governance and collusion assumptions.
-- Abuse and DoS surface:
-  - Attackers can spam evaluation requests; require gating, fees, quotas, or proof-of-eligibility to request evaluation.
-- Privacy and linkage tuning is delicate:
-  - Too-broad scope (e.g., same input across services) creates unwanted cross-service linkability.
-  - Too-narrow scope (e.g., per-action randomness) may defeat the purpose of rate limiting or replay prevention.
-- Key management:
-  - Requires ceremony/DSKG, resharing, rotation, and incident response. Rotation interacts with determinism:
-    changing keys changes outputs unless versioned (key_id included in input framing).
-- **CROPS context (both)**: In I2U, the pattern's value is highest — prevents institutions from building offline dossiers of user activity. In I2I, the online dependency may be a liveness concern for high-frequency operations. TACEO OPRF is open source; other threshold MPC implementations vary.
-- **Post-quantum exposure**: EC-based OPRF relies on DDH assumption broken by CRQC. Mitigation: lattice-based OPRF constructions. See [Post-Quantum Threats](../domains/post-quantum.md).
+- Online dependency: evaluation requires a live committee, adding latency and an availability risk.
+- Committee governance overhead: threshold key generation, share rotation, incident response, and key versioning are operational burdens. Rotating keys changes outputs unless scopes include an explicit key identifier.
+- Scope design is delicate. Too-broad scopes create cross-service linkability; too-narrow scopes defeat the anti-replay or rate-limit purpose.
+- Denial-of-service surface on the committee requires rate-limit tokens, fees, or proof-of-eligibility.
 
 ## Example
 
-A KYC issuer provides users a credential with an internal credential_id. A service wants:
-(a) "one active session per user per day" and (b) no disclosure of identity.
-
-- Scope design:
-  - scope = Hash("service-A" || "daily-session" || day_bucket)
-- Client request:
-  - x = Hash(tag || credential_id || scope || chain_id || contract_id)
-  - Client runs vOPRF with the service committee and derives nullifier.
-- Enforcement:
-  - The contract (or API) checks whether it has seen the nullifier for that day_bucket and registers it.
-
-Common mappings (examples):
-
-| Mechanism type        | Typical base_id       | Typical scope input                    | Nullifier purpose                  |
-|----------------------|-----------------------|----------------------------------------|-----------------------------------|
-| Credential usage      | credential_id         | action_id + service_id                 | prevent double-claim              |
-| Rate limiting         | membership secret     | service_id + time_bucket               | cap actions per period            |
-| Anonymous voting      | eligibility handle    | election_id                            | one vote per eligible voter       |
-| Persistent pseudonym  | stable user handle    | service_id                             | link sessions within one service  |
+A KYC issuer gives a user a credential with an internal credential identifier. A downstream service wants to enforce one active session per user per day without learning who the user is. The scope is the hash of the service identifier, the action "daily-session", and the day bucket. The user derives the OPRF input from the credential identifier and the scope, blinds it, and submits to the committee. After verification and unblinding, the user derives a nullifier, and the service records it to reject any duplicate submission within the day.
 
 ## See also
 
-- [pattern-private-mtp-auth.md](pattern-private-mtp-auth.md)
-- [pattern-verifiable-attestation.md](pattern-verifiable-attestation.md)
-- [RFC 9497](https://www.rfc-editor.org/rfc/rfc9497.html) (OPRF/VOPRF)
-- [RFC 9576](https://www.rfc-editor.org/rfc/rfc9576.html) (Privacy Pass architecture)
-- [TACEO:OPRF](https://core.taceo.io/articles/taceo-oprf/) (threshold vOPRF / MPC service)
+- [RFC 9497 (OPRF and VOPRF)](https://www.rfc-editor.org/rfc/rfc9497.html)
+- [RFC 9576 (Privacy Pass Architecture)](https://www.rfc-editor.org/rfc/rfc9576.html)
+- [TACEO vOPRF writeup](https://core.taceo.io/articles/taceo-oprf/)
+- [TACEO Merces vendor page](../vendors/taceo-merces.md)

@@ -51,21 +51,21 @@ open_source_implementations:
 
 ## Intent
 
-Run settlement on a low-cost L2, publish commitments and hashes on-chain, and keep the full transaction facts in an append-only encrypted off-chain log. Integrity is anchored by periodic Merkle roots submitted on-chain. Regulators and auditors receive scoped decryption keys or predicate proofs. Delivery-versus-payment is expressed through an atomic settlement standard.
+Run settlement on a low-cost L2, publish only commitments and hashes on chain, and keep the full transaction facts in an append-only encrypted log off chain. Integrity is anchored by periodic Merkle roots submitted on chain. Regulators and auditors receive scoped decryption keys or predicate proofs. Delivery-versus-payment is expressed through an atomic settlement standard.
 
 ## Components
 
 - On-chain audit contract that accepts `AuditCommit(bytes32)` entries and records hourly Merkle roots over the off-chain log.
-- Append-only encrypted off-chain log, replicated across regions, storing per-trade records keyed by a content address.
+- Append-only encrypted log, replicated across regions, storing per-trade records keyed by a content address.
 - Per-trade symmetric key, wrapped to a threshold set of authorities so that disclosure requires a quorum rather than a single custodian.
 - Atomic settlement contract implementing cross-leg delivery-versus-payment over cash and asset legs.
-- Access-logging attestations emitted on-chain whenever a scoped key is issued or used.
+- Access-logging attestations emitted on chain whenever a scoped key is issued or used.
 
 ## Protocol
 
-1. [user] Negotiate and match the trade off-chain; optionally encrypt the routing metadata.
-2. [operator] Write the encrypted record to the log, compute its commitment, and submit `AuditCommit` on-chain.
-3. [operator] Aggregate the window's commitments into a Merkle root and anchor it on-chain at the configured cadence.
+1. [user] Negotiate and match the trade off chain; optionally encrypt the routing metadata.
+2. [operator] Write the encrypted record to the log, compute its commitment, and submit `AuditCommit` on chain.
+3. [operator] Aggregate the window's commitments into a Merkle root and anchor it on chain at the configured cadence.
 4. [contract] Escrow both legs and finalize atomically through the delivery-versus-payment contract.
 5. [regulator] Receive a scoped decryption key or predicate proof for a specific record; the issuance is logged through an on-chain attestation.
 6. [auditor] Replay the log against the anchored roots to confirm that no record has been rewritten after the fact.
@@ -74,7 +74,7 @@ Run settlement on a low-cost L2, publish commitments and hashes on-chain, and ke
 
 Guarantees:
 
-- Public observers see commitments and hashes; amounts, identities, and positions remain off-chain.
+- Public observers see only commitments and hashes; amounts, identities, and positions remain off chain.
 - Merkle anchoring makes the log tamper-evident: any silent rewrite breaks the on-chain root.
 - Atomic delivery-versus-payment prevents one-sided settlement failure.
 - Disclosure is scoped and logged, so access is auditable after the fact.
@@ -95,7 +95,7 @@ Threat model:
 
 ## Example
 
-A dealer sells a bond to an asset manager on the L2. The chain records the commitment and the hourly Merkle root; full trade details sit encrypted in the log. Delivery-versus-payment finalizes atomically on-chain. The national supervisor later receives a 24-hour scoped key for that record, and the issuance is attested on-chain so the disclosure is itself auditable.
+A dealer sells a bond to an asset manager on the L2. The chain records only the commitment and the hourly Merkle root; full trade details sit encrypted in the log. Delivery-versus-payment finalizes atomically on chain. The national supervisor later receives a 24-hour scoped key for that record, and the issuance is attested on chain so the disclosure is itself auditable.
 
 ## See also
 

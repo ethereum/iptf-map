@@ -1,82 +1,111 @@
 ---
 title: "Pattern: Private Shared State (MPC + ZK / co-SNARKs)"
 status: draft
-maturity: PoC
+maturity: testnet
+type: standard
 layer: hybrid
-privacy_goal: Multiple parties jointly maintain shared state via collaborative ZK proving over secret-shared inputs
-assumptions: co-SNARK protocol infrastructure, MPC network with honest majority, Ethereum L1/L2 for state-root anchoring
-last_reviewed: 2026-03-11
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Multiple institutions share a ledger, pool, or order book and must hide individual positions from each other
-  - Cryptographic privacy guarantees are required (no hardware trust acceptable)
-  - Regulatory audit must be possible without exposing raw data to all participants
+  - Multiple institutions share a ledger, pool, or order book and must hide individual positions from each other.
+  - Cryptographic privacy guarantees are required (no hardware trust acceptable).
+  - Regulatory audit must be possible without exposing raw data to all participants.
 avoid-when:
-  - Single-party privacy is sufficient (use shielding instead)
-  - Sub-second latency is critical (MPC rounds + proving add batch latency)
-  - Fully trustless client-side proving with no external infrastructure dependency is required
-dependencies: [co-SNARK protocols (e.g. TACEO), threshold cryptography, Groth16/STARK verifier]
+  - Single-party privacy is sufficient (use shielding instead).
+  - Sub-second latency is critical (MPC rounds plus proving add batch latency).
+  - Fully trustless client-side proving with no external infrastructure dependency is required.
+
 context: both
+context_differentiation:
+  i2i: "Between institutions, the MPC node set is typically operated by the consortium members themselves or by a neutral third party under SLA. Honest-majority risk is bounded by bilateral agreements and audit logs; legal recourse backs any collusion claim."
+  i2u: "For user-facing deployments the prover and MPC node set must be operator-diverse and ideally permissionless. A user has no recourse if a coalition silently reconstructs their witness. Economic bonding with slashing and publicly auditable proving logs are required to make the guarantee meaningful."
+
 crops_profile:
   cr: medium
-  os: yes
-  privacy: full
-  security: medium
+  o: yes
+  p: full
+  s: medium
+
+crops_context:
+  cr: "Reaches `high` when the MPC prover network is permissionless and bond-backed. Drops to `low` when a single proving service controls the pipeline or when participation requires consortium membership."
+  o: "Core co-SNARK proving frameworks are published under permissive licenses. Production deployments may bundle proprietary orchestration and share-routing."
+  p: "No single MPC node or the verifier sees any party's plaintext inputs under the honest-majority assumption. Metadata about who participated, timing, and which circuit was proven can still leak."
+  s: "Rides on the soundness of the underlying SNARK (including any trusted-setup ceremony) and on the honest-majority assumption across MPC nodes. Dishonest majority leads to witness exposure and, in some constructions, forged proofs."
+
+post_quantum:
+  risk: high
+  vector: "Pairing-based SNARKs (Groth16, PLONK/KZG) broken by CRQC. MPC communication inherits the underlying key-exchange assumptions; HNDL risk applies to recorded MPC transcripts."
+  mitigation: "co-STARK alternatives with hash-based commitments. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: []
+
+related_patterns:
+  requires: [pattern-co-snark, pattern-zk-proof-systems]
+  composes_with: [pattern-stealth-addresses, pattern-regulatory-disclosure-keys-proofs, pattern-threshold-encrypted-mempool]
+  alternative_to: [pattern-private-shared-state-fhe, pattern-private-shared-state-tee]
+  see_also: [pattern-shielding, pattern-co-snark]
+
+open_source_implementations:
+  - url: https://github.com/TaceoLabs/co-snarks
+    description: "co-SNARK proving framework supporting Groth16 and PLONK (research/testnet)"
+    language: Rust
 ---
 
 ## Intent
 
-Enable **N parties to jointly read and write shared on-chain state** (balances, positions, order books, collateral pools) while keeping each party's individual data private from the others **and** from the infrastructure operator. This variant uses **MPC + collaborative ZK proving (co-SNARKs)**: parties secret-share their inputs, jointly produce a ZK proof of correct state transition, and post the proof on-chain for verification.
+Enable N parties to jointly read and write shared on-chain state (balances, positions, order books, collateral pools) while keeping each party's individual data private from the others and from the infrastructure operator. This variant secret-shares each party's inputs across a distributed prover network; the nodes jointly run an MPC protocol to compute a single zero-knowledge proof of a correct state transition; the proof is posted on-chain for verification.
 
-Unlike single-party privacy (shielding), private shared state requires computation *across* multiple parties' secrets.
+Unlike single-party shielding, private shared state requires computation across multiple parties' secrets.
 
-## Ingredients
+## Components
 
-- **Cryptography**: co-SNARK protocols (e.g. [TACEO](https://core.taceo.io/)), secret sharing, Groth16/STARK proof systems
-- **Infra**: MPC network for collaborative proving; Ethereum L1/L2 for state-root anchoring and settlement finality
-- **On-chain**: Commitment schemes (Pedersen, Poseidon) for state representation; ZK verifier contract
-- **Off-chain**: Secret-shared state storage; regulatory disclosure mechanism (selective ZK proofs or viewing keys)
+- Secret-sharing layer splits each party's inputs (additive or Shamir) and routes shares to the proving network.
+- Distributed prover network jointly runs the MPC protocol to compute a zero-knowledge proof without any node reconstructing the full witness.
+- Coordinator sequences MPC rounds and assembles the final proof.
+- Commitment scheme (Pedersen, Poseidon) represents the shared state as commitments anchored on-chain.
+- On-chain verifier contract checks the proof and advances the state root on L1 or a settlement L2.
+- Regulatory disclosure path produces selective zero-knowledge proofs or scoped viewing material for auditors without revealing other participants' data.
 
 ## Protocol
 
-1. **Setup**: Parties establish MPC key shares and agree on proving circuit.
-2. **Deposit**: Parties deposit assets into PSS contract; balances converted to secret-shared representation.
-3. **Request**: A party submits a secret-shared state transition (transfer, trade, margin call).
-4. **Compute**: MPC nodes jointly evaluate the transition and produce a collaborative ZK proof without any single node seeing plaintext inputs.
-5. **Commit**: ZK proof and new state commitment posted on-chain; verifier contract checks correctness.
-6. **Audit**: Regulators access scoped disclosure via selective ZK proofs without seeing all participants' data.
+1. [user] Each participating institution secret-shares its inputs across the MPC prover network.
+2. [user] A party submits a secret-shared state transition request (transfer, trade, margin call).
+3. [prover] MPC nodes jointly execute the co-SNARK protocol, exchanging shares across rounds to compute witness polynomials and commitments without reconstructing any plaintext.
+4. [prover] The coordinator assembles the final zero-knowledge proof and the new state commitment.
+5. [contract] The on-chain verifier checks the proof and advances the state root.
+6. [auditor] Regulator obtains scoped disclosure via a selective zero-knowledge proof or viewing key bound to a specific position.
 
-## Guarantees
+## Guarantees & threat model
 
-- **Input privacy**: No party or MPC node learns another's balances, positions, or trade intent (honest-majority assumption).
-- **State correctness**: On-chain ZK proof ensures transitions follow protocol rules.
-- **Settlement finality**: Anchored to Ethereum L1/L2 for irreversibility.
-- **Auditability**: Scoped disclosure path for regulators without full-state exposure.
+Guarantees:
+
+- Input privacy: no party or MPC node learns another party's balances, positions, or trade intent under the honest-majority assumption.
+- State correctness: the on-chain zero-knowledge proof enforces that every transition follows protocol rules.
+- Settlement finality anchored to Ethereum L1 or an L2 for irreversibility.
+- Scoped auditability through selective zero-knowledge proofs or disclosure keys.
+
+Threat model:
+
+- Soundness of the underlying SNARK and any trusted-setup ceremony.
+- Honest-majority assumption across MPC nodes. A colluding majority can recover witnesses and, in some constructions, forge proofs.
+- Non-censoring coordinator. A malicious coordinator can refuse to finalize or selectively drop requests; liveness fails, not privacy.
+- Authenticated and confidential channels between nodes. Metadata about participation and timing is out of scope.
+- Sender and receiver addresses are not hidden by default; address unlinkability requires composition with stealth addresses.
 
 ## Trade-offs
 
-- Requires MPC network infrastructure with honest-majority assumption; dishonest majority leads to state corruption, not privacy loss.
-- Batch latency from MPC rounds + proving (~200 TPS batched).
-- Does not hide sender/receiver addresses by default; combine with [stealth addresses](pattern-stealth-addresses.md) for address unlinkability.
-- Testnet maturity as of March 2026; UTXO shielding is production-ready but covers single-party privacy only.
-- **Liveness**: MPC halts if fewer than the required quorum of nodes respond. Degrades to unavailability, not privacy loss.
-- **CROPS context**: Applies to I2I (multi-party institutional computation). CR is `medium` because participation requires MPC network access but protocol-level guarantees exist. In I2I, institutions negotiate MPC node operation among themselves. If extended to I2U, end-users would depend on institutional MPC nodes with no independent fallback.
-- **Post-quantum exposure**: Groth16-based co-SNARKs rely on pairings broken by CRQC. Mitigation: co-STARK alternatives. See [Post-Quantum Threats](../domains/post-quantum.md).
+- Heavy communication overhead. Round count and bandwidth scale with both the number of provers and circuit size.
+- Batch latency of several hundred milliseconds to seconds per transition; batched throughput in the low hundreds of TPS in current research stacks.
+- Liveness depends on all designated nodes remaining online through the proving session. Dropouts force a restart.
+- New infrastructure requirements: MPC nodes, share routing, key management, and slashing if bond-backed.
+- Not a fit when sub-second latency is required or when a fully client-side proof is possible.
 
 ## Example
 
-**Consortium Collateral Pool**
-
-- Three banks deposit tokenised bonds into a shared collateral pool on an Ethereum L2.
-- Each bank's deposit amount is secret-shared across MPC nodes.
-- A margin call triggers collaborative ZK proving: the MPC network verifies sufficient aggregate collateral without revealing individual positions.
-- A ZK proof and new state commitment root are posted on-chain.
-- The regulator uses a selective ZK proof to audit one bank's position without learning the others'.
+- Three banks share a tokenised-bond collateral pool on an Ethereum settlement L2. Each bank's deposit is secret-shared across the MPC prover network. A margin call triggers a joint co-SNARK run: the network produces one zero-knowledge proof attesting that aggregate collateral covers the exposure without revealing any individual position. The proof and the new state commitment are posted on-chain. A regulator later audits one bank's position via a scoped selective proof without learning the others.
 
 ## See also
 
-- [co-SNARKs (Collaborative Proving)](pattern-co-snark.md): The underlying collaborative proving primitive
-- [Private Shared State (FHE)](pattern-private-shared-state-fhe.md): FHE-based alternative
-- [Private Shared State (TEE)](pattern-private-shared-state-tee.md): TEE-based alternative
-- [Shielding](pattern-shielding.md): Single-party UTXO privacy (not shared state)
-- [Threshold Encrypted Mempool](pattern-threshold-encrypted-mempool.md): Threshold encryption for transaction privacy
-- Vendor: [TACEO Merces](../vendors/taceo-merces.md): PSS reference implementation (co-SNARKs)
+- [TACEO Merces](../vendors/taceo-merces.md)
+- [Collaborative zk-SNARKs (Ozdemir & Boneh, 2021)](https://eprint.iacr.org/2021/1530.pdf)
+- [TACEO private proof delegation](https://core.taceo.io/articles/private-proof-delegation/)

@@ -16,7 +16,7 @@ avoid-when:
 
 context: both
 context_differentiation:
-  i2i: "Bridging friction and centralized-sequencer risk are acceptable trade-offs when both counterparties operate within a shared legal framework. The pattern's primary value is programmable private state: confidential contract logic, private balances with DvP hooks, and selective disclosure integrated at the protocol level. Temporary sequencer centralization is a liveness concern in this context, not an existential one."
+  i2i: "Institutions can absorb bridging friction and centralized-sequencer risk as known operational costs. The primary value is programmable private state: confidential contract logic, private balances with DvP hooks, and selective disclosure integrated at the protocol level. Both counterparties share a legal framework, so temporary sequencer centralization is a liveness concern, not an existential one."
   i2u: "End users face asymmetric exposure to the sequencer. A centralized sequencer can unilaterally exclude user transactions; without forced withdrawal via the L1 bridge, user funds can be stranded. Permissionless sequencer selection and forced-exit guarantees are prerequisites before this pattern is safe for user-facing deployments."
 
 crops_profile:
@@ -47,7 +47,7 @@ standards: [ERC-20, ERC-3643, ERC-7573]
 related_patterns:
   composes_with: [pattern-shielding, pattern-regulatory-disclosure-keys-proofs, pattern-dvp-erc7573, pattern-erc3643-rwa]
   alternative_to: [pattern-plasma-stateless-privacy]
-  see_also: [pattern-forced-withdrawal, pattern-user-controlled-viewing-keys]
+  see_also: [pattern-forced-withdrawal, pattern-l2-privacy-evaluation, pattern-user-controlled-viewing-keys]
 
 open_source_implementations:
   - url: https://github.com/AztecProtocol/aztec-packages
@@ -117,7 +117,7 @@ Threat model:
 ## Example
 
 - Bond issuance and secondary trading on native shielded notes.
-- An FHE-based L2 running a private credit risk model where inputs remain encrypted end-to-end and the final attestation is revealed to the counterparty.
+- An FHE-based L2 running a private credit risk model where inputs remain encrypted end-to-end and only the final attestation is revealed to the counterparty.
 
 ## See also
 
@@ -125,3 +125,6 @@ Threat model:
 - [Aleo](https://aleo.org/)
 - [fhEVM documentation](https://docs.zama.org/protocol/protocol/overview)
 - [Miden](https://miden.xyz/)
+- [Aztec (vendor page)](../vendors/aztec.md)
+- [Miden (vendor page)](../vendors/miden.md)
+- [Zama (vendor page)](../vendors/zama.md)

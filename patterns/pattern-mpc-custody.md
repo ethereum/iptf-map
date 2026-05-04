@@ -7,7 +7,7 @@ layer: offchain
 last_reviewed: 2026-04-22
 
 works-best-when:
-  - An institution needs institutional custody under regulatory controls for digital assets.
+  - An institution needs regulated-grade custody for digital assets.
   - Key material must never exist in one place while signing must still be quick.
   - Policy-based approvals (role, limit, allowlist) are required before signing.
 avoid-when:
@@ -113,10 +113,11 @@ A bank issues a tokenized bond on Ethereum under a 2-of-3 custody policy across 
 - The policy engine checks the destination allowlist and the transaction limit, then notifies compliance for approval.
 - Compliance approves via the dashboard; the two signing nodes run the threshold-signing protocol and emit a combined signature.
 - The signed transaction is broadcast; bond tokens move to the investor address.
-- The audit log records the approval path, the quorum members who signed, and the resulting transaction hash.
+- The audit log records the approval path, the quorum members that signed, and the resulting transaction hash.
 
 ## See also
 
+- [Fireblocks](../vendors/fireblocks.md)
 - [FROST specification](https://datatracker.ietf.org/doc/draft-irtf-cfrg-frost/)
 - [CGGMP21 paper](https://eprint.iacr.org/2021/060)
-- [Fireblocks (vendor docs)](https://www.fireblocks.com/)
+- [Post-Quantum Threats](../domains/post-quantum.md)
