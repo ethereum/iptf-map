@@ -5,7 +5,6 @@ maturity: testnet
 type: standard
 layer: L1
 last_reviewed: 2026-04-22
-rollout-plan: glamsterdam or later forks
 
 works-best-when:
   - Censorship resistance is critical and must not depend on builder honesty.

@@ -5,7 +5,6 @@ maturity: concept
 type: standard
 layer: hybrid
 last_reviewed: 2026-04-22
-rollout-plan: ready to be integrated in wallets
 
 works-best-when:
   - User needs to execute calls on multiple L2s with one signature.
