@@ -98,4 +98,3 @@ Two regulated banks settle a shielded USD-stablecoin leg against a shielded EUR-
 ## See also
 
 - [ERC-7573: Conditional-upon-Event Asset Transfer](https://eips.ethereum.org/EIPS/eip-7573)
-- [Delivery versus Payment via ERC-7573](pattern-dvp-erc7573.md)
