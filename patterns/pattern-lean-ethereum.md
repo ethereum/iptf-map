@@ -49,7 +49,7 @@ open_source_implementations:
 
 ## Intent
 
-Plan a long-range redesign of the Ethereum consensus layer, targeting a single major fork around 2030 that consolidates several research tracks: post-quantum signatures, minimal zkVMs for signature aggregation and proof compression, reduced hardware and stake thresholds for validators, and networking upgrades that support a larger validator set. The goal is a consensus protocol that is stable for decades, resilient against quantum adversaries, and verifiable on minimal devices.
+Lean Ethereum is a long-range redesign of the Ethereum consensus layer, targeting a single major fork around 2030 that consolidates several research tracks: post-quantum signatures, minimal zkVMs for signature aggregation and proof compression, reduced hardware and stake thresholds for validators, and networking upgrades that support a larger validator set. The goal is a consensus protocol that is stable for decades, resilient against quantum adversaries, and verifiable on minimal devices.
 
 ## Components
 
