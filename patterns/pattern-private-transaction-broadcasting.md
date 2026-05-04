@@ -67,7 +67,7 @@ Hide transaction content from the public mempool before inclusion so that front-
 
 ## Protocol
 
-### Variant A: Private relay
+The canonical relay-based flow is below. The threshold-encrypted variant, where transactions are submitted as ciphertexts and decrypted only after ordering is committed, is documented separately in [pattern-threshold-encrypted-mempool](pattern-threshold-encrypted-mempool.md).
 
 1. [user] Sign the transaction locally with standard tooling.
 2. [user] Submit the signed transaction to a private RPC endpoint instead of the public mempool.
@@ -75,15 +75,6 @@ Hide transaction content from the public mempool before inclusion so that front-
 4. [validator] Include the transaction in a block without re-broadcasting to the public mempool.
 5. [contract] Execute the transaction; its content becomes visible only after on-chain inclusion.
 6. [relayer] Optionally return a share of extracted MEV to the originator via an MEV-sharing mechanism.
-
-### Variant B: Threshold-encrypted mempool
-
-1. [user] Encrypt the transaction payload under the committee's threshold public key.
-2. [user] Submit the ciphertext to the mempool; metadata (sender, gas, size) is visible but content is not.
-3. [validator] Include the ciphertext in a block to commit its ordering.
-4. [operator] After inclusion commitment, the threshold committee publishes decryption shares.
-5. [validator] Validators reconstruct the plaintext and execute the transaction.
-6. [contract] Execution proceeds with ordering already fixed, so front-running based on observed content is impossible.
 
 ## Guarantees & threat model
 
