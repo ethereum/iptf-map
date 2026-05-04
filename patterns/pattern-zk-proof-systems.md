@@ -1,7 +1,7 @@
 ---
 title: "Pattern: ZK Proof Systems"
 status: draft
-maturity: testnet
+maturity: concept
 type: standard
 layer: hybrid
 last_reviewed: 2026-04-22
