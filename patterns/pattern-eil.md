@@ -66,12 +66,12 @@ Account-based cross-L2 interoperability where users sign once and execute transa
 ## Protocol
 
 1. [user] Discover registered liquidity providers operating on both source and destination chains.
-2. [user] Sign a multichain UserOp. On the source chain, lock funds in the CrossChainPaymaster and request a voucher specifying provider list and fee schedule via reverse Dutch auction. Funds unlock automatically if no voucher arrives promptly.
-3. [operator] A liquidity provider claims the source-chain funds by submitting a signed voucher. The same voucher releases provider funds on the destination. Source funds remain locked for one hour before crediting the provider's deposit.
+2. [user] Sign a multichain UserOp; on the source chain, lock funds in the CrossChainPaymaster and request a voucher.
+3. [operator] A liquidity provider claims the source-chain funds and releases provider funds on the destination by signing the voucher.
 4. [user] Append the provider voucher to the destination UserOp signature and submit to the destination chain.
 5. [contract] Destination CrossChainPaymaster verifies the voucher, checks provider deposits, pays gas, and releases funds to the user.
 6. [user] Calls execute on the destination. The same signature can traverse any number of additional L2s using more vouchers.
-7. [contract] If a provider misbehaves, the L1 dispute mechanism slashes the violating stake and rewards any other provider that supplies a violation proof.
+7. [contract] If a provider misbehaves, an L1 dispute resolves it.
 
 ## Guarantees & threat model
 
@@ -88,6 +88,7 @@ Threat model:
 - Requires the same account implementation or a compatible validation module on every involved chain.
 - Requires the same signing key on every chain until an L1 keystore with L1SLOAD is available.
 - Capital efficiency cost: one-hour fund lock on the source chain after voucher issuance.
+- Provider misbehavior: handled via L1 slashing of provider stake; any provider that supplies a violation proof receives a reward. The dispute window is bounded by the L1 canonical bridge.
 - Reorg risk on destination chains with frequent reorganizations; a deep reorg can invalidate a voucher redemption.
 - Out of scope: application-layer confidentiality. Call targets, amounts, and account identities are all visible.
 

@@ -62,9 +62,10 @@ Make every Ethereum account natively programmable by replacing the hardcoded ECD
 ## Protocol
 
 1. [user] Sign and submit a frame transaction containing an ordered list of frames to the regular mempool.
-2. [contract] Execute `VERIFY` frames as static calls. Each must call `APPROVE` with a scope (`0x0` execution, `0x1` payment, `0x2` both). If no frame approves payment, the transaction is invalid.
-3. [contract] After validation passes, execute `SENDER`-mode frames with the sender as caller, and `DEFAULT`-mode frames with the protocol entry point as caller.
-4. [contract] Charge gas to whichever account approved payment, which may differ from the sender.
+2. [contract] Execute each `VERIFY` frame as a static call.
+3. [contract] Each `VERIFY` must invoke `APPROVE` with a scope (`0x0` execution, `0x1` payment, `0x2` both); reject the transaction if no frame approves payment.
+4. [contract] Execute `SENDER`-mode frames with the sender as caller, and `DEFAULT`-mode frames with the protocol entry point as caller.
+5. [contract] Charge gas to the account that `APPROVE` indicated for payment, which may differ from the sender.
 
 ## Guarantees & threat model
 
