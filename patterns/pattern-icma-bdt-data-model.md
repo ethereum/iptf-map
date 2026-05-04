@@ -2,52 +2,87 @@
 title: "Pattern: ICMA Bond Data Taxonomy (canonical terms/events)"
 status: ready
 maturity: production
+type: standard
 layer: offchain
-privacy_goal: Standardize bond data for clean attestations without exposing raw data
-assumptions: ICMA BDT schema adoption, schema validator tooling, registrar integration
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - You want machine-readable bond terms/events across tools.
+  - You want machine-readable bond terms and lifecycle events across tools.
+  - Multiple issuance platforms need to interoperate without bespoke mappings.
 avoid-when:
-  - N/A (use as a baseline; extend as needed)
-  - ICMA is not the schema being used for a particular jurisdiction/domain
-dependencies:
-  - ICMA BDT schema
+  - A jurisdiction or domain mandates a different canonical schema.
+
 context: i2i
+
 crops_profile:
   cr: none
-  os: yes
-  privacy: full
-  security: high
+  o: no
+  p: none
+  s: medium
+
+crops_context:
+  cr: "Schema governance sits with a single standards body (ICMA). Could reach `medium` if the schema is published as a permissionless open registry with attestation-anchored contributions and no approval gate."
+  o: "Specification is publicly documented but governance is centralized under ICMA; no explicit open license or forkability guarantee is established. Reaches `partial` or `yes` if the schema is published under a permissive or copyleft license with a forkable reference implementation."
+  p: "The taxonomy standardizes structure only; it is not a confidentiality primitive. Privacy outcomes depend entirely on companion patterns (selective disclosure, ZK proofs, controlled access, hash anchoring)."
+  s: "Rides on the correctness of off-chain validators, registrar-mapping integrity, and hash-anchoring soundness. These operational trust points cap the pattern at `medium` in the absence of stronger controls (multi-party validation, formally specified mapping procedures). Reaches `high` when validator correctness is cryptographically enforced and mapping operations are multi-party-verified."
+
+post_quantum:
+  risk: low
+  vector: "Hash-based anchoring is not directly affected. Any ECDSA-signed off-chain attestations over BDT records are vulnerable to a CRQC, but the canonical schema itself has no cryptographic dependency."
+  mitigation: "Use post-quantum signatures for attestations over BDT records; hash-based commitments for on-chain anchoring remain safe."
+
+standards: [ICMA-BDT]
+
+related_patterns:
+  composes_with: [pattern-crypto-registry-bridge-ewpg-eas, pattern-verifiable-attestation, pattern-regulatory-disclosure-keys-proofs]
+  see_also: [pattern-private-iso20022]
 ---
 
 ## Intent
-Use **ICMA Bond Data Taxonomy** as the canonical schema for bond terms & lifecycle events to avoid fragmentation and enable clean attestations/proofs.
 
-## Ingredients
-- **Standards**: ICMA BDT
-- **Infra**: Schema loader/validator; compression (XML→binary)
-- **Off-chain**: Mapping to registrar records; EAS hash anchoring
+Use the ICMA Bond Data Taxonomy as the canonical schema for bond terms and lifecycle events. A shared data model avoids fragmentation across issuance platforms, registrars, and regulators, and provides a stable foundation for attestations and zero-knowledge proofs over bond data.
 
-## Protocol (concise)
-1. Author terms/events in BDT.
-2. Validate; compress; store (on/off-chain hash).
-3. Use same schema in proofs/disclosures.
+## Components
 
-## Guarantees
-- Interop-ready, regulator-friendly data.
-- Easier proofs/attestations.
+- Canonical schema defines bond terms (identifiers, parties, cash flows, covenants) and lifecycle events (issuance, coupons, redemption, restructuring).
+- Schema validator checks that bond records conform to the canonical definitions before they are signed, hashed, or anchored.
+- Compression layer converts verbose representations (for example XML) into binary or compact serialization for efficient on-chain anchoring.
+- Registrar integration maps internal registrar records to the canonical schema so existing systems can emit conformant data without rewriting their back office.
+- Attestation anchor posts hashes of conformant records to an on-chain attestation registry so any verifier can check that a disclosed document matches what the registrar recorded.
+
+## Protocol
+
+1. [operator] Author bond terms and lifecycle events in the canonical schema.
+2. [operator] Validate the record against the schema and compress for storage.
+3. [operator] Store the record (on-chain hash anchor, off-chain canonical payload).
+4. [auditor] Use the same schema when preparing selective-disclosure proofs or attestations.
+5. [regulator] Verify consistency between disclosed payloads and on-chain hash anchors.
+
+## Guarantees & threat model
+
+Guarantees:
+
+- Interoperable bond data representation across platforms and supervisory workflows.
+- Common fields that reduce per-issuer schema translation for proofs and attestations.
+- Baseline compatibility with hash-anchored registries and zero-knowledge disclosure patterns.
+
+Threat model:
+
+- Schema governance integrity. If the standards body publishes conflicting revisions, validators may diverge on what counts as conformant.
+- Registrar mapping correctness. A mismapping at integration time can silently break consistency between internal records and canonical output.
+- Out of scope: data confidentiality. The schema is a structural artifact, not a privacy tool; confidentiality must come from accompanying patterns (hash anchoring, selective disclosure, ZK proofs).
 
 ## Trade-offs
-- Up-front mapping effort to existing systems.
-- **CROPS context (i2i)**: CR could reach `medium` if the BDT schema is published as a permissionless open registry with EAS-anchored contributions and no approval gate. Among institutional counterparties, open schema governance ensures no single issuer or registrar controls the canonical bond data format, enabling competitive issuance platforms to interoperate without gatekeeping.
+
+- Up-front mapping effort is required to wire existing registrar systems into the canonical schema.
+- Schema extensions for new product types (complex derivatives, non-standard covenants) need standards-body involvement, which can lag market innovation.
+- Not a privacy mechanism on its own. Must be paired with hashing, attestation, or zero-knowledge patterns to protect the underlying data.
 
 ## Example
-- Issuance terms in BDT; hash anchored via EAS; regulator verifies consistency.
+
+An issuance platform publishes bond terms in the canonical schema. The registrar validates the record and anchors its hash via an on-chain attestation registry. A regulator later receives the full payload off-chain and verifies the hash matches the on-chain anchor, confirming the record has not been altered since issuance.
 
 ## See also
-- pattern-crypto-registry-bridge-ewpg-eas.md
 
-## See also (external)
-- ICMA BDT overview: https://www.icmagroup.org/fintech-and-digitalisation/fintech-advisory-committee-and-related-groups/bond-data-taxonomy/
-- BDT factsheet (PDF): https://www.icmagroup.org/assets/documents/Regulatory/FinTech/Bond-data-taxonomy/ICMA-Bond-Data-Taxonomy-BDT-Factsheet-March-2023-140323.pdf
+- [ICMA Bond Data Taxonomy overview](https://www.icmagroup.org/fintech-and-digitalisation/fintech-advisory-committee-and-related-groups/bond-data-taxonomy/)
+- [ICMA BDT Factsheet (PDF)](https://www.icmagroup.org/assets/documents/Regulatory/FinTech/Bond-data-taxonomy/ICMA-Bond-Data-Taxonomy-BDT-Factsheet-March-2023-140323.pdf)

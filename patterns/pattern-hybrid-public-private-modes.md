@@ -1,120 +1,100 @@
 ---
 title: "Pattern: Hybrid Public-Private Modes"
 status: draft
-maturity: PoC
+maturity: concept
+type: standard
 layer: hybrid
-privacy_goal: Enable per-transaction and per-counterparty selection between public and private execution
-assumptions: Volition-style architecture or dual-chain setup, policy engine for mode routing, compliant token standards
-last_reviewed: 2026-01-16
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Different legs of a trade have different privacy requirements (e.g., private cash, public asset).
+  - Different legs of a trade have different privacy requirements (for example, private cash, public asset).
   - Counterparties have heterogeneous compliance regimes requiring flexible disclosure.
-  - Cost optimization is needed—public mode for low-value, private mode for sensitive flows.
+  - "Cost optimization is needed: public mode for low-value, private mode for sensitive flows."
 avoid-when:
   - Uniform privacy is mandatory across all transactions (use a fully private L2 instead).
   - Complexity overhead outweighs benefits for simple, single-mode use cases.
-dependencies:
-  - ERC-7573 (DvP settlement)
-  - ERC-3643 (compliant tokens with transfer rules)
-  - Volition or dual-chain architecture (public/private execution environments)
+
 context: both
+context_differentiation:
+  i2i: "Between institutions, mode selection is a bilateral decision backed by contractual agreements on disclosure. Decentralized policy governance prevents any single counterparty from unilaterally forcing mode changes for bilateral trades. Both parties have legal recourse against policy drift or misconfiguration."
+  i2u: "For end users, policy routing must be verifiable. Open-source routing logic lets users confirm their transactions are correctly assigned to private mode when required. Any operator-only override creates a pathway for forced disclosure, so the policy engine should be implemented as a permissionless smart contract rather than an operator service."
+
 crops_profile:
   cr: medium
-  os: partial
-  privacy: partial
-  security: medium
+  o: partial
+  p: partial
+  s: medium
+
+crops_context:
+  cr: "Reaches `high` if the policy engine is decentralized as a permissionless smart contract with no unilateral override. Drops if the routing layer is operator-controlled, since a single party can force public-mode execution."
+  o: "Could reach `yes` by mandating open-source mode-routing logic and requiring privacy L2 provers to remain forkable. Today's deployments mix open public chains with partially-closed privacy environments."
+  p: "Public-mode legs are fully transparent; private-mode legs hide amounts and counterparties with selective disclosure via view keys. Mode selection itself leaks information: choosing private signals sensitivity."
+  s: "Could reach `high` with multi-operator settlement oracles using threshold cryptography. Current deployments rely on single oracle services or coordinated off-chain timing, which expands the trust surface."
+
+post_quantum:
+  risk: high
+  vector: "Any private leg using EC-based zero-knowledge proofs (Groth16, PLONK over BN254) is broken by a CRQC. HNDL risk is high for encrypted view-key material shared between counterparties."
+  mitigation: "Route private legs through STARK-based shielded pools with hash commitments. Rotate long-lived view keys and prefer post-quantum signatures for cross-mode settlement oracles."
+
+standards: [ERC-7573, ERC-3643, ERC-5564]
+
+related_patterns:
+  composes_with: [pattern-shielding, pattern-privacy-l2s, pattern-dvp-erc7573, pattern-commit-and-prove, pattern-regulatory-disclosure-keys-proofs, pattern-stealth-addresses]
+  alternative_to: [pattern-private-pvp-stablecoins-erc7573]
+  see_also: [pattern-modular-privacy-stack, pattern-forced-withdrawal]
 ---
 
 ## Intent
 
-Allow institutions to select **public or private execution mode** on a per-transaction or per-counterparty basis, optimizing for cost, latency, and confidentiality requirements. This enables hybrid workflows where some legs execute transparently on public infrastructure while others use privacy-preserving mechanisms.
+Allow institutions to select public or private execution mode on a per-transaction or per-counterparty basis, optimizing for cost, latency, and confidentiality requirements. This enables hybrid workflows where some legs execute transparently on public infrastructure while others use privacy-preserving mechanisms, with atomic cross-mode settlement.
 
-## Ingredients
+## Components
 
-- **Standards**
-  - ERC-7573 for atomic cross-leg settlement
-  - ERC-3643 for compliant token transfers with eligibility checks
-  - ERC-5564 (optional) for stealth addresses in private mode
+- Public execution environment is an L1 or transparent L2 chain where amounts, counterparties, and timing are visible.
+- Private execution environment is a privacy L2 or shielded pool where amounts and counterparties are hidden behind ZK commitments or FHE ciphertexts.
+- Mode-routing layer is a smart contract or middleware that directs each transaction leg based on policy rules.
+- Policy engine defines mode-selection criteria: counterparty whitelist, asset thresholds, jurisdiction-based rules.
+- Cross-mode settlement coordinator uses ERC-7573 outcome keys or shared commitments to link a public leg and a private leg into one atomic trade.
+- View-key infrastructure issues selective-disclosure artifacts from private legs to counterparties and regulators.
 
-- **Infrastructure**
-  - **Public execution**: L1 or transparent L2 (e.g., Arbitrum, Optimism)
-  - **Private execution**: Privacy L2 (Aztec, Miden) or shielded pool (Railgun)
-  - **Mode-routing layer**: Smart contract or middleware that directs transactions based on policy
+## Protocol
 
-- **Off-chain**
-  - **Policy engine**: Rules defining when to use public vs. private mode per counterparty, asset class, or threshold
-  - **View key infrastructure**: For selective disclosure from private legs to auditors
-  - **Coordination service**: Manages cross-mode settlement timing
+1. [operator] Publish policy rules (counterparty whitelist, asset thresholds, jurisdictional routing) to the on-chain policy contract through governed, auditable change controls.
+2. [contract] When a trade arrives, the on-chain policy contract evaluates rules and assigns each leg to public or private execution. Routing is deterministic and not subject to unilateral operator override.
+3. [user] Prepare assets in the appropriate environment. Public legs stay on the transparent chain; private legs are shielded into a private pool or bridged to a privacy L2.
+4. [contract] Execute legs in parallel or sequence. Each leg runs in its assigned environment; private legs generate zero-knowledge proofs or use FHE, public legs execute standard transfers.
+5. [contract] Coordinate cross-mode settlement via ERC-7573 outcome keys or commit-and-prove so both legs settle atomically or both fail.
+6. [regulator] Receive disclosure artifacts from private legs: view keys or ZK attestations delivered per policy.
+7. [operator] Finalize and reconcile. Internal systems map public chain events to private proofs for the audit trail.
 
-## Protocol (concise)
+## Guarantees & threat model
 
-1. **Configure policy rules**
-   Institution defines mode-selection criteria: counterparty whitelist, asset thresholds, jurisdiction-based rules.
+Guarantees:
 
-2. **Evaluate mode per transaction**
-   When initiating a trade, the policy engine evaluates rules and assigns each leg to public or private execution.
+- Mode-specific privacy. Public-mode legs reveal amounts, counterparties, and timing; private-mode legs hide amounts or counterparties and disclose selectively via view keys.
+- Atomic cross-mode settlement. ERC-7573 outcome keys or shared commitments ensure either both legs succeed or both fail.
+- Selective auditability. Regulators verify private legs through view keys without accessing the privacy pool's full state.
+- Compliance continuity. Permissioned-token transfer rules apply regardless of execution mode, so eligibility checks hold on both public and private legs.
 
-3. **Prepare assets in appropriate environment**
-   Public leg: assets remain on transparent chain. Private leg: assets are shielded (deposited to private pool or bridged to privacy L2).
+Threat model:
 
-4. **Execute legs in parallel or sequence**
-   Each leg executes in its assigned environment. Private legs generate ZK proofs or use FHE; public legs execute standard transfers.
-
-5. **Coordinate cross-mode settlement**
-   ERC-7573 or commit-and-prove mechanism ensures atomicity across modes. Outcome keys or shared commitments link the legs.
-
-6. **Generate disclosure artifacts**
-   Private legs produce view keys or ZK attestations for counterparties and regulators as defined by policy.
-
-7. **Finalize and reconcile**
-   Both legs settle. Internal systems reconcile public chain events with private proofs for audit trail.
-
-## Guarantees
-
-- **Mode-specific privacy**
-  - Public mode: Full transparency of amounts, counterparties, timing.
-  - Private mode: Amounts and/or counterparties hidden; disclosed only via view keys.
-
-- **Atomic settlement**
-  Cross-mode DvP achieves conditional atomicity—both legs settle or both fail—via ERC-7573 outcome keys or shared commitments.
-
-- **Auditability**
-  Regulators can verify private legs through selective disclosure without accessing the privacy pool's full state.
-
-- **Compliance continuity**
-  ERC-3643 transfer rules apply regardless of mode, ensuring eligibility checks on both public and private legs.
+- Non-compromised policy engine. A tampered engine can route sensitive transactions to public mode.
+- Honest cross-mode settlement oracle. A compromised oracle can withhold outcome keys to grief one of the legs.
+- Non-censoring sequencer set on the privacy L2 (or forced-withdrawal fallback on the shielded pool).
+- Out of scope: metadata correlation across modes. Timing and transaction-size correlation between the public and private legs can re-link counterparties even without direct leakage.
 
 ## Trade-offs
 
-- **Metadata leakage**
-  Mode selection itself reveals information (choosing private signals sensitivity). Timing correlation between legs may link transactions.
-
-- **Operational complexity**
-  Dual infrastructure requires expertise in both transparent and privacy systems. Failure modes multiply.
-
-- **Cost asymmetry**
-  Private execution incurs ZK proof generation costs; public execution is cheaper but exposes data. Mixed-mode trades pay both overheads.
-
-- **Tooling maturity**
-  Cross-mode settlement is less battle-tested than single-environment flows. Limited production deployments exist.
-
-- **Policy drift risk**
-  Rules must stay synchronized across systems; misconfigurations can route sensitive transactions to public mode.
-- **CROPS context (both)**: CR could reach `high` if the policy engine is decentralized as a permissionless smart contract with no unilateral override. OS improves to `yes` by mandating open-source mode-routing logic and requiring privacy L2 provers to remain forkable. Security could reach `high` with multi-operator settlement oracles using threshold cryptography. In I2I, decentralized policy governance prevents any single counterparty from controlling mode selection for bilateral trades. In I2U, open-source routing logic lets end users verify that their transactions are correctly assigned to private mode when required.
+- Metadata leakage. Mode selection itself reveals information: choosing private signals sensitivity. Timing correlation between legs may link transactions.
+- Operational complexity. Dual infrastructure requires expertise in both transparent and privacy systems; failure modes multiply.
+- Cost asymmetry. Private execution incurs zero-knowledge proof generation costs; public execution is cheaper but exposes data. Mixed-mode trades pay both overheads.
+- Tooling maturity. Cross-mode settlement is less battle-tested than single-environment flows. Limited production deployments exist.
+- Policy drift risk. Rules must stay synchronized across systems; misconfigurations can route sensitive transactions to public mode.
 
 ## Example
 
-- Bank A sells a tokenized bond (public asset leg on L1) to Bank B for EURC (private cash leg on privacy L2).
-- Policy engine assigns: bond transfer = public (asset is already public, no sensitivity); cash payment = private (amount confidentiality required).
-- Bank A locks bond in ERC-7573 contract on L1.
-- Bank B shields EURC on privacy L2 and executes private payment referencing trade ID `T`.
-- Oracle confirms private payment success, releases outcome key.
-- L1 contract delivers bond to Bank B. Regulator receives Bank B's view key for the cash leg.
+A bank sells a tokenized bond (public asset leg on L1) to a counterparty for a stablecoin payment (private cash leg on a privacy L2). The policy engine assigns the bond transfer to public execution (the asset is already public, no sensitivity) and the cash payment to private execution (amount confidentiality required). The seller locks the bond in an ERC-7573 contract on L1. The buyer shields the stablecoin on the privacy L2 and executes the private payment referencing trade ID T. An oracle confirms private payment success and releases the outcome key. The L1 contract delivers the bond to the buyer. The regulator receives the buyer's view key for the cash leg.
 
 ## See also
 
-- [Shielded ERC-20 Transfers](pattern-shielding.md)
-- [Private L2s](pattern-privacy-l2s.md)
-- [Atomic DvP via ERC-7573](pattern-dvp-erc7573.md)
-- [Commit-and-Prove Fallback](pattern-commit-and-prove.md)
-- [Regulatory Disclosure Keys](pattern-regulatory-disclosure-keys-proofs.md)
+- [ERC-7573 specification](https://eips.ethereum.org/EIPS/eip-7573)

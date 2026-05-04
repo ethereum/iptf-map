@@ -1,116 +1,110 @@
 ---
 title: "Pattern: Compliance Monitoring"
 status: draft
-maturity: pilot
+maturity: testnet
+type: standard
 layer: hybrid
-privacy_goal: Screen transactions for regulatory compliance while preserving privacy through selective disclosure
-assumptions: Compliance oracle or screening service, threshold-based alerting, regulatory disclosure infrastructure
-last_reviewed: 2026-02-03
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Institution must monitor transactions for AML/sanctions compliance
-  - Privacy is required but regulators need audit capability
-  - Real-time screening is mandatory before settlement
+  - Institution must monitor transactions for AML or sanctions compliance.
+  - Privacy is required but regulators need audit capability.
+  - Real-time screening is mandatory before settlement.
 avoid-when:
-  - Full transparency is acceptable (no privacy requirement)
-  - Jurisdiction has no transaction monitoring requirements
-dependencies: [EAS, threshold-KMS, compliance-oracle]
+  - Full transparency is acceptable (no privacy requirement).
+  - Jurisdiction has no transaction monitoring requirements.
+
 context: both
+context_differentiation:
+  i2i: "Counterparties may accept a single compliance oracle operated by a trusted consortium member or shared service. Bilateral contracts govern screening rules and dispute handling. Appeals are resolved through existing institutional channels."
+  i2u: "End-users have no visibility into oracle decisions and no direct recourse if flagged incorrectly. Threshold consensus across independent oracle operators, transparent appeal processes, and ZK-based screening that hides transaction details from individual operators become essential."
+
 crops_profile:
   cr: none
-  os: partial
-  privacy: partial
-  security: low
+  o: partial
+  p: partial
+  s: low
+
+crops_context:
+  cr: "The screening oracle is a single point of censorship by design. Reaches `medium` if replaced with a threshold consensus oracle network that includes appeal routes and cannot unilaterally block transactions."
+  o: "Rule engines are often proprietary and bundled with screening vendors. Improves to `yes` by open-sourcing the rule engine under a copyleft license and making rule updates auditable."
+  p: "The oracle sees some transaction metadata by design. Reaches `full` when enforced screening uses zero-knowledge proofs (prove amount under threshold, prove counterparty not on sanctions list) so the oracle validates attestations without seeing amounts or identities."
+  s: "Rides on a single operator's honesty and availability. Improves to `high` by replacing single-operator trust with threshold KMS and timelocked recovery for rule updates."
+
+post_quantum:
+  risk: medium
+  vector: "Signatures on screening attestations inherit host-chain and oracle signature assumptions. zero-knowledge proofs used in privacy-preserving screening inherit their proof system's exposure."
+  mitigation: "Hash-based signatures and STARK-based screening proofs. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: [EAS, ERC-3643]
+
+related_patterns:
+  composes_with: [pattern-regulatory-disclosure-keys-proofs, pattern-user-controlled-viewing-keys, pattern-verifiable-attestation, pattern-zk-kyc-ml-id-erc734-735, pattern-erc3643-rwa]
+  see_also: [pattern-shielding, pattern-proof-of-innocence, pattern-zk-promises]
+
+open_source_implementations: []
 ---
 
 ## Intent
 
-Enable institutions to monitor private transactions for regulatory compliance (AML, sanctions, fraud) without exposing transaction details to unauthorized parties. Balance privacy preservation with auditability through selective screening approaches and tiered disclosure.
+Enable institutions to screen private transactions for regulatory compliance (AML, sanctions, fraud) without exposing transaction details to unauthorized parties. Balance privacy preservation with auditability through selective screening approaches and tiered disclosure, so settlement can proceed under compliance controls while counterparty identities and amounts remain shielded from public view.
 
-## Ingredients
+This is an orchestration pattern that composes primitives (viewing keys, zero-knowledge proofs, threshold KMS, attestations) into a compliance workflow. The pattern's contribution is the rule engine, alert pipeline, and audit trail that hold the workflow together; the underlying disclosure primitives are linked via `related_patterns`.
 
-- **Standards:** EAS for audit logging, ERC-3643 for permissioned tokens (requires privacy extension — ONCHAINID is not privacy-preserving today; see [ERC-3643 RWA pattern](pattern-erc3643-rwa.md#trade-offs)), W3C Verifiable Credentials for compliance attestations
-- **Infra:** Compliance oracle (Chainalysis, Elliptic, or internal), threshold KMS for viewing keys, L2 with privacy features
-- **Off-chain:** Screening service, alert management system, case management workflow, regulatory reporting interface
+## Components
 
-## Protocol (concise)
+- Compliance oracle or screening service evaluates transactions against sanctions lists, AML rules, and internal policies. Can be centralized, federated, or threshold-operated.
+- Rule engine stores jurisdiction-specific rules with versioning. Rule updates are logged and auditable.
+- Threshold key management issues and rotates viewing keys distributed to authorized parties, so no single operator can unilaterally decrypt transaction contents.
+- zero-knowledge proof verifiers (optional) validate compliance attestations such as "amount below reporting threshold" or "counterparty not on sanctions list" without revealing the underlying values.
+- Alert and case management system handles flagged transactions through severity tiers with defined response times.
+- Audit log records every screening decision with timestamp, rule version, and decision hash. Typically anchored on-chain via attestations for tamper evidence.
 
-1. **Pre-screening:** Before transaction submission, sender's compliance node checks recipient against sanctions lists and internal policies
-2. **Commit phase:** Transaction submitted with encrypted payload; compliance oracle receives viewing key or ZK proof of compliance
-3. **Screen:** Oracle verifies transaction against AML rules without seeing full details (amount ranges, counterparty risk scores)
-4. **Alert or Clear:** If screening passes, transaction proceeds; if flagged, alert generated with severity level
-5. **Escalation:** High-severity alerts trigger hold and manual review; low-severity logged for batch review
-6. **Settlement:** Cleared transactions settle; flagged transactions held pending resolution
-7. **Audit trail:** All screening decisions logged to EAS with timestamps and rule versions
-8. **Reporting:** Periodic compliance reports generated from audit logs for regulators
+## Protocol
 
-## Guarantees
+1. [user] Sender constructs a transaction and generates a compliance attestation (viewing key or zero-knowledge proof) alongside the encrypted payload.
+2. [operator] Compliance oracle pre-screens the recipient against sanctions lists and internal policies before the transaction is submitted.
+3. [operator] Oracle verifies the transaction against AML rules using the attestation, without seeing the full plaintext when zero-knowledge proofs are used.
+4. [operator] If screening passes, the oracle emits a cleared attestation; if flagged, an alert is generated with severity level.
+5. [operator] High-severity alerts trigger a hold and manual review; low-severity cases are logged for batch review.
+6. [contract] Cleared transactions settle on the host chain; flagged transactions remain held pending resolution.
+7. [auditor] Periodic compliance reports are generated from the audit log for regulator filing. Regulators can request selective disclosure via viewing keys on demand.
 
-- **Privacy:**
-  - Transaction details visible only to compliance function and authorized parties
-  - Screening can use ZK proofs (prove amount < threshold without revealing amount)
-  - Counterparty identities protected from public view
+## Guarantees & threat model
 
-- **Compliance:**
-  - All transactions screened against current sanctions lists
-  - Configurable rule engine supports jurisdiction-specific requirements
-  - Immutable audit trail proves due diligence
+Guarantees:
 
-- **Auditability:**
-  - Regulator can request disclosure via viewing keys (see [Selective Disclosure](pattern-regulatory-disclosure-keys-proofs.md))
-  - Screening decisions timestamped and signed
-  - Alert resolution workflow fully logged
+- Transaction details are exposed solely to the compliance function and authorized parties.
+- All transactions are screened against current sanctions lists and jurisdiction rules before settlement.
+- Screening decisions produce an immutable, timestamped audit trail suitable for regulator review.
+- Counterparty identities are protected from public view; disclosure is scoped to authorized auditors via viewing keys.
+
+Threat model:
+
+- Soundness of any zero-knowledge proofs used for screening attestations.
+- Non-colluding oracle operators. A single compromised or coerced operator in a centralized deployment can leak transaction metadata or unilaterally block transactions.
+- Rule engine integrity. A tampered rule set can allow prohibited transactions or block legitimate ones.
+- Key management for viewing keys. Compromised keys enable unauthorized decryption of historical transactions.
+- Network-layer metadata (IP, timing, submission patterns) is out of scope and must be covered separately.
 
 ## Trade-offs
 
-| Aspect | Trade-off | Mitigation |
-|--------|-----------|------------|
-| **Latency** | Real-time screening adds 100-500ms per transaction | Batch screening for low-risk flows; parallel screening |
-| **Privacy leak** | Compliance oracle sees some transaction metadata | Use ZK proofs for screening; minimize oracle data access |
-| **False positives** | Overly strict rules block legitimate transactions | Tiered thresholds; human review for edge cases |
-| **Oracle trust** | Centralized compliance oracle is a privacy risk | Threshold oracle with multiple providers; TEE-based screening |
-| **Cost** | Screening services charge per-transaction fees | Volume discounts; internal screening for high-frequency flows |
-| **Censorship** | Compliance oracle can unilaterally block any transaction; no on-chain bypass in base protocol | Threshold oracle with governance; transparent appeal process |
-
-- **CROPS context (both)**: CR could reach `medium` if the centralized oracle is replaced with a threshold consensus oracle network that includes appeal routes. OS improves to `yes` by open-sourcing the screening rule engine under a copyleft license. Privacy could reach `full` by enforcing ZK proof-based screening where the oracle validates compliance attestations without seeing amounts or identities. Security improves to `high` by replacing single-operator trust with threshold KMS and timelocked recovery. In I2I settings, counterparties may accept a single compliance oracle operated by a trusted consortium member. In I2U settings, end-users have no visibility into oracle decisions, making threshold consensus and transparent appeal processes essential.
-
-## Alert Thresholds (Reference)
-
-| Severity | Trigger | Response Time | Action |
-|----------|---------|---------------|--------|
-| **Critical** | Sanctioned entity match | Immediate | Block transaction, notify compliance officer |
-| **High** | Amount > jurisdiction threshold | < 1 hour | Hold for manual review |
-| **Medium** | Unusual pattern detected | < 24 hours | Flag for batch review |
-| **Low** | Minor policy deviation | Next business day | Log and monitor |
+- Real-time screening adds 100 to 500 ms per transaction. Batch screening for low-risk flows mitigates this.
+- False positives from overly strict rules block legitimate transactions. Tiered thresholds and human review for edge cases are standard mitigations.
+- Oracle trust is a concentration point. Threshold operation with multiple providers or TEE-based screening reduces this risk.
+- Per-transaction screening fees can be significant at volume; internal screening for high-frequency flows is common.
+- Centralized oracles retain unilateral censorship power even when privacy is otherwise strong; threshold governance and transparent appeals are necessary counterweights.
 
 ## Example
 
-**Private Bond Settlement with Compliance Screening:**
-
-1. Bank A initiates €5M bond purchase from Bank B on privacy L2
-2. Bank A's compliance node pre-screens Bank B against sanctions list (clear)
-3. Transaction submitted with encrypted amount; compliance oracle receives ZK proof that amount is within reporting threshold
-4. Oracle verifies proof, checks counterparty risk score (medium), clears transaction
-5. Settlement executes; audit log records: timestamp, screening version, result (cleared), proof hash
-6. Monthly report aggregates cleared transactions for regulatory filing
-
-**Flagged Transaction Flow:**
-
-1. Corporation X initiates transfer to newly onboarded counterparty
-2. Pre-screening detects counterparty jurisdiction requires enhanced due diligence
-3. Alert (severity: High) generated; transaction held in pending state
-4. Compliance officer reviews counterparty documentation, approves with note
-5. Transaction released; audit log includes officer ID, approval timestamp, justification hash
+- An institution initiates a large bond purchase on a privacy L2.
+- The sender's compliance node pre-screens the counterparty against the sanctions list (clear).
+- The transaction is submitted with an encrypted amount and a zero-knowledge proof that the amount is within the reporting threshold.
+- The oracle verifies the proof, checks the counterparty risk score (medium), and clears the transaction.
+- Settlement executes. The audit log records timestamp, screening version, result, and proof hash.
+- A monthly report aggregates cleared transactions for the regulatory filing.
 
 ## See also
 
-- [Selective Disclosure (Viewing Keys + ZK Proofs)](pattern-regulatory-disclosure-keys-proofs.md) - On-demand regulator access
-- [Verifiable Attestation](pattern-verifiable-attestation.md) - On-chain credential verification
-- [ERC-3643 RWA](pattern-erc3643-rwa.md) - Permissioned tokens with identity
-- [ZK KYC/ML ID](pattern-zk-kyc-ml-id-erc734-735.md) - Zero-knowledge identity verification
-- [Approach: Private Bonds](../approaches/approach-private-bonds.md) - End-to-end compliant bond issuance
-
-## External References
-
-- [FATF Travel Rule Guidance](https://www.fatf-gafi.org/en/publications/Fatfrecommendations/Guidance-rba-virtual-assets-2021.html) - AML requirements for virtual assets
-- [Chainalysis Compliance](https://www.chainalysis.com/solutions/compliance/) - Transaction screening provider
-- [Elliptic](https://www.elliptic.co/) - Blockchain analytics and compliance
+- [FATF Travel Rule guidance](https://www.fatf-gafi.org/en/publications/Fatfrecommendations/Guidance-rba-virtual-assets-2021.html)
+- [EAS specification](https://docs.attest.org/)

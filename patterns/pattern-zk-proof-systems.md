@@ -1,7 +1,7 @@
 ---
 title: "Pattern: ZK Proof Systems"
 status: draft
-maturity: pilot
+maturity: concept
 layer: hybrid
 privacy_goal: Taxonomy of ZK proving systems by trust model, PQ safety, and performance
 assumptions: ZK proof system landscape as of 2026
@@ -14,11 +14,14 @@ avoid-when:
   - Application does not use ZK proofs
 dependencies: []
 context: both
+context_differentiation:
+  i2i: "Between institutions, ZK proof system choice is a procurement and infrastructure decision. Trusted-setup ceremonies, prover throughput on dedicated hardware, and on-chain verification cost dominate selection. PQ safety is a strategic concern for long-lived bilateral commitments and audit obligations spanning a decade or more."
+  i2u: "For end user applications, client-side proving cost dominates feasibility on mobile and browser (SRS size, memory needed). Proof size translates directly into user gas costs."
 crops_profile:
   cr: medium
-  os: yes
-  privacy: full
-  security: medium
+  o: yes
+  p: full
+  s: medium
 ---
 
 ## Intent
@@ -45,14 +48,14 @@ This pattern provides a decision framework for selecting ZK proof systems based 
 
 ## Proof System Comparison
 
-| System            | Trust Setup           | PQ-Safe         | Proof Size | Prover Cost | Verifier Cost | Used By                                                                                                |
-| ----------------- | --------------------- | --------------- | ---------- | ----------- | ------------- | ------------------------------------------------------------------------------------------------------ |
-| Groth16           | Trusted (per-circuit) | No (pairings)   | ~200 B     | Low         | Low           | [Railgun](../vendors/railgun.md), [EY](../vendors/ey.md), [Privacy Pools](../vendors/privacypools.md) |
-| PLONK/KZG         | Trusted (universal)   | No (pairings)   | ~400 B     | Medium      | Low           | [Aztec](../vendors/aztec.md), [zkSync](../vendors/zksync.md)                                          |
-| PLONK/IPA         | Transparent           | No (EC)         | ~1 KB      | Medium      | Medium        | ZCash                                                                                                  |
-| STARKs (FRI)      | Transparent           | Yes (hash-based) | ~50-200 KB | High        | Medium        | [Miden](../vendors/miden.md)                                                                           |
-| Hash-based SNARKs | Transparent           | Yes (hash-based) | ~70-250 KB | High        | Medium        | Plonky3, Binius                                                                                        |
-| Lattice-based     | Transparent           | Yes (lattices)  | TBD        | TBD         | TBD           | Research stage (Latticefold)                                                                           |
+| System            | Trust Setup           | PQ-Safe          | Proof Size | Prover Cost | Verifier Cost | Used By                                                                                               |
+| ----------------- | --------------------- | ---------------- | ---------- | ----------- | ------------- | ----------------------------------------------------------------------------------------------------- |
+| Groth16           | Trusted (per-circuit) | No (pairings)    | ~200 B     | Low         | Low           | [Railgun](../vendors/railgun.md), [EY](../vendors/ey.md), [Privacy Pools](../vendors/privacypools.md) |
+| PLONK/KZG         | Trusted (universal)   | No (pairings)    | ~400 B     | Medium      | Low           | [Aztec](../vendors/aztec.md), [zkSync](../vendors/zksync.md)                                          |
+| PLONK/IPA         | Transparent           | No (EC)          | ~1 KB      | Medium      | Medium        | ZCash                                                                                                 |
+| STARKs (FRI)      | Transparent           | Yes (hash-based) | ~50-200 KB | High        | Medium        | [Miden](../vendors/miden.md)                                                                          |
+| Hash-based SNARKs | Transparent           | Yes (hash-based) | ~70-250 KB | High        | Medium        | Plonky3, Binius                                                                                       |
+| Lattice-based     | Transparent           | Yes (lattices)   | TBD        | TBD         | TBD           | Research stage (Latticefold)                                                                          |
 
 Benchmarks for Ethereum block proving workloads available at [ethproofs.org CSP benchmarks](https://ethproofs.org/csp-benchmarks). Note: the table above reflects typical privacy-application proof characteristics; block-proving benchmarks differ in scale.
 
@@ -85,7 +88,5 @@ Benchmarks for Ethereum block proving workloads available at [ethproofs.org CSP 
 
 ## See also
 
-- [Post-Quantum Threats](../domains/post-quantum.md) — why SNARK-to-STARK migration matters
-- [Noir Private Contracts](pattern-noir-private-contracts.md) — PLONK-based ZK (PQ-vulnerable)
-- [Shielding](pattern-shielding.md) — proof system choice affects shielded pool PQ safety
-- [Plasma Stateless Privacy](pattern-plasma-stateless-privacy.md) — hash-based ZK (PQ-safe)
+- [zkresear.ch](https://zkresear.ch/)
+- [StarkWare: STARK papers](https://starkware.co/stark/)
