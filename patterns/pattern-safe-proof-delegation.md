@@ -41,7 +41,6 @@ standards: [EIP-8182]
 related_patterns:
   requires: [pattern-shielding, pattern-zk-proof-systems]
   composes_with: [pattern-permissionless-spend-auth, pattern-co-snark, pattern-tee-based-privacy]
-  alternative_to: [pattern-co-snark]
   see_also: [pattern-user-controlled-viewing-keys]
 
 open_source_implementations:

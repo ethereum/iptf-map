@@ -120,5 +120,3 @@ A user withdraws from a shielded pool to an institutional exchange. The exchange
 
 - [Privacy Pools paper (Buterin et al. 2023)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4563364)
 - [Vitalik on Privacy Pools](https://vitalik.eth.limo/general/2023/09/06/privacy.html)
-- [Privacy Pools](../vendors/privacypools.md)
-- [Railgun](../vendors/railgun.md)

@@ -67,8 +67,6 @@ Hide transaction content from the public mempool before inclusion so that front-
 
 ## Protocol
 
-The canonical relay-based flow is below. The threshold-encrypted variant, where transactions are submitted as ciphertexts and decrypted only after ordering is committed, is documented separately in [pattern-threshold-encrypted-mempool](pattern-threshold-encrypted-mempool.md).
-
 1. [user] Sign the transaction locally with standard tooling.
 2. [user] Submit the signed transaction to a private RPC endpoint instead of the public mempool.
 3. [relayer] Forward the transaction to participating block builders under the relay's operating rules.

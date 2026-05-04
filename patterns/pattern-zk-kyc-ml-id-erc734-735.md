@@ -1,5 +1,5 @@
 ---
-title: "Pattern: zk-KYC/ML + ONCHAINID (ERC-734/735)"
+title: "Pattern: zk-KYC/ML + ERC-734/735 identity claims"
 status: draft
 maturity: testnet
 type: standard

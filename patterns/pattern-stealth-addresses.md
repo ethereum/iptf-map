@@ -100,4 +100,3 @@ An institution owes a counterparty tokenised stablecoin. The recipient publishes
 
 - [EIP-5564 specification](https://eips.ethereum.org/EIPS/eip-5564)
 - [Vitalik on stealth addresses](https://vitalik.eth.limo/general/2023/01/20/stealth.html)
-- [Curvy](../vendors/curvy.md)
