@@ -1,205 +1,279 @@
+---
+title: "Approach: Private Bond Issuance & Trading"
+status: draft
+last_reviewed: 2026-05-05
+
+use_case: private-bonds
+related_use_cases: [private-corporate-bonds, private-government-debt]
+
+primary_patterns:
+  - pattern-shielding
+  - pattern-privacy-l2s
+  - pattern-co-snark
+  - pattern-icma-bdt-data-model
+supporting_patterns:
+  - pattern-private-stablecoin-shielded-payments
+  - pattern-private-shared-state-fhe
+  - pattern-user-controlled-viewing-keys
+  - pattern-regulatory-disclosure-keys-proofs
+  - pattern-verifiable-attestation
+  - pattern-proof-of-innocence
+
+iptf_pocs:
+  folder: pocs/private-bond
+  requirements: pocs/private-bond/REQUIREMENTS.md
+  pocs:
+    - name: "Custom UTXO"
+      sub_approach: "UTXO Shielded Notes"
+      spec: pocs/private-bond/custom-utxo/SPEC.md
+      status: benchmarked
+    - name: "Privacy L2 (Aztec)"
+      sub_approach: "Privacy L2"
+      spec: pocs/private-bond/privacy-l2/SPEC.md
+      status: implemented
+    - name: "FHE (Zama)"
+      sub_approach: "FHE Coprocessor"
+      spec: pocs/private-bond/fhe/SPEC.md
+      status: implemented
+
+open_source_implementations:
+  - url: https://github.com/Railgun-Privacy/contract
+    description: "Railgun (UTXO shielded pool, production volume)"
+    language: Solidity
+  - url: https://github.com/AztecProtocol/aztec-packages
+    description: "Aztec privacy-native L2"
+    language: TypeScript / Noir
+  - url: https://github.com/0xMiden/miden-base
+    description: "Miden client-side ZK rollup"
+    language: Rust
+---
+
 # Approach: Private Bond Issuance & Trading
 
-**Use Case Link:** [Private Bonds](../use-cases/private-bonds.md)
+## Problem framing
 
-**High-level goal:** Enable institutional bond issuance and trading on public blockchains with confidential amounts, positions, and trade details while maintaining regulatory compliance, DvP settlement, and economically viable operations.
+### Scenario
 
-## Overview
+A bank issues a EUR 100M corporate bond series with private allocation amounts to 50 institutional investors and operates an active secondary market with RFQ-based price discovery. The bank needs hidden positions and trade sizes, atomic same-chain DvP against EURC, jurisdiction-specific selective disclosure (eWpG, MiCA), and an automated 24/7 market with daily settlement.
 
-### Problem Interaction
+### Requirements
 
-Private bond trading addresses three interconnected challenges:
+- Hide volumes, prices, positions to prevent front-running and competitive intelligence gathering
+- Selective disclosure for eWpG, MiCA, and crypto-registry verification
+- Atomic same-chain DvP with minutes-level finality
+- Pre-trade privacy for RFQ flows and order routing
+- Coupon and lifecycle events run privately
 
-1. **Market Protection**: Hide volumes, prices, and positions to prevent front-running and competitive intelligence gathering
-2. **Regulatory Compliance**: Provide selective disclosure capabilities for compliance (e.g., eWpG/MiCA) and crypto-registry integration
-3. **Settlement Efficiency**: Ensure atomic delivery-versus-payment with predictable costs and daily settlement cycles
+### Constraints
 
-These problems interact because traditional bond trading requires transparent price discovery and settlement coordination, while institutional privacy needs conflict with public blockchain transparency. The solution requires privacy-preserving infrastructure that maintains market efficiency and regulatory oversight.
-
-### Key Constraints
-
-- Must comply with different regulations and crypto-registry requirements
-- Atomic DvP settlement with minutes-level finality acceptable
-- Pre-trade privacy for RFQ processes and order flow
 - Production timeline of 1-2 years with proven infrastructure
-- Same-chain atomic DvP acceptable; cross-chain DvP requires trusted relayer or bridging
+- Cross-chain DvP requires trusted relayer or bridge; out of scope for primary path
+- Must compose with existing crypto-registries and custodial infrastructure
+- Deployment must satisfy ICMA BDT data-model expectations for bond identifiers
 
-### TLDR for Different Personas
+## Approaches
 
-- **Business:** Execute bond issuance and trading privately on a fully automated, 24/7 market while maintaining regulatory compliance and operational efficiency
-- **Technical:** Arbitrage between turnkey solutions using familiar Solidity patterns or ramping up on ZK tooling for a tighter fit with privacy requirements; choose your level of abstraction from custom circuit implementation to coprocessor-based approaches
-- **Legal:** Map each jurisdiction's disclosure requirements (eWpG, MiCA, crypto-registries) to concrete selective-disclosure mechanisms; decide between always-on audit access via viewing keys, on-demand proof generation, or programmable compliance rules embedded in the protocol
+### UTXO Shielded Notes
 
-## Architecture and Design Choices
+```yaml
+maturity: production
+context: i2i
+crops: { cr: high, o: yes, p: full, s: high }
+uses_patterns: [pattern-shielding, pattern-private-stablecoin-shielded-payments, pattern-icma-bdt-data-model, pattern-regulatory-disclosure-keys-proofs]
+poc_spec: pocs/private-bond/custom-utxo/SPEC.md
+example_vendors: [paladin, railgun]
+```
 
-### Fundamental Choice: UTXO vs Account Model
+**Summary:** Bonds modelled as UTXO notes with hidden amount and owner; transfers via JoinSplit ZK circuits; per-note viewing keys for selective disclosure.
 
-| Model                      | Privacy   | How it Works                                                                         |
-| -------------------------- | --------- | ------------------------------------------------------------------------------------ |
-| **Account-based (ERC-20)** | Bolted-on | Balances public by default; privacy added via encryption wrappers or shielding pools |
-| **UTXO-based (Notes)**     | Native    | Value stored as hidden commitments; only nullifiers revealed on spend                |
-| **Native Privacy L2**      | Native    | Private state at protocol level (e.g., Aztec notes)                                  |
+**How it works:** A note commits to (asset, amount, owner_pk) via a Pedersen or Poseidon hash and lives in a Merkle tree. Spending a note publishes a nullifier and creates new commitments through a zero-knowledge proof; the verifier contract checks Merkle membership, nullifier uniqueness, and balance preservation. Issuance is a global note split; redemption is a burn proof. Identity is dual: a transport address (gas, KYC) plus a shielded keypair (spending + viewing).
 
-**Recommendation:** UTXO-based notes with zero-knowledge proofs provide privacy by default. This model is battle-tested (Zcash, Railgun) and scales with chain throughput. Compliance layers via selective disclosure rather than retrofitting onto transparent base.
+**Trust assumptions:**
+- L1 consensus and the verifier contract
+- Gas relayer for liveness on private withdrawals
+- Issuer for the global-note-to-holder-notes split at issuance
+- Trusted setup is not required (UltraHonk)
 
-### Recommended Architecture: UTXO Shielded Notes
+**Threat model:**
+- Adversary observing L1 cannot break ZK soundness; metadata leakage at deposit/withdraw boundaries is the practical exposure
+- Issuer compromise at issuance produces incorrect holder allocations
+- Per-note viewing-key compromise scopes damage to that note
 
-**Primary Pattern:** [Shielding](../patterns/pattern-shielding.md) with zero-knowledge circuits
-**Supporting Patterns:**
+**Works best when:**
+- Production maturity matters and proven infrastructure (Railgun, Paladin) is available
+- Strongest privacy is required (amounts, counterparties, and addresses through gas relayer)
+- Institutional vendor support reduces in-house circuit work
 
-- [Privacy L2s](../patterns/pattern-privacy-l2s.md)
-- [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
-- [ICMA BDT Data Model](../patterns/pattern-icma-bdt-data-model.md)
+**Avoid when:**
+- ZK toolchain is unavailable to the issuer
+- Coupon logic requires complex computation that does not map cleanly to circuits
 
-#### Core Components
+**Implementation notes:** PoC implements UTXO with Noir / UltraHonk; multi-token transfers require same-token circuit constraints, so per-pool deployments are the working assumption. Compliance hooks via attestation-gated entry (zero-knowledge proof of KYC Merkle inclusion) and per-note viewing keys.
 
-- **Notes:** Bonds as UTXO notes (commitments hide amount + owner); JoinSplit circuits for transfers; Merkle tree + nullifier set
-- **Identity:** Dual model — transport address (gas, KYC) + shielded keypair (spending, viewing)
-- **Issuance/Redemption:** Global note split into holder notes; burn proof for settlement
-- **Settlement:** Same-chain atomic DvP; cross-chain requires trusted relayer/bridge
+### Privacy L2
 
-#### Why UTXO-Based Notes?
+```yaml
+maturity: prototyped
+context: i2i
+crops: { cr: medium, o: partial, p: full, s: medium }
+uses_patterns: [pattern-privacy-l2s, pattern-user-controlled-viewing-keys]
+poc_spec: pocs/private-bond/privacy-l2/SPEC.md
+example_vendors: [aztec, miden]
+```
 
-PoC implementations demonstrate UTXO's advantages for institutional adoption:
+**Summary:** Bonds as native private notes inside a privacy-native rollup; protocol-level privacy without dedicated circuit work.
 
-- **Production Maturity:** Railgun live since 2021 (Total volume > $4b) with mainnet deployments (vs testnet alternatives)
-- **Strongest Privacy:** Hides amounts, counterparties, AND addresses (through gas relayer), while account based solutions leak addresses
-- **Vendor Ecosystem:** White-label solutions available ([Paladin](../vendors/paladin.md), [Railgun](../vendors/railgun.md)) reduce implementation burden
-- **Trade-off:** More complex cryptographic model (ZK circuits) vs simpler account-based approaches, but vendors abstract this complexity
+**How it works:** Aztec exposes private notes and contracts as first-class primitives; bond issuance, transfer, and coupon logic run in private functions with client-side proving. Incoming Viewing Keys (IVKs) provide account-level read access; nullifier keys are app-siloed for damage containment.
 
-### Alternative Architectures
+**Trust assumptions:**
+- Sequencer for ordering (currently centralized in early deployments)
+- Bridge contract for L1 settlement
+- Aztec proving system soundness
 
-**Option A: Privacy L2s**
+**Threat model:**
+- Sequencer outage or censorship; rollup escape paths leak linkage during forced exit
+- Bridge boundary leaks deposit and withdraw amounts
+- IVK compromise reveals all account-level flows
 
-- Bonds as native private notes with protocol-level privacy
-- No shielding implementation overhead — private notes is part of the execution model
-- Compliance via private contracts and selective disclosure
-- Trade-off: Ecosystem maturity, unknown throughput
-- See: [Privacy L2s](../patterns/pattern-privacy-l2s.md), [Aztec Network](../vendors/aztec.md), [Miden](../vendors/miden.md)
+**Works best when:**
+- Bond logic is complex (coupons, lifecycle) and benefits from native privacy primitives
+- Throughput needs justify L2 economics
+- Decentralization roadmap of the rollup is acceptable to the issuer
 
-**Option B: Coprocessor Models**
+**Avoid when:**
+- Production deployment is needed before the rollup hits its decentralization milestones
+- Sequencer trust is incompatible with the issuer's risk model
 
-These approaches delegate privacy computation to specialized networks, trading self-custody for external trust assumptions.
+### co-SNARKs (MPC Coprocessor)
 
-_Co-SNARKs (MPC-Based):_
+```yaml
+maturity: prototyped
+context: i2i
+crops: { cr: medium, o: partial, p: partial, s: medium }
+uses_patterns: [pattern-co-snark]
+example_vendors: [taceo-merces]
+```
 
-- **Architecture:** 3-party MPC network with collaborative Groth16 proving, secret-shared balances offchain
-- **Trust Model:** Full honesty required, currently 3-of-3, all nodes must be honest (no threshold tolerance)
-- **Privacy:** Amounts hidden, addresses visible
-- **Performance:** ~95k gas/tx (batched), ~200 TPS, batch latency (~50 txs per proof)
-- **Benefits:** Lower overhead than FHE, native ZK verifiability, account-model simplicity
-- **Trade-offs:** Requires MPC infrastructure, batch delays, testnet maturity
-- **When to Choose:** Institutional custodial models acceptable, amount confidentiality sufficient, MPC ops manageable
-- See: [co-SNARK Pattern](../patterns/pattern-co-snark.md), [TACEO Merces](../vendors/taceo-merces.md)
+**Summary:** A 3-party MPC committee holds secret-shared balances offchain and produces collaborative Groth16 proofs that the chain verifies.
 
-_FHE-Based:_
+**How it works:** Bond state lives offchain under MPC sharing; institutional senders submit shares, the committee computes the transition under MPC, and emits a co-SNARK on chain. Account-model simplicity is preserved at the application layer; addresses remain visible.
 
-- **Architecture:** Encrypted balances with homomorphic computation, threshold decryption network
-- **Trust Model:** t-of-n threshold network for decryption keys
-- **Privacy:** Amounts hidden, addresses visible, ACL-based access control
-- **Performance:** ~300k gas/tx, shared 500-1000 TPS bottleneck across all FHE apps
-- **Benefits:** Simpler programming model for complex bond logic (coupons)
-- **Trade-offs:** Shared throughput limits, less mature tooling, no ACL revocation
-- **When to Choose:** Complex calculations benefit from FHE, fine-grained ACL needed, custodial model acceptable
-- See: [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md)
+**Trust assumptions:**
+- 3-of-3 honest nodes (no threshold tolerance in current TACEO design)
+- Co-SNARK soundness
+- Committee liveness
 
-### Compliance
+**Threat model:**
+- Single node compromise breaks confidentiality
+- Counterparty addresses leak; only amount confidentiality is provided
+- Batch latency creates a settlement window
 
-**Regulatory Integration Models:**
+**Works best when:**
+- Institutional custodial models are acceptable
+- Amount confidentiality is sufficient and counterparty privacy is not required
+- Throughput target matches batched proving (~200 TPS)
 
-| Approach       | Viewing Key Model                   | Granularity          | Revocation                                                 |
-| -------------- | ----------------------------------- | -------------------- | ---------------------------------------------------------- |
-| **UTXO**       | Per-note keys via secure channel    | Per-note (custom)    | Can deny future access                                     |
-| **Privacy L2** | Incoming Viewing Keys (IVKs)        | Account-level        | Can deny future access                                     |
-| **co-SNARKs**  | MPC-based disclosure                | Similar to UTXO      | Depends on implementation                                  |
-| **FHE**        | ACL grants (pull-based via Gateway) | Per-balance (native) | No revocation per ciphertext; requires re-grant on updates |
+**Avoid when:**
+- Threshold-honest assumption among MPC nodes is incompatible with the threat model
+- Sender or receiver anonymity is required
 
-**Common Capabilities:**
+### FHE Coprocessor
 
-- Whitelist enforcement (KYC-approved addresses)
-- Attestations
-- [Proof of Innocence](https://www.sciencedirect.com/science/article/pii/S2096720923000519)
-- Crypto-registry verification for eWpG/MiCA
+```yaml
+maturity: prototyped
+context: i2i
+crops: { cr: medium, o: partial, p: partial, s: medium }
+uses_patterns: [pattern-private-shared-state-fhe]
+poc_spec: pocs/private-bond/fhe/SPEC.md
+example_vendors: [zama, fhenix]
+```
 
-**Key Differences:**
+**Summary:** Encrypted balances under FHE with a threshold-decryption network; computation happens directly on ciphertexts.
 
-- **UTXO:** Most flexible (per-note disclosure); requires trusted issuer for audit trail management
-- **Privacy L2 (Aztec):** IVKs enable account-level viewing; nullifier keys are app-siloed for damage containment; coarser granularity than UTXO per-note model
-- **FHE:** Per-balance ACL control; **no revocation** per ciphertext, but balance updates create new ciphertexts requiring re-grant; decryption pull-based via Gateway (must actively request)
+**How it works:** Balances are FHE ciphertexts; bond transfers and coupon arithmetic run homomorphically. A threshold network holds decryption shares; ACL grants gate read access on a per-balance basis. The chain stores ciphertexts and ACL state.
 
-## More Details
+**Trust assumptions:**
+- t-of-n threshold network for decryption keys
+- FHE library implementation correctness
+- ACL model adoption by all bond participants
 
-### Trade-offs
+**Threat model:**
+- Threshold compromise reveals ciphertexts
+- No revocation per ciphertext; revocation requires a re-encryption / re-grant on balance update
+- Shared throughput (500-1000 TPS) is a network-wide bottleneck
 
-**Architecture Comparison:**
+**Works best when:**
+- Bond logic involves complex calculations (coupon accruals, derivatives) that map naturally to FHE
+- Per-balance ACL granularity is required by the disclosure model
+- Custodial threshold-network model is acceptable
 
-| Dimension              | UTXO Shielding         | Privacy L2s              | co-SNARKs (MPC)           | FHE                                   |
-| ---------------------- | ---------------------- | ------------------------ | ------------------------- | ------------------------------------- |
-| **Trust Model**        | Minimal (self-custody) | Minimal (client-side ZK) | Delegated (3-of-3 honest) | Delegated (threshold decrypt)         |
-| **Privacy Strength**   | Amounts + addresses    | Amounts + addresses      | Amounts only              | Amounts only                          |
-| **Cost per Transfer**  | High                   | Low (L2-internal)        | Low (batched)             | Medium                                |
-| **Throughput**         | Chain-dependent        | Unknown (2026)           | ~200 TPS                  | 500-1000 TPS (shared across all apps) |
-| **Maturity**           | Production             | Testnet/2026             | Testnet                   | Testnet                               |
-| **Ops Infrastructure** | Standard EVM           | Bridge/L2 node           | MPC network               | Threshold network                     |
-| **Vendor Ecosystem**   | Paladin, Railgun       | Aztec, Miden             | TACEO                     | Zama, Fhenix                          |
+**Avoid when:**
+- High throughput is required and the deployment cannot tolerate shared-network bottlenecks
+- Revocation per disclosure is a hard requirement
 
-### Open Questions
+## Comparison
 
-**Architecture & Implementation:**
+| Axis | UTXO Shielded Notes | Privacy L2 | co-SNARKs | FHE |
+|---|---|---|---|---|
+| **Maturity** | production | prototyped | prototyped | prototyped |
+| **Context** | i2i | i2i | i2i | i2i |
+| **CROPS** | CR:hi O:y P:full S:hi | CR:med O:part P:full S:med | CR:med O:part P:part S:med | CR:med O:part P:part S:med |
+| **Trust model** | Self-custody (L1 + ZK) | Sequencer + bridge | 3-of-3 MPC nodes honest | t-of-n threshold network |
+| **Privacy scope** | Amounts + addresses (via gas relayer) | Amounts + addresses (account level) | Amounts only; addresses public | Amounts only; addresses public |
+| **Performance** | High gas, chain-dependent throughput | L2-internal fees, unknown TPS | ~95K gas/tx batched, ~200 TPS | ~300K gas/tx, 500-1000 TPS shared |
+| **Operator req.** | No (gas relayer optional) | Yes (sequencer) | Yes (MPC committee) | Yes (threshold network) |
+| **Cost class** | High (L1 verify) | Low (L2-internal) | Low (batched) | Medium |
+| **Regulatory fit** | Strong (per-note view keys) | Strong (IVKs, app-siloed nullifiers) | Strong for known counterparty | Strong (per-balance ACL) |
+| **Failure modes** | Relayer censor; metadata at boundaries | Sequencer outage; bridge exploit | Single-node compromise; batch latency | Threshold compromise; no revocation per ciphertext |
 
-1. **Multi-Asset Bond Support:** How to efficiently implement bonds with multiple tranches, currencies, or collateral types within shielded note systems?
+## Persona perspectives
 
-2. **Coupon Payment Mechanisms:** What patterns enable automated, privacy-preserving coupon distribution to shielded bondholders?
+### Business perspective
 
-3. **Cross-Chain Settlement:** Beyond same-chain atomic DvP, what trust models are acceptable for cross-chain bond settlement (relayers, bridges, messaging)?
+For institutional bond issuance and trading at scale, UTXO Shielded Notes is the right default: production maturity (Railgun > USD 4b lifetime volume), white-label vendor coverage (Paladin), strongest privacy (amounts, counterparties, and addresses via gas relayer), and a regulatory story built on per-note viewing keys that maps cleanly onto eWpG and MiCA disclosure regimes. Privacy L2 wins where bond logic is complex (coupons, structured lifecycle) because it removes circuit-engineering work, but the issuer must accept the rollup's decentralization timeline. co-SNARKs and FHE fit specific institutional contexts: bilateral or club-mode markets where address visibility is acceptable, or coupon-heavy products where homomorphic arithmetic is the natural model.
 
-**Market Structure:**
+### Technical perspective
 
-4. **Secondary Market Structure:** How to implement private RFQ systems while maintaining price discovery efficiency?
+Engineering effort scales by approach. UTXO Shielded Notes requires deploying a verifier and shipping a ZK toolchain, but mature vendor implementations remove the circuit-design burden. Privacy L2 trades sequencer dependency for native primitives, removing in-house circuit work but adding bridge integration. co-SNARKs requires running or contracting an MPC committee with operational discipline; throughput is bounded by batch cadence. FHE simplifies the programming model for complex bond logic but inherits shared throughput limits across all FHE applications on the network. PoC results across all three IPTF implementations confirm that selective-disclosure semantics work in each model; the architectural choice is driven by trust topology and bond-logic complexity.
 
-5. **Pre-Trade Privacy:** What level of order flow privacy is required before execution vs post-trade confidentiality?
+### Legal & risk perspective
 
-6. **Market Data & Analytics:** How to provide bond pricing, yield curves, and market analytics while preserving transaction privacy?
+UTXO Shielded Notes carries the cleanest disclosure story for eWpG / MiCA: per-note viewing keys grant scoped access, nullifier publication provides a verifiable audit fingerprint, and crypto-registry verification can be integrated through attestation-gated entry. Privacy L2 (Aztec) provides account-level IVKs, coarser than UTXO but app-siloed for damage containment. co-SNARKs offers MPC-based disclosure that satisfies many institutional auditors but ties scope to committee membership. FHE provides per-balance ACL but cannot revoke a ciphertext after grant; revocation requires balance updates, which complicates the audit-trail story. For each option, jurisdictional review must validate the disclosure interface against the local registry's compliance expectations.
 
-**Regulatory & Integration:**
+## Recommendation
 
-7. **Regulatory Standards:** Standardization of selective disclosure formats for eWpG/MiCA compliance across jurisdictions?
+### Default
 
-8. **Legacy Integration:** Bridging between on-chain privacy and traditional bond settlement systems (Euroclear, etc.)?
+For institutional bond issuance and trading on a 1-2 year production timeline, default to **UTXO Shielded Notes** with [Paladin](../vendors/paladin.md) or [Railgun](../vendors/railgun.md) as the underlying shielded pool. This is the only category with production maturity, vendor coverage, and a disclosure interface that has been mapped onto eWpG / MiCA expectations.
 
-## Example Scenarios
+### Decision factors
 
-### Scenario 1: Corporate Bond Issuance
+- If bond logic is dominated by coupon and lifecycle arithmetic that is awkward in circuits, choose **Privacy L2** (Aztec, Miden) and accept the rollup-decentralization timeline.
+- If counterparties are bilateral or named (e.g., dealer-to-dealer), and address visibility is acceptable, choose **co-SNARKs** (TACEO Merces) for MPC-based disclosure with simpler programming.
+- If per-balance ACL granularity is mandated by the disclosure model and complex computation is needed, choose **FHE** (Zama, Fhenix) and plan for shared-throughput bottlenecks.
 
-- Corporation issues €100M bond series with private allocation amounts
-- Privacy: Investor allocations and pricing terms confidential
-- Compliance: Crypto-registry verification and regulator disclosure
-- Settlement: Atomic delivery of bond tokens vs EURC payment
+### Hybrid
 
-### Scenario 2: Secondary Market Trading
+Issuance can run through UTXO with a vendor-provided shielded pool; secondary trading can route through a Privacy L2 with a bridge to the L1 pool, amortizing high-frequency trades while keeping settlement security on L1 for primary issuance and large trades. Compliance gating (KYC attestation, crypto-registry verification) sits at the boundary as an attestation-gated deposit.
 
-- Asset manager trades €25M government bond position
-- Privacy: Trade size, counterparty, and portfolio impact hidden
-- RFQ Process: Private quote requests without revealing intended size
-- Settlement: Same-chain atomic DvP with encrypted audit trail
+## Open questions
 
-### Scenario 3: Government Bond with Coupons
+1. **Multi-Asset Bond Support.** Tranches, multiple currencies, or collateral types within shielded note systems require either per-tranche pools or extended circuit constraints; unresolved.
+2. **Coupon Payment Mechanisms.** Patterns for automated, privacy-preserving coupon distribution to shielded bondholders are emergent; no canonical solution.
+3. **Cross-Chain Settlement.** Beyond same-chain atomic DvP, acceptable trust models for cross-chain bond settlement (relayers, bridges, messaging) are unsettled.
+4. **Secondary Market Structure.** Private RFQ systems with sufficient price discovery; unresolved at the standard level.
+5. **Pre-Trade Privacy.** The boundary between order-flow privacy and post-trade confidentiality differs by market; no standard answer.
+6. **Market Data & Analytics.** Bond pricing, yield curves, and analytics under transaction privacy require either trusted publishers or zk-statistics; unresolved.
+7. **Regulatory Standards.** Standardization of selective-disclosure formats for eWpG / MiCA across jurisdictions is incomplete.
+8. **Legacy Integration.** Bridges between on-chain privacy and traditional bond settlement (Euroclear, Clearstream, MarketAxess) are absent.
 
-- Government issues 5-year bond with semi-annual coupon payments, 1000+ bondholders
-- Privacy: Individual positions confidential, coupon payments private
-- Compliance: Regulatory audit access required
+## See also
 
-## Links and Notes
-
-- **Reference Implementation:** [Private Bond PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-bond) — Three implementations: Custom UTXO, Aztec L2, Zama FHE
-- **Maturity Status (Feb 2026):** UTXO (Production: Railgun), Privacy L2s (Testnet/2026: Aztec Ignition, Miden), co-SNARKs (Testnet: TACEO Base/Arc), FHE (Testnet: Zama, Fhenix)
+- **Reference Implementation:** [Private Bond PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-bond) (Custom UTXO, Aztec L2, Zama FHE)
+- **Maturity status (Feb 2026):** UTXO (production: Railgun), Privacy L2s (testnet/2026: Aztec Ignition, Miden), co-SNARKs (testnet: TACEO Base / Arc), FHE (testnet: Zama, Fhenix)
 - **Standards:** [ICMA BDT](https://www.icmagroup.org/market-practice-and-regulatory-policy/repo-and-collateral-markets/legal-documentation/global-master-repurchase-agreement-gmra/)
-- **Research:** [Private Tokenized Securities with UTXO Model](https://eprint.iacr.org/2025/1715.pdf) - UTXO-style privacy for ERC-3643 compliant securities
+- **Research:** [Private Tokenized Securities with UTXO Model](https://eprint.iacr.org/2025/1715.pdf)
 - **Regulations:** [eWpG](../jurisdictions/de-eWpG.md), [MiCA](../jurisdictions/eu-MiCA.md)
-- **Vendor Solutions:**
-  - UTXO: [Paladin](../vendors/paladin.md), [Railgun](https://railgun.org/)
-  - Privacy L2: [Aztec Network](../vendors/aztec.md), [Miden](../vendors/miden.md)
-  - co-SNARKs: [TACEO Merces](../vendors/taceo-merces.md)
-  - FHE: [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md)
-- **Related Patterns:** [co-SNARKs](../patterns/pattern-co-snark.md), [Shielding](../patterns/pattern-shielding.md), [User-Controlled Viewing Keys](../patterns/pattern-user-controlled-viewing-keys.md)
-- **Related Approaches:** [Private DvP](../approaches/approach-private-dvp.md), [Private Derivatives](../approaches/approach-private-derivatives.md)
+- **Vendors:** UTXO ([Paladin](../vendors/paladin.md), [Railgun](https://railgun.org/)); Privacy L2 ([Aztec](../vendors/aztec.md), [Miden](../vendors/miden.md)); co-SNARKs ([TACEO Merces](../vendors/taceo-merces.md)); FHE ([Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md))
+- **Related patterns:** [co-SNARKs](../patterns/pattern-co-snark.md), [Shielding](../patterns/pattern-shielding.md), [User-Controlled Viewing Keys](../patterns/pattern-user-controlled-viewing-keys.md)
+- **Related approaches:** [Private DvP / Atomic Settlement](approach-dvp-atomic-settlement.md), [Private Derivatives](approach-private-derivatives.md)

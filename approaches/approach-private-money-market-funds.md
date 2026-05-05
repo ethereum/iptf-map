@@ -1,156 +1,211 @@
+---
+title: "Approach: Private Money Market Funds"
+status: draft
+last_reviewed: 2026-05-05
+
+use_case: private-money-market-funds
+related_use_cases: [private-stablecoins, private-treasuries, private-rwa-tokenization]
+
+primary_patterns:
+  - pattern-shielding
+  - pattern-regulatory-disclosure-keys-proofs
+supporting_patterns:
+  - pattern-private-vaults
+  - pattern-compliance-monitoring
+  - pattern-verifiable-attestation
+  - pattern-private-shared-state-fhe
+  - pattern-tee-based-privacy
+  - pattern-tee-key-manager
+
+open_source_implementations:
+  - url: https://github.com/Railgun-Privacy/contract
+    description: "Railgun shielded pool"
+    language: Solidity
+---
+
 # Approach: Private Money Market Funds
 
-**Use Case Link:** [Private Money Market Funds](../use-cases/private-money-market-funds.md)
+## Problem framing
 
-**High-level goal:** Enable privacy-preserving money market fund operations on Ethereum where individual positions, redemption flows, and yield attribution are hidden, while fund [NAV](../GLOSSARY.md) (Net Asset Value) remains publicly verifiable and operator-independent.
+### Scenario
 
-## Overview
+A treasurer subscribes USD 50M USDC to a tokenized T-bill money market fund. Position size, redemption timing, and yield attribution must be hidden from competitors and other fund participants. Fund NAV must be publicly verifiable on a daily or intraday cadence and must remain verifiable even if the fund operator goes offline; redemptions must continue without interruption under stress.
 
-### Problem Interaction
-
-Private money market funds address three interconnected challenges:
-
-1. **Position & Strategy Privacy**: Hide subscription amounts, share counts, and yield optimization strategies so competitors cannot infer treasury size or cash management tactics
-2. **Redemption Pattern Privacy**: Hide individual redemption timing and amounts to prevent runs triggered by visible large outflows
-3. **Operator-Independent Solvency**: Ensure any party can verify fund NAV without the fund manager's cooperation, so the fund remains trustworthy even under adversarial conditions
-
-### Key Constraints
+### Requirements
 
 - Daily or intraday NAV computation with verifiable correctness
-- SEC Rule 2a-7 (US) and ESMA MMFR (EU) compliance for fund gates, liquidity fees, and concentration limits
-- Atomic subscription/redemption settlement (no partial fills or stuck funds)
-- Yield attribution must be provably correct per investor without revealing individual positions
-- NAV verification must not depend on the fund operator's availability (threshold opening by t-of-n key holders)
+- SEC Rule 2a-7 (US) and ESMA MMFR (EU) compliance: gates, liquidity fees, concentration limits
+- Atomic subscription and redemption settlement (no partial fills)
+- Yield attribution provably correct per investor without revealing positions
+- Operator-independent solvency: NAV verifiable by a threshold subset, not the operator
 
-### TLDR for Different Personas
+### Constraints
 
-- **Business:** Yield-bearing treasury products where investor positions are private, redemptions are invisible to other participants, and fund solvency is verifiable by a threshold committee independent of the fund operator
-- **Technical:** Shielded commitments with an incremental NAV model: a running `total_shares` commitment updated per transaction, not a monolithic proof over all positions. Total fund value = `total_shares * price_per_share` (per-share NAV from oracle); periodic full-audit checkpoints; atomic DvP settlement
-- **Legal:** [SEC Rule 2a-7](https://www.sec.gov/rules-regulations/2010/02/money-market-fund-reform) / [ESMA MMFR](https://www.esma.europa.eu/data-reporting/mmfr-reporting) requirements mapped to on-chain enforcement via ZK-proven constraints; regulator access via scoped view keys with EAS-logged disclosure
+- Threshold opening (t-of-n) by independent custodians or auditors must be administratively feasible
+- Periodic full-audit checkpoints must run off the critical path of subscription/redemption
+- Fund-circuit hash registered immutably at deployment; circuit upgrades imply migration
+- Compliance gates (Rule 2a-7 liquidity ratio, concentration limits) must be enforceable without revealing individual positions
 
-## Architecture and Design Choices
+## Approaches
 
-### Fundamental Choice: NAV Computation Trust Model
+### ZK Shielded Commitments
 
-| Model | Privacy | Trust Assumption | Performance | Maturity |
-| --- | --- | --- | --- | --- |
-| **ZK** | Positions hidden inside proof | Math + threshold key holders (t-of-n) for NAV opening | constant-cost per transaction (incremental); periodic full-audit scales with position count | PoC |
-| **FHE** | Positions encrypted, computed over ciphertexts | Threshold key holders (t-of-n) | Heaviest compute; shared throughput limits | Testnet |
-| **TEE** | Positions sealed in enclave | Hardware vendor (Intel/AMD) | Cheapest; near-instant | Testnet |
+```yaml
+maturity: prototyped
+context: i2i
+crops: { cr: high, o: yes, p: full, s: high }
+uses_patterns: [pattern-shielding, pattern-regulatory-disclosure-keys-proofs, pattern-verifiable-attestation, pattern-compliance-monitoring]
+example_vendors: [paladin, railgun, privacypools]
+```
 
-**Recommendation:** ZK proofs with a running `total_shares` commitment (threshold-opened by t-of-n custodians/auditors for NAV computation); periodic full-audit checkpoints off the critical path. FHE alternative for complex yield logic; TEE viable for early PoCs.
+**Summary:** Share positions are shielded UTXO commitments; a running `total_shares` commitment is updated per transaction; NAV opens via threshold key holders independent of the operator.
 
-### Recommended Architecture: Shielded Share Commitments + ZK NAV Proofs
+**How it works:** Each position is a commitment to (attestation hash, share count, entry NAV). Subscription mints a position commitment and increments a running Pedersen commitment to `total_shares`; redemption nullifies the position and decrements the running total. ZK circuits enforce conservation, gate logic (Rule 2a-7 liquidity ratio, concentration), and yield-attribution constraints. NAV is computed by any t-of-n threshold key holders opening `total_shares` and multiplying by an oracle price-per-share; a periodic full-audit checkpoint verifies the running total against all active positions, off the redemption critical path.
 
-**Primary Patterns:**
-- [Shielding](../patterns/pattern-shielding.md) (commitment/nullifier model for share positions)
-- [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md) (view-key framework for auditors)
+**Trust assumptions:**
+- L1 / L2 consensus and verifier contract correctness
+- Threshold custodian / auditor set (t-of-n) for NAV opening; operator does not participate in the threshold
+- Oracle integrity for per-share price (single oracle or quorum)
 
-**Supporting Patterns:**
-- [Private Intent-Based Vaults](../patterns/pattern-private-vaults.md) (optional: yield strategy execution within the fund)
-- [Compliance Monitoring](../patterns/pattern-compliance-monitoring.md) (transaction screening, concentration checks)
-- [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md) (EAS-based NAV attestation and audit logging)
+**Threat model:**
+- Adversary observes L1 / L2; cannot break ZK soundness
+- Threshold compromise (t collusions) reveals NAV but not individual positions
+- Oracle compromise distorts NAV; mitigated by quorum
+- Periodic full-audit catches running-total drift from circuit bugs
 
-#### Core Components
+**Works best when:**
+- Operator independence is a hard requirement (regulator, donor policy, internal governance)
+- Daily or intraday NAV cadence matches the proving budget
+- Threshold custodian / auditor administration is feasible
 
-- **Share Positions:** Shielded UTXO commitments (attestation hash, share count, entry NAV); subscription mints + increments running total, redemption nullifies + decrements; atomic DvP settlement; individual flows unlinkable
-- **Running Total & NAV:** Pedersen commitment to `total_shares` updated per transaction via ZK proof; opening threshold-shared (t-of-n) among custodians/auditors; any qualifying subset opens commitment, computes total fund value = `total_shares * price_per_share`, posts attestation
-- **Yield Attribution:** Pro-rata and uniform; at redemption each investor proves "I hold X of total_shares, my yield is X/total_shares * total_yield"
-- **Audit & Verification:** Periodic full-proof checkpoint verifies running total against all positions (expensive, off critical path); NAV verification policy (circuit hash) registered immutably at fund deployment
-- **Regulatory Access:** Scoped view keys (positions, concentration, liquidity); disclosures logged via EAS
+**Avoid when:**
+- Yield logic is complex enough that circuit complexity exceeds practical bounds
+- Threshold administration overhead (key rotation, custodian onboarding) is unacceptable
 
-#### Operator-Independent NAV (Censorship Resistance)
+**Implementation notes:** PoC uses Railgun-class shielded pool primitives. Compliance gates encoded as ZK public outputs (e.g., post-redemption liquidity ratio > 30%); regulator scope via per-position view keys logged through EAS. Yield attribution uses pro-rata share-of-total computation: each redeemer proves `my_shares / total_shares * total_yield = entitled_amount`.
 
-On-chain proof verification guarantees `total_shares` correctness independent of any single party. If the operator disappears, any t of the remaining n-1 threshold key holders can open the commitment, compute NAV, and post an attestation; redemptions continue without interruption.
+### FHE Encrypted Balances
 
-### Alternative Architectures
+```yaml
+maturity: prototyped
+context: i2i
+crops: { cr: medium, o: partial, p: partial, s: medium }
+uses_patterns: [pattern-private-shared-state-fhe, pattern-compliance-monitoring]
+example_vendors: [zama, fhenix, orion-finance]
+```
 
-**Option A: FHE-Encrypted Balances**
+**Summary:** Balances are FHE ciphertexts on an FHE-enabled L2; NAV is computed homomorphically; threshold key holders decrypt for publication.
 
-- Encrypted balances on FHE-enabled L2; NAV computed homomorphically, decrypted by threshold key holders
-- Simpler programming model for complex yield logic; weaker operator independence (threshold holders must be available)
-- Trade-off: Threshold trust; shared throughput limits; no revocation per ciphertext
-- See: [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md), [Orion Finance](../vendors/orion-finance.md)
+**How it works:** Subscriptions encrypt the share count under the FHE network's keys; balances are stored as ciphertexts with ACL-based read access. NAV is computed under encryption (sum of ciphertexts × per-share price); a t-of-n threshold network decrypts the result for posting on chain. Yield attribution runs as homomorphic arithmetic; gate logic uses encrypted comparisons.
 
-**Option B: TEE-Based Computation**
+**Trust assumptions:**
+- t-of-n threshold network for FHE decryption keys
+- FHE library implementation correctness
+- ACL grants honored by all participants
 
-- Positions sealed in TEE enclave; NAV computed in the clear internally; remote-attested on-chain
-- Trade-off: Hardware vendor trust; side-channel surface; enclave availability; operator independence requires open-source enclave code
-- See: [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [TEE Key Manager](../patterns/pattern-tee-key-manager.md)
+**Threat model:**
+- Threshold compromise reveals all balances
+- No revocation per ciphertext; ACL revocation requires re-encryption on balance update
+- Shared throughput across all FHE applications on the network is a bottleneck
 
-### Compliance
+**Works best when:**
+- Yield logic is complex (path-dependent strategies) and benefits from homomorphic arithmetic
+- Per-balance ACL granularity matches the disclosure model
+- Threshold-network trust is acceptable to all custodians
 
-**Regulatory Integration Models:**
+**Avoid when:**
+- Operator independence requires that no single network be load-bearing
+- Throughput pressure across all FHE applications is unacceptable
 
-| Approach | Disclosure Mechanism | Granularity | Gate/Fee Enforcement |
-| --- | --- | --- | --- |
-| **ZK (UTXO)** | Per-commitment view keys | Per-position | Encoded in ZK circuit |
-| **FHE** | ACL grants via Gateway | Per-balance | Native encrypted logic |
-| **TEE** | Enclave-mediated disclosure | Configurable | Internal enclave logic |
+### TEE Enclave
 
-**Common Capabilities:**
+```yaml
+maturity: prototyped
+context: i2i
+crops: { cr: medium, o: no, p: full, s: low }
+uses_patterns: [pattern-tee-based-privacy, pattern-tee-key-manager, pattern-compliance-monitoring]
+example_vendors: []
+```
 
-- KYC eligibility gating; concentration limit enforcement in ZK
-- Liquidity stress testing via view keys; aggregate fund flow reporting (delayed, non-identifying)
+**Summary:** Positions sealed inside a TEE enclave; NAV computed in the clear internally; remote-attested results posted on chain.
 
-**Fund-Specific Regulatory Requirements:**
+**How it works:** Subscriptions are encrypted to the enclave's attested public key; the enclave maintains positions in cleartext memory. NAV computation, gate enforcement, and yield attribution all run inside the enclave; the enclave signs results under its attested key. Selective disclosure runs through enclave-mediated views: regulators submit signed queries, the enclave returns scoped responses.
 
-- **SEC Rule 2a-7 (US):** Liquidity fee/gate thresholds enforced in ZK circuit as public outputs
-- **ESMA MMFR (EU):** Maturity limits and stress testing obligations; view-key scoping supports jurisdiction-specific disclosure
+**Trust assumptions:**
+- TEE vendor and remote-attestation chain (Intel TDX, AMD SEV, AWS Nitro, Azure CC)
+- Cloud co-tenant isolation
+- Enclave software supply chain (reproducible build, multi-party signing)
 
-## More Details
+**Threat model:**
+- Side-channel and microarchitectural attacks against the enclave class
+- Vendor compromise or compelled disclosure of attestation keys
+- Enclave software vulnerabilities expose all fund state to a single-party adversary
 
-### Trade-offs
+**Works best when:**
+- Near-term deployment is needed and ZK / FHE proving costs are prohibitive
+- Hardware trust is already accepted by custodians
+- Enclave reproducibility and signing pipeline are operationalized
 
-**Architecture Comparison:**
+**Avoid when:**
+- Threat model includes nation-state-class side-channel adversaries
+- Operator independence requires that no single hardware vendor be load-bearing
 
-| Dimension | ZK Shielded Commitments | FHE Encrypted Balances | TEE Enclave |
-| --- | --- | --- | --- |
-| **Trust Model** | Math + threshold key holders (t-of-n) for NAV opening | Threshold key holders (t-of-n) | Hardware vendor |
-| **Privacy Strength** | Amounts + addresses | Amounts only (addresses visible) | Amounts + addresses (inside enclave) |
-| **NAV Proof Cost** | Low (incremental); periodic full-audit scales with positions | High (FHE compute) | Low (native compute) |
-| **Operator Independence** | Strong (any t-of-n subset, operator not required) | Moderate (threshold holders needed) | Moderate (enclave must be available) |
-| **Redemption Latency** | Seconds to minutes | Seconds to minutes | Near-instant |
-| **Maturity** | PoC (Railgun model) | Testnet (Zama, Fhenix) | Testnet |
-| **Vendor Ecosystem** | [Paladin](../vendors/paladin.md), [Railgun](../vendors/railgun.md), [Privacy Pools](../vendors/privacypools.md) | [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md), [Orion Finance](../vendors/orion-finance.md) | [Soda Labs](../vendors/soda-labs.md) |
+## Comparison
 
-### Open Questions
+| Axis | ZK Shielded Commitments | FHE Encrypted Balances | TEE Enclave |
+|---|---|---|---|
+| **Maturity** | prototyped | prototyped | prototyped |
+| **Context** | i2i | i2i | i2i |
+| **CROPS** | CR:hi O:y P:full S:hi | CR:med O:part P:part S:med | CR:med O:no P:full S:lo |
+| **Trust model** | Math + threshold (t-of-n) for NAV opening | Threshold (t-of-n) decryption | Hardware vendor + supply chain |
+| **Privacy scope** | Amounts + addresses | Amounts only; addresses public | Amounts + addresses (inside enclave) |
+| **Performance** | Constant per tx; periodic full-audit scales with positions | Heaviest compute; shared throughput | Cheapest; near-instant |
+| **Operator req.** | None (relayer optional) | Yes (threshold network) | Yes (enclave host) |
+| **Cost class** | Medium-high | Medium | Low |
+| **Regulatory fit** | Strong (per-position view keys, EAS-logged) | Strong (per-balance ACL, no revocation) | Conditional (vendor attestation) |
+| **Failure modes** | Threshold compromise; circuit bugs; oracle compromise | Threshold compromise; no revocation; throughput | Side-channel; vendor compromise; enclave outage |
 
-1. How do we optimally balance the privacy gains of fungible shares against the complexity of attributing yield across different entry-NAV cohorts?
-2. Can shielded MMF shares be traded peer-to-peer with privately enforced NAV-based pricing?
-3. How to handle mixed-currency underlying while keeping currency exposure private?
-4. Can MMF shares serve as a cash-equivalent in DvP settlement for other instruments?
+## Persona perspectives
 
-## Example Scenarios
+### Business perspective
 
-### Scenario 1: Institutional Treasury Subscription
+For a yield-bearing tokenized treasury product where operator-independent NAV verification is the load-bearing property, **ZK Shielded Commitments** is the right default: positions and redemptions are private, the running-total commitment is opened by a threshold subset of custodians and auditors who do not include the operator, and the fund continues to function under operator outage. **FHE** suits funds with complex yield logic (multi-strategy MMFs, dynamic allocation) where homomorphic arithmetic removes circuit-design overhead; the trade-off is reliance on the FHE network for both decryption and throughput. **TEE** is a viable PoC starting point and a near-term production option for funds whose custodians already accept hardware-rooted trust.
 
-- Corporate treasurer subscribes $50M USDC to a private T-bill MMF
-- Privacy: Position size invisible on-chain; only the treasurer and fund auditor see it
-- Settlement: Atomic DvP; USDC transferred, share commitment minted, running `total_shares` incremented in one transaction
-- NAV: Threshold key holders (t-of-n custodians/auditors) jointly open the updated `total_shares` commitment, multiply by T-bill oracle price, and post a publicly verifiable NAV attestation
+### Technical perspective
 
-### Scenario 2: Operator-Independent NAV Verification
+The dominant engineering question is the NAV-proof model. ZK with a running `total_shares` commitment keeps per-transaction proving constant and pushes full-audit cost off the critical path; circuit complexity for gate enforcement and yield attribution is the ceiling. FHE simplifies the programming model but inherits shared-throughput limits and per-ciphertext revocation gaps. TEE eliminates both proving cost and revocation issues but introduces a hardware trust chain and side-channel surface that auditors must accept. Threshold custody administration (key rotation, custodian onboarding, t parameter selection) is non-trivial across all three.
 
-- Fund operator goes offline; threshold subset (t of n-1, excluding operator) opens `total_shares` commitment
-- They compute total fund value = `total_shares * price_per_share`, post attestation on-chain; redemptions continue without interruption
-- Same subset triggers a full-audit checkpoint to confirm the running total
+### Legal & risk perspective
 
-### Scenario 3: Private Redemption Under Stress
+ZK Shielded Commitments carries the cleanest disclosure story for SEC Rule 2a-7 and ESMA MMFR: per-position view keys give regulators scoped access; ZK public outputs prove gate compliance (liquidity ratio, concentration) without revealing positions; EAS-logged disclosures provide a verifiable trail. FHE provides per-balance ACL granularity, but the no-revocation gap requires policy: balance updates must trigger ACL re-grant or the disclosure model relies on append-only audit logs. TEE-based disclosure is mediated by the enclave; auditor acceptance depends on enclave-code reproducibility, multi-party signing, and the vendor governance model. For each option, threshold custodian composition (independence from the operator, jurisdictional diversity) is the structural risk control.
 
-- A bank redeems $200M from the fund during a market stress event
-- Privacy: The $200M redemption is invisible to other fund participants; no panic signal
-- Compliance: Fund circuit proves "post-redemption liquidity ratio > 30%" (no gate triggered) without revealing the redemption amount
-- Settlement: Atomic DvP; share commitment nullified, USDC released
+## Recommendation
 
-## Links and Notes
+### Default
 
-- **Related Use Cases:** [Private Stablecoins](../use-cases/private-stablecoins.md), [Private Treasuries](../use-cases/private-treasuries.md), [Private RWA Tokenization](../use-cases/private-rwa-tokenization.md)
+For institutional-grade private money market funds where operator-independent NAV is required, default to **ZK Shielded Commitments** with a Pedersen running-total opened by a t-of-n threshold of custodians and auditors who do not include the fund operator. Periodic full-audit checkpoints run off the redemption critical path. Selective disclosure runs through per-position view keys logged via EAS; gate compliance is encoded as ZK public outputs.
+
+### Decision factors
+
+- If yield logic is complex (multi-strategy, path-dependent) and per-balance ACL granularity is required, choose **FHE Encrypted Balances**.
+- If near-term deployment is required and custodians already accept hardware-rooted trust, choose **TEE Enclave** as a PoC or transitional path.
+- If operator independence cannot be administered through threshold custody, none of the three approaches removes the trust assumption, re-scope the requirement.
+
+### Hybrid
+
+Run primary NAV through ZK Shielded Commitments; use TEE for high-frequency intraday yield strategies that exceed practical proving budgets, with the TEE output committed back into the ZK running total at the next checkpoint. FHE handles complex strategy attribution where the dominant operation is homomorphic arithmetic. Compliance gating runs uniformly through the regulator-disclosure-keys pattern across all rails.
+
+## Open questions
+
+1. **Yield-cohort attribution.** Balancing fungible-share privacy against the complexity of attributing yield across different entry-NAV cohorts; pro-rata is the working assumption but other models may better serve specific products.
+2. **Peer-to-peer share trading.** Shielded MMF shares traded peer-to-peer with privately enforced NAV-based pricing; integration with shielded DvP is unresolved.
+3. **Mixed-currency underlying.** Hiding currency exposure when the underlying basket spans multiple currencies; oracle and ACL design are unresolved.
+4. **MMF-as-cash-equivalent.** Whether shielded MMF shares can serve as the cash leg in DvP for other instruments.
+
+## See also
+
 - **Standards:** [EAS](https://attest.org/), [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643)
 - **Regulations:** [SEC Rule 2a-7](https://www.sec.gov/rules-regulations/2010/02/money-market-fund-reform), [ESMA MMFR](https://www.esma.europa.eu/data-reporting/mmfr-reporting)
-- **Vendor Solutions:**
-  - ZK/UTXO: [Paladin](../vendors/paladin.md), [Railgun](../vendors/railgun.md), [Privacy Pools](../vendors/privacypools.md)
-  - FHE: [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md), [Orion Finance](../vendors/orion-finance.md)
-  - MPC/GC: [Soda Labs](../vendors/soda-labs.md)
-- **Related Patterns:** [Shielding](../patterns/pattern-shielding.md), [Private Vaults](../patterns/pattern-private-vaults.md), [Regulatory Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [Compliance Monitoring](../patterns/pattern-compliance-monitoring.md)
-- **Related Approaches:** [Private Bonds](./approach-private-bonds.md), [Private DvP](./approach-dvp-atomic-settlement.md)
+- **Patterns:** [Shielding](../patterns/pattern-shielding.md), [Private Vaults](../patterns/pattern-private-vaults.md), [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [Compliance Monitoring](../patterns/pattern-compliance-monitoring.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md), [Private Shared State (FHE)](../patterns/pattern-private-shared-state-fhe.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [TEE Key Manager](../patterns/pattern-tee-key-manager.md)
+- **Vendors:** ZK ([Paladin](../vendors/paladin.md), [Railgun](../vendors/railgun.md), [Privacy Pools](../vendors/privacypools.md)); FHE ([Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md), [Orion Finance](../vendors/orion-finance.md)); MPC / Garbled Circuit ([Soda Labs](../vendors/soda-labs.md))
+- **Related approaches:** [Private Bonds](approach-private-bonds.md), [Atomic DvP Settlement](approach-dvp-atomic-settlement.md)
