@@ -4,6 +4,8 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
+- refactor(approach): port 9 approach cards to v2 schema (frontmatter, per-sub-approach YAML blocks, comparison table, persona perspectives, recommendation) ([#151](https://github.com/ethereum/iptf-map/issues/151))
+- chore(approach): remove `approach-privacy-standards-survey.md` (does not fit v2 schema; relocation tracked in [#159](https://github.com/ethereum/iptf-map/issues/159))
 - feat(use-case): [Resilient Disbursement Rails](use-cases/resilient-disbursement-rails.md) -- humanitarian disbursement to recipients in adversarial jurisdictions, with off-ramp unlinkability as the primary cryptographic requirement ([#157](https://github.com/ethereum/iptf-map/pull/157))
 - feat(pattern): [Forward-Secure Signatures](patterns/pattern-forward-secure-signatures.md), [Mesh Store-and-Forward Submission](patterns/pattern-mesh-store-forward-submission.md), [Relay-Mediated Proving](patterns/pattern-relay-mediated-proving.md), and [Recipient-Derived Receive Addresses](patterns/pattern-recipient-derived-receive-addresses.md) -- generic patterns supporting constrained-signer participation in proof-gated systems ([#157](https://github.com/ethereum/iptf-map/pull/157))
 - feat(approach): Resilient Disbursement Rails section in [Private Payments](approaches/approach-private-payments.md) for humanitarian disbursement under adversarial-jurisdiction threat models ([#157](https://github.com/ethereum/iptf-map/pull/157))

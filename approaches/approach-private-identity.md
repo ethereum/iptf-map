@@ -1,272 +1,337 @@
+---
+title: "Approach: Private Identity"
+status: draft
+last_reviewed: 2026-05-05
+
+use_case: private-identity
+related_use_cases: [resilient-identity-continuity]
+
+primary_patterns:
+  - pattern-private-mtp-auth
+  - pattern-zk-kyc-ml-id-erc734-735
+  - pattern-zk-tls
+  - pattern-verifiable-attestation
+  - pattern-voprf-nullifiers
+supporting_patterns:
+  - pattern-regulatory-disclosure-keys-proofs
+  - pattern-co-snark
+  - pattern-stealth-addresses
+  - pattern-erc3643-rwa
+  - pattern-compliance-monitoring
+  - pattern-network-anonymity
+  - pattern-noir-private-contracts
+  - pattern-tee-based-privacy
+  - pattern-zk-wrappers
+  - pattern-social-recovery
+
+open_source_implementations:
+  - url: https://github.com/semaphore-protocol/semaphore
+    description: "Semaphore (Merkle membership ZK proofs)"
+    language: TypeScript / Circom
+  - url: https://github.com/zkpassport
+    description: "ZKPassport (NFC passport, Noir circuits)"
+    language: TypeScript / Noir
+  - url: https://github.com/anon-aadhaar
+    description: "Anon Aadhaar (Indian national ID, RSA in ZK)"
+    language: TypeScript / Circom
+  - url: https://github.com/0xPARC/pod2
+    description: "POD2 (composable provable object data)"
+    language: Rust
+  - url: https://github.com/tlsnotary
+    description: "TLSNotary (zk-TLS transcript proofs)"
+    language: Rust
+---
+
 # Approach: Private Identity
 
-**Use Case Links:** [Private Identity](../use-cases/private-identity.md), [Resilient Identity Continuity](../use-cases/resilient-identity-continuity.md)
+## Problem framing
 
-**High-level goal:** Enable any party (institutions, governments, DAOs) to verify identity claims on Ethereum without exposing the underlying identity, using verification logic that is publicly auditable and cryptographically enforced. Support both cooperative-issuer and issuer-hostile threat models.
+### Scenario
 
-## Overview
+A bank needs to verify that counterparties and end users meet KYC, sanctions, and jurisdictional eligibility requirements without exposing personal data on chain or building cross-institutional dossiers. The same architecture must serve government registries, DAOs, and humanitarian programs whose users may be in jurisdictions where the issuer becomes unavailable, hostile, or destroyed.
 
-### Problem Interaction
+### Requirements
 
-Private authentication addresses five interconnected challenges, all served by overlapping cryptographic primitives (membership proofs, nullifiers, selective disclosure):
+- Verify eligibility claims without revealing the underlying identity
+- Composable across credential sources (passport, national ID, email, web2 data, community attestation)
+- Sybil resistance with per-identity cost curve (legitimate pseudonyms cheap, mass sybils expensive)
+- Selective disclosure for regulators with scoped, time-bound access
+- Issuer-independent verification path: on-chain trust anchor only, no issuer contact during verification
 
-1. **Verification Without Disclosure:** Proving "I am eligible" without revealing "I am Alice." Traditional authentication exposes identities and creates trackable on-chain patterns.
-2. **Plural Identity:** No universal source. Strong signals (passport, national ID) pull in regulatory cost; weak signals (email, social vouch) are cheap but forgeable. Plural systems treat sources as composable, not substitutable.
-3. **Sybil Resistance:** Plural identity and sybil resistance share one mechanism: a per-identity cost curve (roughly N², per [Vitalik's zk-identity framework](https://vitalik.eth.limo/general/2025/06/28/zkid.html)) that keeps legitimate pseudonyms cheap and prices mass sybils out. Implemented via scope-bound nullifiers and layered crypto/economic/social factors.
-4. **Regulatory Compliance:** Financial use cases require selective disclosure and audit trails with scoped visibility.
-5. **Issuer Independence:** When the issuer becomes unavailable, hostile, or destroyed, the trust anchor must shift to on-chain state (see [Approach F](#f-issuer-independent-enrollment-via-distributed-oprf)).
+### Constraints
 
-### Key Constraints
+- Open-source verification logic; no canonical identity provider
+- Proof generation practical on consumer hardware (mobile + browser)
+- Revocation without re-identification
+- Recovery from device loss or guardian compromise
+- Coercion resistance for governance and humanitarian contexts
 
-**Universal:** Unlinkability across verifiers/sessions; open-source verification logic; interoperability across credential formats and chains; no single canonical identity provider; revocation without re-identification; proof generation practical on consumer hardware.
+## Approaches
 
-**Financial:** KYC/AML compliance; regulatory audit trails with selective disclosure.
+### Registry-Based Membership Proofs
 
-**Governance:** Coercion resistance; scalable anonymity sets without centralized bottlenecks.
+```yaml
+maturity: prototyped
+context: i2i
+crops: { cr: medium, o: yes, p: full, s: high }
+uses_patterns: [pattern-private-mtp-auth, pattern-zk-kyc-ml-id-erc734-735, pattern-regulatory-disclosure-keys-proofs, pattern-voprf-nullifiers]
+example_vendors: []
+```
 
-**Issuer-Hostile:** On-chain trust anchor only (no issuer contact post-enrollment); recovery without duplicate identities; plural enrollment sources with layered (crypto + economic + social) sybil enforcement so no single issuer is load-bearing.
+**Summary:** A registry operator maintains a Merkle tree of approved members; provers generate ZK membership proofs without revealing which leaf they correspond to.
 
-### TLDR for Different Personas
+**How it works:** The operator publishes an on-chain Merkle root commitment with an incremental tree. Members generate ZK proofs of inclusion in the membership tree and exclusion from a revocation tree, with scope-bound nullifiers preventing replay across verifiers. Contract hooks verify proofs and integrate with ERC-3643 token transfers; attestation logs (EAS) provide audit trails.
 
-- **Business:** Verify eligibility claims without exposing personal data. Identity proofs survive issuer shutdown or sanctions.
-- **Technical:** Organized by credential source (Merkle membership, document ZK, DKIM, TLS, biometric), each with different trust/cost profiles. Issuer independence via threshold vOPRF enrollment ([RFC 9497](https://www.rfc-editor.org/rfc/rfc9497) + [Jarecki et al. threshold extension](https://eprint.iacr.org/2017/363)) anchored to an on-chain root; plural sources mean any one source can fail without breaking the system.
-- **Legal:** Compliance through verifiable proofs rather than data collection. Selective disclosure for scoped visibility. On-chain anchoring for identity continuity across jurisdictional disruptions.
+**Trust assumptions:**
+- Registry operator(s) honesty and availability
+- Merkle tree integrity and revocation correctness
+- ZK soundness
 
-## Architecture and Design Choices
+**Threat model:**
+- Registry operator censorship by omission or selective revocation
+- Operator compromise reveals membership; mitigated by multi-operator registries
+- Registry update latency creates verification windows
 
-### Approaches by Credential Source
+**Works best when:**
+- Membership set is well-defined (institutional KYC list, DAO whitelist)
+- Operator trust is administratively tractable (audited operations, multi-operator)
+- Revocation cadence is bounded by governance, not adversarial pace
 
-| Approach | Credential Source | Trust Assumption | Proof Cost | Maturity | Key Deployment |
-| --- | --- | --- | --- | --- | --- |
-| [Merkle tree membership](#a-registry-based-membership-proofs) | Institutional registry | Registry operator | Low | Pilot | Semaphore, ERC-3643 |
-| [Document ZK](#b-document-zk-proofs) | Government ID (NFC/signature) | Document issuer | Medium | Pilot | ZKPassport, Anon Aadhaar |
-| [zk-TLS](#c-tls-transcript-proofs) | Web2 data source | Notary + TLS server | Medium | PoC | TLSNotary |
-| [On-chain attestation](#d-on-chain-attestation) | Trusted issuer | Issuer signing key | Low | Production | EAS, ONCHAINID |
-| [POD2](#e-pod2) | Event/community | Attestation issuer | Low | Pilot | [POD2](https://github.com/0xPARC/pod2) (0xPARC) |
-| DKIM proofs (email) | Email provider | Email provider DKIM key | Low | Pilot | zkEmail / Arbitrum |
-| Biometric enrollment | Enrollment operator | Enrollment device | High (enrollment) | Pilot | World ID (25M users) |
-| [Issuer-independent OPRF](#f-issuer-independent-enrollment-via-distributed-oprf) | Multiple (any of the above) | MPC honest-threshold | Medium | PoC | [Resilient Private Identity](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity) |
+**Avoid when:**
+- Registry operator failure must not break verification (use Issuer-Independent OPRF instead)
+- Membership churn is high enough that revocation lag becomes a security problem
 
----
+### Document ZK Proofs
 
-### A. Registry-Based Membership Proofs
+```yaml
+maturity: prototyped
+context: both
+crops: { cr: medium, o: yes, p: full, s: high }
+uses_patterns: [pattern-noir-private-contracts]
+example_vendors: []
+```
 
-**Primary Pattern:** [Private MTP Authentication](../patterns/pattern-private-mtp-auth.md)
-**Supporting Patterns:** [ZK-KYC/ML + ONCHAINID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md)
+**Summary:** ZK proofs over cryptographic data from government-issued identity documents (passport NFC, national ID signatures); selectively disclose attributes without revealing the document.
 
-A registry operator (institution, DAO) maintains a Merkle tree of approved members. Provers generate ZK membership proofs demonstrating inclusion and exclusion from a revocation tree, without revealing which leaf they correspond to. [Semaphore](https://semaphore.pse.dev/) is the most established implementation. The operator controls membership and can censor by omission or selective revocation; multi-operator registries mitigate this.
+**How it works:** ZKPassport reads passport NFC chips (120+ countries) and proves attributes (age, nationality, sanctions-list non-membership) under Noir / UltraHonk on mobile. Anon Aadhaar verifies UIDAI's RSA signature client-side and emits EVM-verifiable proofs over Indian national ID attributes. The verifier checks the SNARK; no identity data is collected.
 
-**Core components:** On-chain root commitment with incremental Merkle tree; ZK membership proofs with nullifiers to prevent replay; contract hooks for verification and [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643) integration; [attestation logging](../patterns/pattern-verifiable-attestation.md) for audit trails.
+**Trust assumptions:**
+- Document-issuing authority signature integrity
+- Document cryptography (passport ICAO PA, UIDAI RSA) remains unbroken
+- Mobile or NFC reader integrity at the client side
 
-**When to use:** Institutional KYC/AML, permissioned token transfers, defined membership sets.
-**Deployment:** Semaphore
-**Limitations:** Trusted registry operator required; registry updates introduce latency.
+**Threat model:**
+- Document issuer compromise propagates to all proofs
+- Cloned passports / NFC replay; mitigated by document-side anti-cloning
+- Mobile platform compromise reveals derivation material
 
-### B. Document ZK Proofs
+**Works best when:**
+- Attribute proofs are sufficient (sanctions, age, nationality) and full KYC is unnecessary
+- User base has NFC-capable devices or supported national IDs
+- Issuer cooperation persists for credential refresh
 
-ZK proofs over cryptographic data from government-issued identity documents, proving specific attributes without revealing the full document.
+**Avoid when:**
+- Issuer cooperation cannot be assumed long-term (use Issuer-Independent OPRF)
+- Document cryptography is too weak or restricted for the threat model
 
-**ZKPassport** reads passport NFC chips (120+ countries), uses [Noir](https://docs.aztec.network/)/Barretenberg (UltraHonk) circuits to prove nationality, age, or sanctions-list non-membership on mobile. Validated at the Aztec token sale (December 2025): participants proved non-sanctioned status (OFAC/Swiss/EU/UK) without revealing any passport details.
+### TLS Transcript Proofs
 
-**Anon Aadhaar** generates ZK proofs of Indian national ID attributes, verifying UIDAI's RSA signature client-side. EVM-verifiable.
+```yaml
+maturity: prototyped
+context: both
+crops: { cr: medium, o: yes, p: partial, s: medium }
+uses_patterns: [pattern-zk-tls]
+example_vendors: []
+```
 
-**When to use:** Sanctions compliance without full KYC, age/nationality verification, government-document-based credentials.
-**Limitations:** Requires NFC-capable device or specific national ID format; limited to supported document cryptography.
+**Summary:** TLSNotary generates ZK proofs over TLS session transcripts from any web2 source (bank portals, government sites, social media); selectively discloses specific fields.
+
+**How it works:** A Notary co-signs the TLS session; the prover holds the session transcript and generates a ZK proof attesting to specific fields (account balance, government registry record, social signal). The verifier checks the proof against the Notary's signature and the TLS session metadata.
 
-### C. TLS Transcript Proofs
+**Trust assumptions:**
+- Notary honesty and availability during the session
+- TLS server certificate validity
+- Web2 data source not adversarial during the session
 
-**Primary Pattern:** [zk-TLS](../patterns/pattern-zk-tls.md)
+**Threat model:**
+- Notary compromise corrupts the witnessing function
+- TLS server-side data manipulation between sessions
+- Disclosure granularity limited by TLS record structure
+
+**Works best when:**
+- Web2 data source has no API for direct attestation
+- Notary trust is administratively manageable (audited, multi-notary, or threshold)
+- Freshness expectation is bounded by session timing
+
+**Avoid when:**
+- Trusted Notary is incompatible with the threat model
+- Required disclosure granularity is below TLS record boundaries
+
+### On-Chain Attestation
+
+```yaml
+maturity: production
+context: both
+crops: { cr: medium, o: yes, p: partial, s: medium }
+uses_patterns: [pattern-verifiable-attestation, pattern-zk-wrappers, pattern-erc3643-rwa]
+example_vendors: []
+```
+
+**Summary:** Trusted issuers publish signed claims on chain (EAS, ONCHAINID via ERC-734/735, W3C VCs); ZK wrappers (OpenAC) add unlinkable presentation across verifiers.
+
+**How it works:** Issuers sign attestations under known keys and publish them on chain. Verifiers reference the attestation and check the issuer signature. With ZK wrappers like OpenAC, the holder presents a proof of attestation possession with selective disclosure, unlinkable across verifiers; no trusted setup, EUDI ARF compatible.
+
+**Trust assumptions:**
+- Issuer signing key custody and lifecycle (rotation, revocation)
+- Attestation registry availability and correctness
+- ZK wrapper soundness (OpenAC) where unlinkability is required
+
+**Threat model:**
+- Issuer key compromise enables unauthorized attestations
+- Without ZK presentation, verifier-to-verifier linkability via issuer reference
+- Attestation revocation must reach all verifiers; staleness creates verification gaps
+
+**Works best when:**
+- Permissioned token compliance (ERC-3643), cross-institutional credential sharing
+- Issuer governance is mature and audit-ready
+- Unlinkability across verifiers is a goal, pair with OpenAC
 
-[TLSNotary](https://tlsnotary.org/) generates ZK proofs over TLS session transcripts from any web2 source (bank portals, government sites, social media). A Notary co-signs the session; the prover selectively discloses specific fields.
+**Avoid when:**
+- Issuer cooperation cannot be assumed long-term (use Issuer-Independent OPRF)
+- Verifiers must not be able to correlate via shared issuer references and OpenAC is unavailable
 
-**When to use:** Porting web2 identity/financial data into on-chain claims; data sources without APIs.
-**Limitations:** Requires a trusted Notary ([open question](#open-questions)); freshness depends on Notary behavior; disclosure granularity depends on TLS record structure.
+### POD2
 
-### D. On-Chain Attestation
+```yaml
+maturity: prototyped
+context: both
+crops: { cr: high, o: yes, p: full, s: medium }
+uses_patterns: [pattern-private-mtp-auth]
+example_vendors: []
+```
 
-**Primary Pattern:** [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md)
+**Summary:** POD2 (Provable Object Data) bundles any data with a cryptographic proof of correctness; event tickets, community badges, poll responses, and access tokens share a composable format.
 
-Trusted issuers publish signed claims on-chain ([EAS](https://attest.org/), [ONCHAINID](https://www.erc3643.org/) (ERC-734/735), W3C VCs). With [ZK wrappers](../patterns/pattern-zk-wrappers.md), attestations support selective disclosure without revealing content. [OpenAC](https://eprint.iacr.org/2026/251) adds unlinkable presentations over existing VCs (SD-JWT, mDL) with transparent ZK proofs, no trusted setup; EUDI ARF compatible.
+**How it works:** Each POD is a typed record signed by the issuer; verifiers check the signature and the typed schema. PODs compose: a holder can prove statements over multiple PODs in a single ZK proof (e.g., "I hold an event POD and a community POD without revealing which event or community").
 
-**When to use:** Permissioned token compliance (ERC-3643), cross-institutional credential sharing, regulatory registry mirroring. Add OpenAC for cross-verifier unlinkability.
-**Deployment:** EAS (production). OpenAC (PoC, moving to pilot).
-**Limitations:** Without ZK presentation, issuer linkage remains.
+**Trust assumptions:**
+- POD issuer signing keys
+- Schema integrity at the ecosystem level
+- Composability framework (POD2 library) correctness
 
-### E. POD2
+**Threat model:**
+- Issuer key compromise corrupts all PODs from that issuer
+- Schema collision or malleability across communities
+- Tooling maturity affects audit confidence
 
-[POD2](https://github.com/0xPARC/pod2) (0xPARC) implements Provable Object Data: any piece of data bundled with a cryptographic proof of its correctness. PODs are composable: event tickets, community badges, poll responses, and access tokens follow the same format, enabling credential-source-agnostic identity.
+**Works best when:**
+- Event gating, community membership, anonymous polls, sybil-resistant access
+- Composable credential ecosystems where heterogeneous attestations interoperate
+- Community-driven adoption is acceptable
 
-**When to use:** Event gating, community membership, anonymous polls, composable credential ecosystems, sybil-resistant access control.
-**Limitations:** Community-driven tooling; less mature than institutional-grade systems.
+**Avoid when:**
+- Institutional-grade audit and assurance is required (community tooling is less mature than EAS / ONCHAINID)
 
-### F. Issuer-Independent Enrollment via Distributed OPRF
+### Issuer-Independent Enrollment via Distributed OPRF
 
-**Use Case:** [Resilient Identity Continuity](../use-cases/resilient-identity-continuity.md)
-**Primary Pattern:** [Private MTP Authentication](../patterns/pattern-private-mtp-auth.md)
-**Supporting Patterns:** [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md)
+```yaml
+maturity: prototyped
+context: both
+crops: { cr: high, o: yes, p: full, s: high }
+uses_patterns: [pattern-private-mtp-auth, pattern-voprf-nullifiers, pattern-regulatory-disclosure-keys-proofs, pattern-verifiable-attestation, pattern-social-recovery]
+example_vendors: []
+```
 
-Issuer-hostile model: issuer may be unavailable, hostile, or destroyed. Plurality is the default, so any A-E source can enroll and no single issuer is load-bearing. Holders prove identity ownership to a threshold vOPRF network ([RFC 9497](https://www.rfc-editor.org/rfc/rfc9497) + [Jarecki](https://eprint.iacr.org/2017/363)), yielding a deterministic enrollment nullifier and a [Poseidon](https://www.poseidon-hash.info/) leaf in an on-chain [LeanIMT](https://github.com/privacy-scaling-explorations/zk-kit/tree/main/packages/lean-imt). Post-enrollment, the root is the sole trust anchor; no issuer contact during verification. [TACEO](https://core.taceo.io/articles/taceo-oprf/) operates a 13-node threshold vOPRF in production.
+**Summary:** Holders prove identity to a threshold vOPRF network, yielding a deterministic enrollment nullifier and a Poseidon leaf in an on-chain LeanIMT; post-enrollment, the on-chain root is the sole trust anchor, no issuer contact during verification.
 
-**Enrollment paths:**
+**How it works:** Any A-E source can enroll (passport, national ID, email DKIM, TLS notary, biometric, community vouch). The holder runs RFC 9497 + Jarecki threshold OPRF against the network (TACEO operates a 13-node production network). Output: a deterministic enrollment nullifier and a leaf added to the on-chain LeanIMT. Verification at any verifier checks a ZK proof against the on-chain root with public inputs (root, scope-bound nullifier, predicate parameters). Sybil resistance is layered: cryptographic (one enrollment per source credential), economic (refundable stake, default 0.1 ETH), social (web-of-trust vouching, future). Recovery via Shamir threshold splitting and guardian-based social recovery.
 
-| Source | Mechanism | Trust Assumption | Coverage |
-| --- | --- | --- | --- |
-| Passport (NFC) | [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/) | Document issuer | 120+ countries |
-| National ID | [Anon Aadhaar](https://github.com/anon-aadhaar) | National ID authority (RSA signature) | India |
-| Biometric | [World ID](https://worldcoin.org/world-id) | Enrollment operator | Limited locations |
-| Email | [zkEmail](https://prove.email/) | Email provider (DKIM key) | Universal (email users) |
-| Web2 data | [TLSNotary](https://tlsnotary.org/) | Notary + TLS server | Any web2 source |
-| Community | Attestation + vouch | Existing members | Deployed communities |
-| Civil registry | Government registry attestation + ZK | Registry operator | Jurisdiction-dependent |
+**Trust assumptions:**
+- Threshold OPRF network availability (t-of-n liveness)
+- Source credential cryptography for enrollment
+- On-chain LeanIMT integrity
+- Recovery custodian / guardian set independence
 
-**Sybil resistance (layered):**
+**Threat model:**
+- OPRF operators accumulate enrollment metadata; mitigated by anonymous communication
+- Source-credential compromise enables sybil enrollment from that source; mitigated by economic stake and layered sources
+- Predicate parameters are public PoC inputs (production: private predicate circuits)
+- Coercion-resistant recovery is an open question
 
-| Layer | Mechanism | What It Bounds | Assumption |
-| --- | --- | --- | --- |
-| Cryptographic | Distributed OPRF enrollment nullifier | One enrollment per source credential | Source credentials are unique and unforgeable |
-| Economic | Refundable stake (0.1 ETH default) | N sybils require N × stake locked | Attacker capital is finite |
-| Social (future) | Web-of-trust vouching (K=3 vouches, V=2 lifetime budget) | Linear (not exponential) sybil growth | Social graph not fully captured by attacker |
+**Works best when:**
+- Issuer may become unavailable, hostile, or destroyed
+- Sanctions compliance must persist across jurisdictional disruptions
+- Multi-source enrollment with issuer-free verification is required
 
-When sources are honest, the cryptographic layer enforces one-to-one binding. When compromised, the economic layer bounds sybil creation to capital.
+**Avoid when:**
+- Single-issuer cooperation is reliable and the operational simplicity of A-D is preferred
+- Threshold OPRF network operation cannot meet jurisdictional independence requirements
 
-**Recovery:** Threshold (Shamir) secret splitting across devices/custodians (t-of-n, no on-chain tx). [Social recovery](../patterns/pattern-social-recovery.md) (guardian-based quorum) authorizes key rotation under the same enrollment; anti-coercion mechanism is an open question.
+**Implementation notes:** PoC at [Resilient Private Identity](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity) (Noir / UltraHonk, BN254). Production roadmap: BLS12-381 migration via EIP-2537, private predicate circuits, EIP-4337 paymaster or purpose-built relay infrastructure. This sub-approach exposes the `IResilientIdentity` interface used by [Approach: Private Payments, Resilient Disbursement Rails](approach-private-payments.md).
 
-**Verification:** Any verifier checks a zero-knowledge proof against the on-chain root. Public inputs: root, scope-bound nullifier, predicate parameters. No registry lookup, no issuer contact.
+## Comparison
 
-**When to use:** Issuer may become unavailable, hostile, or destroyed. Sanctions compliance across jurisdictional disruptions. Multi-source enrollment with issuer-free verification.
-**Deployment:** [Resilient Private Identity PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity) (Noir/UltraHonk, BN254)
-**Limitations:** Requires distributed OPRF network (liveness depends on threshold availability). OPRF operators accumulate enrollment metadata (mitigated by anonymous communication). Recovery adds coordination overhead. Predicate parameters are public PoC inputs (production: private predicate circuits).
+| Axis | Registry Membership | Document ZK | TLS Transcript | On-Chain Attestation | POD2 | Issuer-Independent OPRF |
+|---|---|---|---|---|---|---|
+| **Maturity** | prototyped | prototyped | prototyped | production | prototyped | prototyped |
+| **Context** | i2i | both | both | both | both | both |
+| **CROPS** | CR:med O:y P:full S:hi | CR:med O:y P:full S:hi | CR:med O:y P:part S:med | CR:med O:y P:part S:med | CR:hi O:y P:full S:med | CR:hi O:y P:full S:hi |
+| **Trust model** | Registry operator | Document issuer | Notary + TLS server | Issuer signing key | POD issuer keys | Threshold OPRF + on-chain root |
+| **Privacy scope** | k-anonymity in the tree | Attribute-selective | Field-selective from TLS record | Issuer linkage unless ZK-wrapped | Composable, attestation-based | Multi-source, issuer-independent |
+| **Performance** | Low proof cost | Medium (mobile NFC + Noir) | Medium (TLS + ZK) | Low (signature check) | Low | Medium (OPRF + ZK) |
+| **Operator req.** | Yes (registry) | No (issuer cooperation only at refresh) | Yes (Notary) | Yes (issuer) | Yes (POD issuer) | Yes (OPRF threshold network) |
+| **Cost class** | Low | Medium | Medium | Low | Low | Medium |
+| **Regulatory fit** | Strong with view-key scoping | Strong (sanctions, age) | Conditional on Notary governance | Strong (with OpenAC for unlinkability) | Strong for community / event | Strong (issuer-free continuity) |
+| **Failure modes** | Registry censor; revocation lag | Issuer key compromise; document clone | Notary compromise; field leakage | Issuer key compromise; staleness | Issuer key compromise; schema collision | OPRF metadata leak; coercion |
 
-**Alternative strategies:** Distributed re-issuance (threshold committee produces credentials; limitation: committee sees content, bootstrapping post-failure is open). TEE-based credential vault (survives issuer destruction; limitation: manufacturer trust, side-channel risk; see [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md)).
+## Persona perspectives
 
-**See also:** [Approach: Private Payments, Section G](approach-private-payments.md#g-resilient-disbursement-rails-adversarial-jurisdiction-recipients). The Resilient Disbursement Rails approach uses `IResilientIdentity` (this section) as its identity-layer dependency for humanitarian disbursement under adversarial-jurisdiction threat models.
+### Business perspective
 
----
+For institutional KYC, sanctions compliance, and ERC-3643 permissioned token transfers, **On-Chain Attestation** with EAS and ONCHAINID is the production-default; pair with **OpenAC** for cross-verifier unlinkability where the issuer-linkage signal is competitively sensitive. **Registry Membership** suits well-defined institutional whitelists where the operator is administratively tractable. **Document ZK** wins for sanctions and age verification where attribute-only proofs are sufficient and full KYC is overhead. **Issuer-Independent OPRF** is the right call when issuer continuity is a documented risk: institutions in sanctioned jurisdictions, humanitarian programs, or governance contexts where the issuer cannot remain available indefinitely.
 
-### Vendor Recommendations
+### Technical perspective
 
-| Category | Vendors / Frameworks | Status |
-| --- | --- | --- |
-| Merkle membership | [Semaphore](https://semaphore.pse.dev/) (PSE), [Iden3](https://github.com/iden3) | Pilot |
-| Document ZK | [ZKPassport](https://zkpassport.id/) (Noir/Barretenberg), [Anon Aadhaar](https://github.com/anon-aadhaar) (Circom), [Self](https://self.xyz/), [Rarimo](https://rarimo.com/) | Pilot/PoC |
-| TLS proofs | [TLSNotary](https://tlsnotary.org/) | PoC |
-| On-chain attestation | [EAS](https://attest.org/), [ONCHAINID](https://www.erc3643.org/) (Tokeny), W3C VC | Production |
-| Anonymous credentials | [OpenAC](https://eprint.iacr.org/2026/251) (EF/PSE) | PoC |
-| POD2 | [POD2](https://github.com/0xPARC/pod2) (0xPARC) | Pilot |
-| Email ZK | [zkEmail](https://prove.email/) | Pilot |
-| OPRF | Custom (RFC 9497 + Jarecki threshold extension) | PoC |
+Engineering effort scales by approach. Registry Membership reuses Semaphore-class infrastructure with the lowest proof cost. Document ZK requires mobile NFC integration plus Noir or Circom circuits per document type. TLS Transcript Proofs add the Notary infrastructure and TLS-record introspection. On-Chain Attestation is the simplest verification surface (signature check) but requires registry hygiene at the issuer. POD2 is composable across heterogeneous attestations but the tooling is community-driven. Issuer-Independent OPRF is the heaviest engineering surface (threshold network, on-chain LeanIMT, recovery infrastructure) but is the only category that survives single-issuer failure.
 
-### Implementation Strategy
+### Legal & risk perspective
 
-**Phase 1: Single-Domain Pilot**
+Each approach has a distinct disclosure interface. Registry Membership uses scoped view keys and EAS-logged audit trails; the registry operator is the named regulated party. Document ZK proofs disclose only the attribute predicate's public output; jurisdictional acceptance varies (ZKPassport validated at Aztec sale across OFAC / Swiss / EU / UK). TLS Transcript Proofs require legal classification of the Notary's role. On-Chain Attestation maps cleanly onto existing identity-issuer regulation; OpenAC adds unlinkability without breaking the audit trail. POD2 is community-grade and may not satisfy institutional-grade evidence standards. Issuer-Independent OPRF requires legal sign-off on the threshold network composition, the recovery model, and the coercion-resistance posture.
 
-- One credential source + use case (e.g., Merkle membership for institutional KYC)
-- Registry/attestation contracts with wallet/mobile proof generation
+## Recommendation
 
-**Phase 2: Multi-Credential & Cross-Domain**
+### Default
 
-- Multiple credential sources in one system (e.g., KYC attestation + passport proof)
-- Cross-institutional registry coordination, EAS audit trails
+For institutional permissioned-asset access today, default to **On-Chain Attestation** with EAS and ONCHAINID; add **OpenAC** when cross-verifier unlinkability matters. For institutional KYC whitelists with operator-controlled membership, default to **Registry Membership Proofs** (Semaphore-class). For sanctions and age verification on a global user base, default to **Document ZK** (ZKPassport) on supported documents.
 
-**Phase 3: Issuer-Independent Enrollment**
+### Decision factors
 
-- Distributed OPRF enrollment with threshold MPC
-- On-chain Merkle root as sole trust anchor, refundable stake sybil gate
-- Additional enrollment paths (Anon Aadhaar, zkEmail, TLSNotary)
-- Shamir + guardian recovery (anti-coercion mechanism TBD)
+- If issuer continuity is a documented risk (sanctions, jurisdictional disruption, humanitarian context), choose **Issuer-Independent OPRF** and design the threshold network for jurisdictional diversity.
+- If web2 data sources without APIs must be brought on chain, choose **TLS Transcript Proofs** and validate the Notary governance.
+- If the ecosystem requires composable attestations across heterogeneous communities, choose **POD2** and accept the community-tooling maturity trade-off.
 
-**Phase 4: Ecosystem Integration & Hardening**
+### Hybrid
 
-- Cross-chain support, credential composability, L2 deployment
-- Relayer infrastructure (EIP-4337 paymaster or purpose-built relay)
-- Private predicate circuits, BLS12-381 migration (EIP-2537)
+Run On-Chain Attestation as the default for production permissioned flows; layer Document ZK for sanctions screening at the entry boundary; enroll high-risk users (institutions in jurisdictionally exposed locations, humanitarian recipients) into the Issuer-Independent OPRF as a continuity backup. Recovery uses Shamir + guardian quorum across the same enrollment. Coercion-resistance posture is documented per program; production-grade anti-coercion mechanism is an open research item.
 
-## More Details
+## Open questions
 
-### Trade-offs
+1. **Multi-Address Efficiency.** Proving ownership of multiple EOAs from the same seed without revealing derivation patterns.
+2. **Regulatory Recognition.** Legal recognition of ZK proofs as sufficient compliance evidence per jurisdiction.
+3. **Notary Trust.** Guaranteeing Notary trustworthiness in zk-TLS deployments; threshold or audited Notary networks.
+4. **Cross-Credential Composability.** Combining proofs from heterogeneous sources (passport + KYC attestation + community POD) in a single verification.
+5. **Credential Revocation.** Revocation across heterogeneous issuers without a central authority.
+6. **Guardian Recovery Design.** Minimum guardian set for anti-coercion; acceptable coordination overhead for quorum recovery.
+7. **Attribute Freshness.** Without an issuer to refresh, how stale attributes (expired passports, changed nationality) are handled in OPRF-anchored enrollment.
 
-**Credential Source Comparison:**
+## See also
 
-| Source | Privacy Strength | Trust Assumption | UX Burden | Coverage |
-| --- | --- | --- | --- | --- |
-| Merkle membership | Dependent on k-anonymity | Registry operator | Low (wallet plugin) | Limited to registered users |
-| Passport NFC | High (attribute-selective) | Passport issuing country | Medium (NFC reader) | 120+ countries |
-| Email DKIM | Medium (email provider sees) | Email provider | Low | Universal (email users) |
-| zk-TLS | Medium (notary sees session) | Notary | Medium | Any web2 source |
-| Biometric | High (one-per-person) | Enrollment operator | High (enrollment) | Limited enrollment locations |
-| On-chain attestation | Low-medium (issuer linkage) | Issuer | Low | Depends on issuer network |
-| POD2 | High | Attestation issuer | Low | Community adoption |
-
-**Cooperative vs. Issuer-Hostile:**
-
-| Dimension | Cooperative Issuer (A-E) | Issuer-Independent (F) |
-| --- | --- | --- |
-| Issuer role | Must remain available | None after enrollment |
-| Trust anchor | Issuer + registry | On-chain state only |
-| Verification | May require registry or issuer contact | Any verifier, on-chain root + proof only |
-| Recovery | Open question (issuer-dependent) | Threshold + social, no issuer |
-| Sybil resistance | Depends on credential source | Layered (crypto + economic + social) |
-| Complexity | Lower (single issuer) | Higher (MPC, recovery, multi-source) |
-
-### Open Questions
-
-1. **Multi-Address Efficiency:** Proving ownership of multiple EOAs from the same seed without revealing derivation patterns?
-2. **Regulatory Recognition:** Legal recognition of ZK proofs as sufficient compliance evidence?
-3. **Notary Trust:** How to guarantee Notary trustworthiness in zk-TLS deployments?
-4. **Cross-Credential Composability:** Combining proofs from heterogeneous sources (passport + KYC attestation + community) in a single verification?
-5. **Credential Revocation:** Revocation across heterogeneous issuers without a central authority?
-6. **Guardian Recovery Design:** Minimum guardian set for anti-coercion? Acceptable coordination overhead for quorum recovery?
-7. **Attribute Freshness:** Without an issuer to refresh, how are stale attributes (expired passports, changed nationality) handled?
-
-### Alternative Approaches Considered
-
-| Approach | Trade-off | Status |
-| --- | --- | --- |
-| **TEE-Based Authentication** ([pattern](../patterns/pattern-tee-based-privacy.md)) | Hardware trust + vendor lock-in vs. simplified proof generation | Production |
-| **Federated Identity (OAuth/OIDC)** | Operational simplicity vs. privacy leakage + centralized dependency | Legacy |
-| **DID/VC without ZK** (Microsoft ION, Spruce) | Simpler UX but reveals credential content to verifier | Production |
-| **Semaphore (commitment only)** | Large anonymity sets but no identity-layer sybil resistance | Production |
-| **World ID (biometric OPRF)** | Strongest one-person-one-identity vs. specialized hardware, centralized enrollment | Pilot (25M+) |
-| **PLUME (ECDSA nullifiers, ERC-7524)** | Reuses existing keys vs. no attribute predicates | PoC |
-| **OpenAC** ([paper](https://eprint.iacr.org/2026/251)) | Standards-compatible, no trusted setup vs. cooperative issuer required | PoC (moving to pilot) |
-
-## Example Scenarios
-
-### Scenario 1: Tokenized Security Access
-
-- Client generates Semaphore proof of KYC registry membership
-- Contract verifies proof and allows bond token transfer
-- Observer sees transaction but cannot link to specific client
-
-### Scenario 2: Multi-Institution Portfolio
-
-- Client proves compliance to multiple banks/asset managers without revealing cross-institutional relationships
-- Regulators audit each registry independently via selective disclosure
-
-### Scenario 3: Anonymous Governance Vote
-
-- Members prove token-holder status via Merkle membership
-- MACI-style encrypted submission prevents vote buying; ZK tallying reveals result without individual votes
-
-### Scenario 4: Sanctions Compliance Without Full KYC
-
-- Participants use ZKPassport to prove passport validity and non-sanctioned status (OFAC/EU/UK) without revealing name or nationality
-- Proof verified on-chain; no personal data collected
-
-### Scenario 5: Issuer-Hostile (Sanctions, Shutdown, Recovery)
-
-- Institution in sanctioned jurisdiction loses KYC providers; pre-enrolled employees continue proving attributes against on-chain root, no issuer contact
-- KYC provider shuts down; new enrollees use self-contained sources (passport NFC, email DKIM) via OPRF network; verifiers see no disruption
-- Holder loses device; reconstructs secret from Shamir shares or guardian quorum; original enrollment preserved
-
-## Links and Notes
-
-- **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-734/735](https://eips.ethereum.org/EIPS/eip-734), [EAS](https://attest.org/), W3C Verifiable Credentials, [EIP-5564](https://eips.ethereum.org/EIPS/eip-5564), [RFC 9497 (OPRF)](https://www.rfc-editor.org/rfc/rfc9497), [RFC 9380 (hashToCurve)](https://www.rfc-editor.org/rfc/rfc9380), [EIP-196](https://eips.ethereum.org/EIPS/eip-196), [EIP-197](https://eips.ethereum.org/EIPS/eip-197)
-- **ZK Frameworks:** [Semaphore](https://github.com/semaphore-protocol), [Noir/Barretenberg](https://docs.aztec.network/), [Circom/Groth16](https://docs.circom.io/), [Iden3](https://github.com/iden3)
-- **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Rarimo](https://rarimo.com/), [Anon Aadhaar](https://github.com/anon-aadhaar), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [POD2](https://github.com/0xPARC/pod2), [OpenAC](https://eprint.iacr.org/2026/251), [Human Passport](https://passport.human.tech/), [Holonym](https://holonym.id/)
-- **Validated Deployments:** ZKPassport Aztec sale (120+ countries), Anon Aadhaar, World ID (25M registrations), [OpenCerts](https://www.opencerts.io/) (2M+ certs)
-- **Related Patterns:** [Private MTP Auth](../patterns/pattern-private-mtp-auth.md), [ZK-KYC/ML + ONCHAINID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md), [zk-TLS](../patterns/pattern-zk-tls.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [co-SNARK](../patterns/pattern-co-snark.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md), [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md), [Stealth Addresses](../patterns/pattern-stealth-addresses.md), [ERC-3643 RWA](../patterns/pattern-erc3643-rwa.md), [Compliance Monitoring](../patterns/pattern-compliance-monitoring.md), [Network Anonymity](../patterns/pattern-network-anonymity.md), [Noir Private Contracts](../patterns/pattern-noir-private-contracts.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md)
-- **Prior Art:** [Vitalik zk-identity framework](https://vitalik.eth.limo/general/2025/06/28/zkid.html), [Human](https://human.tech/) (plural-identity scoring), [zk-creds (Rosenberg et al., 2023)](https://eprint.iacr.org/2022/878), [zk-promises (Shih et al., 2025)](https://eprint.iacr.org/2024/1260), [PLUME (Aayush Gupta, ERC-7524)](https://aayushg.com/thesis.pdf)
+- **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-734/735](https://eips.ethereum.org/EIPS/eip-734), [EAS](https://attest.org/), W3C VCs, [EIP-5564](https://eips.ethereum.org/EIPS/eip-5564), [RFC 9497 (OPRF)](https://www.rfc-editor.org/rfc/rfc9497), [RFC 9380 (hashToCurve)](https://www.rfc-editor.org/rfc/rfc9380), [EIP-196](https://eips.ethereum.org/EIPS/eip-196), [EIP-197](https://eips.ethereum.org/EIPS/eip-197), [EIP-2537](https://eips.ethereum.org/EIPS/eip-2537)
+- **ZK frameworks:** [Semaphore](https://github.com/semaphore-protocol), [Noir / Barretenberg](https://docs.aztec.network/), [Circom / Groth16](https://docs.circom.io/), [Iden3](https://github.com/iden3)
+- **Credential systems:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Rarimo](https://rarimo.com/), [Anon Aadhaar](https://github.com/anon-aadhaar), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [POD2](https://github.com/0xPARC/pod2), [OpenAC](https://eprint.iacr.org/2026/251), [Human Passport](https://passport.human.tech/), [Holonym](https://holonym.id/)
+- **Validated deployments:** ZKPassport (Aztec sale, 120+ countries), Anon Aadhaar, World ID (25M+ registrations), [OpenCerts](https://www.opencerts.io/) (2M+ certs)
+- **Patterns:** [Private MTP Auth](../patterns/pattern-private-mtp-auth.md), [ZK-KYC/ML + ONCHAINID](../patterns/pattern-zk-kyc-ml-id-erc734-735.md), [zk-TLS](../patterns/pattern-zk-tls.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [co-SNARKs](../patterns/pattern-co-snark.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md), [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md), [Stealth Addresses](../patterns/pattern-stealth-addresses.md), [ERC-3643 RWA](../patterns/pattern-erc3643-rwa.md), [Compliance Monitoring](../patterns/pattern-compliance-monitoring.md), [Network Anonymity](../patterns/pattern-network-anonymity.md), [Noir Private Contracts](../patterns/pattern-noir-private-contracts.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [Social Recovery](../patterns/pattern-social-recovery.md), [ZK Wrappers](../patterns/pattern-zk-wrappers.md)
+- **Prior art:** [Vitalik zk-identity framework](https://vitalik.eth.limo/general/2025/06/28/zkid.html), [Human](https://human.tech/), [zk-creds (Rosenberg et al., 2023)](https://eprint.iacr.org/2022/878), [zk-promises (Shih et al., 2025)](https://eprint.iacr.org/2024/1260), [PLUME (Aayush Gupta, ERC-7524)](https://aayushg.com/thesis.pdf)
 - **PoC:** [Resilient Private Identity](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity)
-- **Vendors:** [Aztec](../vendors/aztec.md), [Miden](../vendors/miden.md), [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md), [TACEO](../vendors/taceo-merces.md), [Privacy Pools](../vendors/privacypools.md), [Chainlink ACE](../vendors/chainlink-ace.md), [EY](../vendors/ey.md)
-- **Allies:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Aztec](https://aztec.network/), [Anon Aadhaar](https://github.com/anon-aadhaar), [World ID](https://worldcoin.org/world-id), [Semaphore](https://semaphore.pse.dev/)
+- **Vendors:** [Aztec](../vendors/aztec.md), [Miden](../vendors/miden.md), [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md), [TACEO Merces](../vendors/taceo-merces.md), [Privacy Pools](../vendors/privacypools.md), [Chainlink ACE](../vendors/chainlink-ace.md), [EY](../vendors/ey.md)
+- **Related approaches:** [Private Payments, Resilient Disbursement Rails](approach-private-payments.md) (downstream consumer of `IResilientIdentity`)

@@ -1,148 +1,210 @@
+---
+title: "Approach: Private Smart Derivatives"
+status: draft
+last_reviewed: 2026-05-05
+
+use_case: private-derivatives
+related_use_cases: [private-bonds, private-stablecoins]
+
+primary_patterns:
+  - pattern-shielding
+  - pattern-regulatory-disclosure-keys-proofs
+supporting_patterns:
+  - pattern-private-stablecoin-shielded-payments
+  - pattern-private-shared-state-fhe
+  - pattern-co-snark
+  - pattern-icma-bdt-data-model
+  - pattern-dvp-erc7573
+
+open_source_implementations:
+  - url: https://github.com/Railgun-Privacy/contract
+    description: "Railgun shielded pool"
+    language: Solidity
+  - url: https://github.com/AztecProtocol/aztec-packages
+    description: "Aztec privacy-native L2"
+    language: TypeScript / Noir
+---
+
 # Approach: Private Smart Derivatives
 
-**Use Case Link:** [Private Derivatives](../use-cases/private-derivatives.md)
+## Problem framing
 
-**High-level goal:** Enable ERC-6123 derivatives trading with confidential margin balances, settlement amounts, and trade terms while maintaining automation, auditability, and regulatory compliance.
+### Scenario
 
-## Overview
+A bank trades ERC-6123 derivatives (interest-rate swaps, FX forwards, simple options) with named counterparties. Margin balances and daily settlement deltas must remain hidden from competitors; settlement must run automatically on the daily cadence; regulators must retain audit access on demand. Trade size, direction, and notional are competitively sensitive.
 
-### Problem Interaction
+### Requirements
 
-The core challenge is balancing three competing requirements:
+- Hide margin balances, deltas, notional, and trade direction
+- Preserve ERC-6123 lifecycle automation (confirmation, valuation, margin, termination)
+- Selective disclosure for regulators (per-jurisdiction, time-bound)
+- Daily settlement cadence with atomic transfers
 
-1. **Privacy**: Hide margin balances, deltas, and trade parameters from competitors
-2. **Automation**: Maintain ERC-6123 semantics for programmatic risk management
-3. **Auditability**: Provide regulatory oversight without compromising confidentiality
+### Constraints
 
-These problems interact because traditional privacy solutions (like simple encryption) break automation, while transparent automation exposes sensitive trading information. The solution requires cryptographic techniques that enable verifiable computation on private data.
+- ERC-6123 capped-deal semantics must hold under privacy
+- Daily settlement window dictates a proving budget per counterparty
+- Cross-network settlement relies on ERC-7573 coordination (conditional atomicity)
+- Multi-collateral margin (USDC, EURC, tokenized deposit) requires per-asset circuit constraints
 
-### Key Constraints
+## Approaches
 
-- Must preserve ERC-6123 capped-deal behavior and margin enforcement
-- Daily settlement cadence with atomic, single-transaction transfers
-- Regulatory compliance requiring audit trails and threshold disclosure
-- Integration with existing institutional tech stacks
+### ZK + Shielded Pool
 
-### TLDR for Different Personas
+```yaml
+maturity: documented
+context: i2i
+crops: { cr: high, o: yes, p: full, s: high }
+uses_patterns: [pattern-shielding, pattern-regulatory-disclosure-keys-proofs, pattern-private-stablecoin-shielded-payments, pattern-dvp-erc7573]
+example_vendors: [railgun, aztec]
+```
 
-- **Business:** Execute derivatives privately on public blockchains while competitors can't see your risk appetite or strategy, but regulators maintain oversight capabilities
-- **Technical:** Use ZK proofs or FHE to compute settlement deltas on encrypted balances while preserving smart contract automation
-- **Legal:** Maintains compliance through selective disclosure mechanisms and audit trails while protecting proprietary trading information
+**Summary:** Margin balances live as shielded notes; daily settlement deltas are computed under ZK circuits that enforce ERC-6123 semantics on encrypted state.
 
-## Architecture and Design Choices
+**How it works:** Margin deposits are shielded into commitments. Each day, a signed oracle price feed is consumed; either counterparty submits a ZK proof of `delta = f(notional, price, direction, caps)` that consumes the loser's margin note and produces winner-aligned notes. Privacy-aware wrapper contracts enforce ERC-6123 capped-deal logic. Selective disclosure runs through regulator viewing keys. Cross-network settlement integrates ERC-7573 for the coordinated case.
 
-### Recommended Architecture: Hybrid ZK + Shielded Pool Approach
+**Trust assumptions:**
+- L1 / L2 consensus and verifier contract correctness
+- Oracle integrity for price feeds (single oracle or quorum)
+- Shielded-pool issuer for KYC-gated entry, where applicable
 
-**Primary Pattern:** [Shielding](../patterns/pattern-shielding.md)
-**Supporting Patterns:**
+**Threat model:**
+- Adversary observes L1 / L2; cannot break ZK soundness
+- Oracle compromise corrupts settlement directionality; mitigated by quorum and dispute paths
+- Anonymity-set economics: small institutional pools weaken anonymity for trade-size correlation
 
-- [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
-- [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
+**Works best when:**
+- Counterparties are bilateral or known and accept shielded-pool entry conditions
+- Daily settlement cadence matches the proving budget
+- ZK toolchain is available in-house or via a vendor
 
-#### Core Components:
+**Avoid when:**
+- Derivative semantics require complex computation that is awkward in circuits (path-dependent multi-underlying products)
+- Real-time settlement is required and proving cost is prohibitive
 
-1. **Shielded Balance Pool**
+### FHE Coprocessor
 
-   - Margin deposits converted to commitments via shielding protocol (privacy L2, Railgun-style L1 pools, or regular L2 with shielding)
-   - Nullifier-based double-spend prevention
-   - Support for multiple collateral types (USDC, EURC, etc.)
+```yaml
+maturity: documented
+context: i2i
+crops: { cr: medium, o: partial, p: partial, s: medium }
+uses_patterns: [pattern-private-shared-state-fhe]
+example_vendors: [zama, fhenix]
+```
 
-2. **ZK State Transition Engine**
+**Summary:** Margin balances are FHE ciphertexts; settlement arithmetic runs homomorphically; threshold decryption gates regulator access.
 
-   - Daily oracle price inputs (public, signed)
-   - ZK circuits proving: `delta = f(notional, price, direction, caps)`
-   - Either counterparty can submit valid proofs (first wins)
-   - Privacy-aware wrapper contracts implementing ERC-6123 semantics on encrypted state
+**How it works:** Margin deposits are encrypted under the FHE network's keys. Daily settlement runs as homomorphic computation: oracle price is encoded, delta is computed under encryption, balances are updated in place. A threshold decryption network gates ACL-based reads for regulator access.
 
-3. **Selective Disclosure Layer**
+**Trust assumptions:**
+- t-of-n threshold network for decryption keys
+- FHE library implementation correctness
+- ACL adoption by all derivative participants
 
-   - Regulator view keys for scoped audit access
-   - Time-bound, threshold-controlled disclosure
+**Threat model:**
+- Threshold compromise reveals all balances
+- No revocation per ciphertext; revocation requires re-encryption on balance update
+- Shared throughput across all FHE applications on the network is a bottleneck
 
-4. **Conditional Settlement Infrastructure**
+**Works best when:**
+- Derivative logic involves complex calculations (Asian options, structured products) that map naturally to FHE
+- Per-balance ACL granularity is required by the disclosure model
+- Threshold-network trust is acceptable
 
-   - ERC-7573 integration for coordinated cross-network settlement relayer (conditional atomicity, not strict atomicity)
-   - Cross-chain compatibility for diverse collateral
-   - Automated unwind triggers on margin breaches
+**Avoid when:**
+- High throughput is required and shared-network bottlenecks are unacceptable
+- Revocation per disclosure is a hard requirement
 
-### Vendor Recommendations
+### co-SNARK (Complex Products)
 
-**Primary Infrastructure:**
+```yaml
+maturity: documented
+context: i2i
+crops: { cr: medium, o: partial, p: partial, s: medium }
+uses_patterns: [pattern-co-snark]
+example_vendors: [taceo-merces]
+```
 
-- **Shielding Options:**
-  - **Privacy L2:** Aztec Network for native privacy
-  - **Shielded Pools:** [Railgun](../vendors/railgun.md) UTXO-style privacy (L1/L2 compatible)
-- **ZK Proving:** Groth16 for cost-efficient proofs, PLONK for flexibility
-- **Oracles:** Privacy-preserving price feeds
+**Summary:** Multi-party computation under collaborative SNARKs; secret-shared margin balances; suitable for multi-asset baskets and structured products.
 
-**Alternative/Emerging:**
+**How it works:** A 3-party MPC committee holds secret-shared margin balances offchain. Daily settlement runs under MPC, producing a co-SNARK that proves correct computation. The chain verifies the SNARK; counterparty addresses remain visible. Multi-asset basket logic and path-dependent payoffs are easier to express under MPC than in pure ZK circuits.
 
-- **FHE Approach:** [Zama](../vendors/zama.md) fhEVM for homomorphic computation on encrypted balances
-- **Intent-Based:** [Orion Finance](../vendors/orion-finance.md) for encrypted portfolio management integration
+**Trust assumptions:**
+- 3-of-3 honest nodes (no threshold tolerance in current TACEO design)
+- Co-SNARK soundness
+- Liveness of the MPC committee on the daily settlement window
 
-### Implementation Strategy
+**Threat model:**
+- Single-node compromise breaks confidentiality
+- Counterparty addresses leak; only amount and payoff confidentiality is provided
+- Batch latency creates a settlement window
 
-**Phase 1: Core Privacy Infrastructure**
+**Works best when:**
+- Derivatives are structured products or multi-asset baskets
+- Counterparties are bilateral or named and accept committee-mediated settlement
+- Throughput target matches batched proving (~200 TPS)
 
-- Deploy shielded pool contracts (privacy L2 or L1/L2 compatible)
-- Implement ZK circuits for ERC-6123 wrapper contracts
-- Oracle integration with price feeds and settlement triggers
+**Avoid when:**
+- Address-level privacy is required
+- Threshold-honest assumption is incompatible with the threat model
 
-**Phase 2: Regulatory & Compliance**
+## Comparison
 
-- Selective disclosure mechanism (viewing keys, ZK proofs)
-- Regulatory reporting interfaces
+| Axis | ZK + Shielded Pool | FHE Coprocessor | co-SNARK |
+|---|---|---|---|
+| **Maturity** | documented | documented | documented |
+| **Context** | i2i | i2i | i2i |
+| **CROPS** | CR:hi O:y P:full S:hi | CR:med O:part P:part S:med | CR:med O:part P:part S:med |
+| **Trust model** | L1/L2 + oracle | t-of-n threshold network | 3-of-3 MPC honest |
+| **Privacy scope** | Margin, delta, notional, addresses | Margin, delta; addresses public | Margin, delta, payoff; addresses public |
+| **Performance** | ZK proving budget per settlement | Shared FHE network throughput | ~200 TPS batched |
+| **Operator req.** | None (relayer optional) | Yes (threshold network) | Yes (MPC committee) |
+| **Cost class** | Medium-high (verification gas) | Medium | Low (batched) |
+| **Regulatory fit** | Strong (per-note view keys) | Strong (per-balance ACL, no revocation) | Strong (committee disclosure) |
+| **Failure modes** | Oracle compromise; circuit complexity ceiling | Threshold compromise; no revocation | Single-node compromise; batch latency |
 
-**Phase 3: Production & Ecosystem**
+## Persona perspectives
 
-- Multi-collateral margin support (USDC, EURC, etc.)
-- ERC-7573 conditional settlement coordination
-- Integration with institutional custody and risk management systems
+### Business perspective
 
-## More Details
+For institutional derivatives at the daily settlement cadence, **ZK + Shielded Pool** is the right default: it provides the strongest privacy (margin, delta, notional, and addresses through gas relayer), maps onto existing shielded-pool infrastructure, and offers a clean disclosure interface for regulators. **FHE** is the natural choice when the derivative logic involves complex arithmetic (Asian options, basket structured notes) where homomorphic computation removes the awkwardness of expressing path-dependent payoffs in circuits. **co-SNARK** wins for multi-asset baskets where bilateral settlement among named counterparties is acceptable and the MPC committee is operationally feasible.
 
-### Trade-offs
+### Technical perspective
 
-**ZK vs FHE Decision:**
+ZK + Shielded Pool reuses production shielded-pool infrastructure but requires bespoke circuits for ERC-6123 wrapper logic; circuit complexity is the dominant constraint, especially for path-dependent products. FHE simplifies the programming model, settlement arithmetic looks like ordinary code under FHE, but inherits shared-network throughput limits and no per-ciphertext revocation. co-SNARK requires running or contracting an MPC committee; throughput is bounded by batch cadence, but the programming model is closest to standard account-based smart contracts. The proving frequency choice (daily vs intraday vs weekly) is the second-order parameter that drives cost across all three.
 
-- **ZK Approach (Recommended):** Lower ongoing costs, mature tooling, better regulatory precedent
-- **FHE Approach:** Simpler programming model, higher gas and computational costs, newer technology
+### Legal & risk perspective
 
-**L1 vs L2 Trade-offs:**
+ZK + Shielded Pool carries the cleanest disclosure story: per-note viewing keys, scoped regulator access, and a verifiable audit fingerprint via nullifier publication. FHE provides per-balance ACL granularity but cannot revoke a ciphertext after grant; the audit-trail story relies on regular balance updates triggering re-grants. co-SNARK ties disclosure scope to committee membership; auditors must accept the committee composition and slashing logic. For each option, the proving frequency must be aligned with regulatory reporting cadence; daily proofs match common derivative reporting expectations.
 
-- **L2 Benefits:** Lower costs, faster finality, privacy-native infrastructure
-- **L1 Benefits:** Maximum security, broader ecosystem compatibility
-- **Recommendation:** Privacy L2 with L1 anchoring for critical state
+## Recommendation
 
-**Proving Frequency:**
+### Default
 
-- **Daily (Recommended):** Matches typical derivatives settlement, manageable costs
-- **Real-time:** Higher privacy but prohibitive proving costs
-- **Weekly/Monthly:** Lower costs but reduces automation benefits
+For institutional derivatives among bilateral or named counterparties on a daily settlement cadence, default to **ZK + Shielded Pool** on a privacy L2 ([Aztec](../vendors/aztec.md)) or L1 shielded pool ([Railgun](../vendors/railgun.md)) with privacy-aware ERC-6123 wrappers. Selective disclosure runs through regulator viewing keys; oracle quorum gates daily price inputs.
 
-### Open Questions
+### Decision factors
 
-1. **Circuit Complexity:** How to handle complex derivatives (multi-underlying, path-dependent) within practical proof constraints?
+- If derivatives are structured products or multi-asset baskets, choose **co-SNARK** and accept the MPC committee dependency.
+- If derivative logic is computation-heavy (Asian options, exotic payoffs) and per-balance ACL granularity is required, choose **FHE**.
+- If circuit complexity exceeds practical proving budgets for plain ZK, choose **co-SNARK** or **FHE** depending on the dominant constraint.
 
-2. **Cross-jurisdictional Compliance:** Standardization of selective disclosure formats across regulatory regimes?
+### Hybrid
 
-3. **Liquidity Fragmentation:** Impact of privacy requirements on market maker participation and price discovery?
+Run vanilla swaps and forwards through ZK + Shielded Pool for production maturity and counterparty privacy; route structured products through co-SNARK for the same counterparty set. Settlement coordination across both rails uses ERC-7573 where derivative legs cross networks. Compliance gating (KYC attestation) sits at the shielded-pool boundary as an attestation-gated deposit.
 
-4. **Key Recovery:** Institutional-grade key management for long-lived derivatives positions?
+## Open questions
 
-5. **Interoperability:** Standards for private derivatives interaction with broader DeFi ecosystem?
+1. **Circuit Complexity Ceiling.** Path-dependent multi-underlying derivatives may exceed practical proof budgets; the threshold is product-specific and unresolved.
+2. **Cross-Jurisdictional Disclosure Standards.** Standardization of selective-disclosure formats across MiCA, GENIUS, and national regimes is incomplete.
+3. **Liquidity Fragmentation.** Impact of privacy requirements on market maker participation and price discovery is unmeasured.
+4. **Key Recovery.** Institutional-grade key management for long-lived derivative positions; rotation under shielding is unresolved.
+5. **DeFi Interoperability.** Standards for private derivatives interaction with broader DeFi (e.g., AMMs, lending) are absent.
 
-### Alternative Approaches Considered
-
-**CoSNARK (Complex Products)**
-
-- Use case: Multi-asset baskets, structured products
-- Trade-off: Higher complexity, better privacy for proprietary strategies
-- Pattern: [Co-SNARK](../patterns/pattern-co-snark.md), Vendor: [TACEO Merces](../vendors/taceo-merces.md)
-
-## Links and Notes
+## See also
 
 - **Standards:** [ERC-6123](https://eips.ethereum.org/EIPS/eip-6123), [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573)
-- **Research:** [ICMA BDT Data Model](../patterns/pattern-icma-bdt-data-model.md) for traditional finance integration
-- **Regulatory:** [eWpG Compliance](../jurisdictions/de-eWpG.md), [MiCA Framework](../jurisdictions/eu-MiCA.md)
-- **Related Use Cases:** [Private Bonds](../use-cases/private-bonds.md), [Private Stablecoins](../use-cases/private-stablecoins.md)
+- **Patterns:** [Shielding](../patterns/pattern-shielding.md), [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [co-SNARKs](../patterns/pattern-co-snark.md), [Private Shared State (FHE)](../patterns/pattern-private-shared-state-fhe.md), [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md), [ICMA BDT Data Model](../patterns/pattern-icma-bdt-data-model.md), [DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md)
+- **Vendors:** [Railgun](../vendors/railgun.md), [Aztec](../vendors/aztec.md), [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md), [TACEO Merces](../vendors/taceo-merces.md), [Orion Finance](../vendors/orion-finance.md)
+- **Regulatory:** [eWpG](../jurisdictions/de-eWpG.md), [MiCA](../jurisdictions/eu-MiCA.md)
+- **Related approaches:** [Private Bonds](approach-private-bonds.md), [Private Trade Settlement](approach-private-trade-settlement.md), [Atomic DvP Settlement](approach-dvp-atomic-settlement.md)
