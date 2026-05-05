@@ -24,7 +24,7 @@ The protocol is developed and operated by [0xbow](https://0xbow.io), with the v1
 - Not a full rollup or scalability solution (operates as L1 smart contracts).
 - Not an identity system (relies on external KYC/credential providers for association set construction).
 - Not a universal compliance layer (compliance scope depends on ASP set construction and policies).
-- Not a general-purpose shielded token system (v1 supports ETH only; ERC-20 support planned for v2).
+- Not a general-purpose shielded token system (v1 only supports ETH; ERC-20 support planned for v2).
 
 ## Architecture
 
@@ -44,14 +44,14 @@ The protocol is developed and operated by [0xbow](https://0xbow.io), with the v1
 - **Exclusion proofs**: "My withdrawal did not come from these known-bad deposits."
 - **Bilateral direct proofs**: User can reveal the exact deposit-withdrawal link to a specific counterparty if required (e.g., for tax reporting or institutional compliance).
 - **Sequential proofs**: Funds passing through multiple hands can be re-proved at each step against current association sets.
-- **Viewing keys (auditor access)**: Per-account symmetric keys (XChaCha20-Poly1305, derived via HKDF) that grant read-only access to a user's shielded transaction history. Auditor data is embedded on-chain per withdrawal as an encrypted payload (tag + ciphertext), where the tag is a Poseidon hash enabling efficient event discovery without revealing the underlying data. Currently live on the StarkNet v1 deployment; EVM v1 support planned. Enables compliance teams, auditors, and institutional back-offices to verify transaction history without requiring the user's spending keys.
+- **Viewing keys (auditor access)**: Per-account symmetric keys (XChaCha20-Poly1305, derived via HKDF) that grant non-spending access to a user's shielded transaction history. Auditor data is embedded on-chain per withdrawal as an encrypted payload (tag + ciphertext), where the tag is a Poseidon hash enabling efficient event discovery without revealing the underlying data. Currently live on the StarkNet v1 deployment; EVM v1 support planned. Enables compliance teams, auditors, and institutional back-offices to verify transaction history without requiring the user's spending keys.
 
 ## Enterprise demand and use cases
 
 - **Centralised exchanges**: Private withdrawals (users withdraw to a shielded address, breaking the on-chain link between exchange hot wallet and destination), private deposits (users deposit from shielded balance without revealing source), private P2P transfers between exchange accounts, and yield on shielded balances. Integration model ranges from additive (opt-in privacy feature) to privacy-by-default for all user transfers.
 - **Wallet providers**: Shielded swaps (swap between assets without exposing portfolio), private P2P transfers and payment requests, cross-chain privacy (shield on one chain, unshield on another), and yield on idle shielded balances. SDK integration via `shield()`, `withdraw()`, `transfer()`, and `swap()` methods.
 - **Institutional custody providers**: Private vendor payments, private treasury movements (move funds between operational wallets without exposing internal structure), private cross-entity settlements, private payroll, and yield on shielded reserves. Enterprise features include MPC/multisig compatibility, inverted authorisation model (spending keys held by custodian, view keys shared with compliance), hardware wallet support, key rotation and recovery, and ragequit non-custodial guarantee.
-- **Compliance and audit**: View keys enable compliance teams to verify the full transaction history of a shielded account without requiring spending authority. Planned standalone auditor portal (audit.privacypools.com) for view-key-based read-only access to shielded balances and transaction graphs.
+- **Compliance and audit**: View keys enable compliance teams to verify the full transaction history of a shielded account without requiring spending authority. Planned standalone auditor portal (audit.privacypools.com) for view-key-based access to shielded balances and transaction graphs.
 - **OTC desks**: Private settlement of large block trades without broadcasting trade direction, size, or counterparty information on-chain.
 - **Policy pilots**: Cited in the Buterin, Soleimani, Schär et al. 2023 paper as the canonical model for aligning on-chain privacy with AML compliance. The v1 mainnet deployment is the production implementation of this model.
 
@@ -62,7 +62,7 @@ The protocol is developed and operated by [0xbow](https://0xbow.io), with the v1
   2. Membership (or exclusion) of that note in the association set tree.
   3. Correct nullifier derivation to prevent double-spending.
 - **Association set construction** follows configurable rules:
-  - _Inclusion-based_: Only deposits passing compliance screening are included (v1 default — 0xbow screens against sanctions lists and chain analytics).
+  - _Inclusion-based_: Deposits must pass compliance screening to be included (v1 default — 0xbow screens against sanctions lists and chain analytics).
   - _Exclusion-based_: All deposits except those flagged as high-risk.
   - _Hybrid_: Future support for KYC tokens, proof-of-personhood, or credential-gated sets.
 - **Gas costs**: Withdrawal proofs are ~2M gas due to on-chain Groth16 verification + Merkle path checks.
@@ -79,8 +79,8 @@ The protocol is developed and operated by [0xbow](https://0xbow.io), with the v1
 ## Risks and open questions
 
 - **Privacy depends on set size**: Small pools or narrowly defined association sets reduce the anonymity set. Pool growth is critical for privacy guarantees.
-- **ETH only in v1**: No ERC-20 support yet; ERC-20 shielding planned for v2.
-- **No native cross-chain support**: L1 only; no bridging to L2 shielded pools.
+- **v1 only supports ETH**: No ERC-20 support yet; ERC-20 shielding planned for v2.
+- **No native cross-chain support**: L1 deployment; no bridging to L2 shielded pools.
 - **Relayer trust**: The relayer can observe the withdrawal request (though it cannot link to the deposit without the user's secret). Relayer decentralization is a future goal.
 - **Groth16 trusted setup**: Requires a ceremony for zk-SNARK parameters; the security of the proof system depends on at least one honest participant in the setup ceremony.
 

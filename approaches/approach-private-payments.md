@@ -49,7 +49,7 @@ These problems interact because traditional payment transparency conflicts with 
 - Production L1 shielded pool with built-in compliance mechanism
 - [Privacy Pools](../vendors/privacypools.md) vendor documentation
 - Best for: Compliance-sensitive ETH transfers where L1 security is required
-- Trade-off: ETH only (v1), higher gas costs (~2M)
+- Trade-off: v1 only supports ETH, higher gas costs (~2M)
 
 **Privacy L2 (Aztec, etc.):**
 
