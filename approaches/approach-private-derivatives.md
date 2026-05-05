@@ -61,7 +61,7 @@ example_vendors: [railgun, aztec]
 
 **Summary:** Margin balances live as shielded notes; daily settlement deltas are computed under ZK circuits that enforce ERC-6123 semantics on encrypted state.
 
-**How it works:** Margin deposits are shielded into commitments. Each day, a signed oracle price feed is consumed; either counterparty submits a ZK proof of `delta = f(notional, price, direction, caps)` that consumes the loser's margin note and produces winner-aligned notes. Privacy-aware wrapper contracts enforce ERC-6123 capped-deal logic. Selective disclosure runs through regulator viewing keys. Cross-network settlement integrates ERC-7573 for the coordinated case.
+**How it works:** Margin deposits are shielded into commitments. Each day, a signed oracle price feed is consumed; either counterparty submits a zero-knowledge proof of `delta = f(notional, price, direction, caps)` that consumes the loser's margin note and produces winner-aligned notes. Privacy-aware wrapper contracts enforce ERC-6123 capped-deal logic. Selective disclosure runs through regulator viewing keys. Cross-network settlement integrates ERC-7573 for the coordinated case.
 
 **Trust assumptions:**
 - L1 / L2 consensus and verifier contract correctness

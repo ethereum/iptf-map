@@ -91,7 +91,7 @@ example_vendors: [railgun]
 
 **Summary:** Shielded ERC-20 pool on Ethereum L1 using commitment/nullifier scheme; users transfer between hidden notes.
 
-**How it works:** Deposit moves an ERC-20 balance into a Merkle tree of commitments; transfers spend a nullifier and create new commitments via a JoinSplit-style ZK proof; withdraw burns a commitment to a destination address. A gas relayer pays gas on the destination's behalf to avoid linking funded EOAs. Selective disclosure runs through per-note viewing keys.
+**How it works:** Deposit moves an ERC-20 balance into a Merkle tree of commitments; transfers spend a nullifier and create new commitments via a JoinSplit-style zero-knowledge proof; withdraw burns a commitment to a destination address. A gas relayer pays gas on the destination's behalf to avoid linking funded EOAs. Selective disclosure runs through per-note viewing keys.
 
 **Trust assumptions:**
 - L1 consensus and the verifier contract
@@ -112,7 +112,7 @@ example_vendors: [railgun]
 - High-frequency low-value transfers where gas dominates
 - Amount confidentiality must be cryptographically hidden across all observers (current designs leak via deposit/withdraw boundaries)
 
-**Implementation notes:** PoC implemented as a UTXO model with Noir / UltraHonk; dual-key (spending + viewing) architecture; attestation-gated entry via ZK proof of KYC Merkle inclusion (depth 20, ~1M participants). Multi-token transfers require same-token circuit constraints, so per-token pools are the working assumption.
+**Implementation notes:** PoC implemented as a UTXO model with Noir / UltraHonk; dual-key (spending + viewing) architecture; attestation-gated entry via zero-knowledge proof of KYC Merkle inclusion (depth 20, ~1M participants). Multi-token transfers require same-token circuit constraints, so per-token pools are the working assumption.
 
 #### Benchmarks
 
@@ -136,7 +136,7 @@ example_vendors: [aztec, fhenix]
 
 **Summary:** Confidential transfers run inside a privacy-native rollup where state is hidden by default at the protocol layer.
 
-**How it works:** Users post transactions with client-side ZK proofs to a privacy-native sequencer (Aztec) or use FHE-based confidential balances (Fhenix). Hidden state, encrypted memo, and account-level viewing keys give institutional readers controlled access. Bridging to L1 is the privacy boundary.
+**How it works:** Users post transactions with client-side zero-knowledge proofs to a privacy-native sequencer (Aztec) or use FHE-based confidential balances (Fhenix). Hidden state, encrypted memo, and account-level viewing keys give institutional readers controlled access. Bridging to L1 is the privacy boundary.
 
 **Trust assumptions:**
 - Sequencer for ordering (currently centralized in early deployments)
@@ -356,7 +356,7 @@ Operate L1 Shielded Payments and Privacy L2 in tiers, bridging via cross-tier me
 
 ## Open questions
 
-1. **Stablecoin Issuer Integration.** Attestation-gated entry via ZK proof of KYC works as a compliance gate; freeze and denylist integration inside shielded pools is unresolved.
+1. **Stablecoin Issuer Integration.** Attestation-gated entry via zero-knowledge proof of KYC works as a compliance gate; freeze and denylist integration inside shielded pools is unresolved.
 2. **Liquidity Fragmentation.** Per-token shielded pools are the working assumption; cross-pool atomic swaps and multi-asset circuits remain open.
 3. **Operational Recovery.** Dual-key architecture handles balance inspection under cold-storage spending keys; full business continuity workflows and key rotation under shielding are unresolved.
 4. **Cross-Jurisdiction Disclosure Standards.** No common selective-disclosure format across MiCA / GENIUS / national regimes.

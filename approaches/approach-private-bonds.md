@@ -86,7 +86,7 @@ example_vendors: [paladin, railgun]
 
 **Summary:** Bonds modelled as UTXO notes with hidden amount and owner; transfers via JoinSplit ZK circuits; per-note viewing keys for selective disclosure.
 
-**How it works:** A note commits to (asset, amount, owner_pk) via a Pedersen or Poseidon hash and lives in a Merkle tree. Spending a note publishes a nullifier and creates new commitments through a ZK proof; the verifier contract checks Merkle membership, nullifier uniqueness, and balance preservation. Issuance is a global note split; redemption is a burn proof. Identity is dual: a transport address (gas, KYC) plus a shielded keypair (spending + viewing).
+**How it works:** A note commits to (asset, amount, owner_pk) via a Pedersen or Poseidon hash and lives in a Merkle tree. Spending a note publishes a nullifier and creates new commitments through a zero-knowledge proof; the verifier contract checks Merkle membership, nullifier uniqueness, and balance preservation. Issuance is a global note split; redemption is a burn proof. Identity is dual: a transport address (gas, KYC) plus a shielded keypair (spending + viewing).
 
 **Trust assumptions:**
 - L1 consensus and the verifier contract
@@ -108,7 +108,7 @@ example_vendors: [paladin, railgun]
 - ZK toolchain is unavailable to the issuer
 - Coupon logic requires complex computation that does not map cleanly to circuits
 
-**Implementation notes:** PoC implements UTXO with Noir / UltraHonk; multi-token transfers require same-token circuit constraints, so per-pool deployments are the working assumption. Compliance hooks via attestation-gated entry (ZK proof of KYC Merkle inclusion) and per-note viewing keys.
+**Implementation notes:** PoC implements UTXO with Noir / UltraHonk; multi-token transfers require same-token circuit constraints, so per-pool deployments are the working assumption. Compliance hooks via attestation-gated entry (zero-knowledge proof of KYC Merkle inclusion) and per-note viewing keys.
 
 ### Privacy L2
 

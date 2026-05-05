@@ -26,7 +26,7 @@ supporting_patterns:
 
 open_source_implementations:
   - url: https://github.com/semaphore-protocol/semaphore
-    description: "Semaphore (Merkle membership ZK proofs)"
+    description: "Semaphore (Merkle membership zero-knowledge proofs)"
     language: TypeScript / Circom
   - url: https://github.com/zkpassport
     description: "ZKPassport (NFC passport, Noir circuits)"
@@ -80,7 +80,7 @@ example_vendors: []
 
 **Summary:** A registry operator maintains a Merkle tree of approved members; provers generate ZK membership proofs without revealing which leaf they correspond to.
 
-**How it works:** The operator publishes an on-chain Merkle root commitment with an incremental tree. Members generate ZK proofs of inclusion in the membership tree and exclusion from a revocation tree, with scope-bound nullifiers preventing replay across verifiers. Contract hooks verify proofs and integrate with ERC-3643 token transfers; attestation logs (EAS) provide audit trails.
+**How it works:** The operator publishes an on-chain Merkle root commitment with an incremental tree. Members generate zero-knowledge proofs of inclusion in the membership tree and exclusion from a revocation tree, with scope-bound nullifiers preventing replay across verifiers. Contract hooks verify proofs and integrate with ERC-3643 token transfers; attestation logs (EAS) provide audit trails.
 
 **Trust assumptions:**
 - Registry operator(s) honesty and availability
@@ -111,7 +111,7 @@ uses_patterns: [pattern-noir-private-contracts]
 example_vendors: []
 ```
 
-**Summary:** ZK proofs over cryptographic data from government-issued identity documents (passport NFC, national ID signatures); selectively disclose attributes without revealing the document.
+**Summary:** zero-knowledge proofs over cryptographic data from government-issued identity documents (passport NFC, national ID signatures); selectively disclose attributes without revealing the document.
 
 **How it works:** ZKPassport reads passport NFC chips (120+ countries) and proves attributes (age, nationality, sanctions-list non-membership) under Noir / UltraHonk on mobile. Anon Aadhaar verifies UIDAI's RSA signature client-side and emits EVM-verifiable proofs over Indian national ID attributes. The verifier checks the SNARK; no identity data is collected.
 
@@ -144,9 +144,9 @@ uses_patterns: [pattern-zk-tls]
 example_vendors: []
 ```
 
-**Summary:** TLSNotary generates ZK proofs over TLS session transcripts from any web2 source (bank portals, government sites, social media); selectively discloses specific fields.
+**Summary:** TLSNotary generates zero-knowledge proofs over TLS session transcripts from any web2 source (bank portals, government sites, social media); selectively discloses specific fields.
 
-**How it works:** A Notary co-signs the TLS session; the prover holds the session transcript and generates a ZK proof attesting to specific fields (account balance, government registry record, social signal). The verifier checks the proof against the Notary's signature and the TLS session metadata.
+**How it works:** A Notary co-signs the TLS session; the prover holds the session transcript and generates a zero-knowledge proof attesting to specific fields (account balance, government registry record, social signal). The verifier checks the proof against the Notary's signature and the TLS session metadata.
 
 **Trust assumptions:**
 - Notary honesty and availability during the session
@@ -212,7 +212,7 @@ example_vendors: []
 
 **Summary:** POD2 (Provable Object Data) bundles any data with a cryptographic proof of correctness; event tickets, community badges, poll responses, and access tokens share a composable format.
 
-**How it works:** Each POD is a typed record signed by the issuer; verifiers check the signature and the typed schema. PODs compose: a holder can prove statements over multiple PODs in a single ZK proof (e.g., "I hold an event POD and a community POD without revealing which event or community").
+**How it works:** Each POD is a typed record signed by the issuer; verifiers check the signature and the typed schema. PODs compose: a holder can prove statements over multiple PODs in a single zero-knowledge proof (e.g., "I hold an event POD and a community POD without revealing which event or community").
 
 **Trust assumptions:**
 - POD issuer signing keys
@@ -244,7 +244,7 @@ example_vendors: []
 
 **Summary:** Holders prove identity to a threshold vOPRF network, yielding a deterministic enrollment nullifier and a Poseidon leaf in an on-chain LeanIMT; post-enrollment, the on-chain root is the sole trust anchor, no issuer contact during verification.
 
-**How it works:** Any A-E source can enroll (passport, national ID, email DKIM, TLS notary, biometric, community vouch). The holder runs RFC 9497 + Jarecki threshold OPRF against the network (TACEO operates a 13-node production network). Output: a deterministic enrollment nullifier and a leaf added to the on-chain LeanIMT. Verification at any verifier checks a ZK proof against the on-chain root with public inputs (root, scope-bound nullifier, predicate parameters). Sybil resistance is layered: cryptographic (one enrollment per source credential), economic (refundable stake, default 0.1 ETH), social (web-of-trust vouching, future). Recovery via Shamir threshold splitting and guardian-based social recovery.
+**How it works:** Any A-E source can enroll (passport, national ID, email DKIM, TLS notary, biometric, community vouch). The holder runs RFC 9497 + Jarecki threshold OPRF against the network (TACEO operates a 13-node production network). Output: a deterministic enrollment nullifier and a leaf added to the on-chain LeanIMT. Verification at any verifier checks a zero-knowledge proof against the on-chain root with public inputs (root, scope-bound nullifier, predicate parameters). Sybil resistance is layered: cryptographic (one enrollment per source credential), economic (refundable stake, default 0.1 ETH), social (web-of-trust vouching, future). Recovery via Shamir threshold splitting and guardian-based social recovery.
 
 **Trust assumptions:**
 - Threshold OPRF network availability (t-of-n liveness)
@@ -296,7 +296,7 @@ Engineering effort scales by approach. Registry Membership reuses Semaphore-clas
 
 ### Legal & risk perspective
 
-Each approach has a distinct disclosure interface. Registry Membership uses scoped view keys and EAS-logged audit trails; the registry operator is the named regulated party. Document ZK proofs disclose only the attribute predicate's public output; jurisdictional acceptance varies (ZKPassport validated at Aztec sale across OFAC / Swiss / EU / UK). TLS Transcript Proofs require legal classification of the Notary's role. On-Chain Attestation maps cleanly onto existing identity-issuer regulation; OpenAC adds unlinkability without breaking the audit trail. POD2 is community-grade and may not satisfy institutional-grade evidence standards. Issuer-Independent OPRF requires legal sign-off on the threshold network composition, the recovery model, and the coercion-resistance posture.
+Each approach has a distinct disclosure interface. Registry Membership uses scoped view keys and EAS-logged audit trails; the registry operator is the named regulated party. Document zero-knowledge proofs disclose only the attribute predicate's public output; jurisdictional acceptance varies (ZKPassport validated at Aztec sale across OFAC / Swiss / EU / UK). TLS Transcript Proofs require legal classification of the Notary's role. On-Chain Attestation maps cleanly onto existing identity-issuer regulation; OpenAC adds unlinkability without breaking the audit trail. POD2 is community-grade and may not satisfy institutional-grade evidence standards. Issuer-Independent OPRF requires legal sign-off on the threshold network composition, the recovery model, and the coercion-resistance posture.
 
 ## Recommendation
 
@@ -317,7 +317,7 @@ Run On-Chain Attestation as the default for production permissioned flows; layer
 ## Open questions
 
 1. **Multi-Address Efficiency.** Proving ownership of multiple EOAs from the same seed without revealing derivation patterns.
-2. **Regulatory Recognition.** Legal recognition of ZK proofs as sufficient compliance evidence per jurisdiction.
+2. **Regulatory Recognition.** Legal recognition of zero-knowledge proofs as sufficient compliance evidence per jurisdiction.
 3. **Notary Trust.** Guaranteeing Notary trustworthiness in zk-TLS deployments; threshold or audited Notary networks.
 4. **Cross-Credential Composability.** Combining proofs from heterogeneous sources (passport + KYC attestation + community POD) in a single verification.
 5. **Credential Revocation.** Revocation across heterogeneous issuers without a central authority.
