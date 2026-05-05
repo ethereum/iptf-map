@@ -169,7 +169,7 @@ example_vendors: []
 
 ### Business perspective
 
-For a yield-bearing tokenized treasury product where operator-independent NAV verification is the load-bearing property, **ZK Shielded Commitments** is the right default: positions and redemptions are private, the running-total commitment is opened by a threshold subset of custodians and auditors who do not include the operator, and the fund continues to function under operator outage. **FHE** suits funds with complex yield logic (multi-strategy MMFs, dynamic allocation) where homomorphic arithmetic removes circuit-design overhead; the trade-off is reliance on the FHE network for both decryption and throughput. **TEE** is a viable PoC starting point and a near-term production option for funds whose custodians already accept hardware-rooted trust.
+For a yield-bearing tokenized treasury product where operator-independent NAV verification is the load-bearing property, **ZK Shielded Commitments** is the default: positions and redemptions are private, the running-total commitment is opened by a threshold subset of custodians and auditors who do not include the operator, and the fund continues to function under operator outage. **FHE** suits funds with complex yield logic (multi-strategy MMFs, dynamic allocation) where homomorphic arithmetic removes circuit-design overhead; the trade-off is reliance on the FHE network for both decryption and throughput. **TEE** is a viable PoC starting point and a near-term production option for funds whose custodians already accept hardware-rooted trust.
 
 ### Technical perspective
 
@@ -177,7 +177,7 @@ The dominant engineering question is the NAV-proof model. ZK with a running `tot
 
 ### Legal & risk perspective
 
-ZK Shielded Commitments carries the cleanest disclosure story for SEC Rule 2a-7 and ESMA MMFR: per-position view keys give regulators scoped access; ZK public outputs prove gate compliance (liquidity ratio, concentration) without revealing positions; EAS-logged disclosures provide a verifiable trail. FHE provides per-balance ACL granularity, but the no-revocation gap requires policy: balance updates must trigger ACL re-grant or the disclosure model relies on append-only audit logs. TEE-based disclosure is mediated by the enclave; auditor acceptance depends on enclave-code reproducibility, multi-party signing, and the vendor governance model. For each option, threshold custodian composition (independence from the operator, jurisdictional diversity) is the structural risk control.
+This is a perspective for legal review by the deploying fund operator, not legal advice. The three options expose distinct evidence patterns: ZK Shielded Commitments via per-position view keys plus ZK public outputs proving gate compliance (liquidity ratio, concentration) without revealing positions, with EAS-logged disclosures as the trail; FHE via per-balance ACL granularity with no per-ciphertext revocation (revocation depends on subsequent balance updates triggering re-grants, or the disclosure model has to rely on append-only audit logs); TEE via enclave-mediated disclosure that depends on enclave-code reproducibility, multi-party signing, and the vendor governance model. Whether any of these patterns satisfies SEC Rule 2a-7 or ESMA MMFR auditor expectations is a question for jurisdictional review. Threshold custodian composition (independence from the operator, jurisdictional diversity) is a structural-risk parameter that legal review would weigh in any of the three.
 
 ## Recommendation
 
@@ -202,10 +202,3 @@ Run primary NAV through ZK Shielded Commitments; use TEE for high-frequency intr
 3. **Mixed-currency underlying.** Hiding currency exposure when the underlying basket spans multiple currencies; oracle and ACL design are unresolved.
 4. **MMF-as-cash-equivalent.** Whether shielded MMF shares can serve as the cash leg in DvP for other instruments.
 
-## See also
-
-- **Standards:** [EAS](https://attest.org/), [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643)
-- **Regulations:** [SEC Rule 2a-7](https://www.sec.gov/rules-regulations/2010/02/money-market-fund-reform), [ESMA MMFR](https://www.esma.europa.eu/data-reporting/mmfr-reporting)
-- **Patterns:** [Shielding](../patterns/pattern-shielding.md), [Private Vaults](../patterns/pattern-private-vaults.md), [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [Compliance Monitoring](../patterns/pattern-compliance-monitoring.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md), [Private Shared State (FHE)](../patterns/pattern-private-shared-state-fhe.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [TEE Key Manager](../patterns/pattern-tee-key-manager.md)
-- **Vendors:** ZK ([Paladin](../vendors/paladin.md), [Railgun](../vendors/railgun.md), [Privacy Pools](../vendors/privacypools.md)); FHE ([Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md), [Orion Finance](../vendors/orion-finance.md)); MPC / Garbled Circuit ([Soda Labs](../vendors/soda-labs.md))
-- **Related approaches:** [Private Bonds](approach-private-bonds.md), [Atomic DvP Settlement](approach-dvp-atomic-settlement.md)

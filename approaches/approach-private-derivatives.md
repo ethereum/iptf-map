@@ -167,7 +167,7 @@ example_vendors: [taceo-merces]
 
 ### Business perspective
 
-For institutional derivatives at the daily settlement cadence, **ZK + Shielded Pool** is the right default: it provides the strongest privacy (margin, delta, notional, and addresses through gas relayer), maps onto existing shielded-pool infrastructure, and offers a clean disclosure interface for regulators. **FHE** is the natural choice when the derivative logic involves complex arithmetic (Asian options, basket structured notes) where homomorphic computation removes the awkwardness of expressing path-dependent payoffs in circuits. **co-SNARK** wins for multi-asset baskets where bilateral settlement among named counterparties is acceptable and the MPC committee is operationally feasible.
+For institutional derivatives at the daily settlement cadence, **ZK + Shielded Pool** is the default: it provides the amount, counterparty, and address privacy (margin, delta, notional, and addresses through gas relayer), maps onto existing shielded-pool infrastructure, and offers a clean disclosure interface for regulators. **FHE** is the option to consider when the derivative logic involves complex arithmetic (Asian options, basket structured notes) where homomorphic computation removes the awkwardness of expressing path-dependent payoffs in circuits. **co-SNARK** is suited for multi-asset baskets where bilateral settlement among named counterparties is acceptable and the MPC committee is operationally feasible.
 
 ### Technical perspective
 
@@ -175,7 +175,7 @@ ZK + Shielded Pool reuses production shielded-pool infrastructure but requires b
 
 ### Legal & risk perspective
 
-ZK + Shielded Pool carries the cleanest disclosure story: per-note viewing keys, scoped regulator access, and a verifiable audit fingerprint via nullifier publication. FHE provides per-balance ACL granularity but cannot revoke a ciphertext after grant; the audit-trail story relies on regular balance updates triggering re-grants. co-SNARK ties disclosure scope to committee membership; auditors must accept the committee composition and slashing logic. For each option, the proving frequency must be aligned with regulatory reporting cadence; daily proofs match common derivative reporting expectations.
+This is a perspective for legal review by the deploying institution, not legal advice. ZK + Shielded Pool exposes per-note viewing keys, scoped regulator access, and an audit fingerprint via nullifier publication. FHE exposes per-balance ACL granularity with no per-ciphertext revocation; revocation depends on subsequent balance updates triggering re-grants. co-SNARK ties disclosure scope to committee membership and slashing logic. Whether any of these patterns satisfies the derivative-reporting framework that applies to a specific desk (e.g., EMIR / Dodd-Frank / MiFID II under MiCA) is a question for counsel; proving frequency would similarly need to be aligned with the applicable reporting cadence under jurisdictional review.
 
 ## Recommendation
 
@@ -201,10 +201,3 @@ Run vanilla swaps and forwards through ZK + Shielded Pool for production maturit
 4. **Key Recovery.** Institutional-grade key management for long-lived derivative positions; rotation under shielding is unresolved.
 5. **DeFi Interoperability.** Standards for private derivatives interaction with broader DeFi (e.g., AMMs, lending) are absent.
 
-## See also
-
-- **Standards:** [ERC-6123](https://eips.ethereum.org/EIPS/eip-6123), [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573)
-- **Patterns:** [Shielding](../patterns/pattern-shielding.md), [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [co-SNARKs](../patterns/pattern-co-snark.md), [Private Shared State (FHE)](../patterns/pattern-private-shared-state-fhe.md), [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md), [ICMA BDT Data Model](../patterns/pattern-icma-bdt-data-model.md), [DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md)
-- **Vendors:** [Railgun](../vendors/railgun.md), [Aztec](../vendors/aztec.md), [Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md), [TACEO Merces](../vendors/taceo-merces.md), [Orion Finance](../vendors/orion-finance.md)
-- **Regulatory:** [eWpG](../jurisdictions/de-eWpG.md), [MiCA](../jurisdictions/eu-MiCA.md)
-- **Related approaches:** [Private Bonds](approach-private-bonds.md), [Private Trade Settlement](approach-private-trade-settlement.md), [Atomic DvP Settlement](approach-dvp-atomic-settlement.md)

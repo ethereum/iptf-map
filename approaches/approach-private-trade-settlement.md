@@ -245,7 +245,7 @@ example_vendors: []
 
 ### Business perspective
 
-For institutional same-network settlement among known counterparties, **UTXO Shielded Pool DvP** is the right default: production maturity, vendor coverage, and a disclosure interface that maps onto eWpG / MiCA. **Privacy L2 Native DvP** wins where bond logic is complex and the rollup's decentralization timeline is acceptable. Cross-network settlement carries unavoidable trust: **TEE+ZK** suits institutions with hardware trust already in scope; **MPC/Threshold** fits decentralized coordination without hardware vendors; **Intent-Based** is the right call for asynchronous flows where competitive execution matters more than order privacy. The default is to keep both legs on one network whenever possible; only resort to cross-network when liquidity or regulation forces it.
+For institutional same-network settlement among known counterparties, **UTXO Shielded Pool DvP** is the default: production maturity, vendor coverage, and a disclosure interface that maps onto eWpG / MiCA. **Privacy L2 Native DvP** fits where bond logic is complex and the rollup's decentralization timeline is acceptable. Cross-network settlement carries unavoidable trust: **TEE+ZK** suits institutions with hardware trust already in scope; **MPC/Threshold** fits decentralized coordination without hardware vendors; **Intent-Based** is the suitable choice for asynchronous flows where competitive execution matters more than order privacy. The default is to keep both legs on one network whenever possible; only resort to cross-network when liquidity or regulation forces it.
 
 ### Technical perspective
 
@@ -253,7 +253,7 @@ Same-network settlement is the simpler engineering surface: deploy a verifier an
 
 ### Legal & risk perspective
 
-Same-network UTXO and Privacy L2 settlement carry the cleanest disclosure stories: viewing keys are scoped, the audit fingerprint (nullifiers, sequencer events) is well-defined, and counterparty risk is structurally eliminated. Cross-network options expose new disclosure surfaces, TEE attestation chains and vendor governance, MPC committee membership and slashing logs, solver network operations and intent transparency. Each requires a fresh classification: who is the legal entity in the coordination layer, what evidence does an auditor need, what is the dispute path on failure. The recovery semantics differ materially: timeout refund (TEE) vs slashing payout (MPC) vs solver loss (intent), each of which a legal team must model before sign-off.
+This is a perspective for legal review by the deploying institution, not legal advice. Same-network UTXO and Privacy L2 settlement expose viewing keys as the disclosure interface and a defined audit fingerprint (nullifiers, sequencer events); whether that interface satisfies the applicable settlement-reporting framework is a question for jurisdictional review. Cross-network options surface additional questions: TEE attestation chains and vendor governance, MPC committee membership and slashing logs, solver-network operations and intent transparency. Each raises classification questions (who is the legal entity in the coordination layer, what evidence does an auditor need, what is the dispute path on failure) that counsel would resolve per jurisdiction. The recovery semantics differ materially across cross-network options (timeout refund for TEE, slashing payout for MPC, solver loss for intent-based) and would need to be modelled explicitly under the applicable law before sign-off.
 
 ## Recommendation
 
@@ -280,11 +280,3 @@ Run primary settlement on a shielded pool for liquidity-dense flow; pair with TE
 4. **Solver privacy.** Can intent-based architectures preserve order privacy while enabling competitive execution?
 5. **Realtime proving / based sequencing.** Whether synchronous cross-rollup composability can deliver trustless cross-network atomicity within block time.
 
-## See also
-
-- **Companion document:** [Atomic DvP Settlement](approach-dvp-atomic-settlement.md) - HTLC, escrow, oracle-based atomicity primitives
-- **Standards:** [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573), [EIP-7683](https://eips.ethereum.org/EIPS/eip-7683), [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [EIP-5564](https://eips.ethereum.org/EIPS/eip-5564)
-- **Patterns:** [Hybrid TEE + ZK Settlement](../patterns/pattern-tee-zk-settlement.md), [DvP ERC-7573](../patterns/pattern-dvp-erc7573.md), [Shielding](../patterns/pattern-shielding.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md), [Cross-Chain Privacy Bridge](../patterns/pattern-cross-chain-privacy-bridge.md), [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
-- **Related approaches:** [Atomic DvP Settlement](approach-dvp-atomic-settlement.md), [Private Payments](approach-private-payments.md), [Private Bonds](approach-private-bonds.md), [Private Derivatives](approach-private-derivatives.md)
-- **Research:** [Synchronous composability via realtime proving](https://ethresear.ch/t/synchronous-composability-between-rollups-via-realtime-proving/23998)
-- **Regulatory:** [eWpG](../jurisdictions/de-eWpG.md), [MiCA](../jurisdictions/eu-MiCA.md)

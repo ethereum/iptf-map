@@ -190,7 +190,7 @@ For derivative contracts using EIP-6123 lifecycle management, the DvP integratio
 
 ### Business perspective
 
-For institutional bond settlement among known counterparties, **Escrow with Dual Approval** is the right default: it matches the human-in-the-loop nature of traditional settlement, accommodates compliance and operational checks before release, and provides an explicit dispute path that legal review can rely on. **HTLC** suits trustless contexts (cross-chain atomic swaps, dealer-to-dealer settlement with no prior relationship) but exposes a free-option problem that institutional desks penalize. **Oracle-based settlement** wins for event-driven flows (derivatives expiry, cross-network DvP via ERC-7573) where the trigger is external; the operational burden is the oracle governance rather than the contract itself.
+For institutional bond settlement among known counterparties, **Escrow with Dual Approval** is the default: it matches the human-in-the-loop nature of traditional settlement, accommodates compliance and operational checks before release, and provides an explicit dispute path that legal review can rely on. **HTLC** suits trustless contexts (cross-chain atomic swaps, dealer-to-dealer settlement with no prior relationship) but exposes a free-option problem that institutional desks penalize. **Oracle-based settlement** is suited for event-driven flows (derivatives expiry, cross-network DvP via ERC-7573) where the trigger is external; the operational burden is the oracle governance rather than the contract itself.
 
 ### Technical perspective
 
@@ -198,7 +198,7 @@ HTLC is the simplest contract surface but the trickiest to parameterize: T2 < T1
 
 ### Legal & risk perspective
 
-HTLC offers the cleanest deterministic outcome, preimage revealed or timeout, which legal teams can document precisely. Escrow with named arbitrator maps onto existing arbitration frameworks (LCIA, ICC) and is the natural fit when counterparties already have a legal relationship. Oracle-based settlement requires legal classification of the oracle's role (data provider, attestation issuer, fiduciary?) and audit access to the oracle's evidence trail. For each option, the dispute and recovery path must be modelled explicitly: timeout refund, arbitrator decision, oracle non-response, escrow bug.
+This is a perspective for legal review by the deploying institution, not legal advice. HTLC has a deterministic outcome (preimage revealed or timeout) that can be documented precisely; whether that documentation suffices for a specific dispute regime is for legal review. Escrow with a named arbitrator references existing arbitration frameworks (LCIA, ICC); whether the chosen framework binds in cross-border settlement is a question for counsel. Oracle-based settlement raises a classification question about the oracle's role (data provider, attestation issuer, fiduciary?) and the audit access to its evidence trail. For each option, the dispute and recovery path (timeout refund, arbitrator decision, oracle non-response, escrow bug) would need to be modelled explicitly under the applicable law.
 
 ## Recommendation
 
@@ -224,17 +224,3 @@ Bond DvP can run primary settlement through Escrow with Dual Approval and fall b
 4. **Privacy of escrow state.** Standard escrow contracts publish trade IDs and party identities; privacy-preserving DvP requires composing with shielded pools or [Commit and Prove](../patterns/pattern-commit-and-prove.md).
 5. **Settlement-window calibration.** Network congestion margins for HTLC timeouts and escrow dispute windows are deployment-specific; no canonical guidance.
 
-## See also
-
-### Related patterns
-
-- [Atomic DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md) - Cross-network DvP coordination
-- [ERC-3643 RWA Tokenization](../patterns/pattern-erc3643-rwa.md) - Compliant security tokens
-- [MPC Custody](../patterns/pattern-mpc-custody.md) - Secure key management for escrow
-- [Commit and Prove](../patterns/pattern-commit-and-prove.md) - Privacy-preserving condition verification
-- [Private PvP Stablecoins via ERC-7573](../patterns/pattern-private-pvp-stablecoins-erc7573.md)
-
-### References
-
-- [EIP-6123 spec](https://eips.ethereum.org/EIPS/eip-6123) - Smart Derivative Contract standard
-- [ERC-7573 spec](https://ercs.ethereum.org/ERCS/erc-7573) - Cross-network settlement standard

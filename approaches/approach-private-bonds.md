@@ -230,7 +230,7 @@ example_vendors: [zama, fhenix]
 
 ### Business perspective
 
-For institutional bond issuance and trading at scale, UTXO Shielded Notes is the right default: production maturity (Railgun > USD 4b lifetime volume), white-label vendor coverage (Paladin), strongest privacy (amounts, counterparties, and addresses via gas relayer), and a regulatory story built on per-note viewing keys that maps cleanly onto eWpG and MiCA disclosure regimes. Privacy L2 wins where bond logic is complex (coupons, structured lifecycle) because it removes circuit-engineering work, but the issuer must accept the rollup's decentralization timeline. co-SNARKs and FHE fit specific institutional contexts: bilateral or club-mode markets where address visibility is acceptable, or coupon-heavy products where homomorphic arithmetic is the natural model.
+For institutional bond issuance and trading at scale, UTXO Shielded Notes is the default: production maturity (Railgun > USD 4b lifetime volume), white-label vendor coverage (Paladin), amount, counterparty, and address privacy (amounts, counterparties, and addresses via gas relayer), and a regulatory story built on per-note viewing keys that maps cleanly onto eWpG and MiCA disclosure regimes. Privacy L2 fits where bond logic is complex (coupons, structured lifecycle) because it removes circuit-engineering work, but the issuer must accept the rollup's decentralization timeline. co-SNARKs and FHE fit specific institutional contexts: bilateral or club-mode markets where address visibility is acceptable, or coupon-heavy products where homomorphic arithmetic is the natural model.
 
 ### Technical perspective
 
@@ -238,13 +238,13 @@ Engineering effort scales by approach. UTXO Shielded Notes requires deploying a 
 
 ### Legal & risk perspective
 
-UTXO Shielded Notes carries the cleanest disclosure story for eWpG / MiCA: per-note viewing keys grant scoped access, nullifier publication provides a verifiable audit fingerprint, and crypto-registry verification can be integrated through attestation-gated entry. Privacy L2 (Aztec) provides account-level IVKs, coarser than UTXO but app-siloed for damage containment. co-SNARKs offers MPC-based disclosure that satisfies many institutional auditors but ties scope to committee membership. FHE provides per-balance ACL but cannot revoke a ciphertext after grant; revocation requires balance updates, which complicates the audit-trail story. For each option, jurisdictional review must validate the disclosure interface against the local registry's compliance expectations.
+This is a perspective for legal review by the deploying issuer, not legal advice. The four options expose distinct disclosure interfaces: UTXO Shielded Notes via per-note viewing keys plus nullifier publication; Privacy L2 (Aztec) via account-level Incoming Viewing Keys with app-siloed nullifier keys; co-SNARKs via MPC-mediated disclosure scoped to committee membership; FHE via per-balance ACL with no per-ciphertext revocation (revocation depends on subsequent balance updates triggering re-grants). Whether any of these interfaces satisfies eWpG / MiCA disclosure expectations or the local crypto-registry's compliance interface is a question for jurisdictional review against the specific regime; the document does not assert that any option is approved by a regulator.
 
 ## Recommendation
 
 ### Default
 
-For institutional bond issuance and trading on a 1-2 year production timeline, default to **UTXO Shielded Notes** with [Paladin](../vendors/paladin.md) or [Railgun](../vendors/railgun.md) as the underlying shielded pool. This is the only category with production maturity, vendor coverage, and a disclosure interface that has been mapped onto eWpG / MiCA expectations.
+For institutional bond issuance and trading on a 1-2 year production timeline, default to **UTXO Shielded Notes** with [Paladin](../vendors/paladin.md) or [Railgun](../vendors/railgun.md) as the underlying shielded pool. This is the category with documented production volume, vendor coverage, and a disclosure interface that has been mapped onto eWpG / MiCA expectations.
 
 ### Decision factors
 
@@ -267,13 +267,3 @@ Issuance can run through UTXO with a vendor-provided shielded pool; secondary tr
 7. **Regulatory Standards.** Standardization of selective-disclosure formats for eWpG / MiCA across jurisdictions is incomplete.
 8. **Legacy Integration.** Bridges between on-chain privacy and traditional bond settlement (Euroclear, Clearstream, MarketAxess) are absent.
 
-## See also
-
-- **Reference Implementation:** [Private Bond PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-bond) (Custom UTXO, Aztec L2, Zama FHE)
-- **Maturity status (Feb 2026):** UTXO (production: Railgun), Privacy L2s (testnet/2026: Aztec Ignition, Miden), co-SNARKs (testnet: TACEO Base / Arc), FHE (testnet: Zama, Fhenix)
-- **Standards:** [ICMA BDT](https://www.icmagroup.org/market-practice-and-regulatory-policy/repo-and-collateral-markets/legal-documentation/global-master-repurchase-agreement-gmra/)
-- **Research:** [Private Tokenized Securities with UTXO Model](https://eprint.iacr.org/2025/1715.pdf)
-- **Regulations:** [eWpG](../jurisdictions/de-eWpG.md), [MiCA](../jurisdictions/eu-MiCA.md)
-- **Vendors:** UTXO ([Paladin](../vendors/paladin.md), [Railgun](https://railgun.org/)); Privacy L2 ([Aztec](../vendors/aztec.md), [Miden](../vendors/miden.md)); co-SNARKs ([TACEO Merces](../vendors/taceo-merces.md)); FHE ([Zama](../vendors/zama.md), [Fhenix](../vendors/fhenix.md))
-- **Related patterns:** [co-SNARKs](../patterns/pattern-co-snark.md), [Shielding](../patterns/pattern-shielding.md), [User-Controlled Viewing Keys](../patterns/pattern-user-controlled-viewing-keys.md)
-- **Related approaches:** [Private DvP / Atomic Settlement](approach-dvp-atomic-settlement.md), [Private Derivatives](approach-private-derivatives.md)

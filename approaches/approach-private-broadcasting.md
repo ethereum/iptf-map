@@ -167,7 +167,7 @@ example_vendors: [aztec, fhenix, zksync, ey]
 
 ### Business perspective
 
-For institutional desks executing large trades on public chains, **OTC / Off-chain Matching** is the production default: Flashbots-class infrastructure is mature, Renegade and similar dark-pool venues offer ZK-backed matching, and the operational integration with custody is well-trodden. **Encrypted Mempools** win where venue trust is unattractive and the chain supports threshold-encrypted ordering. **Private Rollups** are the right call when comprehensive privacy across mempool, state, and execution is required and the institution accepts the rollup operator model. The hybrid is to route by trade size and venue: large blocks through OTC, mid-size through encrypted mempools, comprehensive flow through a private rollup.
+For institutional desks executing large trades on public chains, **OTC / Off-chain Matching** is the default for production deployments: Flashbots-class infrastructure is mature, Renegade and similar dark-pool venues offer ZK-backed matching, and the operational integration with custody is well-trodden. **Encrypted Mempools** win where venue trust is unattractive and the chain supports threshold-encrypted ordering. **Private Rollups** are the suitable choice when comprehensive privacy across mempool, state, and execution is required and the institution accepts the rollup operator model. The hybrid is to route by trade size and venue: large blocks through OTC, mid-size through encrypted mempools, comprehensive flow through a private rollup.
 
 ### Technical perspective
 
@@ -175,7 +175,7 @@ OTC / Off-chain Matching is the lightest engineering integration: connect to a v
 
 ### Legal & risk perspective
 
-Each option has a distinct regulatory posture. OTC venues operate under the same legal frameworks as established dark pools; transaction reporting and best-execution obligations apply. Encrypted mempools delay disclosure but do not erase it; the post-decrypt audit trail is forward-compatible with most reporting frameworks. Private Rollups require legal classification of the operator set and the disclosure interface; enterprise rollups (Prividium, Nightfall) are typically deployed in consortium structures with explicit governance. Cross-border deployment must address the jurisdictional acceptance of each model (encrypted-mempool ordering is novel in some regulators' view).
+This is a perspective for legal review by the deploying desk, not legal advice. OTC venues are typically classified under existing dark-pool frameworks; whether a specific venue triggers transaction-reporting or best-execution obligations is for counsel. Encrypted mempools delay disclosure rather than erase it; whether a post-decrypt audit trail satisfies a given reporting framework is a jurisdictional question. Private Rollups raise classification questions about the operator set and the disclosure interface; enterprise rollups (Prividium, Nightfall) are typically deployed in consortium structures, but acceptance varies by regulator. Cross-border deployment surfaces the question of whether a given regulator views encrypted-mempool ordering as compatible with its market-fairness rules; the document does not claim approval in any jurisdiction.
 
 ## Recommendation
 
@@ -187,7 +187,7 @@ For institutional desks on public chains, default to **OTC / Off-chain Matching*
 
 - If venue trust is unacceptable and the chain supports threshold-encrypted ordering, choose **Encrypted Mempools**.
 - If comprehensive privacy across mempool, state, and execution is required and the rollup operator model is acceptable, choose **Private Rollups**.
-- If trading must remain on a public chain and threshold-encrypted ordering is unavailable, OTC remains the only production option.
+- If trading must remain on a public chain and threshold-encrypted ordering is unavailable, OTC is the only option that has reached production at this layer.
 
 ### Hybrid
 
@@ -201,8 +201,3 @@ Tier the privacy stack by trade size: large blocks (>EUR 5M-equivalent) through 
 4. **Timing analysis.** Sophisticated adversaries may still extract information from transaction-timing patterns even under encrypted mempools.
 5. **Builder market structure.** Concentration at the builder layer creates a censorship and copy-trading risk that economic competition alone may not bound.
 
-## See also
-
-- **Patterns:** [Pre-trade Privacy Encryption](../patterns/pattern-pretrade-privacy-encryption.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md), [Shielding](../patterns/pattern-shielding.md), [Network-Level Anonymity](../patterns/pattern-network-anonymity.md)
-- **Vendors:** [Renegade](../vendors/renegade.md), [Flashbots](../vendors/flashbots.md), [Shutter](../vendors/shutter.md), [Aztec](../vendors/aztec.md), [Fhenix](../vendors/fhenix.md), [ZKsync Prividium](../vendors/zksync.md), [EY Nightfall v4](../vendors/ey.md#nightfall-v4)
-- **Related approaches:** [Private Trade Settlement](approach-private-trade-settlement.md), [Private Derivatives](approach-private-derivatives.md), [Private Bonds](approach-private-bonds.md)

@@ -326,7 +326,7 @@ example_vendors: []
 
 ### Business perspective
 
-For institutional treasury at moderate volume with standard compliance needs, the right default is the Hybrid L1/L2 composition described in `## Recommendation`: Privacy L2 absorbs the high-frequency intra-bank flow and L1 Shielded Payments handles high-value or anonymity-sensitive transfers. Cost is predictable, sequencer trust during rollup decentralization is the main accepted risk. Stateless Plasma is reserved for treasuries with sustained high volume that justify operator infrastructure and user-side state custody. MPC-Based Privacy fits bilateral settlement with named counterparties, where address-level privacy is not the concern. Resilient Disbursement Rails is reserved for humanitarian programs whose donor policy already names the threat model.
+For institutional treasury at moderate volume with standard compliance needs, the default described in `## Recommendation` is the Hybrid L1/L2 composition: Privacy L2 absorbs the high-frequency intra-bank flow and L1 Shielded Payments handles high-value or anonymity-sensitive transfers. Cost is predictable, sequencer trust during rollup decentralization is the main accepted risk. Stateless Plasma is reserved for treasuries with sustained high volume that justify operator infrastructure and user-side state custody. MPC-Based Privacy fits bilateral settlement with named counterparties, where address-level privacy is not the concern. Resilient Disbursement Rails is reserved for humanitarian programs whose donor policy already names the threat model.
 
 ### Technical perspective
 
@@ -334,7 +334,7 @@ Engineering capacity dictates a lot. L1 Shielded Payments is the lightest integr
 
 ### Legal & risk perspective
 
-L1 Shielded Payments and Privacy L2 carry the cleanest regulatory story when paired with viewing-key disclosure: per-jurisdiction view keys map to MiCA / GENIUS-style audit access, and attestation logs (EAS, ONCHAINID) cover trail requirements. Stateless Plasma adds operator records as a disclosure surface. TEE attestations satisfy auditors who already accept HSM-rooted custody. MPC's per-counterparty audit is straightforward but address-level visibility limits use to known-counterparty contexts. Resilient Disbursement Rails inverts the disclosure model: by minimizing what each party holds, compelled disclosure cannot reveal state the party never had; legal sign-off depends on documenting that minimization and the multi-jurisdiction relay roster.
+This is a perspective for legal review by the deploying institution, not legal advice. L1 Shielded Payments and Privacy L2, paired with viewing-key disclosure, expose per-jurisdiction view keys and attestation logs (EAS, ONCHAINID) as the disclosure interface; whether that interface satisfies MiCA, GENIUS Act, or another regime is a question for jurisdictional review. Stateless Plasma adds operator records as an additional disclosure surface that legal review would scope. TEE attestations are typically accepted by auditors who already accept HSM-rooted custody, but acceptance varies by regulator. MPC exposes per-counterparty audit; address-level visibility may limit use to known-counterparty contexts depending on the regulator's view. Resilient Disbursement Rails inverts the disclosure model by minimizing what each party holds; whether a humanitarian regime accepts that posture depends on the donor policy and the destination-country regulator, and legal sign-off would document the minimization and the multi-jurisdiction relay roster.
 
 ## Recommendation
 
@@ -363,17 +363,9 @@ Operate L1 Shielded Payments and Privacy L2 in tiers, bridging via cross-tier me
 5. **Traditional Rail Standards.** Technical standards for SWIFT / ISO 20022 integration with privacy infrastructure are emergent.
 6. **Verification Gas Viability.** At ~2.6M gas per on-chain verification, the volume threshold above which L2 amortization is mandatory needs measurement per asset class.
 7. **Network Timing Correlation.** Acceptable latency overhead for network-anonymity mitigations is unresolved.
-8. **Relay Economic Recovery (Section G).** Commission, L2 settlement, or funder reimbursement each carry distinct privacy consequences; unresolved.
-9. **Audit-Friendly View-Key Extension (Section G).** Recipient-derived destinations have no view-key split; can a view-only credential be added without an interactive sender step?
-10. **Smartcard Supply-Chain Attestation (Section G).** Reproducible builds, multi-party applet-key signing, perso-bureau vetting against donor-policy CC composite evaluation requirements.
-11. **Cross-Cohort Metadata Leakage (Section G).** Funder identity, cohort-size evolution, and round cadence fingerprint deployments; rotation policy unresolved.
-12. **Forced-Withdrawal Interaction (Section G).** During an L1 escape hatch, can the recipient still hit an unlinkable destination, or does forced exit collapse to a public address?
+8. **Relay Economic Recovery (Resilient Disbursement Rails).** Commission, L2 settlement, or funder reimbursement each carry distinct privacy consequences; unresolved.
+9. **Audit-Friendly View-Key Extension (Resilient Disbursement Rails).** Recipient-derived destinations have no view-key split; can a view-only credential be added without an interactive sender step?
+10. **Smartcard Supply-Chain Attestation (Resilient Disbursement Rails).** Reproducible builds, multi-party applet-key signing, perso-bureau vetting against donor-policy CC composite evaluation requirements.
+11. **Cross-Cohort Metadata Leakage (Resilient Disbursement Rails).** Funder identity, cohort-size evolution, and round cadence fingerprint deployments; rotation policy unresolved.
+12. **Forced-Withdrawal Interaction (Resilient Disbursement Rails).** During an L1 escape hatch, can the recipient still hit an unlinkable destination, or does forced exit collapse to a public address?
 
-## See also
-
-- **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573), [ISO 20022](https://www.iso20022.org/), [ERC-20](https://ercs.ethereum.org/ERCS/erc-20), [RFC 6979](https://www.rfc-editor.org/rfc/rfc6979), [EIP-2](https://eips.ethereum.org/EIPS/eip-2), [NIST SP 800-88](https://csrc.nist.gov/publications/detail/sp/800-88/rev-1/final), [BSI-CC-PP-0084](https://www.bsi.bund.de/dok/CC-PP-0084)
-- **Vendors:** [Railgun](../vendors/railgun.md), [Aztec Network](../vendors/aztec.md), [Fhenix](../vendors/fhenix.md), [Zama](../vendors/zama.md), [TACEO Merces](../vendors/taceo-merces.md), [Fairblock](../vendors/fairblock.md), [Paladin](../vendors/paladin.md)
-- **Infrastructure (Section G):** [Briar](https://briarproject.org/), [Meshtastic](https://meshtastic.org/), [Tor](https://www.torproject.org/), [Nym](https://nymtech.net/), [Keycard](https://keycard.tech/), [Noir](https://noir-lang.org/), [Barretenberg UltraHonk](https://github.com/AztecProtocol/barretenberg)
-- **Regulatory:** [MiCA](../jurisdictions/eu-MiCA.md), [SEC / GENIUS Act](../jurisdictions/us-SEC.md). Humanitarian: [CALP Network](https://www.calpnetwork.org/), [Sphere Handbook](https://spherestandards.org/), [ICRC Data Protection in Humanitarian Action Handbook (2nd ed, 2020)](https://www.icrc.org/en/data-protection-humanitarian-action-handbook)
-- **Related approaches:** [Private Trade Settlement](approach-private-trade-settlement.md), [Private Derivatives](approach-private-derivatives.md), [Private Identity](approach-private-identity.md) (sibling for `IResilientIdentity`)
-- **Reference Implementation:** [Private Payment PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment); RDR PoC: forthcoming

@@ -145,7 +145,7 @@ example_vendors: [aztec, miden, fhenix]
 
 ```yaml
 maturity: prototyped
-context: i2i
+context: both
 crops: { cr: high, o: partial, p: full, s: high }
 uses_patterns: [pattern-modular-privacy-stack, pattern-privacy-l2s, pattern-dvp-erc7573, pattern-regulatory-disclosure-keys-proofs, pattern-hybrid-public-private-modes]
 example_vendors: [aztec, miden, fhenix, ey]
@@ -193,7 +193,7 @@ example_vendors: [aztec, miden, fhenix, ey]
 
 ### Business perspective
 
-For institutions whose dominant constraint is time-to-market, **Vendor-Managed Deployment** is the right default: production-grade privacy infrastructure under the institution's brand within months, with the vendor retaining the engineering lift. **Institution-Controlled** is the right call for long-term strategic commitments where the institution intends to own the stack and the regulator demands change-control sovereignty. **Consortium** is the choice for shared market infrastructure (interbank settlement, central-bank pilots, industry utilities) where multi-party governance is itself the requirement.
+For institutions whose dominant constraint is time-to-market, **Vendor-Managed Deployment** is the default: production-grade privacy infrastructure under the institution's brand within months, with the vendor retaining the engineering lift. **Institution-Controlled** is the suitable choice for long-term strategic commitments where the institution intends to own the stack and the regulator demands change-control sovereignty. **Consortium** is the choice for shared market infrastructure (interbank settlement, central-bank pilots, industry utilities) where multi-party governance is itself the requirement.
 
 ### Technical perspective
 
@@ -201,7 +201,7 @@ The technical work is the same across all three governance models, deploy the [M
 
 ### Legal & risk perspective
 
-Each governance model implies a distinct legal posture. **Vendor-Managed** treats the vendor as a critical third party under outsourcing rules; the regulator review centers on vendor due diligence, source escrow, exit rights, and the change-control delegation. **Institution-Controlled** is the cleanest under regulated change control: the institution is the licensee and the operator, and the regulator review is the standard infrastructure review. The institution-as-operator must explicitly bind itself out of master-key custody for end-user state: deployment documentation should record that user viewing keys are user-held, regulator disclosure is per-request and scope-bound, and forced exit is reachable without operator cooperation. Without that binding, the deployment loses its end-user privacy posture even if the chain-observer view is hidden. **Consortium** requires joint governance documentation: charter enforceability, member-fee structure, dispute resolution, and the disclosure framework that satisfies each member's home regulator. Cross-border consortium deployments must address the jurisdictional diversity of member operators and the supervisory-coordination implications.
+This is a perspective for legal review by the deploying institution(s), not legal advice. Each governance model raises distinct review surfaces. **Vendor-Managed** is typically treated as a critical-third-party outsourcing arrangement; counsel would review vendor due diligence, source escrow, exit rights, and the change-control delegation. **Institution-Controlled** aligns with the institution-as-licensee-and-operator model that regulated change control typically expects; whether a specific regulator accepts the implementation is a question for counsel. The institution-as-operator would need to bind itself out of master-key custody for end-user state (user-held viewing keys, per-request and scope-bound regulator disclosure, forced-exit reachability without operator cooperation); without that binding, the document does not classify the deployment as preserving end-user privacy. **Consortium** raises joint-governance review surfaces (charter enforceability, member-fee structure, dispute resolution, the disclosure framework across home regulators); cross-border deployments would surface the jurisdictional diversity of member operators and the supervisory-coordination implications, all of which are for counsel rather than this document.
 
 ## Recommendation
 
@@ -213,7 +213,7 @@ For institutions launching a privacy product on a 6-12 month horizon with regula
 
 - If time-to-market dominates and engineering capacity is unavailable, choose **Vendor-Managed Deployment** and accept the vendor cadence.
 - If the goal is shared market infrastructure across multiple institutions, choose **Consortium Deployment** and invest in the governance charter.
-- If regulator demands institutional ownership of the full upgrade lifecycle, **Institution-Controlled** is the only viable option.
+- If regulator demands institutional ownership of the full upgrade lifecycle, **Institution-Controlled** is the option that satisfies this constraint.
 
 ### Hybrid
 
@@ -227,8 +227,3 @@ Begin with **Vendor-Managed** to compress time-to-market, with a contractual tra
 4. **Cross-vendor migration.** State migration between privacy stacks (e.g., Aztec → Miden Execution layer) lacks tooling; today this is a manual lift.
 5. **Forced-withdrawal coverage.** Whether L1 escape-hatch primitives cover all user-level recovery scenarios, including state stuck behind a discontinued vendor.
 
-## See also
-
-- **Patterns:** [Modular Privacy Stack](../patterns/pattern-modular-privacy-stack.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [Privacy L2s](../patterns/pattern-privacy-l2s.md), [Hybrid Public-Private Modes](../patterns/pattern-hybrid-public-private-modes.md), [L2 Encrypted Off-chain Audit](../patterns/pattern-l2-encrypted-offchain-audit.md), [DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md), [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md)
-- **Vendors:** [Aztec](../vendors/aztec.md), [Miden](../vendors/miden.md), [Fhenix](../vendors/fhenix.md), [EY (Nightfall)](../vendors/ey.md)
-- **Related approaches:** [Private Payments](approach-private-payments.md), [Private Bonds](approach-private-bonds.md), [Private Trade Settlement](approach-private-trade-settlement.md)
