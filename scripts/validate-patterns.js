@@ -117,16 +117,24 @@ const RECOMMENDED_USE_CASE_SECTIONS = [
   '## 7) Notes'
 ];
 
-// Required sections for approach documents
+// Required sections for approach documents (v2 schema per issue #151).
+// Six sections, fixed order. No recommended extras: ## See also is not part of v2.
 const REQUIRED_APPROACH_SECTIONS = [
-  '## Overview',
-  '## Architecture'
+  '## Problem framing',
+  '## Approaches',
+  '## Comparison',
+  '## Persona perspectives',
+  '## Recommendation',
+  '## Open questions'
 ];
 
-// Recommended sections for approach documents
-const RECOMMENDED_APPROACH_SECTIONS = [
-  '## More details',
-  '## Links'
+// Required frontmatter for approach documents (v2 schema per issue #151).
+const REQUIRED_APPROACH_FRONTMATTER = [
+  'title',
+  'status',
+  'last_reviewed',
+  'use_case',
+  'primary_patterns'
 ];
 
 // Required sections for jurisdiction documents
@@ -668,21 +676,22 @@ function validateApproach(filePath) {
     fileWarnings.push('Approach files should start with "approach-"');
   }
 
+  // Validate required frontmatter (v2 schema per issue #151)
+  for (const field of REQUIRED_APPROACH_FRONTMATTER) {
+    if (!frontmatter[field]) {
+      fileWarnings.push(`Missing required frontmatter field: ${field}`);
+    }
+  }
+
+  // Title prefix check (v2: title must start with "Approach: ")
+  if (frontmatter.title && !/^Approach:\s/.test(frontmatter.title)) {
+    fileWarnings.push(`Title should start with "Approach: " (got "${frontmatter.title}")`);
+  }
+
   // Validate required sections
   for (const section of REQUIRED_APPROACH_SECTIONS) {
     if (!content.includes(section)) {
       fileWarnings.push(`Missing required section: ${section}`);
-    }
-  }
-
-  // Check recommended sections
-  for (const section of RECOMMENDED_APPROACH_SECTIONS) {
-    const sectionStart = section.replace('##', '').trim();
-    const hasSection = content.split('\n').some(line =>
-      line.startsWith('## ') && line.toLowerCase().includes(sectionStart.toLowerCase())
-    );
-    if (!hasSection) {
-      fileWarnings.push(`Consider adding section: ${section}`);
     }
   }
 
