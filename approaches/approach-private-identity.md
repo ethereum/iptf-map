@@ -40,6 +40,15 @@ open_source_implementations:
   - url: https://github.com/tlsnotary
     description: "TLSNotary (zk-TLS transcript proofs)"
     language: Rust
+
+iptf_pocs:
+  folder: pocs/private-identity
+  requirements: pocs/private-identity/REQUIREMENTS.md
+  pocs:
+    - name: "Resilient Private Identity"
+      sub_approach: "Issuer-Independent Enrollment via Distributed OPRF"
+      spec: pocs/private-identity/resilient-private-identity/SPEC.md
+      status: implemented
 ---
 
 # Approach: Private Identity

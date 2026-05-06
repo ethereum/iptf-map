@@ -105,7 +105,7 @@ example_vendors: [aztec, miden]
 
 **Summary:** Asset and payment contracts run on a privacy-native rollup; DvP is a private contract call against encrypted state, no shielding overhead.
 
-**How it works:** Bond notes and cash notes are first-class private notes in the rollup's execution model. A private DvP contract call consumes both and produces new notes for each party. Validity proofs settle on L1; Incoming Viewing Keys (IVKs) provide account-level disclosure.
+**How it works:** Bond notes and cash notes are native private notes in the rollup's execution model. A private DvP contract call consumes both and produces new notes for each party. Validity proofs settle on L1; Incoming Viewing Keys (IVKs) provide account-level disclosure.
 
 **Trust assumptions:**
 - Sequencer for ordering (currently centralized in early deployments)
