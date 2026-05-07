@@ -1,72 +1,103 @@
 ---
 title: "Pattern: Safe Proof Delegation"
 status: draft
-maturity: PoC
+maturity: testnet
+type: standard
 layer: L1
-privacy_goal: Delegate proof generation to an untrusted prover without trusting it with funds
-assumptions: Intent-based authorization, ZK proof system, nullifierKey + rotatable outputSecret
-last_reviewed: 2026-03-16
+last_reviewed: 2026-04-22
+
+works-best-when:
+  - Users cannot generate zero-knowledge proofs locally (mobile wallets, hardware wallets, constrained devices).
+  - A server-side prover or privacy-aware RPC bridges the gap before native wallet support.
+  - Delegation must be revocable without moving funds to new notes or a new address.
+avoid-when:
+  - Client-side proving is already available and performant for the target workload.
+  - The prover seeing transaction details is unacceptable even temporarily; prefer a distributed or TEE-hosted prover instead.
+
 context: both
+context_differentiation:
+  i2i: "Between institutions, proof delegation typically happens under bilateral contracts with SLAs and audit rights. The authorising institution can demand operational logs and, through legal recourse, punish deviation even though deviation cannot be prevented cryptographically."
+  i2u: "For users, the prover is usually an external service. The pattern must assume the prover can be adversarial at any moment: output-secret rotation and short-lived intents are how the user retains the ability to unplug a compromised prover without moving funds."
+
 crops_profile:
   cr: low
-  os: yes
-  privacy: partial
-  security: high
-works-best-when:
-  - Users cannot generate ZK proofs locally (mobile, hardware wallets).
-  - A server-side prover or Privacy RPC bridges the gap before native wallet support.
-  - Delegation must be revocable without moving funds.
-avoid-when:
-  - Client-side proving is already available and performant.
-  - The prover seeing transaction details is unacceptable even temporarily.
-dependencies:
-  - ZK proof system (commitments/nullifiers)
-  - Poseidon hash (intent digest)
-  - EIP-8182 (draft)
+  o: yes
+  p: partial
+  s: high
+
+crops_context:
+  cr: "Depends on prover liveness. A single prover service is a censorship surface; CR approaches `medium` when multiple interchangeable provers accept the same intent format and the user can switch without re-sealing state."
+  o: "Intent schema, circuits, and verifier contracts are open source; provers can be hosted by anyone implementing the schema."
+  p: "The prover sees transaction plaintext (amount, recipient, token). The verifier and the chain see only the proof. Combining with a TEE-hosted or MPC-based prover can hide plaintext from the prover operator as well."
+  s: "Funds cannot be stolen or redirected: the signed intent binds every material parameter. Security rides on the soundness of the zero-knowledge proof system, correct intent-schema binding, and rotatable output secrets that unlink future transactions from a past prover."
+
+post_quantum:
+  risk: high
+  vector: "Pairing-based proof systems and ECDSA/Schnorr intent signatures are broken by a CRQC. HNDL risk applies: an attacker recording today's intent signatures could forge future spends once quantum capability is available."
+  mitigation: "Post-quantum signature schemes (ML-DSA, SLH-DSA) for the intent layer and STARK-based circuits for the proof system. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: [EIP-8182]
+
+related_patterns:
+  requires: [pattern-shielding, pattern-zk-proof-systems]
+  composes_with: [pattern-permissionless-spend-auth, pattern-co-snark, pattern-tee-based-privacy]
+  see_also: [pattern-user-controlled-viewing-keys]
+
+open_source_implementations:
+  - url: https://github.com/ethereum/EIPs/pull/11373
+    description: "EIP-8182 draft: canonical intent digest and rotatable output-secret protocol"
+    language: "specification"
 ---
 
 ## Intent
 
-Let a user delegate ZK proof generation to an external prover — a Privacy RPC, a hardware accelerator, or a third-party service — without giving that prover the ability to forge, redirect, or overspend. The user signs a **canonical intent digest** that binds every material parameter; the prover can produce a valid proof that executes exactly that intent, nothing else.
+Let a user delegate zero-knowledge proof generation to an external prover (a privacy RPC, a hardware accelerator, or a third-party service) without giving that prover the ability to forge, redirect, or overspend. The user signs a canonical intent digest that binds every material parameter; the prover can produce a valid proof that executes exactly that intent and nothing else.
 
-## Ingredients
+## Components
 
-- **Canonical intent digest**: Poseidon hash binding all material parameters (operation kind, token, recipient, amount, nonce, expiry, chain ID, and additional fields like policy version and pool address per the current EIP-8182 draft)
-- **Two protocol secrets**: immutable `nullifierKey` (controls spending and nullifier derivation) + rotatable `outputSecret` (controls deterministic output randomness). Note-delivery encryption is handled by companion standards, not the base protocol.
-- **Intent nullifier set**: separate on-chain nullifier set preventing intent replay
-- **ZK circuit**: verifies the signed intent and witness data, outputs a spend proof
+- Canonical intent digest that binds operation kind, token, recipient, amount, nonce, expiry, chain identifier, and any required additional fields such as policy version and pool address.
+- Two protocol secrets: an immutable spending key that controls nullifier derivation, and a rotatable output secret that controls deterministic output randomness. Note-delivery encryption is handled by companion standards.
+- Intent nullifier set, distinct from the note nullifier set, that prevents replay of a signed intent.
+- Zero-knowledge circuit that checks the signature against the authorising address, verifies that every public input matches the intent digest, validates note openings and Merkle paths, and enforces value conservation.
 
-## Protocol (concise)
+## Protocol
 
-1. **User signs intent.** Wallet computes the canonical intent digest and signs it. The digest binds all material parameters (see Ingredients). This is never broadcast.
-2. **User sends to prover.** The signed intent plus witness data (note openings, Merkle paths, keys) are transmitted to the prover over an encrypted channel.
-3. **Prover generates proof.** The prover runs the ZK circuit. The circuit checks: signature matches `authorizingAddress`, all parameters match the intent digest, notes are valid, and value is conserved.
-4. **Prover submits on-chain.** The proof and public inputs go to the pool contract. The contract verifies the proof, consumes note nullifiers, and records the intent nullifier to prevent replay.
-5. **Prover boundaries enforced.** The prover **cannot** change the recipient, amount, or token — any deviation invalidates the proof. The prover **can** see transaction details, choose submission timing, and choose the note-delivery payloads attached to the transaction. The protocol does not validate payload contents, so a malicious prover can emit unusable delivery data for that transaction. Expiry limits the prover's timing window.
-6. **Revoke forward derivation.** User rotates `outputSecret`. After stale user roots expire, the former prover can no longer derive output randomness for future transactions. The immutable `nullifierKey` means existing notes remain spendable without migration.
+1. [user] Compute the canonical intent digest and sign it inside the wallet; the signed intent is never broadcast.
+2. [user] Send the signed intent plus witness data (note openings, Merkle paths, keys) to the prover over an encrypted channel.
+3. [prover] Run the circuit to produce a proof that binds the witness to the signed intent.
+4. [prover] Submit the proof and public inputs to the pool contract.
+5. [contract] Verify the proof, consume note nullifiers, and record the intent nullifier to prevent replay.
+6. [user] When switching provers, rotate the output secret so the former prover can no longer derive output randomness for future transactions; existing notes remain spendable because the spending key is unchanged.
 
-## Guarantees
+## Guarantees & threat model
 
-- **No fund custody.** The prover never holds keys that can unilaterally spend. Every spend requires a user-signed intent.
-- **Tamper-proof intents.** Modifying any parameter (recipient, amount, token) breaks the proof.
-- **Replay prevention.** Intent nullifiers form a separate set; each signed intent can execute exactly once.
-- **Revocable delegation.** Rotating `outputSecret` cuts off a former prover's ability to derive future output randomness without affecting spendability.
+Guarantees:
+
+- No custody: the prover never holds keys that can unilaterally spend. Every spend requires a user-signed intent.
+- Tamper-proof intents: modifying any bound parameter invalidates the proof.
+- Replay prevention: each signed intent can execute exactly once via the intent nullifier set.
+- Revocable delegation: rotating the output secret cuts off a former prover's ability to derive future output randomness without moving funds.
+
+Threat model:
+
+- Soundness of the underlying proof system.
+- Correctness of the intent-digest schema and domain separation; a bug that lets the prover substitute a public input breaks the tamper-proof guarantee.
+- Confidentiality of the note-delivery channel. A malicious prover can emit unusable delivery payloads, rendering outputs unrecoverable by the recipient (funds are not lost for the sender, but the recipient cannot claim them).
+- Liveness of at least one prover; a single offline prover stalls the user until they switch.
+- Microarchitectural or supply-chain attacks on the prover that leak plaintext are in scope for this pattern but are mitigated by combining with a TEE-hosted or MPC-based prover.
 
 ## Trade-offs
 
-- **Prover sees plaintext.** The prover learns transaction details (amount, recipient, token). Mitigable via TEE-hosted provers or MPC proving, at higher complexity.
-- **Liveness dependency.** If the prover is offline, the user cannot transact until they switch provers or generate proofs locally.
-- **Expiry tuning.** Too short and transactions fail before submission; too long and a compromised prover has a wider replay-like window (though still bound to the exact intent parameters).
-- **Note-delivery risk.** The prover chooses note-delivery payloads. A malicious prover can emit unusable data, making the in-flight transfer's output notes unrecoverable by the recipient. The prover cannot steal or redirect funds.
-- **Output secret rotation cost.** After rotation, the user must retain the prior `outputSecret` until the stale-root window expires and any authorized transactions have settled.
-- **Post-quantum exposure**: recursive ZK verification relies on EC-based proof systems broken by CRQC. Mitigation: STARK-based recursive proving. See [Post-Quantum Threats](../domains/post-quantum.md).
+- The prover sees transaction plaintext. Privacy from the prover operator itself requires a TEE-based or distributed prover, at the cost of more infrastructure.
+- Liveness depends on the prover. If the prover is offline, the user must switch or move to client-side proving.
+- Expiry tuning matters: too short and transactions fail before submission, too long and a compromised prover has more room to manoeuvre within the fixed intent.
+- Output-secret rotation has an operational cost: the user must retain the prior secret until the stale-root window expires and authorised transactions have settled.
 
 ## Example
 
-- Alice uses a mobile wallet that cannot generate ZK proofs. She signs an intent to send 100 USDC to Bob, with a 10-minute expiry. Her Privacy RPC generates the proof and submits it on-chain within 3 minutes. The RPC sees the transfer details but cannot redirect funds. When Alice later switches to a different RPC provider, she rotates her `outputSecret` — the old provider can no longer derive output randomness for her future transactions.
+A user holds shielded balances in a mobile wallet that cannot generate zero-knowledge proofs. The wallet signs an intent to send 100 units to a specific recipient with a ten-minute expiry and forwards the signed intent plus witness data to a privacy RPC. The RPC generates the proof and submits it on-chain within three minutes. The RPC sees the transfer details but cannot redirect funds. When the user later switches RPC providers, they rotate the output secret; the former RPC can no longer derive output randomness for future transactions, and existing notes remain spendable.
 
 ## See also
 
-- [Shielding](pattern-shielding.md) - the pool contract this delegation targets
-- [Permissionless Spend Auth](pattern-permissionless-spend-auth.md) - inner/outer circuit split this delegation composes with
-- [EIP-8182 (draft)](https://github.com/ethereum/EIPs/pull/11373)
+- [EIP-8182 draft](https://github.com/ethereum/EIPs/pull/11373)
+- [Railgun](../vendors/railgun.md)
