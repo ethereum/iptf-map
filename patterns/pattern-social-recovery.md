@@ -3,8 +3,6 @@ title: "Pattern: Social Recovery"
 status: draft
 maturity: production
 layer: hybrid
-privacy_goal: Restore account control or identity anchor through a guardian quorum without issuer or custodian involvement
-assumptions: Smart-contract account or identity anchor exposes an owner-rotation entry point, guardian set fixed before key loss, on-chain timelock for cancellation
 last_reviewed: 2026-04-23
 works-best-when:
   - The signing key can be lost or compromised independently of the account contract
@@ -14,20 +12,19 @@ avoid-when:
   - Holder cannot nominate independent guardians they trust more than a plausible attacker
   - Recovery must finalize without a cancellation window
   - Guardian set cannot be kept current
-dependencies: [ERC-4337, EIP-7702, smart-contract account with owner-rotation hook]
 context: both
 crops_profile:
   cr: medium
-  os: yes
-  privacy: partial
-  security: medium
+  o: yes
+  p: partial
+  s: medium
 ---
 
 ## Intent
 
 Let a quorum of guardians authorize rotation of the signing key or enrollment anchor for an account or identity. A holder recovers after key loss or compromise without the original issuer, custodian, or centralized service.
 
-## Ingredients
+## Components
 
 - **Recoverable account**: smart-contract wallet or identity anchor with an owner-rotation function gated on a quorum signature. ERC-4337 accounts and EIP-7702 delegated EOAs both fit.
 - **Guardian set**: N guardians stored on-chain or as a Merkle commitment. Guardians can be EOAs, hardware wallets, institutional keys, an m-of-n Safe, or managed email and SMS attestation services.
@@ -35,7 +32,7 @@ Let a quorum of guardians authorize rotation of the signing key or enrollment an
 - **Timelock**: cancelable security window between proposal and finalization.
 - **Optional ZK guardian proof**: membership proof over a guardian commitment so the guardian set is not exposed on-chain. See [Verum Lotus](https://github.com/verumlotus/social-recovery-wallet).
 
-## Protocol (concise)
+## Protocol
 
 1. **Setup**. Holder registers N guardians and threshold M on the account or identity anchor.
 2. **Initiate**. On key loss, M guardians sign a recovery proposal naming the new owner key or new enrollment commitment.
@@ -43,7 +40,7 @@ Let a quorum of guardians authorize rotation of the signing key or enrollment an
 4. **Finalize**. After the window passes, anyone can execute the rotation. The new owner takes control and the prior signing key is revoked.
 5. **Audit**. The rotation event, guardian signatures, and new owner are logged. A rotation counter or nullifier prevents replay of the same proposal.
 
-## Guarantees
+## Guarantees & threat model
 
 - **Recovery path** with no issuer, custodian, or centralized service in the loop.
 - **Cancelable rotation**: the timelock gives the holder a window to block unauthorized proposals if the original key is still reachable.

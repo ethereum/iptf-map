@@ -117,7 +117,5 @@ A bank issues a tokenized bond on Ethereum under a 2-of-3 custody policy across 
 
 ## See also
 
-- [Fireblocks](../vendors/fireblocks.md)
 - [FROST specification](https://datatracker.ietf.org/doc/draft-irtf-cfrg-frost/)
 - [CGGMP21 paper](https://eprint.iacr.org/2021/060)
-- [Post-Quantum Threats](../domains/post-quantum.md)

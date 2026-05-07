@@ -125,4 +125,3 @@ Threat model:
 - [Shutter Network docs](https://docs.shutter.network/docs/shutter/research/the_road_towards_an_encrypted_mempool_on_ethereum)
 - [SUAVE overview](https://writings.flashbots.net/the-future-of-mev-is-suave)
 - [Flashbots documentation](https://docs.flashbots.net/)
-- [Post-Quantum Threats](../domains/post-quantum.md)

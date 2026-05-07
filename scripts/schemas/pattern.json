@@ -117,10 +117,6 @@
         "additionalProperties": false
       }
     },
-    "rollout-plan": {
-      "type": "string",
-      "description": "Optional rollout plan or timeline"
-    },
     "context": {
       "type": "string",
       "enum": ["i2i", "i2u", "both"],

@@ -405,7 +405,7 @@ function validatePattern(filePath) {
           if (errorPath.startsWith('/crops_profile')) {
             fileErrors.push(`Schema: unexpected field '${error.params.additionalProperty}' in crops_profile`);
           } else {
-            fileWarnings.push(`Schema: unexpected field '${error.params.additionalProperty}' in frontmatter`);
+            fileErrors.push(`Schema: unexpected field '${error.params.additionalProperty}' in frontmatter`);
           }
         } else if (isRequiredField) {
           fileErrors.push(`Schema: ${errorPath} ${msg}`);

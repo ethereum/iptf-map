@@ -106,6 +106,5 @@ Threat model:
 
 ## See also
 
-- [TACEO Merces](../vendors/taceo-merces.md)
 - [Collaborative zk-SNARKs (Ozdemir & Boneh, 2021)](https://eprint.iacr.org/2021/1530.pdf)
 - [TACEO private proof delegation](https://core.taceo.io/articles/private-proof-delegation/)

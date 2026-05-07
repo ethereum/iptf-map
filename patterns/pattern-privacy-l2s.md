@@ -125,6 +125,3 @@ Threat model:
 - [Aleo](https://aleo.org/)
 - [fhEVM documentation](https://docs.zama.org/protocol/protocol/overview)
 - [Miden](https://miden.xyz/)
-- [Aztec (vendor page)](../vendors/aztec.md)
-- [Miden (vendor page)](../vendors/miden.md)
-- [Zama (vendor page)](../vendors/zama.md)

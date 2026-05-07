@@ -95,4 +95,3 @@ Threat model:
 ## See also
 
 - [EIP-8141 draft](https://eips.ethereum.org/EIPS/eip-8141)
-- [Post-Quantum Threats](../domains/post-quantum.md)

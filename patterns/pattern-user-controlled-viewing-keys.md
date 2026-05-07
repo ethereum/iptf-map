@@ -103,5 +103,3 @@ A fund manager executes trades on a privacy L2 where balances remain encrypted t
 
 - [EIP-5564 stealth-address standard](https://eips.ethereum.org/EIPS/eip-5564)
 - [EIP-6538 stealth meta-address registry](https://eips.ethereum.org/EIPS/eip-6538)
-- [Aztec](../vendors/aztec.md)
-- [Railgun](../vendors/railgun.md)
