@@ -149,6 +149,4 @@ An OTC settlement team filters the table for cryptographic privacy, requires vie
 
 ## See also
 
-- [RFP: Living Benchmark Dashboard](../rfps/rfp-benchmark-dashboard.md) - automated benchmark pipeline.
 - [L2Beat](https://l2beat.com/) - independent L2 risk analysis.
-- [Post-Quantum Threats](../domains/post-quantum.md)

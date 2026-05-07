@@ -106,8 +106,6 @@ Threat model:
 
 ## See also
 
-- [Flashbots](../vendors/flashbots.md)
-- [Shutter](../vendors/shutter.md)
 - [Flashbots Protect documentation](https://docs.flashbots.net/flashbots-protect/overview)
 - [Flashbots MEV-Share documentation](https://docs.flashbots.net/flashbots-mev-share/overview)
 - [Shutter Network documentation](https://docs.shutter.network/)

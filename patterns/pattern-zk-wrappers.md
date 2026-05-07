@@ -1,10 +1,8 @@
 ---
 title: "Pattern: ZK Wrappers"
 status: draft
-maturity: pilot
+maturity: testnet
 layer: offchain
-privacy_goal: Verify a pre-existing off-chain signature inside a ZK circuit so holders prove credential attributes without revealing the credential
-assumptions: Signed credential from a prior issuance (passport, ID, DKIM-signed email, attestation), circuit implementing the issuer's signature and hash, published issuer public keys
 last_reviewed: 2026-04-23
 works-best-when:
   - A signed credential already exists in a PKI or web2 system
@@ -14,20 +12,23 @@ avoid-when:
   - The credential source has an API and a TLS or API proof is sufficient (see [zk-TLS](pattern-zk-tls.md))
   - Attributes change frequently and no on-chain freshness anchor exists
   - Signature primitive has no practical in-circuit implementation
-dependencies: [RFC 8017, FIPS 186-5, RFC 6376, ICAO 9303]
 context: both
+context_differentiation:
+  i2i: "Between institutions the issuer is typically a regulated party (passport authority, KYC provider, registrar) whose public keys sit in established PKI. Both counterparties can independently verify issuer trust roots, and re-issuance or revocation is handled inside known operational frameworks."
+  i2u: "For end users the issuer is often a third party the user does not control (passport agency, DKIM-signing email provider). Users depend on the issuer's continued availability and on key-rotation discipline; if the issuer revokes or rotates keys, users may need to re-prove with no recourse and no warning."
+
 crops_profile:
   cr: medium
-  os: partial
-  privacy: full
-  security: medium
+  o: partial
+  p: full
+  s: medium
 ---
 
 ## Intent
 
 Verify an off-chain digital signature over an existing credential inside a ZK circuit. The verifier learns that a valid signature exists and that chosen predicates hold over the signed payload, and nothing else.
 
-## Ingredients
+## Components
 
 - **Signature verification in-circuit**: RSA-PKCS1v1.5 and RSA-PSS (up to 4096-bit), ECDSA over P-256 / P-521 / Brainpool curves, EdDSA.
 - **Hash primitive**: SHA-256, SHA-384, SHA-512 depending on credential format.
@@ -35,7 +36,7 @@ Verify an off-chain digital signature over an existing credential inside a ZK ci
 - **Proof system**: Noir with Barretenberg (UltraHonk over BN254), Circom with Groth16, Halo2, SP1 zkVM.
 - **Public inputs**: issuer key identifier, predicate result, optional scope-bound nullifier.
 
-## Protocol (concise)
+## Protocol
 
 1. Holder obtains the signed credential. Examples: NFC read of a passport's SOD, DKIM-signed email in a mailbox, attestation fetched from EAS.
 2. Holder loads the credential, the signature, and the issuer public key into the prover. The key is either a public input or compiled into the circuit.
@@ -43,7 +44,7 @@ Verify an off-chain digital signature over an existing credential inside a ZK ci
 4. Prover outputs a proof with public inputs for the predicate result, issuer key identifier, and optional nullifier binding the proof to a verification context.
 5. Verifier contract or service checks the proof and accepts the predicate. No credential bytes cross the wire.
 
-## Guarantees
+## Guarantees & threat model
 
 - **Hides**: credential content, signature bytes, full signed payload, and the holder's direct link to the issuer.
 - **Proves**: a valid signature from a specific issuer key over a payload satisfying the declared predicates.

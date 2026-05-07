@@ -100,5 +100,3 @@ A custodian needs to verify that an investor holds a minimum balance at a regula
 - [TLSNotary documentation](https://tlsnotary.org/)
 - [Notary as a service, TLSNotary docs](https://docs.tlsnotary.org/)
 - [Notarizing TLS, iEEE 2023 paper](https://eprint.iacr.org/2023/964)
-- [Approach: Private Identity](../approaches/approach-private-identity.md)
-- [Domain: Identity and Compliance](../domains/identity-compliance.md)

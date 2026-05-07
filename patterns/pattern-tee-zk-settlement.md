@@ -104,6 +104,3 @@ A bank in Frankfurt wants to sell euro-denominated corporate bonds to a bank in 
 
 ## See also
 
-- [Flashbots](../vendors/flashbots.md)
-- [Renegade](../vendors/renegade.md)
-- [Post-Quantum Threats](../domains/post-quantum.md)

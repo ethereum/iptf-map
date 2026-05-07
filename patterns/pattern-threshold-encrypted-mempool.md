@@ -56,7 +56,7 @@ open_source_implementations:
 
 Prevent miner-extractable-value extraction by encrypting transaction content before mempool submission and releasing the decryption key only after block ordering is committed. A distributed committee holds threshold key shares, so no single party can decrypt prematurely. The result is cryptographic protection against front-running, back-running, and sandwich attacks, without handing trust to any one relay.
 
-This pattern is the cryptographic sub-pattern of [Private Transaction Broadcasting](pattern-private-transaction-broadcasting.md). See that pattern for alternative approaches (trust-based private relays, hardware-assisted builders).
+This pattern is the cryptographic sub-pattern of private transaction broadcasting. The trust-based private-relay variant is documented as a related pattern (see related_patterns.requires).
 
 ## Components
 
@@ -111,5 +111,3 @@ A trading desk submits a large stablecoin trade on a chain that runs a threshold
 - [Shutter Network overview](https://shutter.network/)
 - [Shutter documentation](https://docs.shutter.network/)
 - [Gnosis Chain Shutter integration](https://docs.gnosischain.com/about/specs/shutter/)
-- [Shutter](../vendors/shutter.md)
-- [Fairblock](../vendors/fairblock.md)
