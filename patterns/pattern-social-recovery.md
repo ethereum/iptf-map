@@ -13,6 +13,10 @@ avoid-when:
   - Recovery must finalize without a cancellation window
   - Guardian set cannot be kept current
 context: both
+context_differentiation:
+  i2i: "Between institutions, guardians are typically other institutions (custodians, partners, regulators) acting under contractual SLAs and formal escalation procedures. Mutual audit logs and legal recourse bound the risk of guardian collusion or coercion."
+  i2u: "For end users, guardians are typically friends, family, or hardware devices. Setup quality depends on the user's social graph; social-engineering attacks on the guardian set become the dominant risk. Guardian freshness and rotation discipline are the user's own responsibility."
+
 crops_profile:
   cr: medium
   o: yes

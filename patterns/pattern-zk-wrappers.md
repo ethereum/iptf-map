@@ -13,6 +13,10 @@ avoid-when:
   - Attributes change frequently and no on-chain freshness anchor exists
   - Signature primitive has no practical in-circuit implementation
 context: both
+context_differentiation:
+  i2i: "Between institutions the issuer is typically a regulated party (passport authority, KYC provider, registrar) whose public keys sit in established PKI. Both counterparties can independently verify issuer trust roots, and re-issuance or revocation is handled inside known operational frameworks."
+  i2u: "For end users the issuer is often a third party the user does not control (passport agency, DKIM-signing email provider). Users depend on the issuer's continued availability and on key-rotation discipline; if the issuer revokes or rotates keys, users may need to re-prove with no recourse and no warning."
+
 crops_profile:
   cr: medium
   o: partial
