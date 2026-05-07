@@ -14,7 +14,7 @@ It uses the **Noir** language along with the Aztec.nr framework to write smart c
 
 ## Fits with patterns
 
-- [pattern-private-contract-dsl.md](../patterns/pattern-private-contract-dsl.md) - Noir private smart contracts
+- [pattern-noir-private-contracts.md](../patterns/pattern-noir-private-contracts.md) - Noir private smart contracts
 - [pattern-privacy-l2s.md](../patterns/pattern-privacy-l2s.md) - Privacy-native rollup execution
 - [pattern-shielding.md](../patterns/pattern-shielding.md) - Shielded ERC-20 transfers and confidential balances
 - [pattern-shielding.md](../patterns/pattern-shielding.md) - Confidential ERC-20 transfers
@@ -29,7 +29,7 @@ It uses the **Noir** language along with the Aztec.nr framework to write smart c
 - Hybrid State Model
   - Private state (UTXO-based) is managed by the wallet on the user's device.
   - Public state (Account-based) is managed by the AVM (Aztec Virtual Machine) on nodes.
-- Smart contracts are written in [Noir](../patterns/pattern-private-contract-dsl.md) using the Aztec.nr framework.
+- Smart contracts are written in [Noir](../patterns/pattern-noir-private-contracts.md) using the Aztec.nr framework.
 - Proof system: Honk (UltraHonk) and UltraPlonk. Honk allows for fast recursion and removes the need for a trusted setup.
 - DA model: Rollup posts data to Ethereum L1 using EIP-4844 Blobs.
 - Settlement: Decentralized sequencers; L2 validity proofs are verified on Ethereum L1.

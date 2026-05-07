@@ -26,7 +26,7 @@ crops_profile:
   s: high
 
 crops_context:
-  cr: "Reaches `high` when the escape-hatch contract has meaningful upgrade delays (Stage 1 or higher, 7+ days). Instant upgrades let the operator remove the hatch, which invalidates the rating entirely. DA withholding and proving liveness are liveness constraints documented under Trade-offs; they do not change the CR score, which measures whether a single party can exclude a user at the protocol level."
+  cr: "Reaches `high` only when the escape-hatch contract has meaningful upgrade delays (Stage 1 or higher, 7+ days). Instant upgrades let the operator remove the hatch, which invalidates the rating entirely. DA withholding and proving liveness are liveness constraints documented under Trade-offs; they do not change the CR score, which measures whether a single party can exclude a user at the protocol level."
   o: "Forced-withdrawal contracts are typically open-source and verifiable. Users can run their own prover and submit directly to L1. Proving-key hosting for Groth16 constructions is a soft dependency: if hosting goes offline, users may struggle to generate valid proofs."
   p: "For privacy systems, the zero-knowledge proof hides which commitment is withdrawn; no KYC disclosure or transaction history reveal is needed. The L1 withdrawal still reveals that an exit happened at a specific time for a specific amount."
   s: "Rides on the soundness of the proof system, correctness of the verifier, and honest state-root anchoring on L1. For optimistic constructions, a 7-day challenge window plus honest challengers are required. PQ exposure applies to ZK systems over BN254."
@@ -50,7 +50,7 @@ When an L2 sequencer, relayer, or operator becomes unavailable, users need a uni
 
 ## Components
 
-- Data availability source lets the user reconstruct their position. Can be L1 calldata, L1 blobs, an external DA Layer, a validium DA committee, or client-side storage.
+- Data availability source lets the user reconstruct their position. Can be L1 calldata, L1 blobs, an external DA layer, a validium DA committee, or client-side storage.
 - L1 state-root oracle stores the last verified L2 state root. Validity rollups anchor with a zero-knowledge proof; optimistic rollups anchor after a challenge period survives.
 - Proof verifier contract accepts Merkle proofs (transparent systems) or zero-knowledge proofs (privacy systems) and checks them against the anchored root.
 - Nullifier registry records completed withdrawals to prevent double-claims.
@@ -63,7 +63,7 @@ Where the data lives determines the trust assumption:
 | ----------------------- | ------------------------------------- | --------------------------------- |
 | L1 calldata             | Ethereum consensus                    | Nothing (permanent, expensive)    |
 | L1 blobs (EIP-4844)     | Ethereum plus archival within ~18 days | Pruned if nobody archives         |
-| External DA Layer       | DA Layer liveness plus economic security | DA Layer offline or withholds   |
+| External DA layer       | DA layer liveness plus economic security | DA layer offline or withholds   |
 | DA committee (validium) | Honest committee majority             | Committee withholds; funds frozen |
 | Client-side             | The user                              | User loses data; funds gone       |
 
@@ -106,8 +106,8 @@ Threat model:
 ## Trade-offs
 
 - Upgrade risk: 86% of 129 L2 projects allow instant contract upgrades without exit windows ([Ethical Risk Analysis of L2 Rollups, 2025](https://arxiv.org/html/2512.12732v1)). An escape hatch the operator can remove via upgrade provides no meaningful guarantee. L2Beat Stages requires 7-day (Stage 1) or 30-day (Stage 2) upgrade delays, minus any withdrawal delay.
-- DA withholding: validium DA committees can freeze all funds by refusing to share state. External DA Layers add a liveness dependency. On-chain calldata and blobs are immune but expensive. For privacy systems, data can sit on-chain yet be useless without decryption keys.
-- State freshness gap: users can prove against the most recently anchored root, and no further. Any transactions after that root are lost. Anchoring intervals range from minutes (validity rollups) to hours.
+- DA withholding: validium DA committees can freeze all funds by refusing to share state. External DA layers add a liveness dependency. On-chain calldata and blobs are immune but expensive. For privacy systems, data can sit on-chain yet be useless without decryption keys.
+- State freshness gap: users can prove only against the most recently anchored root. Any transactions after that root are lost. Anchoring intervals range from minutes (validity rollups) to hours.
 - Mass exit: everyone hits L1 at once. Gas prices spike, users with no L1 ETH cannot participate, and leveraged DeFi positions may create claims exceeding underlying bridge deposits.
 - Proving liveness: for privacy systems, the user must retain secrets and run a compatible prover. The prover code must be open-source, deterministically compilable, and match the L1 verifier's expected proof format. A version mismatch means funds are frozen until governance acts. Browser WASM proving works but is 5 to 15 times slower than native.
 
@@ -119,5 +119,5 @@ A bank operates a private payment L2 for its clients. The sequencer goes offline
 
 - [L2Beat Stages Framework](https://l2beat.com/stages): maturity classification for rollup escape hatches
 - [A Practical Rollup Escape Hatch Design (Zircuit, 2025)](https://arxiv.org/html/2503.23986v1): resolver contracts for DeFi positions
-- [L2Beat DA Risk Framework](https://forum.l2beat.com/t/the-data-availability-risk-framework/318): DA Layer risk evaluation methodology
+- [L2Beat DA Risk Framework](https://forum.l2beat.com/t/the-data-availability-risk-framework/318): DA layer risk evaluation methodology
 - [Introducing Stages (Medium)](https://medium.com/l2beat/introducing-stages-a-framework-to-evaluate-rollups-maturity-d290bb22befe)

@@ -51,6 +51,9 @@ open_source_implementations:
   - url: https://pse.dev/projects/tor-js
     description: "Tor-in-WASM library for browser-side onion routing from dApps (EF PSE)"
     language: "TypeScript, WASM"
+  - url: https://docs.flashbots.net/flashbots-protect/quick-start
+    description: "Public .onion endpoint for private transaction submission"
+    language: "Service"
 ---
 
 ## Intent
@@ -60,7 +63,7 @@ Hide who is sending transactions or querying state by routing traffic through a 
 ## Components
 
 - Circuit of relays: three or more nodes selected from a relay directory, each holding one encryption layer.
-- Layered (onion) encryption: the client wraps the message once per relay; each hop decrypts its own layer, starting with the entry hop.
+- Layered (onion) encryption: the client wraps the message once per relay, outermost layer decryptable only by the first hop.
 - Client routing library: negotiates the circuit, applies the encryption layers, and exposes a local proxy (SOCKS5 or WASM) to the dApp or wallet.
 - Exit relay: decrypts the last layer and forwards the message to the destination (RPC node, mempool, .onion service).
 
@@ -82,7 +85,7 @@ Guarantees:
 
 Threat model:
 
-- A global passive adversary able to observe both ends of a circuit can correlate traffic and deanonymize sessions.
+- A global passive adversary able to observe both ends of a circuit can correlate traffic and deanonymise sessions.
 - Exit relays see the final unencrypted payload unless transport-layer encryption (HTTPS, .onion service) is used.
 - RPC providers that block exit-node IPs degrade the guarantee; pair with decentralised or P2P RPC access.
 - Does not hide message content. Pair with content-privacy patterns for full-stack privacy.
@@ -105,6 +108,5 @@ Threat model:
 
 ## See also
 
+- [Network-Level Anonymity](pattern-network-anonymity.md): meta-pattern and sub-pattern comparison.
 - [Tor Project Arti](https://gitlab.torproject.org/tpo/core/arti)
-- [Tor specification](https://spec.torproject.org/)
-- [Flashbots Protect (.onion endpoint for private transaction submission)](https://docs.flashbots.net/flashbots-protect/quick-start)

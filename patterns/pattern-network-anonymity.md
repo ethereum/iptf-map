@@ -27,7 +27,7 @@ sub_patterns:
     crops_summary: "Medium CR, partial privacy, medium latency. Large external anonymity set; vulnerable to global passive adversaries."
   - name: "Mixnet anonymity"
     pattern: pattern-mixnet-anonymity
-    crops_summary: "Medium CR, partial privacy, very high latency. Higher resistance to traffic correlation under cover-traffic assumptions."
+    crops_summary: "Medium CR, partial privacy, very high latency. Strongest resistance to traffic correlation via cover traffic."
   - name: "TEE-assisted network anonymity"
     pattern: pattern-tee-network-anonymity
     crops_summary: "Medium CR, partial privacy, low latency. Hardware trust assumption relaxes the anonymity trilemma."
@@ -75,7 +75,7 @@ Pure-cryptographic approaches (onion routing, mixnets) must sacrifice at least o
 | Approach | Latency | Anonymity strength | Trust assumption |
 | --- | --- | --- | --- |
 | Onion routing | Moderate (100-500ms) | Strong | No single relay sees full path |
-| Mixnet | High (seconds to minutes) | Higher under cover-traffic assumptions | Threshold mix nodes and cover traffic |
+| Mixnet | High (seconds to minutes) | Strongest | Threshold mix nodes and cover traffic |
 | TEE-assisted | Low | Medium | Client TEE and server majority |
 
 ## Guarantees & threat model
@@ -100,5 +100,5 @@ Threat model:
 
 ## See also
 
-- [Tor Project documentation](https://spec.torproject.org/)
-- [Nym mixnet documentation](https://nymtech.net/docs/)
+- [Modular Privacy Stack](pattern-modular-privacy-stack.md): where network anonymity fits in the four-layer architecture.
+- [RFP: Private Reads](../rfps/rfp-private-reads.md): read-side privacy gap.

@@ -84,7 +84,7 @@ Threat model:
 - Soundness of the commitment scheme binding outcome key hashes.
 - Non-colluding decryption oracle operators. A single operator in a centralized deployment can withhold decryption or release the wrong outcome key, breaking atomicity or liveness.
 - Non-censoring sequencers on both networks during the settlement window. A censored payment or settlement transaction forces the fallback to the reclaim path.
-- Honest trade-setup system that generates distinct, unpredictable outcome keys and distributes them correctly. Collision or replay across trades breaks the guarantee.
+- Honest trade-setup system that generates unique, unpredictable outcome keys and distributes them correctly. Collision or replay across trades breaks the guarantee.
 - Network-layer metadata (IP, timing, gas patterns) is out of scope.
 
 ## Trade-offs
@@ -108,7 +108,7 @@ Threat model:
 Standard ERC-7573 provides atomic settlement but no privacy. For institutional use cases requiring confidentiality:
 
 - Threshold decryption oracle: Run the oracle with several independent operators and require a k-of-n quorum before an outcome key is released.
-- Minimal on-chain trade data: Keep full trade terms (price, size, counterparties) in internal systems; on-chain, store a trade identifier and a short reference that links back to those records.
+- Minimal on-chain trade data: Keep full trade terms (price, size, counterparties) in internal systems; on-chain, store only a trade identifier and a short reference that links back to those records.
 - Private or proof-based payment layer: Use a network or rollup for the cash leg that hides detailed balances but can provide a clear "payment completed or not completed" result for each trade identifier.
 
 These extensions do not change how the contracts decide outcomes: the asset contract still receives an outcome key and either delivers the asset or allows reclaim.
@@ -116,3 +116,4 @@ These extensions do not change how the contracts decide outcomes: the asset cont
 ## See also
 
 - [ERC-7573 specification](https://ercs.ethereum.org/ERCS/erc-7573)
+- [Private Trade Settlement approach](../approaches/approach-private-trade-settlement.md)

@@ -1,178 +1,139 @@
 ---
 title: "Pattern: TEE-Based Privacy"
 status: draft
-maturity: pilot
+maturity: production
+type: standard
 layer: offchain
-privacy_goal: Protect computation and data confidentiality via hardware-isolated execution
-assumptions: Hardware vendor trust, attestation infrastructure, physical security of deployment environment
-last_reviewed: 2026-02-13
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Confidential computation needed with lower latency than ZK proofs
-  - Parties accept hardware trust assumptions over cryptographic-only solutions
-  - Institutional-grade infrastructure with known operators and vendors
+  - Confidential computation is needed with lower latency than zero-knowledge proofs or multi-party computation can deliver.
+  - The deployment can accept hardware and vendor trust anchors in exchange for performance.
+  - Operators and hardware vendors are known and contractually bound.
 avoid-when:
-  - Threat model includes nation-state physical access or supply-chain compromise
-  - Full trustlessness required (prefer ZK or MPC alternatives)
-  - Long-term secrets that outlive hardware security lifecycle
-dependencies:
-  [Intel SGX, AMD SEV-SNP, AWS Nitro Enclaves, Azure Confidential Computing]
+  - The threat model includes nation-state physical access or supply-chain compromise.
+  - Full trust minimisation is required; prefer zero-knowledge or multi-party computation instead.
+  - Secrets must outlive the security lifecycle of the hardware platform.
+
 context: both
+context_differentiation:
+  i2i: "Between institutions, Trusted Execution Environments are operated under bilateral contracts with physical-security controls, audit rights, and SLAs. Threshold distribution across operators and vendors reduces the blast radius of any single compromise. Attestation logs and measurement registries become shared compliance artefacts."
+  i2u: "For end users, the institution typically operates the enclave. The user has no independent way to verify the hardware state or the operator's integrity, so any privacy claim rests on institutional trust. Multi-operator or multi-vendor deployments and, where applicable, zero-knowledge proofs of execution, are needed before the user-facing privacy claim has technical substance."
+
 crops_profile:
   cr: low
-  os: partial
-  privacy: partial
-  security: medium
+  o: partial
+  p: partial
+  s: medium
+
+crops_context:
+  cr: "A single operator that controls scheduling and I/O can deny service at any time; CR is structurally bounded. Multi-operator threshold setups and public measurement registries lift the floor by requiring coordinated action to censor."
+  o: "Attestation formats and open-source enclave runtimes are available, but full platform stacks (microcode, vendor attestation services) are closed. Deployment openness depends on how much of the stack the operator publishes."
+  p: "Plaintext inside the enclave is hidden from the host operating system and hypervisor under the vendor's trust assumptions. I/O metadata, timing, and microarchitectural side channels remain observable and must be mitigated at the application layer."
+  s: "Rides on hardware-vendor key integrity, firmware and microcode patch discipline, and correct enclave code. Documented side channels and firmware vulnerabilities mean the security floor moves with every disclosed CVE."
+
+post_quantum:
+  risk: high
+  vector: "Attestation chains depend on vendor ECDSA signing keys (for example, Intel DCAP) that a CRQC can forge, invalidating remote attestation. Any long-lived keys sealed inside the enclave using elliptic-curve primitives are similarly exposed."
+  mitigation: "Adopt post-quantum signature schemes (ML-DSA, SLH-DSA) for attestation and sealing keys; track vendor roadmaps for post-quantum DCAP. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: []
+
+related_patterns:
+  composes_with: [pattern-tee-key-manager, pattern-tee-zk-settlement, pattern-tee-network-anonymity, pattern-verifiable-attestation, pattern-private-shared-state-tee]
+  alternative_to: [pattern-co-snark, pattern-mpc-custody, pattern-private-shared-state-fhe]
+  see_also: [pattern-modular-privacy-stack]
+
+open_source_implementations:
+  - url: https://github.com/openenclave/openenclave
+    description: "Open Enclave SDK supporting Intel SGX and similar hardware TEEs"
+    language: "C, C++"
+  - url: https://github.com/AMDESE/AMDSEV
+    description: "AMD SEV-SNP reference tooling for VM-level attested confidential computing"
+    language: "C, Shell"
 ---
 
 ## Intent
 
-Use Trusted Execution Environments (TEEs) to isolate sensitive computation from the host operating system, hypervisor, and operator. TEEs provide hardware-enforced confidentiality and integrity for code and data during execution, enabling privacy-preserving operations without exposing plaintext to infrastructure providers.
+Use hardware-isolated execution environments to protect sensitive computation from the host operating system, hypervisor, and operator. The pattern provides hardware-enforced confidentiality and integrity for code and data while running, so privacy-preserving operations can be performed without exposing plaintext to infrastructure providers. This is a foundational pattern; specific applications (key management, settlement, matching) compose on top.
 
-This is a foundational pattern describing TEE trust models and failure modes. Specific applications (key management, settlement, matching) build on this foundation.
+## Components
 
-## Ingredients
+- CPU-encrypted enclaves (for example, Intel SGX, AMD SEV-SNP) where memory is encrypted by the processor so the host operating system and hypervisor cannot read plaintext.
+- Hypervisor-isolated enclaves (for example, AWS Nitro Enclaves) where isolation is enforced by a minimal hypervisor without CPU-level memory encryption.
+- Remote attestation services that sign measurement reports rooted in hardware-vendor or cloud-provider keys.
+- Measurement registry that records approved code and configuration hashes so verifiers know what "correct" looks like.
+- Operational stack: secure provisioning, sealing-key management, firmware and microcode update policy, physical security controls, and incident-response runbooks.
 
-- **Hardware Platforms** (two categories with different trust models):
-  - _CPU-encrypted (hardware TEEs)_: Memory encrypted by the CPU itself; protects data even from the host OS and hypervisor
-    - **[Intel SGX](https://www.intel.com/content/www/us/en/architecture-and-technology/software-guard-extensions.html)**: Process-level enclaves, 90–128 MB encrypted memory (EPC). Attestation rooted in Intel signing keys
-    - **[AMD SEV-SNP](https://www.amd.com/en/developer/sev.html)**: VM-level isolation with full memory encryption and integrity. Attestation rooted in AMD signing keys
-  - _Hypervisor-isolated (VM TEEs)_: Isolation enforced by a minimal hypervisor; no CPU-level memory encryption
-    - **[AWS Nitro Enclaves](https://aws.amazon.com/ec2/nitro/nitro-enclaves/)**: Isolated VMs with no persistent storage, no network access. Attestation signed by AWS root CA
-    - **[Azure Confidential Computing](https://azure.microsoft.com/en-us/solutions/confidential-compute/)**: Offers both SGX and SEV-SNP; also provides attestation-as-a-service
-  - **ARM TrustZone**: Mobile/embedded TEE (less common in institutional settings)
+Hardware TEEs differ from Hardware Security Modules. HSMs provide physical tamper resistance (EAL5 to 7), dedicated silicon, and a minimal firmware surface; TEEs offer general-purpose computation with logical isolation but share the CPU die, lack physical tamper resistance (EAL2 to 4), and have a larger attack surface with documented side-channel history. Contractual controls partially mitigate this gap but do not close it; treat TEEs as complementary to HSMs, not replacements.
 
-- **Attestation Infrastructure**:
-  - Remote attestation services (Intel IAS/DCAP, AMD KDS, AWS Nitro attestation)
-  - Attestation verification logic (on-chain or off-chain)
-  - Measurement registries for approved code/configurations
+The two platform families differ in threat coverage:
 
-- **Operational Requirements**:
-  - Secure provisioning and sealing key management
-  - Firmware/TCB update policies
-  - Physical security of hosting environment
-  - Incident response runbooks
+|                           | CPU-encrypted (SGX, SEV-SNP)            | Hypervisor-isolated (Nitro Enclaves) |
+| ------------------------- | --------------------------------------- | ------------------------------------ |
+| Protects from             | Host OS, hypervisor, cloud provider     | Parent instance, other tenants       |
+| Does not protect from     | CPU manufacturer holding master keys    | Cloud provider controlling hypervisor |
+| Memory encryption         | CPU silicon                             | None (hypervisor boundary only)      |
+| Attestation root          | CPU-manufacturer signing keys           | Cloud-provider root CA               |
+| Side-channel exposure     | High (Spectre, cache timing)            | Lower (VM boundary)                  |
 
-## Trust Model
+## Protocol
 
-### Who Must Be Trusted
+1. [operator] Deploy the workload with a measured code image, generate or import secrets, and configure attestation expectations.
+2. [operator] The enclave produces an attestation report containing the code measurement and platform configuration.
+3. [verifier] Check the report against the expected measurement and the vendor's certificate chain; bind a session key to a successful attestation.
+4. [user] Establish an authenticated channel to the enclave using the bound session key and submit confidential inputs.
+5. [enclave] Execute the computation, encrypt outputs before they leave the enclave, and return them over the authenticated channel.
+6. [operator] Log attestation events and operations; seal state for persistence with anti-rollback controls.
+7. [operator] Rotate code or firmware as required; re-attest and migrate sealed state under a controlled procedure.
 
-| Entity                 | Trust Requirement                     | Mitigation                                                   |
-| ---------------------- | ------------------------------------- | ------------------------------------------------------------ |
-| **Hardware Vendor**    | Correct implementation, no backdoors  | Vendor reputation, third-party audits, multi-vendor strategy |
-| **Firmware/Microcode** | No vulnerabilities, timely patches    | TCB recovery, update policies, attestation checks            |
-| **Cloud Provider**     | Physical security, correct hypervisor | Contractual obligations, attestation, multi-cloud            |
-| **Operator**           | Correct deployment, no tampering      | Remote attestation, sealed secrets, audit logs               |
-| **Code Author**        | Correct enclave logic                 | Open source, audits, formal verification                     |
+## Guarantees & threat model
 
-### Platform Threat Model Comparison
+Guarantees:
 
-|                           | CPU-encrypted (SGX, SEV)                                  | Hypervisor-isolated (Nitro)          |
-| ------------------------- | --------------------------------------------------------- | ------------------------------------ |
-| **Protects from**         | Host OS, hypervisor, cloud provider                       | Parent instance, other tenants       |
-| **Does NOT protect from** | CPU manufacturer (holds master keys)                      | Cloud provider (controls hypervisor) |
-| **Memory encryption**     | CPU silicon                                               | None (hypervisor boundary only)      |
-| **Attestation root**      | CPU manufacturer signing keys                             | Cloud provider root CA               |
-| **Side-channel exposure** | High (CPU-level: Spectre, cache timing)                   | Lower (VM boundary)                  |
-| **Institutional analogy** | "Programmable enclave" (weaker than HSM — see note below) | "Locked-down VM you can't SSH into"  |
+- Confidentiality of data and code in memory from the host operating system and hypervisor, under the stated vendor trust assumptions.
+- Integrity: attestation proves that the running code and configuration match the approved measurement.
+- Auditability: attestation logs create a verifiable execution history.
+- Portability: sealed state can be migrated between attested enclaves of the same family.
 
-For institutions already trusting a cloud provider with their infrastructure, hypervisor-isolated TEEs are operationally simpler. When protection _from_ the cloud provider is needed, CPU-encrypted TEEs are required.
+Threat model:
 
-> **TEE ≠ HSM.** HSMs provide physical tamper resistance (EAL5–7), dedicated silicon, and minimal firmware surface. TEEs offer general-purpose computation with logical isolation but share the CPU die, lack physical tamper resistance (EAL2–4), and have a larger attack surface with documented side-channel history. Contractual controls (NDA, audit rights, SLAs) partially mitigate this gap but do not close it. Treat TEEs as complementary to HSMs, not replacements.
+- Hardware-vendor and microcode correctness, including the attestation-signing key hierarchy.
+- Firmware vulnerabilities; exposure is bounded by TCB recovery cadence and update policy.
+- Microarchitectural side channels (cache, speculative execution, timing). Constant-time implementations and platform-specific mitigations are required; absence is a live risk.
+- I/O-channel control. The host operator controls every byte crossing the enclave boundary and can intercept, reorder, drop, replay, or inject messages even without reading enclave memory.
+- Metadata: packet sizes, processing time, and connection patterns remain observable even with encrypted payloads.
+- Physical attacks with hardware access, supply-chain compromise, and denial of service (the host can simply refuse to run the enclave).
 
-### What TEEs Protect
+Failure modes and mitigations:
 
-- **Confidentiality**: Data and code encrypted in memory; inaccessible to host OS/hypervisor
-- **Integrity**: Tamper detection via hardware measurements and attestation
-- **Isolation**: Execution separated from other processes and privileged software
-
-### What TEEs Do NOT Protect
-
-- **Availability**: Host can deny service, power off, or refuse to schedule enclave
-- **I/O Channel Control**: Host operator controls all enclave communication (e.g., vsock) and can intercept, reorder, drop, replay, and inject messages — even without reading enclave memory
-- **Communication Metadata**: Packet sizes, processing duration, and connection patterns remain visible even with encrypted payloads, leaking operation types
-- **Side Channels**: Timing, cache, power, and speculative execution leaks remain possible without constant-time cryptography and platform-specific mitigations
-- **Physical Attacks**: Sophisticated attackers with hardware access may extract secrets
-- **Supply Chain**: Compromised hardware from manufacturing may have backdoors
-
-## Protocol (concise)
-
-1. **Provision**: Deploy TEE workload with measured code image; generate or import secrets.
-2. **Attest**: TEE produces attestation report; verifier checks measurement against expected values.
-3. **Establish Trust**: Clients verify attestation before sending sensitive data.
-4. **Execute**: TEE processes confidential data; results encrypted before leaving enclave.
-5. **Audit**: Log attestation events and operations for compliance; seal state for persistence.
-6. **Rotate/Upgrade**: Update code or firmware; re-attest; migrate sealed state if needed.
-
-## Failure Modes
-
-| Failure Mode                            | Description                                                                             | Impact                                               | Mitigation                                                                                                                    |
-| --------------------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Supply Chain Compromise**             | Backdoored hardware from manufacturing                                                  | Complete confidentiality loss                        | Multi-vendor, hardware audits, attestation checks                                                                             |
-| **Firmware Vulnerability**              | Exploitable bugs in microcode/firmware                                                  | Enclave escape, secret extraction                    | TCB recovery, rapid patching, version policies                                                                                |
-| **Side-Channel Attack**                 | Cache timing, Spectre/Meltdown variants                                                 | Partial secret leakage                               | Constant-time code, partitioning, updates                                                                                     |
-| **Rollback Attack**                     | Replay of old sealed state                                                              | Policy bypass, double-spend                          | Monotonic counters, external anchoring                                                                                        |
-| **Denial of Service**                   | Host refuses to run enclave                                                             | Availability loss                                    | Redundancy, fallback procedures, SLAs                                                                                         |
-| **I/O Manipulation**                    | Operator intercepts, reorders, or injects messages on the channel | Data corruption, front-running, censorship | Authenticated channels with sequence numbers, ZK proofs of execution, multi-operator setups |
-| **Incomplete Attestation Verification** | Client skips certificate chain or platform register validation    | Code substitution while attestation appears valid | Validate full certificate chain to vendor root CA, check all platform registers, use nonce freshness |
-| **Key Exfiltration**                    | Bug in enclave code leaks secrets                                                       | Complete compromise                                  | Audits, formal verification, minimal TCB                                                                                      |
-
-## Guarantees
-
-- **Confidentiality**: Protected from host/operator under stated trust assumptions
-- **Integrity**: Attestation proves code and configuration match expectations
-- **Auditability**: Attestation logs provide verifiable execution history
-- **Portability**: Secrets can be sealed and migrated between attested enclaves
+| Failure mode                           | Impact                                                | Mitigation                                                           |
+| -------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------- |
+| Supply-chain compromise                | Full confidentiality loss                             | Multi-vendor, hardware audits, attestation checks                    |
+| Firmware vulnerability                 | Enclave escape, secret extraction                     | TCB recovery, rapid patching, version policies                       |
+| Side-channel attack                    | Partial secret leakage                                | Constant-time code, partitioning, platform mitigations, updates      |
+| Rollback attack                        | Policy bypass, double-spend                           | Monotonic counters, external anchoring                               |
+| Denial of service                      | Availability loss                                     | Redundancy, fallback procedures, SLAs                                |
+| I/O manipulation                       | Data corruption, front-running, censorship            | Authenticated channels with sequence numbers, proofs of execution, multi-operator setups |
+| Incomplete attestation verification    | Code substitution while attestation appears valid     | Validate full vendor certificate chain, check platform registers, nonce freshness |
+| Key exfiltration from enclave bug      | Full compromise                                       | Audits, formal verification, minimal trusted-computing base           |
 
 ## Trade-offs
 
-- **Hardware Dependency**: Locked to specific vendors; supply constraints possible
-- **Trust Surface**: Larger than pure cryptographic solutions; hardware/firmware vulnerabilities affect all deployments
-- **Performance**: Fast execution but limited memory (SGX); context switches have overhead
-- **Lifecycle**: Hardware security erodes over time as attacks improve; plan for migration
-- **Regulatory Uncertainty**: Some regulators may not accept "black box" execution for audit purposes
-- **CROPS context (both)**: In I2U, the institution operates the TEE — user has no independent verification of enclave integrity, making privacy dependent on institutional trust. CR improves with multi-operator/multi-vendor TEE setups. Security improves with TEE+ZK combination (removes attestation dependency for verifiability).
-
-## When TEEs Are Appropriate
-
-| Use Case                  | TEE Fit    | Notes                                                  |
-| ------------------------- | ---------- | ------------------------------------------------------ |
-| Hot key management        | Good       | Faster than MPC; acceptable trust for operational keys |
-| Private matching engine   | Good       | Real-time performance; ZK too slow for orderbooks      |
-| Bridge/oracle relayer     | Acceptable | Defense in depth with other controls                   |
-| Long-term custody         | Poor       | Prefer MPC or cold storage for years-long secrets      |
-| Regulatory-critical audit | Uncertain  | Depends on regulator acceptance                        |
-
-## Defense Layers
-
-A TEE alone is insufficient for high-value production workloads. Each layer reduces the trust surface:
-
-| Layer                    | Composition                                                                            | What it adds                                                                                                                                                                                                                                                                          |
-| ------------------------ | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **TEE only**             | Single enclave, single operator                                                        | Memory isolation. Vulnerable to operator I/O manipulation, side-channels, single point of compromise. Suitable for pilots and low-value operations only                                                                                                                               |
-| **TEE + Threshold Keys** | Key material distributed across multiple TEE instances operated by independent parties | No single compromise yields full key. Minimum viable for production custody and coordination                                                                                                                                                                                          |
-| **TEE + ZK**             | TEE executes, produces ZK proof verified on-chain                                      | Mitigates operator I/O manipulation: even if the operator tampers with inputs/outputs, the ZK proof will not verify unless execution was correct. Removes dependency on attestation infrastructure for verifiability (see [Hybrid TEE + ZK Settlement](pattern-tee-zk-settlement.md)) |
-| **TEE + Threshold + ZK** | Full defense in depth                                                                  | Threshold trust, cryptographic verifiability, hardware isolation as complementary layers                                                                                                                                                                                              |
+- Hardware dependency: platforms are tied to specific vendors and subject to supply constraints.
+- Trust surface is larger than pure cryptographic solutions; hardware or firmware vulnerabilities can affect all deployments simultaneously.
+- Performance: execution is fast but memory is limited in some platforms; context switches add overhead.
+- Lifecycle: hardware security erodes as attacks improve, so migration paths must be planned in advance.
+- Regulatory acceptance varies; some regulators still treat hardware-isolated execution as opaque for audit purposes.
+- Defense layering is usually required: TEE-only deployments are acceptable only for pilots or low-value operations. Production-grade custody and coordination typically combine the TEE with threshold keys and, where verifiability is needed, zero-knowledge proofs of execution.
 
 ## Example
 
-**Confidential Order Matching**
-
-1. Exchange deploys matching engine inside AWS Nitro Enclave.
-2. Traders verify attestation showing approved matching code.
-3. Orders submitted encrypted; decrypted only inside enclave.
-4. Matching occurs privately; only fills are published.
-5. Attestation logs prove matching logic was not tampered with.
-6. Auditors can verify code measurements without seeing order flow.
+A bank deploys a confidential matching engine for block trades inside a hardware-isolated enclave. Traders verify the attestation before submitting encrypted orders; matching runs inside the enclave and only fills are published. Attestation logs record that the approved matching code was executed for each batch, while auditors can verify the code measurement without seeing order flow. Threshold key shares and a zero-knowledge proof of execution are added in a later phase to reduce the blast radius of any single compromise.
 
 ## See also
 
-- [TEE Key Manager](pattern-tee-key-manager.md) - Specific application for custody
-- [Hybrid TEE + ZK Settlement](pattern-tee-zk-settlement.md) - TEE execution with ZK verification
-- [MPC Custody](pattern-mpc-custody.md) - Cryptographic alternative to TEE key management
-- [Verifiable Attestation](pattern-verifiable-attestation.md) - On-chain attestation verification
-
-## See also (external)
-
-- Bluethroat Labs TEE Security Handbook: https://docs.bluethroatlabs.com/
-- Confidential Computing Consortium: https://confidentialcomputing.io/
-- awesome-tee-blockchain: https://github.com/dineshpinto/awesome-tee-blockchain
+- [Confidential Computing Consortium](https://confidentialcomputing.io/)
+- [awesome-tee-blockchain](https://github.com/dineshpinto/awesome-tee-blockchain)
+- [Fhenix](../vendors/fhenix.md)
+- [iExec](../vendors/iexec.md)

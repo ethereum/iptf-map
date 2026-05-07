@@ -20,13 +20,17 @@ context_differentiation:
   i2i: "Between institutions the layered model lets counterparties agree on interfaces (data references, settlement proofs, disclosure artifacts) without locking the stack to one vendor per layer. Decentralized orchestration prevents any single provider from gatekeeping settlement."
   i2u: "For user-facing deployments per-layer exit paths matter: a user must be able to withdraw assets even if one layer's operator becomes unresponsive. Disclosure controls should protect the user from forced correlation across layers."
 
-crops_profile: "n/a"
+crops_profile:
+  cr: medium
+  o: partial
+  p: partial
+  s: medium
 
 crops_context:
-  cr: "Inherited from sub-patterns; the meta-pattern itself does not implement CR. Overall CR is bounded by the weakest layer plus orchestration. See each sub-pattern's crops_context."
-  o: "Inherited from sub-patterns; the meta-pattern itself does not implement openness. Reaches `yes` when every layer's reference implementation is open source."
-  p: "Inherited from sub-patterns; the meta-pattern itself does not implement privacy. Cross-layer routing can leak timing and access patterns regardless of per-layer choices."
-  s: "Inherited from sub-patterns; the meta-pattern itself does not implement security. Depends on the weakest layer plus the orchestrator."
+  cr: "Reaches `high` when routing is permissionless and each layer offers an independent exit path. Drops when orchestration concentrates in a single operator or when a settlement layer uses permissioned sequencing."
+  o: "Improves to `yes` when reference implementations of each layer interface are published and orchestration logic is open source; today vendor SDKs dominate."
+  p: "Layer isolation contains data leaks, but cross-layer routing reveals timing and access patterns. Reaches `full` only with end-to-end encryption between layers and metadata scrubbing at routing boundaries."
+  s: "Depends on the weakest layer plus the orchestrator. Threshold cryptography for cross-layer key management and elimination of single-operator trust in orchestration raise this to `high`."
 
 post_quantum:
   risk: medium
@@ -37,7 +41,7 @@ standards: [ERC-7573, ERC-3643, EIP-4844, EAS]
 
 related_patterns:
   composes_with: [pattern-privacy-l2s, pattern-commit-and-prove, pattern-dvp-erc7573, pattern-regulatory-disclosure-keys-proofs, pattern-tee-based-privacy, pattern-l2-encrypted-offchain-audit]
-  see_also: [pattern-shielding]
+  see_also: [pattern-shielding, pattern-l2-privacy-evaluation]
 
 sub_patterns:
   - name: "Data layer"
@@ -51,7 +55,7 @@ sub_patterns:
     crops_summary: "Hardware trust; mitigates prover cost but introduces vendor attestation dependency"
   - name: "Settlement layer"
     pattern: pattern-dvp-erc7573
-    crops_summary: "Atomic DvP via outcome-key commitments and oracle-driven decryption; assumes non-colluding decryption oracle operators"
+    crops_summary: "Atomic cross-chain settlement anchored to L1 finality"
   - name: "Disclosure layer"
     pattern: pattern-regulatory-disclosure-keys-proofs
     crops_summary: "View keys, ZK proofs, and attestations for scoped audit access"
