@@ -676,9 +676,12 @@ function validateApproach(filePath) {
     fileWarnings.push('Approach files should start with "approach-"');
   }
 
-  // Validate required frontmatter (v2 schema per issue #151)
+  // Validate required frontmatter (v2 schema per issue #151).
+  // Empty arrays must be flagged (e.g. template default `primary_patterns: []`).
   for (const field of REQUIRED_APPROACH_FRONTMATTER) {
-    if (!frontmatter[field]) {
+    const value = frontmatter[field];
+    const isEmptyArray = Array.isArray(value) && value.length === 0;
+    if (!value || isEmptyArray) {
       fileWarnings.push(`Missing required frontmatter field: ${field}`);
     }
   }
