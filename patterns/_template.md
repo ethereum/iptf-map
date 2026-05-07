@@ -85,15 +85,17 @@ open_source_implementations:
     language: Noir
 
 # ─── META-PATTERN ONLY (type: meta) ─────────────────────────────────────────
-# If set, crops_profile may be 'n/a' and ## Protocol / ## Example become
-# optional. Each child is a slug resolved to patterns/pattern-<slug>.md.
-sub_patterns:
-  - name: "Onion routing (Tor-style)"
-    pattern: pattern-onion-routing
-    crops_summary: "High CR, high privacy, high latency"
-  - name: "Mixnet"
-    pattern: pattern-mixnet-anonymity
-    crops_summary: "Medium CR, full privacy, high latency"
+# DELETE THIS WHOLE BLOCK UNLESS type: meta above. The validator warns if
+# sub_patterns is populated on a standard pattern.
+# For meta patterns: crops_profile may be 'n/a' and ## Protocol / ## Example
+# become optional. Each child is a slug resolved to patterns/pattern-<slug>.md.
+# sub_patterns:
+#   - name: "Onion routing (Tor-style)"
+#     pattern: pattern-onion-routing
+#     crops_summary: "High CR, high privacy, high latency"
+#   - name: "Mixnet"
+#     pattern: pattern-mixnet-anonymity
+#     crops_summary: "Medium CR, full privacy, high latency"
 ---
 
 ## Intent

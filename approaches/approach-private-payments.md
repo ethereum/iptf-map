@@ -1,250 +1,371 @@
+---
+title: "Approach: Private Payments"
+status: draft
+last_reviewed: 2026-05-05
+
+use_case: private-stablecoins
+related_use_cases: [resilient-disbursement-rails]
+
+primary_patterns:
+  - pattern-shielding
+  - pattern-privacy-l2s
+  - pattern-private-stablecoin-shielded-payments
+  - pattern-private-iso20022
+  - pattern-regulatory-disclosure-keys-proofs
+supporting_patterns:
+  - pattern-plasma-stateless-privacy
+  - pattern-tee-based-privacy
+  - pattern-co-snark
+  - pattern-user-controlled-viewing-keys
+  - pattern-verifiable-attestation
+  - pattern-network-anonymity
+  - pattern-forced-withdrawal
+  - pattern-forward-secure-signatures
+  - pattern-recipient-derived-receive-addresses
+  - pattern-relay-mediated-proving
+  - pattern-mesh-store-forward-submission
+  - pattern-private-mtp-auth
+  - pattern-proof-of-innocence
+
+iptf_pocs:
+  folder: pocs/private-payment
+  requirements: pocs/private-payment/REQUIREMENTS.md
+  pocs:
+    - name: "Shielded Pool"
+      sub_approach: "L1 Shielded Payments"
+      spec: pocs/private-payment/shielded-pool/SPEC.md
+      status: benchmarked
+    - name: "Plasma/Intmax2"
+      sub_approach: "Stateless Plasma"
+      spec: pocs/private-payment/plasma/SPEC.md
+      status: benchmarked
+
+open_source_implementations:
+  - url: https://github.com/Railgun-Privacy/contract
+    description: "Railgun shielded pool (L1, production volume)"
+    language: Solidity
+  - url: https://github.com/AztecProtocol/aztec-packages
+    description: "Aztec privacy-native L2"
+    language: TypeScript / Noir
+  - url: https://github.com/InternetMaximalism/intmax2
+    description: "Intmax2 stateless plasma"
+    language: Rust
+---
+
 # Approach: Private Payments
 
-**Use Case Link:** [Private Stablecoins](../use-cases/private-stablecoins.md)
+## Problem framing
 
-**High-level goal:** Enable confidential payment transfers using stablecoins and other digital assets while hiding amounts, counterparties, and transaction patterns, with selective regulatory disclosure capabilities.
+### Scenario
 
-## Overview
+A multinational bank executes daily institutional stablecoin transfers (USDC, EURC) between subsidiaries, mid-cap counterparties, and a humanitarian arm disbursing to recipients in adversarial jurisdictions. The bank needs amount and counterparty privacy on chain, selective disclosure for regulators by jurisdiction, integration with SWIFT/ISO 20022, and a separate rail where recipients have no client-side proving capability and intermediaries may be compelled or breached.
 
-### Problem Interaction
+### Requirements
 
-Private payment systems address four interconnected challenges:
+- Hide amounts, counterparties, and transaction patterns on chain
+- Selective disclosure to regulators per jurisdiction (MiCA, GENIUS, etc.)
+- Integration with USDC/EURC and ISO 20022 / SWIFT messaging
+- Predictable cost for high-frequency operations
+- Off-ramp unlinkability for the disbursement rail
+- Survives partner compromise, recipient device seizure, and successor-regime inheritance
 
-1. **Operational Privacy**: Treasury operations, payment flows, and settlement patterns reveal competitive intelligence when visible on-chain
-2. **Security vs Cost Trade-offs**: L1 provides maximum security but higher costs, while L2s offer efficiency but different trust assumptions
-3. **Regulatory Compliance**: Financial institutions require auditability and selective disclosure capabilities across varying jurisdictions
-4. **User Onboarding**: Institutions need practical paths to onboard their users (corporates, funds, counterparties) onto private stablecoin infrastructure while integrating with existing fiat rails and compliance workflows
+### Constraints
 
-These problems interact because traditional payment transparency conflicts with institutional confidentiality needs, while privacy solutions must maintain regulatory compliance and operational efficiency.
+- Must compose with existing custody and KYC workflows
+- L1 verification gas at current shielded-pool sizes is costly per transfer
+- Adversarial-jurisdiction rail has no client-side ZK, no reliable internet, EAL4+ smartcard envelope
+- Organizational separation between identity-layer operator and field partner is mandatory for the disbursement rail
 
-### Key Constraints
+## Approaches
 
-- Must work with existing stablecoin infrastructure (USDC, EURC, etc.)
-- Integration with existing payment rails (SWIFT, ISO20022) and custodial systems
-- Selective disclosure must meet varying regulatory requirements across jurisdictions
-- Support for high-frequency institutional operations with predictable costs
-- Composability with broader DeFi and settlement infrastructure
+### L1 Shielded Payments
 
-### TLDR for Different Personas
+```yaml
+maturity: prototyped
+context: i2i
+crops: { cr: high, o: yes, p: partial, s: high }
+uses_patterns: [pattern-shielding, pattern-regulatory-disclosure-keys-proofs, pattern-forced-withdrawal, pattern-network-anonymity]
+poc_spec: pocs/private-payment/shielded-pool/SPEC.md
+example_vendors: [railgun]
+```
 
-- **Business:** Execute private treasury operations with maximum security while maintaining regulatory compliance
-- **Technical:** Implement privacy-preserving payment infrastructure using L1 shielding or privacy L2s with selective disclosure
-- **Legal:** Maintain regulatory compliance through controlled access mechanisms and audit trails while protecting commercial confidentiality
+**Summary:** Shielded ERC-20 pool on Ethereum L1 using commitment/nullifier scheme; users transfer between hidden notes.
 
-## Architecture and Design Choices
+**How it works:** Deposit moves an ERC-20 balance into a Merkle tree of commitments; transfers spend a nullifier and create new commitments via a JoinSplit-style zero-knowledge proof; withdraw burns a commitment to a destination address. A gas relayer pays gas on the destination's behalf to avoid linking funded EOAs. Selective disclosure runs through per-note viewing keys.
 
-### Privacy Approaches
+**Trust assumptions:**
+- L1 consensus and the verifier contract
+- Gas relayer is willing to relay (liveness only; not custodial)
+- Trusted setup is not required (UltraHonk)
 
-**L1 Shielded Payments:**
+**Threat model:**
+- Adversary observes L1 directly; cannot break ZK soundness
+- Relayer may censor; users can fall back to direct withdraw at the cost of address linkage
+- Network-level timing correlation is unmitigated at this layer
 
-- Maximum security using Ethereum L1 consensus
-- Provides **anonymity** (unlinkable addresses) but limited **privacy** (amounts/patterns may still leak)
-- [Shielded ERC-20 Transfers](../patterns/pattern-shielding.md) with commitment/nullifier schemes
+**Works best when:**
+- High-value transfers where L1 settlement security justifies gas
+- Anonymity-set sharing across many participants is acceptable
+- Counterparty privacy via per-token shielded pools is sufficient
 
-**Privacy L2 (Aztec, etc.):**
+**Avoid when:**
+- High-frequency low-value transfers where gas dominates
+- Amount confidentiality must be cryptographically hidden across all observers (current designs leak via deposit/withdraw boundaries)
+
+**Implementation notes:** PoC implemented as a UTXO model with Noir / UltraHonk; dual-key (spending + viewing) architecture; attestation-gated entry via zero-knowledge proof of KYC Merkle inclusion (depth 20, ~1M participants). Multi-token transfers require same-token circuit constraints, so per-token pools are the working assumption.
+
+#### Benchmarks
+
+| Operation | Value |
+|---|---|
+| Gas: deposit | ~155K |
+| Gas: transfer | ~181K + ~2.6M verification |
+| Gas: withdraw | ~47K + ~2.6M verification |
+| Proof gen (client) | 410-991ms |
+| Trusted setup | No |
 
-- Full **privacy** with hidden state and confidential transfers
-- Lower costs and higher throughput for frequent operations
-- [Private L2s](../patterns/pattern-privacy-l2s.md) with privacy-native stablecoin implementations
-- Complete transaction confidentiality including amounts, counterparties, and patterns
+### Privacy L2
 
-**Stateless Plasma (Intmax-style):**
+```yaml
+maturity: prototyped
+context: both
+crops: { cr: medium, o: partial, p: full, s: medium }
+uses_patterns: [pattern-privacy-l2s, pattern-user-controlled-viewing-keys, pattern-regulatory-disclosure-keys-proofs]
+example_vendors: [aztec, fhenix]
+```
 
-- Client-side proving with minimal on-chain data (only Merkle roots)
-- Users custody their own transaction data; chain observers see only commitments
-- [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md) pattern
-- Requires operator infrastructure for building blocks, aggregating proofs
-- Best for: High-volume flows, minimal on-chain footprint
-- Trade-off: Exit delays, user data custody responsibility, operator liveness dependency
+**Summary:** Confidential transfers run inside a privacy-native rollup where state is hidden by default at the protocol layer.
+
+**How it works:** Users post transactions with client-side zero-knowledge proofs to a privacy-native sequencer (Aztec) or use FHE-based confidential balances (Fhenix). Hidden state, encrypted memo, and account-level viewing keys give institutional readers controlled access. Bridging to L1 is the privacy boundary.
 
-**TEE-Based Privacy:**
+**Trust assumptions:**
+- Sequencer for ordering (currently centralized in early deployments)
+- Bridge contract for L1 settlement integrity
+- Viewing-key custody at the institution
 
-- Trusted Execution Environment handles sensitive computation privately
-- Can enable private matching, settlement, or custody operations
-- [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md) pattern
-- Best for: Near-term deployment, institutional trust model acceptable
-- Trade-off: Hardware trust assumptions, vendor dependency
+**Threat model:**
+- Sequencer could censor; rollup escape hatches mitigate but expose linkage
+- Bridge boundary leaks deposit/withdraw amounts unless paired with shielded pools on the other side
+- Compromise of an institution's viewing key reveals all flows under it
+
+**Works best when:**
+- Institution needs amount + counterparty privacy at high frequency
+- Cost amortization matters and L2 fees are acceptable
+- Treasury accepts sequencer trust during the rollup's decentralization roadmap
 
-**MPC-Based Privacy:**
+**Avoid when:**
+- Maximum settlement security required for each transfer
+- Bridge custody risk is unacceptable
+- Sequencer trust does not match the institution's risk model
+
+### Stateless Plasma
+
+```yaml
+maturity: prototyped
+context: i2i
+crops: { cr: medium, o: partial, p: full, s: medium }
+uses_patterns: [pattern-plasma-stateless-privacy, pattern-forced-withdrawal]
+poc_spec: pocs/private-payment/plasma/SPEC.md
+```
+
+**Summary:** Operator-coordinated rollup posts only Merkle roots on L1; users custody their transaction history client-side.
+
+**How it works:** Users build proofs of inclusion against operator-published roots. Operators batch transfers, generate aggregated SNARKs (Plonky2-style recursion), and post anchor data to L1. Withdrawals exit through an L1 anchor contract via an exit game; users prove sufficient balance to escape an offline operator.
+
+**Trust assumptions:**
+- Operator for liveness (block production, proof aggregation)
+- Users to retain their own state for exits
+- L1 anchor contract for forced exit correctness
+
+**Threat model:**
+- Operator offline or censoring forces escape-game exits with weaker privacy
+- User data loss collapses to lost funds; backup architecture is load-bearing
+- Operator equivocation needs fraud-proof or multi-operator dispute
+
+**Works best when:**
+- Volume is high and minimal L1 footprint matters
+- Institution can run or contract user-side state custody
+- Forced withdrawal as a recovery path is acceptable
+
+**Avoid when:**
+- User-side state custody is operationally infeasible
+- Exit-delay risk is not tolerable for the asset class
+
+**Implementation notes:** PoC uses Plonky2 with operator-side recursive aggregation; client proofs run in 5.9-9.8s, operator proofs in 42-49s. PlasmaBlind (folding-scheme aggregation) is a tracked alternative.
+
+#### Benchmarks
+
+| Operation | Value |
+|---|---|
+| Gas: deposit | ~137K (user) |
+| Gas: transfer | Off-chain (operator-set fee) |
+| Gas: withdraw | ~343K (operator, amortized) |
+| Gas: batch | ~255K (operator, amortized) |
+| Proof gen (client) | 5.9-9.8s |
+| Proof gen (operator) | 42-49s |
+
+### TEE-Based Privacy
+
+```yaml
+maturity: documented
+context: i2i
+crops: { cr: medium, o: no, p: full, s: low }
+uses_patterns: [pattern-tee-based-privacy]
+example_vendors: []
+```
+
+**Summary:** Trusted execution enclave processes transfers privately; on-chain artefact is an attestation of correct enclave execution.
+
+**How it works:** Settlement, matching, or custody runs inside an attested enclave (AWS Nitro, Azure Confidential Computing, Intel TDX). The chain sees only enclave-signed outputs and remote-attestation evidence. Enclave-held keys never leave hardware.
+
+**Trust assumptions:**
+- TEE vendor and remote-attestation chain
+- Cloud co-tenant isolation
+- Enclave software supply chain (reproducible build, signing)
+
+**Threat model:**
+- Side-channel and microarchitectural attacks against the enclave class
+- Vendor compromise or compelled disclosure of attestation keys
+- Enclave-software vulnerabilities expose all state to a single-party adversary
+
+**Works best when:**
+- Near-term deployment is needed and ZK proving is too costly per transfer
+- Institutional trust model already includes hardware vendors (HSMs, secure elements)
+- Counterparties accept hardware-rooted attestation
+
+**Avoid when:**
+- Threat model includes nation-state-class side-channel adversaries
+- Attestation chain centralization is a hard fail
 
-- Multi-party computation nodes jointly process transactions without any single party seeing plaintext
-- Combines MPC with zero-knowledge proofs (co-SNARKs) for on-chain verification of private state transitions
-- [co-SNARKs (Collaborative Proving)](../patterns/pattern-co-snark.md) pattern, See also [TACEO Merces](../vendors/taceo-merces.md)
-- Best for: Amount confidentiality where counterparty relationships are already known (e.g., bilateral settlement)
-- Trade-off: No sender/receiver anonymity; addresses remain public on-chain
+### MPC-Based Privacy
 
-### Recommended Architecture: Hybrid L1/L2 Model
+```yaml
+maturity: prototyped
+context: i2i
+crops: { cr: medium, o: partial, p: partial, s: medium }
+uses_patterns: [pattern-co-snark]
+example_vendors: [taceo-merces]
+```
 
-**Primary Patterns:**
+**Summary:** MPC nodes jointly compute transfers under secret-shared balances; co-SNARKs commit a verifiable summary on chain.
 
-- [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
-- [Private ISO20022](../patterns/pattern-private-iso20022.md) for traditional rail integration
-- [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
+**How it works:** Bilateral counterparties send secret-shared inputs to an MPC committee that runs the transfer logic and produces a collaborative SNARK. The chain verifies the SNARK; counterparty addresses are public, but amounts and balance state are hidden under sharing.
 
-#### Core Components:
+**Trust assumptions:**
+- Honest majority among MPC nodes (committee size and threshold are config-time choices)
+- Co-SNARK soundness
+- Liveness of the MPC committee
 
-1. **Multi-Tier Payment Infrastructure**
-   - L1 Shielding: High-value transfers using shielded pools (Railgun-style commitment/nullifier)
-   - Privacy L2: Frequent operations on privacy-native rollups (Aztec, Fhenix)
-   - Cross-tier bridges: Secure movement between L1 and L2 privacy domains
+**Threat model:**
+- Collusion above the threshold reveals all state
+- Counterparty addresses leak; only amount confidentiality is provided
+- MPC committee liveness is an availability boundary
 
-2. **Selective Disclosure Layer**
-   - [User-controlled viewing keys](../patterns/pattern-user-controlled-viewing-keys.md) for I2U contexts where the user retains key custody
-   - Regulator viewing keys for scoped audit access
-   - Time-bound, threshold-controlled disclosure mechanisms
-   - [Attestation logging](../patterns/pattern-verifiable-attestation.md) for compliance trails (EAS, W3C VC, or ONCHAINID)
-   - Encrypted audit logs with selective decryption
+**Works best when:**
+- Bilateral or club-mode settlement among known counterparties
+- Address-level privacy is not a goal; amount confidentiality is enough
+- Operating an MPC committee is feasible
 
-3. **Traditional Rail Integration**
-   - ISO20022 message interpreters for SWIFT compatibility
-   - Privacy-preserving bridges to traditional payment systems
-   - Encrypted metadata for regulatory reporting
+**Avoid when:**
+- Sender or receiver anonymity is required
+- Honest-majority assumption is incompatible with the threat model
 
-4. **Multi-Asset Support**
-   - Support for multiple stablecoins (USDC, EURC, etc.)
-   - Cross-currency private transfers and conversions
-   - Integration with existing stablecoin compliance frameworks
+### Resilient Disbursement Rails
 
-### PoC Validation
+```yaml
+maturity: documented
+context: i2u
+crops: { cr: high, o: yes, p: full, s: high }
+uses_patterns: [pattern-forward-secure-signatures, pattern-recipient-derived-receive-addresses, pattern-relay-mediated-proving, pattern-mesh-store-forward-submission, pattern-shielding, pattern-private-mtp-auth, pattern-network-anonymity, pattern-proof-of-innocence, pattern-forced-withdrawal, pattern-verifiable-attestation]
+example_vendors: []
+```
 
-Two approaches were implemented as proof-of-concept: an L1 shielded pool (UTXO model with Noir/[UltraHonk](https://github.com/AztecProtocol/barretenberg)) and a Plasma/Intmax2 stateless rollup ([Plonky2](https://github.com/0xPolygonZero/plonky2)). Both use dual-key architecture (spending + viewing) and attestation-gated entry via zero-knowledge proof of KYC.
+**Summary:** Composition for humanitarian disbursement under adversarial-jurisdiction threat model: forward-secure smartcard signing, recipient-derived destinations, relay-mediated proving, mesh delivery, settlement over a shielded pool.
 
-> **Note:** Benchmarks below are indicative measurements from PoC testing, not production reference numbers. Implementers should run their own benchmarks with domain-specific configuration.
+**How it works:** Funder atomically shields the round total and emits a multisig-signed header. The recipient's EAL4+ smartcard signs an offline ECDSA voucher under a per-epoch key bound to the round and an on-card derived destination. A companion device encrypts to a relay's current key and ships via Briar (Bluetooth + Tor) or Meshtastic (LoRa), fanning out to k of N relays. A relay generates the cohort-membership SNARK with submitter binding (defeats proof-stealing front-running) and submits via Tor/Nym. The claim contract verifies and unshields to the destination, where the recipient redeems through a local agent network.
 
-**Reference Implementation:** [Private Payment PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment)
+**Trust assumptions:**
+- IResilientIdentity operator and implementing partner are distinct legal entities, jurisdictions, and personnel
+- Relay set meets size and jurisdictional-diversity floors (pilot N≥8 / ≥2 operators / ≥2 jurisdictions; production N≥16 / ≥4 operators / ≥3 jurisdictions)
+- Smartcard secure-element vendor and applet supply chain
+- Mesh transport availability for last-mile
 
-#### Comparison
+**Threat model:**
+- Every party may be compelled, breached, or inherited by a hostile successor
+- Recipient device may be seized; forward-secure keys block retroactive identification
+- Off-ramp KYC pivot bounded by association-set k-anonymity and relay diversity
+- Within-epoch per-relay linkability bounded but not cryptographically eliminated
 
-| Dimension | Shielded Pool (L1) | Plasma/Intmax2 (L2) |
-|---|---|---|
-| **Proving system** | UltraHonk | Plonky2 |
-| **Trusted setup** | No  | No |
-| **Gas: deposit** | ~155K | ~137K (user) |
-| **Gas: transfer** | ~181K + ~2.6M verification | Off-chain (configurable fee by operator) |
-| **Gas: withdraw** | ~47K + ~2.6M verification | ~343k (operator, amortized across senders) |
-| **Gas: batch** | N/A | ~255K (operator, amortized across senders) |
-| **Proof gen (client)** | 410-991ms | 5.9-9.8s (user) |
-| **Proof gen (operator)** | N/A | 42-49s |
-| **Operator required** | No | Yes |
+**Works best when:**
+- Compelled-partner transfer, successor-regime inheritance, or off-ramp KYC pivot are documented threats
+- No central beneficiary list at the funder layer is acceptable
+- Donor policy admits multi-jurisdiction relay operators
 
-#### Cross-Cutting Findings
+**Avoid when:**
+- Recipients have reliable internet and modern wallet capability (use Sections A-C with viewing keys instead)
+- Single-jurisdiction deployment cannot meet relay-set floors
 
-- **Dual-key architecture** (spending + viewing) works in both models, confirming selective disclosure is practical without granting transfer authority
-- **Attestation-gated entry** via zero-knowledge proof of Merkle tree inclusion is feasible (MAX_ATTESTATION_TREE_DEPTH=20, supporting ~1M participants, configurable for larger participants, but increases proving time)
-- **Network timing correlation** is unmitigated in both approaches; see [Network-Level Anonymity](../patterns/pattern-network-anonymity.md) for mitigation patterns
-- **Withdrawal to fresh addresses** requires a gas relayer since the recipient address may not have ETH for gas. Users can always withdraw directly (sacrificing privacy), but private withdrawal depends on relayer liveness and willingness to relay
-- **Multi-token transfers** require same-token constraints in circuits, confirming per-token shielded pools and liquidity fragmentation concerns
-- **Forced withdrawal fallback** — when relayers are unavailable or censoring, users need a way to bypass them and withdraw via an L1 escape hatch contract directly. See [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md); privacy is weaker during forced exit (timing and destination address visible on-chain) but funds stay recoverable
-- **PlasmaBlind** (folding-scheme-based stateless plasma) is an emerging alternative to Plonky2 recursive proofs; see [PSE research](https://pse.dev/mastermap/ptr)
+**Implementation notes:** Spec stage; PoC forthcoming. Production dependencies: Tor, Briar, Meshtastic, EAL4+ secure elements (Keycard-class), Noir + UltraHonk for ECDSA-in-SNARK at the relay. Cohort attestation uses ECDSA-pubkey leaves so the smartcard signs ECDSA only; in-circuit Poseidon hashing happens at the relay. Rotating EOAs funded via shielded unshield handle relay submission.
 
-### Vendor Recommendations
+## Comparison
 
-**Primary Infrastructure:**
+| Axis | L1 Shielded | Privacy L2 | Stateless Plasma | TEE | MPC | Resilient Disbursement |
+|---|---|---|---|---|---|---|
+| **Maturity** | prototyped | prototyped | prototyped | documented | prototyped | documented |
+| **Context** | i2i | both | i2i | i2i | i2i | i2u |
+| **CROPS** | CR:hi O:y P:part S:hi | CR:med O:part P:full S:med | CR:med O:part P:full S:med | CR:med O:no P:full S:lo | CR:med O:part P:part S:med | CR:hi O:y P:full S:hi |
+| **Trust model** | L1 + relayer liveness | Sequencer + bridge | Operator + L1 anchor | TEE vendor + supply chain | Honest-majority MPC | Multi-relay + smartcard + IResilientIdentity |
+| **Privacy scope** | Anonymity (amounts may leak) | Amounts + counterparties + patterns | Amounts + counterparties (commitments only on chain) | Full inside enclave | Amounts only; counterparties public | Forward-secure + off-ramp unlinkable |
+| **Performance** | ~181K + ~2.6M gas / 410-991ms | L2-internal fees | Off-chain transfer / operator-amortized | Variable | MPC overhead, batched | Relay-mediated, mesh-bounded |
+| **Operator req.** | No (gas relayer optional) | Yes (sequencer) | Yes | Yes (cloud) | Yes (MPC committee) | Yes (relay set with floors) |
+| **Cost class** | High (L1 verify) | Low | Lowest (amortized) | Variable | Medium | Relay-mediated |
+| **Regulatory fit** | Strong with viewing keys | Strong with viewing keys | Conditional (operator audit) | Conditional (vendor attestation) | Strong for known-counterparty | Architectural minimization at funder layer |
+| **Failure modes** | Relayer censor; verification gas spikes | Sequencer outage; bridge exploit | Operator offline; user data loss | Side-channel; vendor compromise | MPC collusion; liveness | Relay set under floor; smartcard supply-chain compromise |
 
-- **L1 Shielding:** [Railgun](../vendors/railgun.md) for mature UTXO-style privacy pools
-- **Privacy L2:** [Aztec Network](../vendors/aztec.md) for native confidential transfers, [Fhenix](../vendors/fhenix.md) for FHE-based payments
-- **Stateless Plasma:** [Intmax](https://www.intmax.io/) for client-side proving with minimal on-chain footprint
-- **Traditional Integration:** SWIFT network adapters, ISO20022 processors
+## Persona perspectives
 
-**Alternative Approaches:**
+### Business perspective
 
-- **FHE Approach:** [Zama](../vendors/zama.md) fhEVM for homomorphic stablecoin operations
-- **TEE Approach:** AWS Nitro Enclaves, Azure Confidential Computing for issuer-side privacy
-- **MPC + ZK Approach:** [TACEO Merces](../vendors/taceo-merces.md) uses MPC + ZK for private stablecoin transfers, counterparty relationship is public
-- **HE + ZK + IBE Approach:** [Fairblock](../vendors/fairblock.md) connects EVM escrowed assets to an encrypted layer and ZK-verified confidential transfers, with scoped selective disclosure for audits and compliance.
+For institutional treasury at moderate volume with standard compliance needs, the default described in `## Recommendation` is the Hybrid L1/L2 composition: Privacy L2 absorbs the high-frequency intra-bank flow and L1 Shielded Payments handles high-value or anonymity-sensitive transfers. Cost is predictable, sequencer trust during rollup decentralization is the main accepted risk. Stateless Plasma is reserved for treasuries with sustained high volume that justify operator infrastructure and user-side state custody. MPC-Based Privacy fits bilateral settlement with named counterparties, where address-level privacy is not the concern. Resilient Disbursement Rails is reserved for humanitarian programs whose donor policy already names the threat model.
 
-### Implementation Strategy
+### Technical perspective
 
-**Phase 1: Core Payment Privacy**
+Engineering capacity dictates a lot. L1 Shielded Payments is the lightest integration: deploy the verifier, run a relayer, ship dual-key wallets. Privacy L2 trades sequencer dependency for amount + counterparty hiding without circuit-engineering work in-house. Stateless Plasma is the heaviest operator burden but the lowest on-chain footprint at scale. TEE is near-term and avoids client-side proving but adds a hardware trust chain that auditors must accept. MPC requires running or contracting a committee. Resilient Disbursement Rails is research-grade across applet, circuit, verifier, and claim contract; do not deploy without a deployment-gate audit and attested organizational separation.
 
-- Deploy chosen privacy infrastructure (L1 shielding or privacy L2)
-- Integrate major stablecoins (USDC, EURC)
-- Basic selective disclosure mechanisms
+### Legal & risk perspective
 
-**Phase 2: Regulatory & Compliance**
+This is a perspective for legal review by the deploying institution, not legal advice. L1 Shielded Payments and Privacy L2, paired with viewing-key disclosure, expose per-jurisdiction view keys and attestation logs (EAS, ONCHAINID) as the disclosure interface; whether that interface satisfies MiCA, GENIUS Act, or another regime is a question for jurisdictional review. Stateless Plasma adds operator records as an additional disclosure surface that legal review would scope. TEE attestations are typically accepted by auditors who already accept HSM-rooted custody, but acceptance varies by regulator. MPC exposes per-counterparty audit; address-level visibility may limit use to known-counterparty contexts depending on the regulator's view. Resilient Disbursement Rails inverts the disclosure model by minimizing what each party holds; whether a humanitarian regime accepts that posture depends on the donor policy and the destination-country regulator, and legal sign-off would document the minimization and the multi-jurisdiction relay roster.
 
-- Viewing key management infrastructure
-- SWIFT/ISO20022 message integration
-- Multi-jurisdiction compliance features
+## Recommendation
 
-**Phase 3: Ecosystem Integration**
+### Default
 
-- Cross-tier bridging (L1 ↔ L2)
-- Multi-currency private conversions
-- Integration with broader settlement infrastructure
-- Institutional custody and risk management system integration
+For institutional treasury and payment operations at moderate volume with standard compliance, default to a Hybrid L1/L2 composition: Privacy L2 (Aztec for native confidential transfers, Fhenix for FHE-based balances) handles frequent operations; L1 Shielded Payments (Railgun-style) handles high-value transfers or anonymity-sensitive flows. Selective disclosure runs through user-controlled viewing keys plus regulator viewing keys with time-bound, threshold-controlled scope. ISO 20022 message interpreters handle SWIFT compatibility; ERC-3643 handles compliance gating where the asset is a regulated security.
 
-## More Details
+### Decision factors
 
-### Trade-offs
+- If maximum settlement security is required per transfer, choose L1 Shielded Payments
+- If the institution already runs operator infrastructure and wants the lowest L1 footprint at scale, choose Stateless Plasma
+- If counterparties are bilateral and known, choose MPC-Based Privacy
+- If near-term deployment is required and hardware trust is already accepted, choose TEE-Based Privacy
+- If recipients are in adversarial jurisdictions with no client-side ZK, choose Resilient Disbursement Rails
 
-**L1 Shielding vs L2 Privacy:**
+### Hybrid
 
-- **L1 Shielding:** Maximum security, anonymity focus, established infrastructure, higher costs
-- **L2 Privacy:** Complete privacy (amounts + identities), lower costs, better UX for frequent payments
-- **Recommendation:** L2 privacy for comprehensive institutional needs, L1 shielding for anonymity-focused use cases
+Operate L1 Shielded Payments and Privacy L2 in tiers, bridging via cross-tier mechanisms; route high-value transfers through L1 and frequent operations through L2. Pair both with Forced Withdrawal so funds remain recoverable when sequencer or operator paths fail. For programs that span institutional treasury and humanitarian disbursement, run Resilient Disbursement Rails as a separate rail under distinct legal entities and relay rosters; do not multiplex it onto the institutional rail.
 
-**ZK vs FHE for Privacy:**
+## Open questions
 
-- **ZK Approach:** Lower operational costs, mature tooling, proven regulatory acceptance
-- **FHE Approach:** More flexible computation, higher costs, emerging technology
-- **Recommendation:** ZK for basic payments, FHE for complex payment logic
+1. **Stablecoin Issuer Integration.** Attestation-gated entry via zero-knowledge proof of KYC works as a compliance gate; freeze and denylist integration inside shielded pools is unresolved.
+2. **Liquidity Fragmentation.** Per-token shielded pools are the working assumption; cross-pool atomic swaps and multi-asset circuits remain open.
+3. **Operational Recovery.** Dual-key architecture handles balance inspection under cold-storage spending keys; full business continuity workflows and key rotation under shielding are unresolved.
+4. **Cross-Jurisdiction Disclosure Standards.** No common selective-disclosure format across MiCA / GENIUS / national regimes.
+5. **Traditional Rail Standards.** Technical standards for SWIFT / ISO 20022 integration with privacy infrastructure are emergent.
+6. **Verification Gas Viability.** At ~2.6M gas per on-chain verification, the volume threshold above which L2 amortization is mandatory needs measurement per asset class.
+7. **Network Timing Correlation.** Acceptable latency overhead for network-anonymity mitigations is unresolved.
+8. **Relay Economic Recovery (Resilient Disbursement Rails).** Commission, L2 settlement, or funder reimbursement each carry distinct privacy consequences; unresolved.
+9. **Audit-Friendly View-Key Extension (Resilient Disbursement Rails).** Recipient-derived destinations have no view-key split; can a view-only credential be added without an interactive sender step?
+10. **Smartcard Supply-Chain Attestation (Resilient Disbursement Rails).** Reproducible builds, multi-party applet-key signing, perso-bureau vetting against donor-policy CC composite evaluation requirements.
+11. **Cross-Cohort Metadata Leakage (Resilient Disbursement Rails).** Funder identity, cohort-size evolution, and round cadence fingerprint deployments; rotation policy unresolved.
+12. **Forced-Withdrawal Interaction (Resilient Disbursement Rails).** During an L1 escape hatch, can the recipient still hit an unlinkable destination, or does forced exit collapse to a public address?
 
-**Shielding vs Native Privacy:**
-
-- **Shielding:** Works with existing stablecoins, established patterns
-- **Native Privacy:** Better performance, requires new stablecoin deployments
-- **Hybrid:** Use both based on operational needs
-
-**Operator Complexity:**
-
-- **Shielded Pool:** No protocol-level operator needed; users interact directly with L1 contracts. Private transactions depend on a first/third-party gas relayer to avoid linking the sender's funded address
-- **Plasma/Intmax2:** Requires operator infrastructure for block building, proving, and withdrawal processing
-- **Consideration:** Operator economics and liveness guarantees must be addressed for production deployment
-- **Liveness fallback:** L2-based private payment solutions must implement [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md) so users can recover funds on L1 when the operator is unresponsive. Plasma/Intmax2 already supports this via the L1 anchor contract's exit game (users submit a zero-knowledge proof of sufficient balance). L1 shielded pools (e.g., Railgun) do not need a separate escape hatch since users interact with L1 directly
-
-### Open Questions
-
-**Partially Resolved by PoC:**
-
-1. **Stablecoin Issuer Integration:** Attestation-gated entry (zero-knowledge proof of KYC) demonstrates a viable compliance gating mechanism. Remaining: freeze/denylist integration within shielded pools.
-
-2. **Liquidity Fragmentation:** Multi-token transfers require same-token constraints in circuits, confirming per-token shielded pools. Remaining: cross-pool atomic swaps and multi-asset circuit designs.
-
-3. **Operational Recovery (key loss, business continuity):** Dual-key architecture (spending + viewing) enables balance inspection via viewing key even when spending key is in cold storage or lost. Remaining: full business continuity workflows and key rotation under shielding.
-
-**Unresolved:**
-
-4. **Cross-Jurisdiction Standards:** Standardization of selective disclosure formats across different regulatory regimes?
-
-5. **Traditional Rail Integration:** Technical standards for SWIFT/ISO20022 integration with privacy infrastructure?
-
-6. **Verification Gas Viability:** At ~2.6M gas per on-chain verification for shielded pools, what payment volume threshold makes L2 amortization necessary?
-
-7. **Network Timing Correlation:** Some approaches leak timing metadata. What is the acceptable latency overhead for [network anonymity](../patterns/pattern-network-anonymity.md) mitigations?
-
-### Alternative Approaches Considered
-
-**Mixing Services**
-
-- Use case: Simple payment privacy without institutional compliance
-- Trade-off: Lower complexity vs reduced regulatory acceptance
-- Consideration: Regulatory compliance challenges
-
-## Example Scenarios
-
-### Corporate Treasury Operations
-
-- Multinational corporation needs daily operational payments ($1-5M) between subsidiaries
-- Privacy: Payment amounts and corporate cash flow patterns confidential
-- Compliance: Tax reporting and transfer pricing documentation
-- Implementation: Privacy L2 for frequent transfers with periodic L1 settlement
-
-## Links and Notes
-
-- **Standards:** [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643), [ERC-7573](https://ercs.ethereum.org/ERCS/erc-7573), [ISO 20022](https://www.iso20022.org/), [ERC-20](https://ercs.ethereum.org/ERCS/erc-20)
-- **Infrastructure:** [Railgun](https://railgun.org/), [Aztec Network](https://docs.aztec.network/), [Zama fhEVM](https://docs.zama.org/fhevm), [Intmax](https://www.intmax.io/)
-- **Patterns:** [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md), [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md), [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md), [Network-Level Anonymity](../patterns/pattern-network-anonymity.md), [User-Controlled Viewing Keys](../patterns/pattern-user-controlled-viewing-keys.md), [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md)
-- **Regulatory:** [MiCA Framework](../jurisdictions/eu-MiCA.md), [SEC - GENIUS Act](../jurisdictions/us-SEC.md)
-- **Related Approaches:** [Private Trade Settlement](../approaches/approach-private-trade-settlement.md), [Private Derivatives](../approaches/approach-private-derivatives.md)
-- **Reference Implementation:** [Private Payment PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment)

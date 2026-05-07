@@ -39,7 +39,7 @@ post_quantum:
 standards: [EAS, ERC-734, ERC-735, EIP-712, W3C-VC]
 
 related_patterns:
-  composes_with: [pattern-zk-kyc-ml-id-erc734-735, pattern-regulatory-disclosure-keys-proofs, pattern-erc3643-rwa]
+  composes_with: [pattern-zk-kyc-ml-id-erc734-735, pattern-regulatory-disclosure-keys-proofs, pattern-erc3643-rwa, pattern-zk-wrappers]
   see_also: [pattern-zk-tls, pattern-private-mtp-auth]
 
 open_source_implementations:
