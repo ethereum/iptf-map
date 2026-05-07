@@ -368,6 +368,14 @@ function validatePattern(filePath) {
   //   cr (Censorship resistance), o (Openness), p (Privacy), s (Security).
   if (frontmatter.crops_profile && frontmatter.crops_profile !== 'n/a') {
     const cp = frontmatter.crops_profile;
+    // Targeted detection of v1 alias keys for a clearer migration hint than
+    // the generic schema additionalProperties error.
+    const v1Aliases = { os: 'o', privacy: 'p', security: 's' };
+    for (const [legacy, replacement] of Object.entries(v1Aliases)) {
+      if (cp[legacy] !== undefined) {
+        fileErrors.push(`crops_profile uses v1 key '${legacy}'; rename to '${replacement}' (strict v2).`);
+      }
+    }
     const cropsFields = {
       cr: { allowed: ['high', 'medium', 'low', 'none'], label: 'Censorship resistance' },
       o:  { allowed: ['yes', 'partial', 'no'], label: 'Openness' },
