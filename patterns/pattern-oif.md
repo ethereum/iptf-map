@@ -1,72 +1,108 @@
 ---
 title: "Pattern: Open Intent Framework (OIF)"
-status: draft
-maturity: pilot
+status: ready
+maturity: production
+type: standard
 layer: hybrid
-privacy_goal: No transaction privacy; intents visible to solvers during discovery
-assumptions: Active solver network, cross-chain messaging layer, price oracles
-last_reviewed: 2026-01-14
-rollout-plan: ready to build solvers
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Cross-chain settlement needed
-  - Intent-based execution preferred
-  - Permissionless solver participation desired
+  - Cross-chain settlement is needed.
+  - Intent-based execution is preferred over step-by-step transactions.
+  - Permissionless solver participation is desired.
 avoid-when:
-  - Single-chain operations sufficient
-  - Transaction privacy required (intents visible to solvers)
+  - Single-chain operations are sufficient.
+  - Transaction privacy is required; intents are visible to solvers by default.
+
 context: both
+context_differentiation:
+  i2i: "Intents broadcast assets, chains, amounts, and deadlines to the solver network, exposing institutional trading strategy to competing solvers. Institutions may need permissioned solver sets or encrypted intents to protect order flow."
+  i2u: "Unencrypted user intents are a clear front-running vector against retail order flow. A user-facing deployment must combine OIF with encrypted or committed intents and a sealed-bid auction before the intent becomes visible."
+
 crops_profile:
   cr: high
-  os: yes
-  privacy: none
-  security: medium
+  o: yes
+  p: none
+  s: medium
+
+crops_context:
+  cr: "High because any solver meeting the protocol can participate; no centralised solver set is required."
+  o: "Reference contracts, solver implementation, and the underlying intent standard are open-source and composable with alternative settlement, oracle, and messaging layers."
+  p: "None by default. Intents are visible during solver discovery. Could reach `full` by adopting encrypted intent encoding with sealed-bid commitments via threshold encryption, revealed only after solver execution and L1 finality."
+  s: "Medium while cross-chain atomicity depends on external settlement and oracle assumptions. Reaches `high` once settlement atomicity and oracle integrity are hardened."
+
+post_quantum:
+  risk: medium
+  vector: "Intent signatures use ECDSA, broken by a CRQC. HNDL risk is moderate because intents can carry value-bearing commitments; however, intents are short-lived and public, limiting the harvest-now-decrypt-later window."
+  mitigation: "Migrate intent signing to post-quantum signatures (hash-based or lattice-based) once standardized. Settlement-contract verification paths must be updated in step."
+
+standards: [ERC-7683]
+
+related_patterns:
+  composes_with: [pattern-threshold-encrypted-mempool, pattern-pretrade-privacy-encryption]
+  see_also: [pattern-cross-chain-privacy-bridge, pattern-private-transaction-broadcasting]
+
+open_source_implementations:
+  - url: https://github.com/openintentsframework/oif-contracts
+    description: "Contracts for input collection, output delivery, oracle, messaging, and settlement"
+    language: "Solidity"
+  - url: https://github.com/openintentsframework/oif-solver
+    description: "Solver implementation for intent discovery and cross-chain execution"
+    language: "TypeScript, Rust"
 ---
 
 ## Intent
 
-OIF enables cross-chain intent-based settlement where users express desired outcomes and solvers compete to execute them across chains permissionlessly.
+Enable cross-chain intent-based settlement where users express desired outcomes and permissionless solvers compete to execute them across chains. The framework separates user intent (what) from execution strategy (how) and plugs into external settlement, oracle, and messaging layers.
 
-## Ingredients
+## Components
 
-- [OIF contracts](https://github.com/openintentsframework/oif-contracts) for input collection, output delivery, oracle/messaging/settlement
-- [OIF solver](https://github.com/openintentsframework/oif-solver) for intent discovery, execution path optimization, cross-chain settlement
-- Infrastructure: Cross-chain messaging layer, price oracles
+- Intent contracts: input-collection and output-delivery entry points that escrow user assets, record intent parameters, and release funds on proof of fulfilment.
+- Solver: off-chain service that indexes intents, computes execution routes (swaps, bridges, liquidity routing), and submits fulfilment transactions.
+- Cross-chain messaging layer: transports proofs of fulfilment between origin and destination chains.
+- Oracle or proof mechanism: verifies that outputs have been delivered before the origin contract releases inputs.
+- Settlement module: finalises the intent and handles refund or cancellation on failure.
 
-## Protocol (concise)
+## Protocol
 
-1. User signs/submits an intent to the smart contract (e.g., “sell X on chain A, deliver Y on chain B”).
-2. Solver network monitors the contract(s), indexes new intents and identifies candidate fulfilment opportunities.
-3. Solvers compute optimal execution route(s) across chains/bridges/liquidity pools given the intent.
-4. The selected solver executes the required cross-chain operations (swaps, messaging, transfers) and uses the settlement layer to ensure final delivery.
-5. An oracle or proof mechanism confirms that the output asset has been delivered per intent; the contract (or settlement module) marks the intent complete and releases locked input assets (or refunds if non-fulfilled).
-6. If the solver fails or deadline is missed, the system supports cancellation or refund flows (depending on governance/implementation).
+1. [user] Sign and submit an intent (for example, sell X on chain A, receive Y on chain B) to the origin contract.
+2. [contract] Record the intent and escrow the input asset.
+3. [operator] Solvers monitor the contracts, index new intents, and compute candidate execution routes across chains and liquidity sources.
+4. [operator] The selected solver executes the required cross-chain operations: swaps, bridging, and destination-chain transfers.
+5. [contract] The oracle or proof mechanism verifies that the output has been delivered per the intent.
+6. [contract] The settlement module marks the intent complete and releases locked inputs to the solver; on failure or missed deadline, it refunds or cancels per the configured policy.
 
-## Guarantees
+## Guarantees & threat model
 
-- **Permissionless execution**: any solver that meets the protocol can participate; the framework does not enforce a centralized solver set.
-- **Modularity and composability**: developers can swap in different settlement, oracle or messaging layers while still using the intent-based front-end.
-- **Higher-level intent abstraction**: users focus on what they want, not how to achieve it; solvers deal with routing/bridging complexity.
-- **Transparency (and trade-off)**: intent details (assets, chains, amounts) are visible to solvers during discovery, exposing some MEV/visibility risk.
+Guarantees:
 
-- _Note_: Cross-chain atomicity is a goal but depends on the settlement layer’s guarantees. Developers should design flows (escrows, resource locking) appropriately to approximate atomic delivery.
+- Permissionless execution: any solver meeting the protocol can participate.
+- Modularity: settlement, oracle, and messaging layers can be swapped while keeping the intent-based front-end.
+- Intent-level abstraction: users focus on outcomes; solvers deal with routing and bridging complexity.
+
+Threat model:
+
+- Intent visibility exposes order flow to MEV and strategy leakage during solver discovery.
+- Cross-chain atomicity is approximated via escrow and settlement logic; it is not guaranteed at the protocol level and depends on the chosen messaging and settlement modules.
+- Oracle and messaging failures can stall withdrawals or cause disputed fulfilment. Escrow and resource-locking design must bound the blast radius.
+- Solver liveness: if no solver picks up an intent, the user falls back to cancellation or refund flows.
 
 ## Trade-offs
 
-- Solver network must be active and sufficiently liquid for intents to be fulfilled in a timely way.
-- Cross-chain operations inherently carry higher latency and complexity vs. single-chain flows.
-- Multi-step cross-chain settlement increases attack surface (messaging proofs, oracle delays).
-- Intent visibility
-- **CROPS context (both)**: Privacy could reach `full` by adopting encrypted intent encoding with sealed-bid commitments via threshold encryption, revealable only after solver execution and L1 finality. Security could reach `high` by strengthening cross-chain settlement atomicity guarantees and hardening oracle assumptions. In I2I, intent visibility exposes institutional trading strategies to competing solvers. In I2U, unencrypted intents allow front-running of retail order flow.
+- Solver network must be active and sufficiently liquid for timely fulfilment.
+- Cross-chain flows inherently carry higher latency and more failure modes than single-chain transactions.
+- Multi-step settlement increases the attack surface (messaging proofs, oracle delays, bridge compromise).
+- Intent visibility is a systemic drawback: strategy leakage and front-running are the price of permissionless solver competition.
 
-## Example: Cross-Chain Stablecoin Settlement
+## Example
 
-1. Bank A submits intent: “Transfer 5 M USDC on Ethereum, receive 5 M USDT on Arbitrum”.
-2. Solver network discovers the intent and computes execution path (e.g., USDC bridge to Arbitrum → swap to USDT).
-3. Winning solver executes the required steps: USDC moved, USDT delivered.
-4. Settlement layer verifies delivery and marks the intent complete; Bank A receives 5 M USDT on Arbitrum.
-5. If execution fails or misses deadline, the fallback mechanism refunds or cancels the intent.
+- A corporate treasury submits the intent "transfer 5 M USDC on Ethereum, receive 5 M USDT on Arbitrum".
+- The solver network indexes the intent and computes an execution path (bridge USDC to Arbitrum, swap to USDT).
+- The winning solver executes the steps: USDC is moved, USDT is delivered to the treasury's destination address.
+- The settlement layer verifies delivery, the origin contract releases escrowed funds to the solver, and the intent is marked complete.
+- On failure or missed deadline, the fallback mechanism refunds the treasury.
 
 ## See also
 
-- ERC‑7683 — the intent standard supported by OIF and enabling cross-protocol intent interoperability.
-- Privacy-preserving intent approaches (for situations where you need intent confidentiality and cannot expose details to solvers).
+- [ERC-7683: Cross-Chain Intents Standard](https://eips.ethereum.org/EIPS/eip-7683)
+- [Open Intents Framework documentation](https://github.com/openintentsframework)

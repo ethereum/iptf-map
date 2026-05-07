@@ -1,139 +1,120 @@
 ---
 title: "Pattern: Cross-Chain Privacy Bridge"
 status: draft
-maturity: PoC
+maturity: testnet
+type: standard
 layer: hybrid
-privacy_goal: Move assets between chains while preserving privacy on the destination
-assumptions: Destination chain has shielded pool or private execution; bridge trust model accepted
-last_reviewed: 2026-01-22
+last_reviewed: 2026-04-22
+
 works-best-when:
-  - Moving assets between domains while minimizing linkability
-  - Both chains have shielded pools (required for full amount privacy)
-  - Explicit bridge trust assumptions are acceptable
+  - Moving assets between domains while minimizing linkability.
+  - Both chains have shielded pools (required for full amount privacy).
+  - Explicit bridge trust assumptions are acceptable.
 avoid-when:
-  - Both legs on same domain (use internal transfer)
-  - Destination lacks privacy primitive (no benefit to bridge privacy)
-  - Regulatory requirements demand end-to-end public transparency
-  - Either or both chains have frequent reorgs (finality assumptions unreliable)
-dependencies:
-  - Source-domain escrow contract (lock or burn)
-  - Destination-domain mint contract integrated with shielded pool
-  - Cross-domain verification mechanism (operator/optimistic/ZK/light client)
+  - Both legs on same domain (use internal transfer).
+  - Destination lacks a privacy primitive (no benefit to bridge privacy).
+  - Regulatory requirements demand end-to-end public transparency.
+  - Either or both chains have frequent reorgs (finality assumptions unreliable).
+
 context: both
+context_differentiation:
+  i2i: "Institutions may operate their own relayers under bilateral agreements, reducing censorship risk but concentrating trust. KYC-aligned identities on both ends simplify audit, and escrow operators are typically known parties bound by contract. The anonymity set is narrower but acceptable because unlinkability from competitors is the primary goal."
+  i2u: "End-users depend entirely on public relayer availability and cannot assume any operator will act in their interest. Permissionless relayer selection, source-side anonymization before bridging, and forced-withdrawal from destination pools are required to preserve meaningful privacy and liveness."
+
 crops_profile:
   cr: medium
-  os: partial
-  privacy: partial
-  security: medium
+  o: partial
+  p: partial
+  s: medium
+
+crops_context:
+  cr: "Reaches `high` if relay infrastructure is decentralized with permissionless relayer selection and the destination mint cannot be gated by a single operator. Drops to `low` under custodial bridges where one operator controls mints."
+  o: "Bridge contracts and verification circuits are often partially open. Improves to `yes` with reproducible builds and open-sourced bridge contracts, verification circuits, and relayer code."
+  p: "Destination shielding provides receiver privacy, but source-side sender privacy is not automatic. Reaches `full` by mandating source-side anonymization (deposit through a pre-bridge shielded pool before generating commitments) and enforcing relayer-based submission with timing delays."
+  s: "Varies widely by verification mechanism. ZK verification of source consensus with economic finality guarantees reaches `high`; custodial or MPC operators sit at `medium` or `low`."
+
+post_quantum:
+  risk: high
+  vector: "ZK verification of source consensus inherits the underlying SNARK's PQ exposure. Shielded pool commitments and note encryption on the destination carry HNDL risk."
+  mitigation: "STARK-based bridge proofs and hash-commitment shielded pools. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: [ERC-20]
+
+related_patterns:
+  requires: [pattern-shielding]
+  composes_with: [pattern-stealth-addresses, pattern-network-anonymity, pattern-regulatory-disclosure-keys-proofs]
+  alternative_to: [pattern-permissioned-ledger-interoperability]
+  see_also: [pattern-privacy-l2s, pattern-forced-withdrawal]
+
+open_source_implementations: []
 ---
 
 ## Intent
 
-Move assets between chains while preserving privacy on the destination by minting shielded notes whose ownership is not linkable to the source-domain depositor.
+Move assets between chains while preserving privacy on the destination by minting shielded notes whose ownership is not linkable to the source-domain depositor. Full sender and amount privacy requires privacy primitives on the source chain or pre-bridge anonymization; without these, the source lock transaction reveals the depositor address and amount.
 
-**Note:** Full sender/amount privacy requires privacy primitives on source chain or pre-bridge anonymization (e.g., deposit through existing shielded pool before bridging). Without this, the source-side lock transaction reveals depositor address and amount.
+## Components
 
-## Ingredients
-
-- **Source escrow:** Lock-mint (forward) / burn-unlock (return) contract on origin chain
-- **Destination privacy primitive:** Shielded pool with commitments + nullifiers (e.g., Aztec, Railgun, Privacy Pools)
-- **Cross-domain message:** Event/log attesting to deposit; inclusion proof
-- **Verification mechanism:** Operator signature, optimistic challenge, ZK proof, or light client
-- **Relayer infrastructure:** Submit proofs on destination without linking depositor (fee model matters)
-- **Optional compliance hooks:** View keys for auditors, screening gates, deposit limits
+- Source escrow contract locks assets on forward bridging or burns them on return. Emits an event carrying the destination commitment.
+- Destination privacy primitive is a shielded pool with commitments and nullifiers. The bridge mints a note into this pool rather than transferring a transparent token.
+- Cross-domain message and verification mechanism carries finality evidence from source to destination. Options include operator signatures, MPC or threshold signatures, optimistic claims with challenge windows, ZK succinct proofs of source consensus (zk-SPV), light clients, or TEE-attested enclaves.
+- Relayer infrastructure submits finality proofs on the destination without linking the depositor. Fee model matters: if the depositor pays the relayer directly from a known address, the linkage is reintroduced.
+- Optional compliance hooks include viewing keys for auditors, screening gates, and deposit limits.
+- Timeout and recovery path on the source escrow allows the depositor to reclaim funds if the destination mint never completes.
 
 ## Protocol
 
-1. **Deposit intent** — User generates destination note commitment `C = hash(value, recipient_pubkey, randomness)`. Does not reveal recipient on source chain.
+1. [user] Generate a destination note commitment `C = hash(value, recipient_pubkey, randomness)`. The recipient is not revealed on the source chain.
+2. [contract] Lock or burn the assets in the source escrow. Emit an event containing the amount, `C`, and a nonce. The lock is public on the source chain.
+3. [relayer] Obtain finality evidence for the source lock: operator signature, threshold signature, optimistic claim, zero-knowledge proof of source consensus, light-client header, or TEE attestation, depending on the bridge's trust model.
+4. [contract] The destination bridge contract verifies the finality evidence and mints a note into the shielded pool with commitment `C`.
+5. [user] The recipient spends the note privately within the destination pool using standard shielded-pool semantics (nullifier reveal, proof of membership and ownership).
+6. [user] For the return path, burn the shielded note on the destination, prove the burn to the source, and unlock the escrowed assets. The return leg can also be private if the source supports it.
+7. [user] If the mint never completes within the timeout window, reclaim from the source escrow via the recovery path (requires a proof of non-mint or a governance override, depending on the bridge design).
 
-2. **Source escrow** — Lock or burn assets in source contract. Emit event containing `(amount, C, nonce)`. This step is typically public on source chain.
+## Guarantees & threat model
 
-3. **Finality evidence** — Obtain proof that source escrow finalized:
-   - *Custodial:* Operator signature
-   - *MPC/TSS:* Threshold signature from committee
-   - *Optimistic:* Relayer claim + challenge period
-   - *ZK:* Succinct proof of source consensus + inclusion (zk-SPV)
-   - *Light client:* Verify source headers on destination
-   - *TEE:* Attested enclave signature
+Guarantees:
 
-4. **Destination mint** — Submit finality evidence to destination bridge contract. Contract verifies, then mints note into shielded pool with commitment `C`.
+- Destination recipient is not revealed on the source chain; the commitment hides their identity.
+- Destination observers cannot link the recipient to the source depositor when a relayer submits the mint and timing is obfuscated. In custodial designs, the operator still knows the depositor but the destination chain does not.
+- Amount privacy on the destination if the shielded pool supports confidential amounts or fixed denominations.
+- Integrity: no double-mint (replayed deposits are blocked by nullifier or nonce tracking), and value is conserved across the two domains.
+- Selective auditor access via viewing keys or compliance proofs, scoped to the destination pool's disclosure mechanism.
 
-5. **Private spend** — Recipient proves ownership of `C` via nullifier reveal, spends privately within destination pool. Standard shielded-pool semantics apply.
+Threat model:
 
-6. **Return path (optional)** — Burn shielded note on destination, prove burn finality on source, unlock escrowed assets. Return leg can also be private if source supports it.
-
-7. **Recovery/expiry** — If mint never completes within timeout, depositor can reclaim from source escrow (requires proof of non-mint or governance override).
-
-## Guarantees
-
-- **Recipient privacy:** Destination recipient not revealed on source chain (commitment hides identity)
-- **Sender privacy:** Destination observers cannot link recipient to source depositor (requires relayer that doesn't leak depositor, timing obfuscation). In custodial model, source deposit goes to operator address (like a CEX deposit), so the operator knows the depositor but the destination chain does not.
-- **Amount privacy:** If destination uses confidential amounts or fixed denominations
-- **Integrity:** No double-mint (replay protected by nullifier or nonce tracking); conservation of value across domains
-- **Auditor access:** View keys or compliance proofs can selectively reveal to authorized parties
-
-**NOT guaranteed:**
-- Instant atomic settlement — this is a two-phase commit workflow
-- Source-side sender privacy — without pre-bridge mixing, depositor is visible
+- Soundness of the verification mechanism. A compromised operator (custodial), a threshold breach (MPC), an unchallenged fraudulent claim (optimistic), a circuit bug (ZK), or a mishandled fork (light client) each break bridge integrity.
+- Non-censoring relayer set. A single required relayer can refuse to submit the mint; the user then depends on the recovery path.
+- Non-censoring destination sequencer or validator set for mint transactions.
+- Reorg handling on the source chain. Finality assumptions must hold for the bridge's chosen finality evidence; chains with frequent reorgs break this.
+- Source-side sender privacy is not provided by this pattern; depositor address and amount are visible on the source chain unless combined with pre-bridge anonymization.
+- Metadata leakage (IP, timing, gas patterns, relayer fee payment) is out of scope for the bridge layer.
 
 ## Trade-offs
 
-### Trust Model Comparison
-
-| Model | What you trust | Latency | Cost | Typical risk |
-|-------|----------------|---------|------|--------------|
-| Custodial | Single operator honesty | Low | Low | Theft (operator receives deposit but doesn't mint), censorship |
-| MPC/TSS | Threshold of signers | Low-Med | Medium | Key compromise if threshold breached |
-| Optimistic | At least one honest watcher | Med-High | Medium | Delayed finality, griefing |
-| ZK (zk-SPV) | Proof system soundness + verifier | Medium | High | Prover DoS, circuit bugs |
-| Light client | Destination verifies source consensus | Medium | Medium | Fork handling, header availability |
-| TEE-assisted | Enclave attestation validity | Low | Medium | Side-channel attacks, vendor trust |
-
-### Failure Modes
-
-**Privacy leakage:**
-- Amount correlation — exact deposit amounts visible on source
-- Timing correlation — deposit/mint timing reveals linkage
-- Fee linkage — if depositor pays relayer fees directly
-- Metadata — IP addresses, transaction ordering, gas patterns
-
-**Bridge correctness:**
-- Reorg handling — source finality assumptions may be violated
-- Replay/double-mint — must track processed deposits (nullifier set)
-- Cross-domain confusion — wrong chain ID, token mismatch
-
-**Liveness/censorship:**
-- Operator refuses relay — user needs alternative submission path
-- Griefing via spam — deposits that are never minted, locking funds
-- Destination chain censorship — mint transactions blocked
-
-**Key/governance risks:**
-- Threshold key compromise — TSS/MPC signers collude
-- View key misuse — auditors leak or sell data
-- Upgrade attacks — malicious contract upgrades
-- **CROPS context (both)**: CR could reach `high` if relay infrastructure is decentralized with permissionless relayer selection. OS improves to `yes` by open-sourcing bridge contracts and verification circuits with reproducible builds. Privacy could reach `full` by mandating source-side anonymization (deposit through a pre-bridge shielded pool before generating commitments). Security improves to `high` by replacing custodial or MPC operators with ZK verification of source consensus and economic finality guarantees. In I2I settings, institutions may operate their own relayers under bilateral agreements, reducing censorship risk but concentrating trust. In I2U settings, end-users depend entirely on public relayer availability, making permissionless relayer selection and source-side anonymization more critical.
+- Two-phase commit workflow, not instant atomic settlement. Latency depends on source finality and any challenge window.
+- Cost scales with the verification mechanism. zero-knowledge proofs are expensive to generate; optimistic systems impose challenge delays; custodial designs are cheap but centralized.
+- Reorg handling and cross-domain confusion (wrong chain ID, token mismatch) are recurring failure modes that must be guarded at the contract layer.
+- Griefing through deposits that are never minted locks funds until timeout. The recovery path must be clearly specified and documented.
+- Key and governance risks: TSS or MPC signer collusion, view-key misuse, and malicious contract upgrades each sit outside the cryptographic trust model and require operational controls.
 
 ## Example
 
-An institution holds tokenized bonds on Ethereum L1 and wants to enable private secondary-market trading.
-
-1. **Deposit:** Institution deposits 100 bond tokens into source escrow, specifying destination commitment `C` (no recipient revealed on L1)
-2. **Finality:** After L1 finality (~12 min), optimistic bridge posts claim on privacy L2
-3. **Mint:** After challenge period (e.g., 1 hour), L2 mints shielded note for commitment `C`
-4. **Trade:** Bond holder trades privately within L2 shielded pool — counterparties and amounts hidden
-5. **Exit:** When redeeming, burn shielded note on L2, prove burn to L1, unlock from escrow
-
-Privacy achieved: L2 trading activity not linkable to original L1 depositor (assuming proper relayer usage and timing delays).
+- An institution holds tokenized bonds on Ethereum L1 and wants to enable private secondary-market trading on a privacy L2.
+- The institution deposits bond tokens into the source escrow, specifying destination commitment `C`. No recipient is revealed on L1.
+- After L1 finality, an optimistic bridge posts a claim on the L2.
+- After the challenge period, the L2 mints a shielded note for commitment `C` into its pool.
+- The bond holder trades privately within the L2 shielded pool; counterparties and amounts are hidden from chain observers.
+- On redemption, the holder burns the shielded note on the L2, proves the burn to L1, and unlocks the escrow.
 
 ## Variants
 
-- **Pre-bridge mixing:** Deposit through source-chain shielded pool first, then bridge — achieves full sender privacy
-- **Hub-and-spoke:** Use L1 as verification hub; L2s prove deposits via L1 bridge contract
-- **Privacy-to-privacy:** Both source and destination have shielded pools — maximum privacy but complex verification
-- **Asymmetric:** Only one direction is private (e.g., public L1 → private L2)
+- Pre-bridge mixing: Deposit through a source-chain shielded pool beforehand, then bridge. Achieves sender-side privacy at the cost of additional latency.
+- Hub-and-spoke: Use L1 as a verification hub; multiple L2s prove deposits via the L1 bridge contract.
+- Privacy-to-privacy: Both source and destination have shielded pools. Strongest privacy but verification is more complex.
+- Asymmetric: One direction is private (for example, public L1 to private L2) while the reverse is transparent.
 
 ## See also
 
-- [pattern-permissioned-ledger-interoperability.md](pattern-permissioned-ledger-interoperability.md) — Enterprise ledger sync
-- [pattern-privacy-l2s.md](pattern-privacy-l2s.md) — Destination privacy environments
-- [pattern-shielding.md](pattern-shielding.md) — Commitment/nullifier pools
+- [EIP-7281 (xERC20)](https://eips.ethereum.org/EIPS/eip-7281)

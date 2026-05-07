@@ -81,7 +81,7 @@ Ethereum inherits PQ transport encryption for some surfaces (Go 1.24 ships hybri
 
 | Surface                              | Broken Primitive               | Solution Path                                                                                      | Status    | Pattern                                                                                                                |
 | ------------------------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Note discovery / viewing keys        | EC-based key derivation        | ML-KEM (outside ZK circuit) + OMR                                                                  | Tractable | [Shielding](../patterns/pattern-shielding.md), [Noir Private Contracts](../patterns/pattern-noir-private-contracts.md) |
+| Note discovery / viewing keys        | EC-based key derivation        | ML-KEM (outside ZK circuit) + OMR                                                                  | Tractable | [Shielding](../patterns/pattern-shielding.md), [Private Contract DSL](../patterns/pattern-private-contract-dsl.md) |
 | Proven-correct encryption to auditor | ElGamal (EC scalar mul)        | Lattice PKE outside circuit + Poseidon symmetric encryption inside circuit (detect-and-flag model) | Partial   | [Regulatory Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md)                                      |
 | Protocol-enforced decryptability     | Proving lattice PKE in-circuit | Field mismatch (q=3,329 vs BN254); simpler than full ML-KEM but still expensive                    | Unsolved  | —                                                                                                                      |
 
@@ -98,7 +98,7 @@ Ethereum inherits PQ transport encryption for some surfaces (Go 1.24 ships hybri
 | [PSI-DH](../patterns/pattern-private-set-intersection-dh.md)                                  | DDH / commutative encryption       | Medium    | Lattice-based PSI                  |
 | [MPC Custody](../patterns/pattern-mpc-custody.md)                                             | Threshold ECDSA/EdDSA              | Low       | ML-DSA / hash-based threshold      |
 | [TEE Key Manager](../patterns/pattern-tee-key-manager.md)                                     | ECDSA/BLS signing                  | Low       | PQ signing in TEE                  |
-| [Noir Private Contracts](../patterns/pattern-noir-private-contracts.md)                       | Barretenberg (PLONK)               | High      | Hash-based commitments / STARKs    |
+| [Private Contract DSL](../patterns/pattern-private-contract-dsl.md)                       | Barretenberg (PLONK)               | High      | Hash-based commitments / STARKs    |
 | [Private Shared State (co-SNARK)](../patterns/pattern-private-shared-state-cosnark.md)        | Groth16                            | Medium    | co-STARK alternatives              |
 | [TEE+ZK Settlement](../patterns/pattern-tee-zk-settlement.md)                                 | Groth16/PLONK                      | Medium    | STARKs                             |
 | [co-SNARK](../patterns/pattern-co-snark.md)                                                   | co-SNARK (Groth16-based)           | Medium    | co-STARK                           |

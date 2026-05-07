@@ -1,64 +1,102 @@
 ---
-title: "Pattern: co-SNARKs (Collaborative Proving)"
+title: "Pattern: Delegated Proving (co-SNARKs)"
 status: draft
-maturity: PoC
+maturity: testnet
+type: standard
 layer: hybrid
-privacy_goal: Enable multi-party ZK proving over distributed private inputs without disclosure
-assumptions: co-SNARK protocol infrastructure, MPC network coordination, honest majority among proving parties
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-23
+
 works-best-when:
-  - Multiple parties each hold sensitive data or models, and need to jointly prove compliance, settlement, or state updates without revealing inputs.
+  - A user or institution lacks the compute, memory, or battery to generate a zero-knowledge proof client-side and wants to offload the work without disclosing the witness.
+  - The delegatee set can be run by independent operators so no single party sees the full witness.
 avoid-when:
-  - A single party can generate the proof without external data.
-dependencies:
-  - co-SNARK protocols (e.g. TACEO)
+  - Client-side proving is feasible and low-latency is critical.
+  - Only one proving node is available (no honest-majority distribution possible); use a TEE-based prover instead.
+
 context: both
+context_differentiation:
+  i2i: "Between institutions, delegated proving is typically contracted between known parties with SLAs and legal recourse. The prover set can be small and stable. Honest-majority risk is mitigated by bilateral agreements and audit logs."
+  i2u: "For users, the prover set must be permissionless or at least operator-diverse so that no coalition can recover the witness. Economic bonding with slashing and publicly auditable proving logs protect against collusion. A user has no recourse if the prover set silently leaks their witness."
+
 crops_profile:
   cr: medium
-  os: yes
-  privacy: full
-  security: medium
+  o: yes
+  p: full
+  s: medium
+
+crops_context:
+  cr: "Reaches `high` when the prover network is permissionless and bond-backed with slashing for Byzantine behaviour. Drops to `low` when a single proving service controls the pipeline."
+  o: "Proving-framework implementations are published under permissive licenses; production deployments may bundle proprietary orchestration."
+  p: "The witness stays hidden from each individual prover and from the verifier. Metadata about who requested a proof, when, and against which circuit can still leak."
+  s: "Rides on the soundness of the underlying SNARK and the honest-majority assumption of the MPC protocol. Trusted-setup requirements inherit from the SNARK (Groth16 needs per-circuit setup; PLONK/KZG uses universal setup)."
+
+post_quantum:
+  risk: high
+  vector: "Pairing-based SNARKs (Groth16, PLONK/KZG) broken by CRQC. MPC communication inherits the underlying key-exchange assumptions."
+  mitigation: "co-STARK alternatives with hash-based commitments. See [Post-Quantum Threats](../domains/post-quantum.md)."
+
+standards: []
+
+related_patterns:
+  composes_with: [pattern-shielding, pattern-safe-proof-delegation, pattern-permissionless-spend-auth]
+  alternative_to: [pattern-tee-based-privacy]
+  see_also: [pattern-private-shared-state-cosnark, pattern-zk-proof-systems]
+
+open_source_implementations:
+  - url: https://github.com/TaceoLabs/co-snarks
+    description: "co-SNARK proving framework supporting Groth16 and PLONK (research/testnet)"
+    language: "Rust"
 ---
 
 ## Intent
 
-Enable **collaborative zero-knowledge proving** over distributed private inputs.  
-Co-SNARKs let institutions, investors, or service providers jointly prove properties without disclosing raw data, and optionally commit the result as an **onchain state update**.
+Offload zero-knowledge proof generation to a distributed prover network without revealing the witness. The user secret-shares their witness across several proving nodes; the nodes jointly run an MPC protocol to compute a single SNARK proof; no individual node ever reconstructs the full witness. The resulting proof is identical to one produced client-side and is verified on-chain or off-chain with no changes on the verifier side.
 
-## Ingredients
+This pattern covers delegated proving for a single prover's witness. For multi-party joint computation over shared secret inputs (e.g. a consortium ledger), see `pattern-private-shared-state-cosnark`.
 
-- **Cryptography**: co-SNARK ([Collaborative zk-SNARKs](https://eprint.iacr.org/2021/1530.pdf), e.g. TACEO)
-- **Infra**: Offchain MPC network, optional L1/L2 onchain commitments
-- **Standards**: Can tie into ERC-3643 (identity claims), [attestations](pattern-verifiable-attestation.md), ERC-7573 for settlement
+## Components
 
-## Protocol (concise)
+- User or application holds the witness and wants a proof generated without exposing the witness.
+- Share-distribution layer splits the witness using secret-sharing (additive or Shamir) and routes shares to proving nodes.
+- Distributed prover network runs the MPC protocol to jointly compute the SNARK. Each node sees its share; the full witness is never reconstructed.
+- Coordinator sequences MPC rounds and assembles the final proof. Can be one of the proving nodes or a separate role.
+- Verifier checks the final proof exactly as it would check a client-side SNARK. No changes on the verification side.
 
-1. Each participant provides private inputs (e.g. compliance model, investor data, transaction intent).
-2. Parties jointly run a co-SNARK protocol to produce a single proof.
-3. Proof can be verified by a regulator, counterparty, or onchain contract.
-4. Can maintain a **shared private state** in a 3PC setting, committing roots onchain.
+## Protocol
 
-## Guarantees
+1. [user] Secret-share the witness across N proving nodes.
+2. [prover] Proving nodes jointly execute the co-SNARK MPC protocol, exchanging shares across multiple rounds to compute witness polynomials and commitments.
+3. [prover] The coordinator assembles the final proof from the MPC output.
+4. [user] Receive the assembled proof from the coordinator.
+5. [contract] A verifier contract (or off-chain verifier) checks the proof against the public statement.
 
-- Prove statements across multiple private data silos without disclosure.
-- Preserve trade secrets and client privacy.
-- Anchor proofs or state commitments onchain if required.
+## Guarantees & threat model
+
+Guarantees:
+
+- The witness stays hidden from every individual prover and from the verifier.
+- Verification cost is identical to a client-side SNARK for the same circuit.
+- Preserves trade secrets, user balances, or model weights under honest-majority assumptions.
+
+Threat model:
+
+- Soundness of the underlying SNARK, including any trusted-setup ceremony.
+- Honest-majority assumption across proving nodes. A colluding majority can recover the witness and, in some constructions, forge proofs.
+- Non-censoring coordinator. A malicious coordinator can refuse to finalize or selectively drop requests.
+- Authenticated and confidential channels between nodes. Metadata about participation and timing is out of scope.
 
 ## Trade-offs
 
-- Heavy communication and coordination overhead (scales with number of parties).
-- Requires new infra (MPC nodes, co-prover setup).
-- Delegated proving possible, but introduces new trust assumptions.
-- Honest-majority assumption: if a majority of proving parties collude, proof integrity is compromised.
-- **CROPS context (both)**: CR could reach `high` if economic incentives like bond-backed provers with slashing are added for Byzantine behavior. Security improves to `high` by replacing trusted setup with a universal setup. In I2I settings, multi-party proving typically involves known counterparties with existing legal agreements, so the honest-majority assumption carries lower practical risk. In I2U settings, end-users contributing private inputs face greater exposure if the proving coalition is dominated by institutional actors.
-- **Post-quantum exposure**: co-SNARK (Groth16-based) relies on pairings broken by CRQC. Mitigation: co-STARK alternatives. See [Post-Quantum Threats](../domains/post-quantum.md).
+- Heavy communication overhead. Round count and bandwidth scale with both the number of provers and circuit size.
+- New infrastructure requirements: MPC nodes, share routing, key management.
+- Liveness depends on all designated nodes remaining online through the proving session. Dropouts typically force a restart.
+- Latency is higher than client-side proving because of MPC round trips; not suitable for sub-second proving budgets.
 
-## Examples
+## Example
 
-- **Compliance**: Bank + investor prove AML/KYC checks without sharing raw data.
-- **Shared state**: Consortium of custodians maintain a private ledger offchain, publish commitment + co-SNARK consistency proof to L1.
-- **Settlement**: Cross-institution cash/asset swap where each side’s balance sheet remains private.
+- A user holds a shielded balance and wants to prove a spend on a mobile device. The wallet secret-shares the spending witness across three independent proving operators. The operators jointly produce a Groth16 proof. None of them sees the balance or the spend amount. The user submits the proof to the shielded pool contract.
 
 ## See also
 
-- TACEO co-SNARK: https://core.taceo.io/articles/mpc-kyc/
+- [Collaborative zk-SNARKs (Ozdemir & Boneh, 2021)](https://eprint.iacr.org/2021/1530.pdf)
+- [TACEO private proof delegation](https://core.taceo.io/articles/private-proof-delegation/)

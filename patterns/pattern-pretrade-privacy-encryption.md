@@ -1,55 +1,128 @@
 ---
-title: "Pattern: Pre-trade privacy (Shutter/SUAVE/private RFQ)"
+title: "Pattern: Pre-trade Privacy (Encrypted Order Flow)"
 status: ready
-maturity: pilot
+maturity: testnet
+type: meta
 layer: hybrid
-privacy_goal: Prevent front-running and information leakage via encrypted order submission
-assumptions: Encrypted mempool (Shutter) or private builders (SUAVE), allow-listed counterparties
-last_reviewed: 2026-01-14
+last_reviewed: 2026-04-22
+
+sub_patterns:
+  - name: "Threshold-encrypted mempool"
+    pattern: pattern-threshold-encrypted-mempool
+    crops_summary: "Medium CR via committee, partial privacy (decrypted post-inclusion), low-medium security (committee collusion risk)."
+  - name: "Private transaction broadcasting"
+    pattern: pattern-private-transaction-broadcasting
+    crops_summary: "Low-medium CR via private relay, partial privacy pre-inclusion, relies on builder honesty."
+  - name: "Shielded settlement"
+    pattern: pattern-shielding
+    crops_summary: "Medium CR, full privacy on amounts/counterparties post-inclusion."
+
 works-best-when:
-  - RFQ/secondary trading must not leak intent, size, or price pre-inclusion.
+  - RFQ or secondary trading must not leak intent, size, or price pre-inclusion.
+  - Order flow needs protection from both the public mempool and builders that could front-run.
+
 avoid-when:
-  - You accept public mempool visibility of orders.
-dependencies:
-  - Encrypted mempool (Shutter) or private builders (SUAVE)
-  - RFQ service
+  - Public mempool visibility of orders is acceptable.
+  - Latency budgets cannot accommodate threshold-encryption or private builder round-trips.
+
 context: both
+context_differentiation:
+  i2i: "Institutional block trades signal portfolio intent long before settlement. Encrypting RFQ and quote flow until inclusion prevents counterparties, intermediaries, and builders from adverse selection or front-running. Both sides have legal recourse if an intermediary leaks, so the threat is reputational and economic rather than adversarial."
+  i2u: "Retail orders are extracted by builders, searchers, and private relays with operator-controlled visibility. Encrypted or threshold-encrypted submission removes the builder's ability to unilaterally front-run, but requires the user's tooling to integrate with the encrypted path. Without a fallback to an unencrypted route, a stalled decryption committee can effectively censor."
+
 crops_profile:
   cr: low
-  os: partial
-  privacy: partial
-  security: low
+  o: partial
+  p: partial
+  s: low
+
+crops_context:
+  cr: "Depends on who can submit to the encrypted path. Reaches `high` only if the encrypted mempool committee is selected permissionlessly via stake-weighted rotation and includes a fallback to the standard mempool when decryption stalls."
+  o: "Some encryption and decryption implementations are open; some private builder stacks are proprietary. Reaches `yes` when all components, including the committee software and key-release logic, are open-source under permissive or copyleft licenses."
+  p: "Hides order intent, size, and price from the public mempool and (with threshold encryption) from any individual committee member. Metadata (timing, wallet connection, submission path) remains visible unless additionally shielded."
+  s: "Rides on committee honesty for threshold-encrypted paths or on operator honesty for private-builder paths. Reaches `high` with hardened collusion resistance and key compartmentalization across independent operators."
+
+post_quantum:
+  risk: medium
+  vector: "Threshold encryption and commit-reveal schemes often rely on pairings (BLS) or curve-based encryption broken by CRQC."
+  mitigation: "Lattice-based threshold encryption or hash-based commit-reveal with post-quantum VRFs for committee selection."
+
+visibility:
+  counterparty: [quote_contents]
+  chain: [settlement_events]
+  regulator: [full_order_lifecycle via audit path]
+  public: []
+
+standards: []
+
+related_patterns:
+  composes_with: [pattern-threshold-encrypted-mempool, pattern-private-transaction-broadcasting, pattern-shielding]
+  see_also: [pattern-private-pvp-stablecoins-erc7573, pattern-dvp-erc7573]
+
+open_source_implementations:
+  - url: https://github.com/shutter-network/shutter
+    description: "Threshold-encrypted mempool reference implementation"
+    language: "Rust, Go"
+  - url: https://github.com/flashbots/suave-geth
+    description: "Private builder and confidential compute environment for order flow"
+    language: "Go"
 ---
 
 ## Intent
-Prevent **front-running and information leakage** by routing quotes/orders via **encrypted/private submission**; then settle with confidential tokens.
 
-## Ingredients
-- **Infra**: Shutter/SUAVE, allow-listed counterparties
-- **Off-chain**: RFQ broker, audit of quote requests
+Prevent front-running and information leakage by routing quotes and orders via encrypted or private submission paths so intent, size, and price stay hidden until inclusion. Settlement then proceeds on a shielded pool or confidential rail so the executed amounts also remain private.
 
-## Protocol (concise)
-1. Buyer emits RFQ off-chain; quotes returned privately.
-2. Winning order submitted via encrypted route for inclusion.
-3. Settlement occurs on privacy L2/L1 pool; amounts remain hidden.
+## Components
 
-## Guarantees
-- No public mempool leakage of intent/size/price.
-- Auditable RFQ lifecycle.
+- Encrypted submission path: either a threshold-encrypted mempool (committee holds key shares; ciphertext is decrypted only after ordering is committed) or a private-builder stack (confidential execution environment that sees the order but commits to ordering honesty).
+- RFQ broker: off-chain service that routes quote requests to allow-listed counterparties and records the quote lifecycle for audit.
+- Settlement rail: shielded pool or privacy L2 where the winning order settles with amounts hidden.
+- Fallback path: unencrypted submission route invoked if the encrypted path stalls or fails.
+- Audit trail: signed or committed record of every RFQ, quote, and settlement for compliance review.
+
+The encrypted mempool details are covered in `pattern-threshold-encrypted-mempool`; the settlement layer in `pattern-shielding` or `pattern-privacy-l2s`.
+
+## Protocol
+
+1. [user] A buyer emits an RFQ off-chain. The request is routed to allow-listed counterparties via the RFQ broker.
+2. [user] Counterparties return quotes privately to the broker, who relays them only to the requestor.
+3. [user] The requestor selects a winning quote and submits the corresponding order via the encrypted path (threshold-encrypted ciphertext or private builder).
+4. [operator] The committee or private builder includes the order in a block without revealing its contents pre-inclusion.
+5. [contract] Settlement executes on the shielded rail: amounts, sender, and receiver stay hidden.
+6. [auditor] The broker and committee produce an auditable record of the RFQ lifecycle for compliance review.
+
+## Guarantees & threat model
+
+Guarantees:
+
+- No public mempool leakage of intent, size, or price pre-inclusion.
+- Auditable RFQ lifecycle available to regulators via scoped access.
+- Settled amounts remain private when the settlement rail is shielded.
+
+Threat model:
+
+- Honesty of the threshold committee or private builder. A colluding quorum can decrypt early or leak selectively.
+- Liveness of the encrypted path. A stalled committee or builder forces the fallback path, where orders become visible again.
+- RFQ broker trust. A malicious broker can leak quote flow to non-participants even if the on-chain path is encrypted.
+- Counterparty allow-list correctness. Mis-listed counterparties can exfiltrate order intent legally but undesirably.
 
 ## Trade-offs
-- Additional infra dependency; fallback path required.
-- Latency/availability tied to privacy routing.
-- **CROPS context (both)**: CR could reach `high` if threshold committee selection becomes permissionless via stake-weighted rotation. OS improves to `yes` by open-sourcing all encryption and decryption logic under copyleft. Privacy could reach `full` by encrypting quotes end-to-end until settlement confirmation, not just during the pre-trade phase. Security could reach `high` by hardening collusion resistance through key compartmentalization across independent operators. In I2I, encrypted order flow prevents counterparties and intermediaries from front-running institutional block trades. In I2U, threshold encryption protects retail orders from MEV extraction by builders or relayers.
-- **Post-quantum exposure**: threshold encryption schemes (Shutter/commit-reveal) may rely on pairings broken by CRQC. Mitigation: lattice-based threshold encryption. See [Post-Quantum Threats](../domains/post-quantum.md).
+
+- Latency and availability are tied to the privacy routing. A slow committee or builder can miss inclusion windows.
+- Additional infra dependency. Both the encrypted mempool and the RFQ broker are new services that must be operated and monitored.
+- Fallback paths reintroduce public mempool visibility; protocol design must make fallback rare and auditable.
+- Allow-listed counterparties create a two-sided trust boundary that must be governed.
 
 ## Example
-- Three quotes received; best quote settles; unfilled quotes remain undisclosed.
+
+- Three quotes are received for a block trade.
+- The winning quote is submitted via the encrypted path.
+- The losing quotes remain undisclosed to the public and to competing market makers.
+- Settlement finalizes on a shielded pool. On-chain observers see only the settlement event, not the price or size.
 
 ## See also
-- pattern-confidential-erc20-fhe-l2-erc7573.md · pattern-secondary-market-rfq-batched-settlement.md
 
-## See also (external)
-- Shutter docs: https://docs.shutter.network/docs/shutter/research/the_road_towards_an_encrypted_mempool_on_ethereum
-- Flashbots · SUAVE overview: https://writings.flashbots.net/the-future-of-mev-is-suave
-- Flashbots docs hub: https://docs.flashbots.net/
+- [Shutter Network docs](https://docs.shutter.network/docs/shutter/research/the_road_towards_an_encrypted_mempool_on_ethereum)
+- [SUAVE overview](https://writings.flashbots.net/the-future-of-mev-is-suave)
+- [Flashbots documentation](https://docs.flashbots.net/)
+- [Post-Quantum Threats](../domains/post-quantum.md)
