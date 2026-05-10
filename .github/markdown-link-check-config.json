@@ -119,6 +119,15 @@
     },
     {
       "pattern": "^https://nym\\.com/network"
+    },
+    {
+      "pattern": "^approaches/approach-privacy-standards-survey\\.md$"
+    },
+    {
+      "pattern": "^https://github\\.com/ethereum/iptf-map/compare/"
+    },
+    {
+      "pattern": "^https://forum\\.l2beat\\.com/t/the-data-availability-risk-framework/318"
     }
   ],
   "httpHeaders": [

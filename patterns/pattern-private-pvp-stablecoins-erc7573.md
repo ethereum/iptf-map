@@ -41,7 +41,7 @@ related_patterns:
 
 open_source_implementations:
   - url: https://ercs.ethereum.org/ERCS/erc-7573
-    description: "ERC-7573 reference escrow contracts for atomic asset transfer"
+    description: "ERC-7573 specification for conditional-upon-transfer-decryption asset escrow"
     language: Solidity
 ---
 

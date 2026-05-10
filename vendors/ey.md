@@ -124,6 +124,16 @@ Secret state lives on-chain as cryptographic hash commitments; pre-image data st
 - **Limited Solidity coverage:** not all Solidity syntax transpiles; complex conditionals, loops, and certain patterns are unsupported (see [STATUS.md](https://github.com/EYBlockchain/starlight/blob/master/doc/STATUS.md))
 - **No native regulatory disclosure:** no built-in viewing keys, selective disclosure, or compliance screening hooks; institutions must build or source these separately
 
+## CROPS profile
+
+| Product | CR | OS | Privacy | Security | Context |
+|---------|----|----|---------|----------|---------|
+| Nightfall v4 | high | partial | high | medium | both |
+| Starlight | medium | partial | medium | low | both |
+
+- **Nightfall v4**: CR is high for an enterprise rollup with certificate-gated access and rollup finality, but operational access still depends on the deployed consortium. OS is partial because the core implementation is public while deployment operations and enterprise integrations may be private. Privacy is high for shielded transfers with selective disclosure. Security is medium because it depends on rollup operations, certificate governance, and upgrade/operations controls.
+- **Starlight**: CR is medium because generated zApps run on Ethereum contracts but application access and key handling are deployment-specific. OS is partial because the compiler is public domain, while each generated app's operational stack is separate. Privacy is medium because commitments hide private state but there is no native disclosure framework or network privacy. Security is low for material-value use because the project is experimental, unaudited, Groth16-based, and requires per-circuit trusted setup.
+
 ### Links
 
 - [GitHub Repository](https://github.com/EYBlockchain/starlight)

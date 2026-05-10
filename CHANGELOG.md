@@ -4,6 +4,7 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
+- fix(ci): stabilize [full markdown link checks](.github/workflows/link-check-full.yml) by ignoring bot-blocked external references and repairing stale internal links ([#163](https://github.com/ethereum/iptf-map/pull/163))
 - feat(schema): flip [pattern.json](scripts/schemas/pattern.json) and [validate-patterns.js](scripts/validate-patterns.js) to strict v2. All v1 aliases (`os`, `privacy`, `security` CROPS keys; `PoC`/`pilot`/`prod`/`experimental` maturity values; `privacy_goal`, `assumptions`, `dependencies`, `## Ingredients`, `## Guarantees` section names) now fail validation instead of warning. ([#156](https://github.com/ethereum/iptf-map/pull/156))
 - feat(schema): approach template v2 -- replace [_template.md](approaches/_template.md) with the v2 skeleton from [#151](https://github.com/ethereum/iptf-map/issues/151) and update [validate-patterns.js](scripts/validate-patterns.js) to check v2 sections (`## Problem framing`, `## Approaches`, `## Comparison`, `## Persona perspectives`, `## Recommendation`, `## Open questions`), required frontmatter (`title`, `status`, `last_reviewed`, `use_case`, `primary_patterns`), and the `^Approach:\s` title prefix. Lenient mode (warnings only) until a future strict-flip ([#161](https://github.com/ethereum/iptf-map/pull/161))
 - refactor(approach): port 9 approach cards in [approaches/](approaches/) to v2 schema (frontmatter, per-sub-approach YAML blocks, comparison table, persona perspectives, recommendation) ([#160](https://github.com/ethereum/iptf-map/pull/160), [#151](https://github.com/ethereum/iptf-map/issues/151))
@@ -63,7 +64,7 @@ All notable changes to the IPTF Map are documented here.
 - feat(approach): [Private Money Market Funds](approaches/approach-private-money-market-funds.md) - Privacy-preserving MMF operations with ZK NAV proofs
 - feat(approach): Restructured [Private Trade Settlement](approaches/approach-private-trade-settlement.md) — separated single-chain and cross-chain approaches, added TEE+ZK, MPC, and intent-based settlement with trade-off matrices ([#77](https://github.com/ethereum/iptf-map/issues/77))
 - feat(approach): Enhanced [Private Bonds](approaches/approach-private-bonds.md) with PoC learnings, coprocessor model analysis (co-SNARKs vs FHE), comparison matrix, and implementation guidance
-- feat(approach): `approach-privacy-standards-survey.md` - Standards catalog, gap analysis, and decision guidance ([#64](https://github.com/ethereum/iptf-map/pull/64))
+- feat(approach): [Privacy Standards Survey](approaches/approach-privacy-standards-survey.md) - Standards catalog, gap analysis, and decision guidance ([#64](https://github.com/ethereum/iptf-map/pull/64))
 - feat(approach): [White-label infrastructure deployment](approaches/approach-white-label-deployment.md) ([#55](https://github.com/ethereum/iptf-map/pull/55))
 - feat(approach): [Atomic DvP Settlement](approaches/approach-dvp-atomic-settlement.md) ([#56](https://github.com/ethereum/iptf-map/pull/56))
 - feat(approach): Expanded [Private Payments](approaches/approach-private-payments.md) with Plasma and TEE approaches
