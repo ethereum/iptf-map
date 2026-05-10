@@ -40,7 +40,7 @@ related_patterns:
   see_also: [pattern-cross-chain-privacy-bridge, pattern-pretrade-privacy-encryption]
 
 open_source_implementations:
-  - url: https://github.com/ercs-eth/erc-7573
+  - url: https://ercs.ethereum.org/ERCS/erc-7573
     description: "ERC-7573 reference escrow contracts for atomic asset transfer"
     language: Solidity
 ---

@@ -65,6 +65,6 @@ Institutions need privacy but fear regulatory backlash from "black box" solution
 ## See Also
 
 - [Privacy Pools Paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4563364)
-- [Pattern: Shielded Pool](../patterns/pattern-shielded-pool-commitments.md)
-- [Pattern: Selective Disclosure](../patterns/pattern-viewing-key-disclosure.md)
+- [Pattern: Shielding](../patterns/pattern-shielding.md)
+- [Pattern: Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
 - [Compliance Primitives RFP](rfp-compliance-primitives.md)

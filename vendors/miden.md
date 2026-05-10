@@ -71,7 +71,6 @@ Unlike Ethereum (where the network executes everything), Miden pushes execution 
 ## Links
 
 - [Polygon Miden Docs](https://docs.polygon.technology/miden/)
-- [Miden Book (alt docs hub)](https://0xMiden.github.io/miden-docs/)
 - [Polygon Miden GitHub org](https://github.com/0xMiden)
 - [miden-base (core components)](https://github.com/0xMiden/miden-base)
 - [crypto (hashes & primitives)](https://github.com/0xMiden/crypto)

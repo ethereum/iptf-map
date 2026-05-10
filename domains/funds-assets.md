@@ -16,7 +16,7 @@ status: draft
 
 ## Shortest-path patterns
 - [Confidential ERC-20 on privacy L2 (FHE) + ERC-7573](../patterns/pattern-shielding.md)
-- [L1 ZK commitment pool](../patterns/pattern-l1-zk-commitment-pool.md)
+- [Shielding](../patterns/pattern-shielding.md)
 - [Crypto-registry bridge (eWpG) + EAS](../patterns/pattern-crypto-registry-bridge-ewpg-eas.md)
 - [ICMA Bond Data Taxonomy](../patterns/pattern-icma-bdt-data-model.md)
 - [Selective disclosure (view keys + proofs)](../patterns/pattern-regulatory-disclosure-keys-proofs.md)

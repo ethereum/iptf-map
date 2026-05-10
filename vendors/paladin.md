@@ -18,9 +18,9 @@ A strong design principle of the project is that existing privacy preserving tok
 
 
 ## Fits with patterns (names only)
-- [L1 ZK Commitment Pool](../patterns/pattern-l1-zk-commitment-pool.md)
+- [Shielding](../patterns/pattern-shielding.md)
 - [DvP ERC7573](../patterns/pattern-dvp-erc7573.md)
-- [Confidential ERC20 FHE L2 ERC7573](../patterns/pattern-confidential-erc20-fhe-l2-erc7573.md)
+- [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
 - [Crypto Registry Bridge eWpG EAS](../patterns/pattern-crypto-registry-bridge-ewpg-eas.md)
 
 ## Not a substitute for

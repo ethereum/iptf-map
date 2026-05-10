@@ -12,10 +12,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Check all markdown links
         uses: gaurav-nelson/github-action-markdown-link-check@v1
+        env:
+          NODE_OPTIONS: --no-deprecation
         with:
           use-quiet-mode: 'no'
           config-file: '.github/markdown-link-check-config.json'

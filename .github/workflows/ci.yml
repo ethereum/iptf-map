@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
 
@@ -49,6 +49,8 @@ jobs:
       - name: Check markdown links (changed files only)
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: gaurav-nelson/github-action-markdown-link-check@v1
+        env:
+          NODE_OPTIONS: --no-deprecation
         with:
           use-quiet-mode: 'yes'
           config-file: '.github/markdown-link-check-config.json'
@@ -82,7 +84,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Check content neutrality
         run: |
@@ -142,7 +144,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Vale linter
         uses: errata-ai/vale-action@v2
@@ -166,7 +168,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 

@@ -73,7 +73,7 @@ Starlight is an open-source transpiler that converts standard Solidity smart con
 
 - [Shielded ERC-20 Transfers](../patterns/pattern-shielding.md): enables building shielding-type circuits from Solidity, not a drop-in shielded pool
 - [Private Shared State (co-SNARKs)](../patterns/pattern-private-shared-state-cosnark.md): two-party shared secret commitments via `sharedSecret` decorator
-- [L1 ZK Commitment Pool](../patterns/pattern-l1-zk-commitment-pool.md): generated contracts deploy commitment pools with nullifier tracking on L1
+- [Shielding](../patterns/pattern-shielding.md): generated contracts deploy commitment pools with nullifier tracking on L1
 
 ### Not a substitute for
 

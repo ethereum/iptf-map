@@ -12,8 +12,8 @@ Fireblocks is a custody and infrastructure platform that provides secure wallet 
 ## Fits with patterns
 
 - [MPC Custody](../patterns/pattern-mpc-custody.md)
-- [DvP ERC7573](../patterns/pattern-dvp-erc7573.md.md)
-- [ISO-20022](../patterns/pattern-private-iso20022.md.md)
+- [DvP ERC7573](../patterns/pattern-dvp-erc7573.md)
+- [ISO-20022](../patterns/pattern-private-iso20022.md)
 - [TEE ZK Settlement](../patterns/pattern-tee-zk-settlement.md)
 
 ## Not a substitute for
