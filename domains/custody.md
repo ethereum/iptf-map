@@ -16,3 +16,6 @@ status: draft
 
 ## Adjacent vendors
 - [Kaleido Paladin](../vendors/paladin.md)
+- [Fireblocks](../vendors/fireblocks.md)
+- [iExec](../vendors/iexec.md)
+- [Soda Labs](../vendors/soda-labs.md)

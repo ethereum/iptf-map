@@ -23,3 +23,7 @@ status: draft
 - [Renegade](../vendors/renegade.md)
 - [Aztec L2](../vendors/aztec.md)
 - [Railgun](../vendors/railgun.md)
+- [Flashbots](../vendors/flashbots.md)
+- [Shutter](../vendors/shutter.md)
+- [Hinkal](../vendors/hinkal.md)
+- [Orion Finance](../vendors/orion-finance.md)
