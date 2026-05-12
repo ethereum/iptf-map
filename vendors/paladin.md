@@ -94,18 +94,6 @@ Hardened reference implementations are provided out of the box as follows:
 - Multiple privacy models under one surface (ZK UTXO, notary-backed UTXO, group-private EVM).
 - Enterprise operations alignment: HSM/SSM integration, registry/addressing, predictable governance boundaries.
 
-## CROPS profile
-
-| Product | CR | OS | Privacy | Security | Context |
-|---------|----|----|---------|----------|---------|
-| Zeto | medium | yes | high | medium | both |
-| Noto | low | yes | medium | medium | i2i |
-| Pente | medium | yes | high | medium | i2i |
-
-- **Zeto**: CR is medium because ZK UTXO tokens are non-custodial at the contract layer, but deployment policies can still gate participation. OS is yes for the Apache-2.0 Paladin codebase. Privacy is high for amounts, ownership, and history inside the UTXO model. Security is medium because it depends on circuit correctness, proof generation, upgrade controls, and deployment-specific audit/bug-bounty coverage.
-- **Noto**: CR is low because notary or issuer governance can approve, deny, or shape confidential UTXO transfers. OS is yes for the implementation. Privacy is medium because UTXO state is hidden from public observers, but the notary/issuer is an intentional trust and disclosure point. Security is medium because correctness depends on notary key management, admin scope, upgrade controls, and incident-response practice.
-- **Pente**: CR is medium because privacy-group execution can interoperate with public EVM contracts, while group membership and endorsement policies remain permissioned. OS is yes for the Paladin implementation. Privacy is high within the privacy group because world-state transitions are pre-verified off-chain and endorsed before on-chain settlement. Security is medium because it relies on endorsement policy correctness, private EVM runtime integrity, upgrade controls, and deployment-specific audits.
-
 ## Risks and open questions
 - Centralization and custodial key management trade-offs in some deployments.
 - Operator access to client data in certain operating modes (trust boundary).
