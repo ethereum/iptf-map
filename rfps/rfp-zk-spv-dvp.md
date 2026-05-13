@@ -70,6 +70,6 @@ Delivery-versus-Payment (DvP) is fundamental to institutional settlement: asset 
 ## See Also
 
 - [Pattern: DvP Settlement (ERC-7573, draft)](../patterns/pattern-dvp-erc7573.md)
-- [Pattern: ZK Light Client Bridge](../patterns/pattern-zk-light-client-bridge.md)
+- [Pattern: Cross-Chain Privacy Bridge](../patterns/pattern-cross-chain-privacy-bridge.md)
 - [Use Case: Private Bonds](../use-cases/private-bonds.md)
 - [ERC-7573 Specification (draft)](https://eips.ethereum.org/EIPS/eip-7573)
