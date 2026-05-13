@@ -19,6 +19,13 @@ status: draft
 - [Private ISO 20022 Messaging](../patterns/pattern-private-iso20022.md)
 
 ## Adjacent vendors
-- [Chainlink ACE](../vendors/chainlink-ace.md)
-- [Kaleido Paladin](../vendors/paladin.md)
 - [Aztec L2](../vendors/aztec.md)
+- [Kaleido Paladin](../vendors/paladin.md)
+- [Railgun](../vendors/railgun.md)
+- [Hinkal](../vendors/hinkal.md)
+- [TACEO Merces](../vendors/taceo-merces.md)
+- [ZKsync Prividium](../vendors/zksync.md)
+- [Fhenix](../vendors/fhenix.md)
+- [Zama](../vendors/zama.md)
+- [Privacy Pools](../vendors/privacypools.md)
+- [Fairblock](../vendors/fairblock.md)

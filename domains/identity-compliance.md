@@ -23,4 +23,7 @@ status: draft
 - [Crypto-registry bridge (eWpG) + EAS](../patterns/pattern-crypto-registry-bridge-ewpg-eas.md)
 
 ## Adjacent vendors
-- [Chainlink ACE](../vendors/chainlink-ace.md)
+- [Privacy Pools](../vendors/privacypools.md)
+- [Curvy](../vendors/curvy.md)
+- [Peer](../vendors/peer.md)
+- [EY Nightfall](../vendors/ey.md)

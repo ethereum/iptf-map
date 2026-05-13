@@ -21,5 +21,12 @@ status: draft
 - [Selective disclosure (view keys + proofs)](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
 
 ## Adjacent vendors
-- [Kaleido Paladin](../vendors/paladin.md)
 - [Aztec L2](../vendors/aztec.md)
+- [Kaleido Paladin](../vendors/paladin.md)
+- [Orion Finance](../vendors/orion-finance.md)
+- [ZKsync Prividium](../vendors/zksync.md)
+- [EY Nightfall](../vendors/ey.md)
+- [Miden](../vendors/miden.md)
+- [Fhenix](../vendors/fhenix.md)
+- [Zama](../vendors/zama.md)
+- [TACEO Merces](../vendors/taceo-merces.md)
