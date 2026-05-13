@@ -44,7 +44,7 @@ related_patterns:
   see_also: [pattern-permissionless-spend-auth, pattern-private-mtp-auth]
 
 open_source_implementations:
-  - url: https://noir-lang.org/docs/noir/standard_library/cryptographic_primitives/ecdsa_secp256k1
+  - url: https://noir-lang.org/docs/noir/standard_library/cryptographic_primitives
     description: "Noir stdlib ECDSA-secp256k1 in-circuit verifier"
     language: Noir
   - url: https://github.com/AztecProtocol/aztec-packages
@@ -98,7 +98,7 @@ A privacy-preserving token airdrop with offline eligibility credentials. Eligibi
 
 ## See also
 
-- [Noir stdlib `std::ecdsa_secp256k1`](https://noir-lang.org/docs/noir/standard_library/cryptographic_primitives/ecdsa_secp256k1).
+- [Noir cryptographic primitives](https://noir-lang.org/docs/noir/standard_library/cryptographic_primitives).
 - [Barretenberg UltraHonk](https://github.com/AztecProtocol/barretenberg).
 - [Plonky2](https://github.com/0xPolygonZero/plonky2).
 - [RFC 6979: Deterministic Usage of DSA and ECDSA](https://www.rfc-editor.org/rfc/rfc6979).

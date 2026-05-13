@@ -20,6 +20,114 @@
     },
     {
       "pattern": "^https://www\\.bafin\\.de"
+    },
+    {
+      "pattern": "^https://www\\.calpnetwork\\.org"
+    },
+    {
+      "pattern": "^https://spherestandards\\.org"
+    },
+    {
+      "pattern": "^https://docs\\.aztec\\.network"
+    },
+    {
+      "pattern": "^https://aztec\\.network/connect"
+    },
+    {
+      "pattern": "^https://docs\\.curvy\\.box/how-privacy-works-in-curvy\\.html"
+    },
+    {
+      "pattern": "^https://ssrn\\.com/abstract=4563364"
+    },
+    {
+      "pattern": "^https://papers\\.ssrn\\.com/sol3/papers\\.cfm\\?abstract_id=4563364"
+    },
+    {
+      "pattern": "^https://vitalik\\.eth\\.limo"
+    },
+    {
+      "pattern": "^https://blog\\.chain\\.link"
+    },
+    {
+      "pattern": "^https://github\\.com/nerolation/eip-stealth-address-erc-5564"
+    },
+    {
+      "pattern": "^https://eips\\.ethereum\\.org/EIPS/eip-7281"
+    },
+    {
+      "pattern": "^https://www\\.usenix\\.org/system/files/conference/usenixsecurity11/sec11-final229\\.pdf"
+    },
+    {
+      "pattern": "^https://gitlab\\.torproject\\.org/tpo/core/arti"
+    },
+    {
+      "pattern": "^https://www\\.fatf-gafi\\.org"
+    },
+    {
+      "pattern": "^https://cseweb\\.ucsd\\.edu/~mihir/papers/fsig\\.html"
+    },
+    {
+      "pattern": "^https://eips\\.ethereum\\.org/EIPS/eip-734"
+    },
+    {
+      "pattern": "^https://eips\\.ethereum\\.org/EIPS/eip-735"
+    },
+    {
+      "pattern": "^https://docs\\.ezkl\\.xyz"
+    },
+    {
+      "pattern": "^https://support\\.argent\\.xyz/hc/en-us/articles/360007338877"
+    },
+    {
+      "pattern": "^https://www\\.iso20022\\.org"
+    },
+    {
+      "pattern": "^https://www\\.sec\\.gov/files/ctf-written-sec-proposal-digital-asset-09-08-2025\\.pdf"
+    },
+    {
+      "pattern": "^https://finance\\.ec\\.europa\\.eu/regulation-and-supervision/financial-services-legislation/markets-crypto-assets-mica_en"
+    },
+    {
+      "pattern": "^https://www\\.eba\\.europa\\.eu/regulation-and-policy/crypto-assets"
+    },
+    {
+      "pattern": "^https://www\\.esma\\.europa\\.eu/about-esma/national-competent-authorities"
+    },
+    {
+      "pattern": "^https://finance\\.ec\\.europa\\.eu/regulation-and-supervision/financial-services-legislation/digital-operational-resilience_en"
+    },
+    {
+      "pattern": "^https://defillama\\.com/protocols/RWA"
+    },
+    {
+      "pattern": "^https://rarimo\\.com"
+    },
+    {
+      "pattern": "^https://github\\.com/iptf-eth/iptf-pm/issues/4"
+    },
+    {
+      "pattern": "^https://intervasp\\.org"
+    },
+    {
+      "pattern": "^https://hoprnet\\.org"
+    },
+    {
+      "pattern": "^https://www\\.hkma\\.gov\\.hk/eng/key-functions/banking/anti-money-laundering-and-counter-financing-of-terrorism/ordinances-statutory-guidelines"
+    },
+    {
+      "pattern": "^https://holonym\\.id"
+    },
+    {
+      "pattern": "^https://nym\\.com/network"
+    },
+    {
+      "pattern": "^approaches/approach-privacy-standards-survey\\.md$"
+    },
+    {
+      "pattern": "^https://github\\.com/ethereum/iptf-map/compare/"
+    },
+    {
+      "pattern": "^https://forum\\.l2beat\\.com/t/the-data-availability-risk-framework/318"
     }
   ],
   "httpHeaders": [
@@ -34,5 +142,5 @@
   "retryOn429": true,
   "retryCount": 3,
   "fallbackRetryDelay": "5s",
-  "aliveStatusCodes": [200, 201, 204, 301, 302, 303]
+  "aliveStatusCodes": [200, 201, 202, 204, 301, 302, 303]
 }
