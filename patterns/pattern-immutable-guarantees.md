@@ -8,7 +8,7 @@ last_reviewed: 2026-05-14
 
 works-best-when:
   - An institutional deployment uses admin keys, upgradeable contracts, or governance roles that could in principle be turned against users.
-  - End users or auditors need a definitive answer to "what does the math prevent, even if the operator wanted to?"
+  - End users or auditors need a definitive answer to which properties hold regardless of admin action, governance vote, or upgrade.
   - The deployment must satisfy non-custodial criteria for regulators or platform listings (L2Beat Stage 1 or higher).
 
 avoid-when:
@@ -46,7 +46,7 @@ related_patterns:
 
 ## Intent
 
-An institutional deployment with admin keys, upgrade authority, and compliance controls cannot be analyzed by what the operator promises to do. It must be analyzed by what the math prevents the operator from doing. This pattern is the discipline of separating mutable operational parameters from immutable safety invariants, then publishing a specific, verifier-backed list of properties that survive a hostile operator, a coerced institution, or full admin key compromise.
+An institutional deployment with admin keys, upgrade authority, and compliance controls cannot be analyzed by what the operator promises to do. It must be analyzed by which properties are enforced by deployed code, append-only state, and L1 consensus, independent of any admin path. This pattern is the discipline of separating mutable operational parameters from immutable safety invariants, then publishing a specific list of properties (each tied to a contract, verifier, or consensus rule) that survive a hostile operator, a coerced institution, or full admin key compromise.
 
 ## Components
 
