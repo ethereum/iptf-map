@@ -15,4 +15,8 @@ status: draft
 - [L2 + Encrypted Off-chain Audit](../patterns/pattern-l2-encrypted-offchain-audit.md)
 
 ## Adjacent vendors
-- [Chainlink ACE](../vendors/chainlink-ace.md)
+- [Space and Time](../vendors/space-and-time.md)
+- [Shutter](../vendors/shutter.md)
+- [Flashbots](../vendors/flashbots.md)
+- [iExec](../vendors/iexec.md)
+- [Fairblock](../vendors/fairblock.md)
