@@ -17,7 +17,7 @@ avoid-when:
 
 context: both
 context_differentiation:
-  i2i: "Between institutions, immutable guarantees bound counterparty admin scope. Even if one side's keys are compromised or its governance turns hostile, the other side can settle, exit, and audit without the compromised party's cooperation. Legal recourse bounds the residual risk, but immutability removes the highest-impact unilateral actions from the table."
+  i2i: "Between institutions, immutable guarantees bind counterparty admin scope. Even if one side's keys are compromised or its governance turns hostile, the other side can settle, exit, and audit without the compromised party's cooperation. Legal recourse binds the residual risk, but immutability removes the highest-impact unilateral actions from the table."
   i2u: "For end users, immutable guarantees are the substitute for the legal recourse they do not have. The operator holds structural power; the user has no contract, no negotiating position, and no way to enforce promises. The CROPS rubric requires that the user's exit, ownership, and privacy guarantees be enforced by code that no admin action can reach. Operational parameters (fees, sanctions list, paused flag) may still be upgradeable; safety invariants may not."
 
 crops_profile:
