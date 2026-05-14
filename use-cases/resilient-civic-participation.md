@@ -6,7 +6,7 @@ secondary_domain: identity
 
 ## 1) Use Case
 
-Run credentialed petitions where signatures prove eligibility under a stated criterion. Repository-governance ballots and employee-organising lists fit the same shape. Whether a particular person signed has to stay private, both within a petition and across any future ones, and the outcome has to remain checkable years after the host platform shuts down. Existing platforms either publish the signed list or route eligibility through an operator; either way, the operator staying cooperative is what holds it together. Extends [Resilient Identity Continuity](resilient-identity-continuity.md) from the credential layer to the petition layer.
+Run credentialed petitions where signatures prove eligibility under a stated criterion. Repository-governance ballots and employee-organising lists fit the same shape. Who signed has to stay private, both within a petition and across any future ones, and the outcome has to remain checkable years after the host platform shuts down. Existing platforms either publish the signed list or route eligibility through an operator; either way, the operator staying cooperative is what holds it together. Extends [Resilient Identity Continuity](resilient-identity-continuity.md) from the credential layer to the petition layer.
 
 ## 2) Additional Business Context
 
@@ -48,7 +48,7 @@ Someone might support several petitions over many years: data protection one yea
 
 ### Problem 3: Outcome verifiability after platform shutdown
 
-The petitions that matter most outlive their hosts. A regulator, court, journalist, or future organising committee has to be able to confirm both the overall outcome and the per-class results decades after the petition closes, reading only durable public record. Publishing just an aggregate count forces the reader to trust whoever did the counting. Requiring any specific party to remain online to verify fails the moment that party shuts down.
+The petitions that matter most outlive their hosts. A regulator, court, journalist, or future organising committee has to be able to confirm both the overall outcome and the per-class results decades after the petition closes, reading from durable public record. Publishing just an aggregate count forces the reader to trust whoever did the counting. Requiring any specific party to remain online to verify fails the moment that party shuts down.
 
 **Requirements:**
 
@@ -65,7 +65,7 @@ A signer's device is seized after they have already supported several petitions.
 
 - **Must:** material on the signer's device that enabled past signatures is unrecoverable from any later snapshot of that device
 - **Must:** the property holds against an adversary with full forensic access to the seized device
-- **Must:** the signer can continue to sign future petitions from the same device; only reconstruction of past participation is prevented
+- **Must:** the signer can continue to sign future petitions from the same device; past participation remains unrecoverable
 - **Constraints:** the device must be able to destroy past signing material before reuse; consumer storage media that retain prior writes (copy-on-write filesystems, SSDs without [TRIM](https://en.wikipedia.org/wiki/Trim_(computing))) degrade this property. Backups of signing material defeat the protection relative to whatever the backup contains
 
 ## 5) Recommended Approaches
@@ -74,7 +74,7 @@ A signer's device is seized after they have already supported several petitions.
 | --- | --- |
 | Operator-mediated eligibility | Eligibility checkable from durable public record alone, no operator in the path |
 | Signer-level unlinkability | No correlation possible across petitions beyond the criterion-matching population |
-| Outcome verifiability after shutdown | A future verifier needs only the durable public record |
+| Outcome verifiability after shutdown | A future verifier needs the durable public record |
 | Forward secrecy under seizure | Past participation unrecoverable from any later device snapshot |
 
 See [**Approach: Civic Participation**](../approaches/approach-civic-participation.md) for detailed architecture and trade-offs.

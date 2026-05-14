@@ -68,16 +68,15 @@ The pattern supplies per-event values for anonymous one-per-event signaling unde
 
 ## Protocol
 
-1. [signer] Sample `s_0` from a CSPRNG with at least `log2(field)` bits of entropy.
-2. [signer] Inductively derive `(v_i, s_{i+1}) = PRG(s_i)` for `i in [0, N)` and build the depth-`d` Merkle root `chain_root`. Discard all intermediate seeds and tree nodes; retain `s_0` long enough to compute `chain_root`, then overwrite to `s_curr <- s_0`, `t <- 0`, and initialise the log-space Merkle traversal state.
-3. [signer] Bind `chain_root` into the credential commitment (e.g., a dedicated field in the issuer's attestation, or an attribute slot reserved by the credential scheme) so the application's SNARK can verify both credential membership and chain-root binding in one circuit.
-4. [signer] On application event at slot `k`, advance the chain from `t` to `k` by re-applying the PRG `k - t` times, compute `v_k` and the auth path from the traversal state, and consume `v_k` as a private input to the application SNARK.
-5. [signer] After the application records the event with finality, ratchet: derive `s_{k+1}`, overwrite `s_curr` in place, advance the frontier, set `t <- k + 1`.
-6. [verifier] In-circuit, recompute `(v_k, _) = PRG(s_k)` from the witnessed seed, verify the depth-`d` auth path against the credential-bound `chain_root`, and consume `v_k` in the application's nullifier or scope-tag derivation.
+1. [signer] Sample `s_0` from a CSPRNG and derive the chain `(v_i, s_{i+1}) = PRG(s_i)` for `i in [0, N)`, building the depth-`d` Merkle root `chain_root`.
+2. [signer] Bind `chain_root` into the credential commitment so the application's SNARK can verify credential membership and chain-root binding in one circuit. Initialise the runtime state (head seed, chain index, traversal state) and erase intermediate seeds and tree nodes.
+3. [signer] On application event at slot `k`, advance the chain to `k`, compute `v_k` and the auth path, and consume `v_k` as a private input to the application SNARK.
+4. [signer] After the event is recorded with finality, ratchet forward and overwrite the head seed in place.
+5. [verifier] In-circuit, recompute `v_k` from the witnessed seed, verify the auth path against the credential-bound `chain_root`, and consume `v_k` in the application's nullifier or scope-tag derivation.
 
 ## Guarantees & threat model
 
-- **Per-slot forward secrecy**: an adversary holding `s_curr` at audit time `T_audit` (with chain index `t`) recovers `v_{k'}` or `s_{k'}` for `k' < t` only with advantage bounded by `2N * eps_PRG`, where `eps_PRG` bounds the PRG-distinguishing advantage of the underlying length-expanding generator and `N` is the chain length. The reduction is Bellare-Yee Theorem 2.3 applied to the seed chain.
+- **Per-slot forward secrecy**: an adversary holding `s_curr` at audit time `T_audit` (with chain index `t`) recovers `v_{k'}` or `s_{k'}` for `k' < t` with advantage at most `2N * eps_PRG`, where `eps_PRG` bounds the PRG-distinguishing advantage of the underlying length-expanding generator and `N` is the chain length. The reduction is Bellare-Yee Theorem 2.3 applied to the seed chain.
 - **Slot non-reuse**: an honest signer's chain index `t` is monotone; revisiting a past slot requires the consumed seed, which the ratchet step has erased. Application-layer per-event nullifier sets remain necessary; this pattern enforces the *signer-side* erasure they depend on under seizure.
 - **In-circuit verifiability**: `chain_root` is a single field element and the auth path is `d` Poseidon hashes; the per-slot value comes from one PRG call. Total in-circuit cost is `d + 1` Poseidon permutations, independent of `N` and chain advance.
 - **Threat model**: post-event device seizure and any non-signer party. Out of scope: live (pre-event) device compromise that captures `s_k` before erase; non-erasing storage that retains overwritten bytes; signer-side backups of `s_curr` or `s_0` (any backup constitutes a forward-secrecy capability against the future).
@@ -92,7 +91,7 @@ The pattern supplies per-event values for anonymous one-per-event signaling unde
 
 ## Example
 
-A standards consortium issues each accredited member a credential committing a depth-24 Poseidon tree over `N = 2^24` per-slot pseudorandom values, with the chain root bound through a credential attribute slot. The consortium's voting contract assigns each ballot an integer slot. To vote on ballot `X` at slot `k`, the member device advances the chain to `k`, opens the auth path inside a SNARK that verifies credential membership and the eligibility predicate, emits `nullifier = Poseidon(domain, v_k, ballot_id)`, and ratchets past `s_k` on finality. A future adversary seizing the device cannot recompute past `v_{k'}` values; the ballot record retains only the nullifier, whose preimage is hidden by PRG security.
+A standards consortium issues each accredited member a credential committing a depth-24 Poseidon tree over `N = 2^24` per-slot pseudorandom values, with the chain root bound through a credential attribute slot. The consortium's voting contract assigns each ballot an integer slot. To vote on ballot `X` at slot `k`, the member device advances the chain to `k`, opens the auth path inside a SNARK that verifies credential membership and the eligibility predicate, emits `nullifier = Poseidon(domain, v_k, ballot_id)`, and ratchets past `s_k` on finality. A future adversary seizing the device cannot recompute past `v_{k'}` values; the ballot record retains the nullifier, whose preimage is hidden by PRG security.
 
 ## See also
 

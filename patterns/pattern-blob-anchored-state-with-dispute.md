@@ -54,7 +54,7 @@ open_source_implementations:
 
 ## Intent
 
-Publish per-event batch data on an EIP-4844 blob carrier and anchor only the post-batch state-transition root on L1. Any party can challenge a specific position via the 0x0A point-evaluation precompile during a bounded dispute window. The pattern decouples per-event Data Availability from permanent L1 state: the contract sees only roots and a `batch_versioned_hash`, while consensus-layer nodes broadcast and archivers retain the per-event records for the retention window.
+Publish per-event batch data on an EIP-4844 blob carrier and anchor the post-batch state-transition root on L1 (the contract sees no per-event records). Any party can challenge a specific position via the 0x0A point-evaluation precompile during a bounded dispute window. The pattern decouples per-event Data Availability from permanent L1 state: the contract sees only roots and a `batch_versioned_hash`, while consensus-layer nodes broadcast and archivers retain the per-event records for the retention window.
 
 The dispute path catches blob-level invariants that the batch SNARK does not itself enforce (out-of-domain field values, intra-batch duplicates against an application-required uniqueness rule, or ordering violations under a canonical sort), by opening one or two positions through the precompile and applying a Registry-side violation predicate to the opened bytes.
 
@@ -68,18 +68,18 @@ The dispute path catches blob-level invariants that the batch SNARK does not its
 
 ## Protocol
 
-1. [relay] Collect up to `BATCH_SIZE_MAX` per-event records targeting the same application context (settlement window, intent epoch).
-2. [relay] Order the records by an application-defined canonical leaf value, serialise into a single blob payload under the field-encoding rule, and compute `batch_versioned_hash`.
-3. [relay] Build the batch transition SNARK with public inputs `(prior_root, new_root, prior_leaf_count, new_leaf_count, batch_versioned_hash, application_bindings)`, witnessing the per-record proofs and the in-circuit-to-blob decomposition.
-4. [relay] Submit a transaction carrying the blob and the SNARK; the Registry verifies the SNARK, asserts equality of every binding public input against its stored state, advances roots, and records `BatchRecord.state = Active`.
-5. [disputant] Inside the application's dispute window, submit through the Registry: the violation type, the canonical field-element indices for the disputed position, the claimed bytes `y_i` at each index, the KZG opening proofs against `batch_versioned_hash`, and any cross-position openings.
-6. [contract] For each opening, call the 0x0A precompile with `(batch_versioned_hash, z_i, y_i, proof_i)`; on validation success, decode the supplied bytes `y_i` under the encoding rule and apply the violation predicate. If the predicate holds, set `BatchRecord.state = Repudiated`, roll the application's state back to the immediately preceding active batch's roots, and emit a repudiation event; otherwise revert.
+1. [relay] Collect per-event records targeting the same application context (settlement window, intent epoch).
+2. [relay] Order the records under the application's canonical rule, serialise into a single blob, and compute `batch_versioned_hash`.
+3. [relay] Build the batch transition SNARK binding `prior_root`, `new_root`, the blob commitment, and the application's bindings.
+4. [relay] Submit the blob and SNARK; the Registry verifies the SNARK, asserts equality on every binding input, advances roots, and records `BatchRecord.state = Active`.
+5. [disputant] Inside the dispute window, submit the violation type, the disputed-position openings, and any cross-position openings via the Registry.
+6. [contract] Validate the openings through the 0x0A point-evaluation precompile and apply the violation predicate. If the predicate holds, set `BatchRecord.state = Repudiated`, roll back to the preceding active batch's roots, and emit a repudiation event; otherwise revert.
 
 ## Guarantees & threat model
 
 - **DA-bounded validity**: the batch SNARK proves the state transition from a single binding `prior_root` to `new_root`. The in-circuit cross-field decomposition gadget pins each in-circuit scalar to its BLS12-381 representation on the blob, so a relay's state advance must match the canonical encoding.
 - **Position-level disputability**: any party holding the blob during the retention window can prove a single position's bytes to the Registry via 0x0A. The dispute taxonomy bounds the cost of a single dispute to a constant number of openings plus the violation-predicate gas.
-- **Rollback minimality**: a successful dispute rolls back only the repudiated batch and any later batches that built on it (forcing the relay to rebuild against the post-rollback state); prior active batches retain their contributions.
+- **Rollback minimality**: a successful dispute rolls back the repudiated batch and any later batches that built on it (forcing the relay to rebuild against the post-rollback state); prior active batches retain their contributions.
 - **Threat model**: a blob inconsistent with the SNARK fails on submission. A SNARK-valid batch with a blob-level violation is repudiated during the dispute window, and relay-level censorship of disputes has no effect because disputes execute through the Registry directly. Out of scope: an adversary who suppresses blob propagation past consensus-layer broadcast; loss of blob availability after retention (the application's dispute window must close inside the retention window).
 
 ## Trade-offs
@@ -87,7 +87,7 @@ The dispute path catches blob-level invariants that the batch SNARK does not its
 - **Dispute window vs. retention**. EIP-4844 default retention is 4096 epochs (about 18 days). The application sizes its participation or batching window so that the dispute window for every batch closes inside that retention; long windows force voluntary archiver dependency.
 - **Encoding fragility**. The byte-to-field encoding rule, the canonical ordering, and the in-circuit decomposition gadget must produce identical byte sequences in either field. Cross-field circuits have shipped soundness bugs from exactly this mismatch; auditors must verify the alignment.
 - **Dispute taxonomy completeness**. Violations not in the closed taxonomy are unprovable via the dispute path and must be caught structurally inside the batch SNARK. Splitting constraints between the SNARK and the dispute predicates trades SNARK proving time against precompile gas and disputant burden of proof.
-- **Concurrent batches**. Only one batch advances the root from a given `prior_root`. Late-arriving competing batches fail the equality check; their relays must rebuild against the updated state.
+- **Concurrent batches**. At most one batch advances the root from a given `prior_root`. Late-arriving competing batches fail the equality check; their relays must rebuild against the updated state.
 - **Reorg sensitivity**. A batch transaction evicted by an L1 reorganisation before finality is dropped; downstream participants retain their pre-finality state and must resubmit. FOCIL where deployed ([EIP-7805](https://eips.ethereum.org/EIPS/eip-7805)) reduces coordinated-builder censorship.
 
 ## Example

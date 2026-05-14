@@ -17,10 +17,7 @@ supporting_patterns:
   - pattern-focil-eip7805
   - pattern-relay-mediated-proving
 
-open_source_implementations:
-  - url: https://github.com/AztecProtocol/barretenberg
-    description: "Barretenberg / UltraHonk (proving system targeted by the protocol's signer, batch, and resolution SNARKs)"
-    language: C++/Rust
+open_source_implementations: []
 ---
 
 # Approach: Civic Participation
@@ -29,7 +26,7 @@ open_source_implementations:
 
 ### Scenario
 
-An organising committee runs a European Citizens' Initiative needing 1M signatures across seven member states with per-state minima, and faces subpoena exposure in the petition's home jurisdiction. The committee cannot retain a signer database that outlives the petition window. Eligibility rides on EU residency and member-state attribution. Beyond that, participation has to stay unlinkable across petitions, and the outcome has to remain verifiable from L1 state after the committee dissolves. The same shape covers repository governance ballots and workplace organising lists without modification.
+An organising body collects a verifiable threshold of signatures from credentialed signers under per-class minima, facing compelled-disclosure exposure in the host jurisdiction. The body cannot retain a signer database that outlives the campaign. Eligibility derives from an issuer-attested attribute (residency, membership, employment). Participation has to stay unlinkable across campaigns, and the outcome has to remain verifiable from L1 state after the body dissolves. Three concrete instances share this shape: a European Citizens' Initiative needing 1M signatures across seven member states with per-state minima; a repository-governance ballot with per-team thresholds; a workplace organising list with per-shift thresholds.
 
 ### Requirements
 
@@ -67,6 +64,7 @@ example_vendors: []
 - L1 consensus, the Registry contract, and EIP-4844 blob availability through the dispute window
 - Proving-system soundness (UltraHonk over BN254 KZG)
 - Censorship-resistant inclusion, augmented by FOCIL ([EIP-7805](https://eips.ethereum.org/EIPS/eip-7805)) where deployed
+- At least one honest relayer is required for liveness; no positive trust assumption on relayers beyond that. Censorship is bounded by alternate-relay routing plus FOCIL, malformed batches by the dispute path, and blob availability by consensus-layer propagation through retention.
 
 **Threat model:**
 - Passive L1 and blob-archive adversary; cross-petition linkage reduces to PRG security
@@ -107,11 +105,11 @@ Petitions, repository governance ballots, and employee organising lists fail the
 
 ### Technical perspective
 
-Engineering effort concentrates at five surfaces: the signer client with its forward-secure tree, the signer SNARK with credential-membership and predicate gadgets, the batch SNARK with cross-field decomposition between the proving curve and the blob field, the Registry contract holding roots and the bounty escrow, and the resolution SNARK over the full leaf set. The proving stack is Noir over UltraHonk, the same toolchain Aztec and several institutional pilots already build against; the blob path and dispute precompile are stock EIP-4844.
+The engineering work splits across five surfaces: the signer client with its forward-secure tree, the signer SNARK with credential-membership and predicate gadgets, the batch SNARK with cross-field decomposition between the proving curve and the blob field, the Registry contract holding roots and the bounty escrow, and the resolution SNARK over the full leaf set. The proving stack is Noir over UltraHonk, the same toolchain Aztec and several institutional pilots already build against; the blob path and dispute precompile are stock EIP-4844.
 
 ### Legal & risk perspective
 
-This is a perspective for legal review by the deploying institution, not legal advice. Legal exposure concentrates at the credential issuer (a separate use case, [Resilient Identity Continuity](../use-cases/resilient-identity-continuity.md)) and the Organizer's predicate-selection policy, which determines what attribute predicates the signer SNARK enforces. The on-chain footprint is the Registry's per-signature nullifier, identity tag, and class tag carried over an EIP-4844 blob whose retention is finite; the durable record is the resolution SNARK and its public inputs. Whether the resolution SNARK satisfies admissibility or auditability for a specific regulatory regime is a per-jurisdiction question; the document does not claim sufficiency for any specific regime. Compelled disclosure of any non-Signer role (Organizer, Relayer, Resolver, Disputant) yields only public on-chain state.
+This is a perspective for legal review by the deploying institution, not legal advice. Legal exposure sits with the credential issuer (a separate use case, [Resilient Identity Continuity](../use-cases/resilient-identity-continuity.md)) and the Organizer's predicate-selection policy, which determines what attribute predicates the signer SNARK enforces. The on-chain footprint is the Registry's per-signature nullifier, identity tag, and class tag carried over an EIP-4844 blob whose retention is finite; the durable record is the resolution SNARK and its public inputs. Whether the resolution SNARK satisfies admissibility or auditability for a specific regulatory regime is a per-jurisdiction question; the document does not claim sufficiency for any specific regime. Compelled disclosure of any non-Signer role (Organizer, Relayer, Resolver, Disputant) yields only public on-chain state.
 
 ## Recommendation
 
@@ -127,7 +125,6 @@ For petitions whose threat model includes compelled disclosure, successor-regime
 
 ## Open questions
 
-1. **Resolver-side blob archival economics.** Petitions whose signing windows approach the 18-day EIP-4844 retention force Resolvers to archive blob payloads voluntarily. What is the production model, and how is it priced into bounty parameters?
-2. **Predicate-match-count estimation without surveying the credential tree.** Organizers must size predicates so the match count, intersected with the class partition, meets the deployment's privacy floor. What is the analytical or sampling tool for this estimate that does not itself expose credential-tree structure?
-3. **Slot exhaustion redeployment cadence.** The 24-bit global slot counter bounds protocol lifetime. What is the deployment-policy schedule for redeployment under a fresh contract instance, and how is signer-side re-enrollment cost amortised (issuer-side coordination, batched re-enrollment windows)?
-4. **Anti-coercion under predicate disclosure.** Signers in adversarial-employer or adversarial-jurisdiction settings may be compelled to sign or to abstain. Coercion-resistant resolution (MACI-style key-change) is out of scope in this protocol's reference design. What is the integration point: pre-signing key registration, in-circuit coercion-resistance gadget, or a deployment-policy layer that selects a coercion-resistant variant?
+1. **Predicate-match-count estimation without surveying the credential tree.** Organizers must size predicates so the match count, intersected with the class partition, meets the deployment's privacy floor. What is the analytical or sampling tool for this estimate that does not itself expose credential-tree structure?
+2. **Slot exhaustion redeployment cadence.** The 24-bit global slot counter bounds protocol lifetime. What is the deployment-policy schedule for redeployment under a fresh contract instance, and how is signer-side re-enrollment cost amortised (issuer-side coordination, batched re-enrollment windows)?
+3. **Anti-coercion under predicate disclosure.** Signers in adversarial-employer or adversarial-jurisdiction settings may be compelled to sign or to abstain. Coercion-resistant resolution (MACI-style key-change) is out of scope in this protocol's reference design. What is the integration point: pre-signing key registration, in-circuit coercion-resistance gadget, or a deployment-policy layer that selects a coercion-resistant variant?
