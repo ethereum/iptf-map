@@ -26,6 +26,7 @@ supporting_patterns:
   - pattern-mesh-store-forward-submission
   - pattern-private-mtp-auth
   - pattern-proof-of-innocence
+  - pattern-private-information-retrieval
 
 iptf_pocs:
   folder: pocs/private-payment
@@ -84,7 +85,14 @@ A multinational bank executes daily institutional stablecoin transfers (USDC, EU
 maturity: prototyped
 context: i2i
 crops: { cr: high, o: yes, p: partial, s: high }
-uses_patterns: [pattern-shielding, pattern-regulatory-disclosure-keys-proofs, pattern-forced-withdrawal, pattern-network-anonymity]
+uses_patterns:
+  [
+    pattern-shielding,
+    pattern-regulatory-disclosure-keys-proofs,
+    pattern-forced-withdrawal,
+    pattern-network-anonymity,
+    pattern-private-information-retrieval,
+  ]
 poc_spec: pocs/private-payment/shielded-pool/SPEC.md
 example_vendors: [railgun]
 ```
@@ -94,21 +102,26 @@ example_vendors: [railgun]
 **How it works:** Deposit moves an ERC-20 balance into a Merkle tree of commitments; transfers spend a nullifier and create new commitments via a JoinSplit-style zero-knowledge proof; withdraw burns a commitment to a destination address. A gas relayer pays gas on the destination's behalf to avoid linking funded EOAs. Selective disclosure runs through per-note viewing keys.
 
 **Trust assumptions:**
+
 - L1 consensus and the verifier contract
 - Gas relayer is willing to relay (liveness only; not custodial)
 - Trusted setup is not required (UltraHonk)
 
 **Threat model:**
+
 - Adversary observes L1 directly; cannot break ZK soundness
 - Relayer may censor; users can fall back to direct withdraw at the cost of address linkage
 - Network-level timing correlation is unmitigated at this layer
+- Third-party RPC path retrieval and note discovery leak the spent-note index; mitigable via PIR or by running own indexer
 
 **Works best when:**
+
 - High-value transfers where L1 settlement security justifies gas
 - Anonymity-set sharing across many participants is acceptable
 - Counterparty privacy via per-token shielded pools is sufficient
 
 **Avoid when:**
+
 - High-frequency low-value transfers where gas dominates
 - Amount confidentiality must be cryptographically hidden across all observers (current designs leak via deposit/withdraw boundaries)
 
@@ -116,13 +129,13 @@ example_vendors: [railgun]
 
 #### Benchmarks
 
-| Operation | Value |
-|---|---|
-| Gas: deposit | ~155K |
-| Gas: transfer | ~181K + ~2.6M verification |
-| Gas: withdraw | ~47K + ~2.6M verification |
-| Proof gen (client) | 410-991ms |
-| Trusted setup | No |
+| Operation          | Value                      |
+| ------------------ | -------------------------- |
+| Gas: deposit       | ~155K                      |
+| Gas: transfer      | ~181K + ~2.6M verification |
+| Gas: withdraw      | ~47K + ~2.6M verification  |
+| Proof gen (client) | 410-991ms                  |
+| Trusted setup      | No                         |
 
 ### Privacy L2
 
@@ -130,7 +143,12 @@ example_vendors: [railgun]
 maturity: prototyped
 context: both
 crops: { cr: medium, o: partial, p: full, s: medium }
-uses_patterns: [pattern-privacy-l2s, pattern-user-controlled-viewing-keys, pattern-regulatory-disclosure-keys-proofs]
+uses_patterns:
+  [
+    pattern-privacy-l2s,
+    pattern-user-controlled-viewing-keys,
+    pattern-regulatory-disclosure-keys-proofs,
+  ]
 example_vendors: [aztec, fhenix]
 ```
 
@@ -139,21 +157,25 @@ example_vendors: [aztec, fhenix]
 **How it works:** Users post transactions with client-side zero-knowledge proofs to a privacy-native sequencer (Aztec) or use FHE-based confidential balances (Fhenix). Hidden state, encrypted memo, and account-level viewing keys give institutional readers controlled access. Bridging to L1 is the privacy boundary.
 
 **Trust assumptions:**
+
 - Sequencer for ordering (currently centralized in early deployments)
 - Bridge contract for L1 settlement integrity
 - Viewing-key custody at the institution
 
 **Threat model:**
+
 - Sequencer could censor; rollup escape hatches mitigate but expose linkage
 - Bridge boundary leaks deposit/withdraw amounts unless paired with shielded pools on the other side
 - Compromise of an institution's viewing key reveals all flows under it
 
 **Works best when:**
+
 - Institution needs amount + counterparty privacy at high frequency
 - Cost amortization matters and L2 fees are acceptable
 - Treasury accepts sequencer trust during the rollup's decentralization roadmap
 
 **Avoid when:**
+
 - Maximum settlement security required for each transfer
 - Bridge custody risk is unacceptable
 - Sequencer trust does not match the institution's risk model
@@ -173,21 +195,25 @@ poc_spec: pocs/private-payment/plasma/SPEC.md
 **How it works:** Users build proofs of inclusion against operator-published roots. Operators batch transfers, generate aggregated SNARKs (Plonky2-style recursion), and post anchor data to L1. Withdrawals exit through an L1 anchor contract via an exit game; users prove sufficient balance to escape an offline operator.
 
 **Trust assumptions:**
+
 - Operator for liveness (block production, proof aggregation)
 - Users to retain their own state for exits
 - L1 anchor contract for forced exit correctness
 
 **Threat model:**
+
 - Operator offline or censoring forces escape-game exits with weaker privacy
 - User data loss collapses to lost funds; backup architecture is load-bearing
 - Operator equivocation needs fraud-proof or multi-operator dispute
 
 **Works best when:**
+
 - Volume is high and minimal L1 footprint matters
 - Institution can run or contract user-side state custody
 - Forced withdrawal as a recovery path is acceptable
 
 **Avoid when:**
+
 - User-side state custody is operationally infeasible
 - Exit-delay risk is not tolerable for the asset class
 
@@ -195,14 +221,14 @@ poc_spec: pocs/private-payment/plasma/SPEC.md
 
 #### Benchmarks
 
-| Operation | Value |
-|---|---|
-| Gas: deposit | ~137K (user) |
-| Gas: transfer | Off-chain (operator-set fee) |
-| Gas: withdraw | ~343K (operator, amortized) |
-| Gas: batch | ~255K (operator, amortized) |
-| Proof gen (client) | 5.9-9.8s |
-| Proof gen (operator) | 42-49s |
+| Operation            | Value                        |
+| -------------------- | ---------------------------- |
+| Gas: deposit         | ~137K (user)                 |
+| Gas: transfer        | Off-chain (operator-set fee) |
+| Gas: withdraw        | ~343K (operator, amortized)  |
+| Gas: batch           | ~255K (operator, amortized)  |
+| Proof gen (client)   | 5.9-9.8s                     |
+| Proof gen (operator) | 42-49s                       |
 
 ### TEE-Based Privacy
 
@@ -219,21 +245,25 @@ example_vendors: []
 **How it works:** Settlement, matching, or custody runs inside an attested enclave (AWS Nitro, Azure Confidential Computing, Intel TDX). The chain sees only enclave-signed outputs and remote-attestation evidence. Enclave-held keys never leave hardware.
 
 **Trust assumptions:**
+
 - TEE vendor and remote-attestation chain
 - Cloud co-tenant isolation
 - Enclave software supply chain (reproducible build, signing)
 
 **Threat model:**
+
 - Side-channel and microarchitectural attacks against the enclave class
 - Vendor compromise or compelled disclosure of attestation keys
 - Enclave-software vulnerabilities expose all state to a single-party adversary
 
 **Works best when:**
+
 - Near-term deployment is needed and ZK proving is too costly per transfer
 - Institutional trust model already includes hardware vendors (HSMs, secure elements)
 - Counterparties accept hardware-rooted attestation
 
 **Avoid when:**
+
 - Threat model includes nation-state-class side-channel adversaries
 - Attestation chain centralization is a hard fail
 
@@ -252,21 +282,25 @@ example_vendors: [taceo-merces]
 **How it works:** Bilateral counterparties send secret-shared inputs to an MPC committee that runs the transfer logic and produces a collaborative SNARK. The chain verifies the SNARK; counterparty addresses are public, but amounts and balance state are hidden under sharing.
 
 **Trust assumptions:**
+
 - Honest majority among MPC nodes (committee size and threshold are config-time choices)
 - Co-SNARK soundness
 - Liveness of the MPC committee
 
 **Threat model:**
+
 - Collusion above the threshold reveals all state
 - Counterparty addresses leak; only amount confidentiality is provided
 - MPC committee liveness is an availability boundary
 
 **Works best when:**
+
 - Bilateral or club-mode settlement among known counterparties
 - Address-level privacy is not a goal; amount confidentiality is enough
 - Operating an MPC committee is feasible
 
 **Avoid when:**
+
 - Sender or receiver anonymity is required
 - Honest-majority assumption is incompatible with the threat model
 
@@ -276,7 +310,19 @@ example_vendors: [taceo-merces]
 maturity: documented
 context: i2u
 crops: { cr: high, o: yes, p: full, s: high }
-uses_patterns: [pattern-forward-secure-signatures, pattern-recipient-derived-receive-addresses, pattern-relay-mediated-proving, pattern-mesh-store-forward-submission, pattern-shielding, pattern-private-mtp-auth, pattern-network-anonymity, pattern-proof-of-innocence, pattern-forced-withdrawal, pattern-verifiable-attestation]
+uses_patterns:
+  [
+    pattern-forward-secure-signatures,
+    pattern-recipient-derived-receive-addresses,
+    pattern-relay-mediated-proving,
+    pattern-mesh-store-forward-submission,
+    pattern-shielding,
+    pattern-private-mtp-auth,
+    pattern-network-anonymity,
+    pattern-proof-of-innocence,
+    pattern-forced-withdrawal,
+    pattern-verifiable-attestation,
+  ]
 example_vendors: []
 ```
 
@@ -285,23 +331,27 @@ example_vendors: []
 **How it works:** Funder atomically shields the round total and emits a multisig-signed header. The recipient's EAL4+ smartcard signs an offline ECDSA voucher under a per-epoch key bound to the round and an on-card derived destination. A companion device encrypts to a relay's current key and ships via Briar (Bluetooth + Tor) or Meshtastic (LoRa), fanning out to k of N relays. A relay generates the cohort-membership SNARK with submitter binding (defeats proof-stealing front-running) and submits via Tor/Nym. The claim contract verifies and unshields to the destination, where the recipient redeems through a local agent network.
 
 **Trust assumptions:**
+
 - IResilientIdentity operator and implementing partner are distinct legal entities, jurisdictions, and personnel
 - Relay set meets size and jurisdictional-diversity floors (pilot N≥8 / ≥2 operators / ≥2 jurisdictions; production N≥16 / ≥4 operators / ≥3 jurisdictions)
 - Smartcard secure-element vendor and applet supply chain
 - Mesh transport availability for last-mile
 
 **Threat model:**
+
 - Every party may be compelled, breached, or inherited by a hostile successor
 - Recipient device may be seized; forward-secure keys block retroactive identification
 - Off-ramp KYC pivot bounded by association-set k-anonymity and relay diversity
 - Within-epoch per-relay linkability bounded but not cryptographically eliminated
 
 **Works best when:**
+
 - Compelled-partner transfer, successor-regime inheritance, or off-ramp KYC pivot are documented threats
 - No central beneficiary list at the funder layer is acceptable
 - Donor policy admits multi-jurisdiction relay operators
 
 **Avoid when:**
+
 - Recipients have reliable internet and modern wallet capability (use Sections A-C with viewing keys instead)
 - Single-jurisdiction deployment cannot meet relay-set floors
 
@@ -309,18 +359,18 @@ example_vendors: []
 
 ## Comparison
 
-| Axis | L1 Shielded | Privacy L2 | Stateless Plasma | TEE | MPC | Resilient Disbursement |
-|---|---|---|---|---|---|---|
-| **Maturity** | prototyped | prototyped | prototyped | documented | prototyped | documented |
-| **Context** | i2i | both | i2i | i2i | i2i | i2u |
-| **CROPS** | CR:hi O:y P:part S:hi | CR:med O:part P:full S:med | CR:med O:part P:full S:med | CR:med O:no P:full S:lo | CR:med O:part P:part S:med | CR:hi O:y P:full S:hi |
-| **Trust model** | L1 + relayer liveness | Sequencer + bridge | Operator + L1 anchor | TEE vendor + supply chain | Honest-majority MPC | Multi-relay + smartcard + IResilientIdentity |
-| **Privacy scope** | Anonymity (amounts may leak) | Amounts + counterparties + patterns | Amounts + counterparties (commitments only on chain) | Full inside enclave | Amounts only; counterparties public | Forward-secure + off-ramp unlinkable |
-| **Performance** | ~181K + ~2.6M gas / 410-991ms | L2-internal fees | Off-chain transfer / operator-amortized | Variable | MPC overhead, batched | Relay-mediated, mesh-bounded |
-| **Operator req.** | No (gas relayer optional) | Yes (sequencer) | Yes | Yes (cloud) | Yes (MPC committee) | Yes (relay set with floors) |
-| **Cost class** | High (L1 verify) | Low | Lowest (amortized) | Variable | Medium | Relay-mediated |
-| **Regulatory fit** | Strong with viewing keys | Strong with viewing keys | Conditional (operator audit) | Conditional (vendor attestation) | Strong for known-counterparty | Architectural minimization at funder layer |
-| **Failure modes** | Relayer censor; verification gas spikes | Sequencer outage; bridge exploit | Operator offline; user data loss | Side-channel; vendor compromise | MPC collusion; liveness | Relay set under floor; smartcard supply-chain compromise |
+| Axis               | L1 Shielded                             | Privacy L2                          | Stateless Plasma                                     | TEE                              | MPC                                 | Resilient Disbursement                                   |
+| ------------------ | --------------------------------------- | ----------------------------------- | ---------------------------------------------------- | -------------------------------- | ----------------------------------- | -------------------------------------------------------- |
+| **Maturity**       | prototyped                              | prototyped                          | prototyped                                           | documented                       | prototyped                          | documented                                               |
+| **Context**        | i2i                                     | both                                | i2i                                                  | i2i                              | i2i                                 | i2u                                                      |
+| **CROPS**          | CR:hi O:y P:part S:hi                   | CR:med O:part P:full S:med          | CR:med O:part P:full S:med                           | CR:med O:no P:full S:lo          | CR:med O:part P:part S:med          | CR:hi O:y P:full S:hi                                    |
+| **Trust model**    | L1 + relayer liveness                   | Sequencer + bridge                  | Operator + L1 anchor                                 | TEE vendor + supply chain        | Honest-majority MPC                 | Multi-relay + smartcard + IResilientIdentity             |
+| **Privacy scope**  | Anonymity (amounts may leak)            | Amounts + counterparties + patterns | Amounts + counterparties (commitments only on chain) | Full inside enclave              | Amounts only; counterparties public | Forward-secure + off-ramp unlinkable                     |
+| **Performance**    | ~181K + ~2.6M gas / 410-991ms           | L2-internal fees                    | Off-chain transfer / operator-amortized              | Variable                         | MPC overhead, batched               | Relay-mediated, mesh-bounded                             |
+| **Operator req.**  | No (gas relayer optional)               | Yes (sequencer)                     | Yes                                                  | Yes (cloud)                      | Yes (MPC committee)                 | Yes (relay set with floors)                              |
+| **Cost class**     | High (L1 verify)                        | Low                                 | Lowest (amortized)                                   | Variable                         | Medium                              | Relay-mediated                                           |
+| **Regulatory fit** | Strong with viewing keys                | Strong with viewing keys            | Conditional (operator audit)                         | Conditional (vendor attestation) | Strong for known-counterparty       | Architectural minimization at funder layer               |
+| **Failure modes**  | Relayer censor; verification gas spikes | Sequencer outage; bridge exploit    | Operator offline; user data loss                     | Side-channel; vendor compromise  | MPC collusion; liveness             | Relay set under floor; smartcard supply-chain compromise |
 
 ## Persona perspectives
 
@@ -368,4 +418,3 @@ Operate L1 Shielded Payments and Privacy L2 in tiers, bridging via cross-tier me
 10. **Smartcard Supply-Chain Attestation (Resilient Disbursement Rails).** Reproducible builds, multi-party applet-key signing, perso-bureau vetting against donor-policy CC composite evaluation requirements.
 11. **Cross-Cohort Metadata Leakage (Resilient Disbursement Rails).** Funder identity, cohort-size evolution, and round cadence fingerprint deployments; rotation policy unresolved.
 12. **Forced-Withdrawal Interaction (Resilient Disbursement Rails).** During an L1 escape hatch, can the recipient still hit an unlinkable destination, or does forced exit collapse to a public address?
-
