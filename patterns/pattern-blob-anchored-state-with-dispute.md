@@ -6,7 +6,7 @@ layer: L1
 last_reviewed: 2026-05-13
 
 works-best-when:
-  - Per-event data is high-volume and uniform but only the post-batch state root needs to live on L1 forever
+  - Per-event data is high-volume and uniform but the post-batch state root must live on L1 forever
   - The application can complete its dispute window inside the EIP-4844 default 18-day blob retention
   - A bounded class of batch-level violations is checkable from a single position's opened bytes plus the on-chain state
 avoid-when:
@@ -16,7 +16,7 @@ avoid-when:
 
 context: both
 context_differentiation:
-  i2i: "Consortium settlement batches publish per-trade records to a blob and post only the netting root on L1; counterparties dispute by opening their own positions."
+  i2i: "Consortium settlement batches publish per-trade records to a blob and post the netting root on L1; counterparties dispute by opening their own positions."
   i2u: "Permissionless event aggregation (votes, signatures, intents) where the user trusts neither the relay nor the contract to retain per-event data, and dispute is the user's residual safety."
 
 crops_profile:
