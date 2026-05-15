@@ -54,7 +54,7 @@ open_source_implementations:
 
 ## Intent
 
-Some applications batch per-event records (votes, signatures, trade tickets, intents) where the records need cheap data availability but the resulting state needs a fixed-size L1 anchor. EIP-4844 blobs supply the data availability inside the ~18-day default retention window without persisting on L1; the L1 footprint reduces to the post-batch state-transition root and a `batch_versioned_hash`. Any party holding the blob can challenge a specific position through the 0x0A point-evaluation precompile, inside a bounded dispute window. Consensus-layer nodes broadcast the records and voluntary archivers retain them; the contract sees no per-event content.
+Some applications batch per-event records (votes, signatures, trade tickets, intents) where the records need cheap Data Availability but the resulting state needs a fixed-size L1 anchor. EIP-4844 blobs supply the Data Availability inside the ~18-day default retention window without persisting on L1; the L1 footprint reduces to the post-batch state-transition root and a `batch_versioned_hash`. Any party holding the blob can challenge a specific position through the 0x0A point-evaluation precompile, inside a bounded dispute window. Consensus-layer nodes broadcast the records and voluntary archivers retain them; the contract sees no per-event content.
 
 The dispute path catches blob-level invariants that the batch SNARK does not itself enforce (out-of-domain field values, intra-batch duplicates against an application-required uniqueness rule, or ordering violations under a canonical sort), by opening one or two positions through the precompile and applying a Registry-side violation predicate to the opened bytes.
 
