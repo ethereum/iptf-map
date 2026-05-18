@@ -37,7 +37,7 @@ post_quantum:
 standards: [ERC-20, ERC-5564, ERC-3643]
 
 related_patterns:
-  composes_with: [pattern-stealth-addresses, pattern-erc3643-rwa, pattern-regulatory-disclosure-keys-proofs]
+  composes_with: [pattern-stealth-addresses, pattern-erc3643-rwa, pattern-regulatory-disclosure-keys-proofs, pattern-private-information-retrieval]
   see_also: [pattern-forced-withdrawal, pattern-user-controlled-viewing-keys, pattern-network-anonymity]
 
 open_source_implementations:
@@ -96,6 +96,7 @@ Threat model:
 - Cost and latency of zero-knowledge proofs (prover time, calldata/blobspace).
 - Metadata leakage at the network layer.
 - Gas abstraction is mandatory in practice: paying gas from the user's own EOA links the exit address back to the entry, breaking entry-to-exit unlinkability. A relayer or paymaster is required to break that link.
+- Client-side query leakage: fetching a note's Merkle inclusion path (or scanning for incoming notes) from a third-party RPC or indexer reveals to that operator which note is about to be spent or read, undoing on-chain unlinkability for users who depend on shared infrastructure. Mitigable with private information retrieval (see [pattern-private-information-retrieval](pattern-private-information-retrieval.md)); institutions running their own full node and indexer sidestep this without PIR.
 - Monotonic state growth: commitments accumulate indefinitely, so pool state bloats and proof costs drift up over time.
 
 ## Example
