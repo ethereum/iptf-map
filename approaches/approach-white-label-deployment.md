@@ -11,6 +11,7 @@ primary_patterns:
 supporting_patterns:
   - pattern-tee-based-privacy
   - pattern-privacy-l2s
+  - pattern-plasma-stateless-privacy
   - pattern-l2-encrypted-offchain-audit
   - pattern-dvp-erc7573
   - pattern-regulatory-disclosure-keys-proofs
@@ -174,34 +175,72 @@ example_vendors: [aztec, miden, fhenix, ey]
 - Inter-member governance overhead exceeds the value of joint infrastructure
 - A single member's regulator does not accept the consortium's disclosure framework
 
+### Self-Custodial Deployment
+
+```yaml
+maturity: prototyped
+context: i2u
+crops: { cr: high, o: yes, p: full, s: high }
+uses_patterns: [pattern-modular-privacy-stack, pattern-plasma-stateless-privacy, pattern-forced-withdrawal, pattern-user-controlled-viewing-keys, pattern-regulatory-disclosure-keys-proofs]
+example_vendors: []
+```
+
+**Summary:** Institution white-labels a stateless-plasma stack where users custody their own transaction state client-side; the institution operates sequencing and proof aggregation only and never holds a custodial view of user balances.
+
+**How it works:** The deployment is built on stateless plasma (Intmax2-class; see [Plasma Stateless Privacy](../patterns/pattern-plasma-stateless-privacy.md)). Users hold their UTXO history and proofs of inclusion client-side; the institution batches transfers, aggregates SNARKs against an L1 anchor contract, and posts anchor data on L1. [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md) is the default recovery path, not an escape hatch: every user can exit on the L1 anchor with their own state at any time. Regulator disclosure runs through user-co-signed view-key proofs ([Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md)) rather than blanket institutional read-access; [User-Controlled Viewing Keys](../patterns/pattern-user-controlled-viewing-keys.md) bind the institution out of master-key custody by construction.
+
+**Trust assumptions:**
+- Institution operates the sequencer for liveness; the institution is not a custodian of user state
+- Users retain their own UTXO history with adequate backup
+- L1 anchor contract for forced-exit correctness
+- Vendor support contract covers escalation paths for the stateless-plasma codebase
+
+**Threat model:**
+- Operator offline or censoring is recoverable through the forced-exit game on L1
+- User data loss collapses to lost funds; backup architecture (and recovery options like [Social Recovery](../patterns/pattern-social-recovery.md)) is load-bearing
+- Operator equivocation handled by the L1 anchor and fraud-proof or multi-operator dispute
+- The institution cannot become a panopticon: no master viewing key exists; disclosure requires user co-signing
+
+**Works best when:**
+- Institution wants the smallest possible trust surface against itself (humanitarian programs, jurisdictions where institution-as-sovereign is unacceptable, donor-policy-driven deployments)
+- Regulator accepts user-state custody and user-co-signed disclosure as compliant
+- User base can run wallet software with consistent backup discipline
+
+**Avoid when:**
+- User base cannot operate state-custody wallets reliably (use Institution-Controlled with forced-exit instead)
+- Regulator demands institutional read-access to all user state
+- Operator infrastructure cannot meet the stateless-plasma proof-aggregation budget
+
+**Implementation notes:** Intmax2 is the production reference for stateless plasma; see the Stateless Plasma sub-approach in [Private Payments](approach-private-payments.md) for proof-gen benchmarks. White-labeling at the institution level is documented but not yet production. Exit-game parameters (challenge windows, bond sizes) are deployment-policy decisions that legal review would scope.
+
 ## Comparison
 
-| Axis | Vendor-Managed | Institution-Controlled | Consortium |
-|---|---|---|---|
-| **Maturity** | production | production | prototyped |
-| **Context** | i2i | both | both |
-| **CROPS** | CR:lo O:part P:full S:med | CR:med O:part P:full S:hi | CR:hi O:part P:full S:hi |
-| **Trust model** | Vendor governance | Institution change-control | Consortium charter |
-| **Privacy scope** | Full (per stack) | Full (per stack) | Full (per stack); inter-member disclosure framework |
-| **Performance** | Vendor-managed ops | Institution-managed ops | Multi-operator coordination |
-| **Operator req.** | Vendor + institution | Institution | Multi-operator consortium |
-| **Cost class** | Subscription + ops | Engineering + ops | Member fees + joint ops |
-| **Regulatory fit** | Conditional (vendor cadence) | Strong (institution-led) | Strong (multi-jurisdiction) |
-| **Failure modes** | Vendor compromise; product discontinuation | Institution operations gap; vendor support latency | Consortium capture; governance dispute |
+| Axis | Vendor-Managed | Institution-Controlled | Consortium | Self-Custodial |
+|---|---|---|---|---|
+| **Maturity** | production | production | prototyped | prototyped |
+| **Context** | i2i | both | both | i2u |
+| **CROPS** | CR:lo O:part P:full S:med | CR:med O:part P:full S:hi | CR:hi O:part P:full S:hi | CR:hi O:y P:full S:hi |
+| **Trust model** | Vendor governance | Institution change-control | Consortium charter | Operator liveness + user state custody + L1 anchor |
+| **Privacy scope** | Full (per stack) | Full (per stack) | Full (per stack); inter-member disclosure framework | Full, against operator inclusive |
+| **Performance** | Vendor-managed ops | Institution-managed ops | Multi-operator coordination | Operator-amortized batching; heavier user-side proof retention |
+| **Operator req.** | Vendor + institution | Institution | Multi-operator consortium | Institution (liveness only) + user-side state retention |
+| **Cost class** | Subscription + ops | Engineering + ops | Member fees + joint ops | Engineering + user-side wallet ops; lowest amortized L1 footprint |
+| **Regulatory fit** | Conditional (vendor cadence) | Strong (institution-led) | Strong (multi-jurisdiction) | Conditional (user-state custody and user-co-signed disclosure) |
+| **Failure modes** | Vendor compromise; product discontinuation | Institution operations gap; vendor support latency | Consortium capture; governance dispute | User data loss; operator equivocation; exit-game latency |
 
 ## Persona perspectives
 
 ### Business perspective
 
-For institutions whose dominant constraint is time-to-market, **Vendor-Managed Deployment** is the default: production-grade privacy infrastructure under the institution's brand within months, with the vendor retaining the engineering lift. **Institution-Controlled** is the suitable choice for long-term strategic commitments where the institution intends to own the stack and the regulator demands change-control sovereignty. **Consortium** is the choice for shared market infrastructure (interbank settlement, central-bank pilots, industry utilities) where multi-party governance is itself the requirement.
+For institutions whose dominant constraint is time-to-market, **Vendor-Managed Deployment** is the default: production-grade privacy infrastructure under the institution's brand within months, with the vendor retaining the engineering lift. **Institution-Controlled** is the suitable choice for long-term strategic commitments where the institution intends to own the stack and the regulator demands change-control sovereignty. **Consortium** is the choice for shared market infrastructure (interbank settlement, central-bank pilots, industry utilities) where multi-party governance is itself the requirement. **Self-Custodial Deployment** is the choice when end-user sovereignty is itself the institutional or donor commitment: humanitarian programs, jurisdictions where institution-as-sovereign is unacceptable, or any deployment where the trust surface against the institution itself must be the smallest practical.
 
 ### Technical perspective
 
-The technical work is the same across all three governance models, deploy the [Modular Privacy Stack](../patterns/pattern-modular-privacy-stack.md) layers (Data, Execution, Settlement, Disclosure) and select vendor components per layer. The difference is who carries the engineering lift. Vendor-Managed minimizes institution-side engineering but creates vendor dependency at the operations level. Institution-Controlled requires building or acquiring an SRE team that can operate privacy-critical infrastructure under regulated change control. Consortium adds the inter-operator coordination overhead (testing across nodes, joint upgrade cadence, multi-sig admin). Forced-withdrawal primitives are mandatory across all three so that user-level recovery does not depend on any single operator.
+The technical work is the same across the first three governance models, deploy the [Modular Privacy Stack](../patterns/pattern-modular-privacy-stack.md) layers (Data, Execution, Settlement, Disclosure) and select vendor components per layer. The difference is who carries the engineering lift. Vendor-Managed minimizes institution-side engineering but creates vendor dependency at the operations level. Institution-Controlled requires building or acquiring an SRE team that can operate privacy-critical infrastructure under regulated change control. Consortium adds the inter-operator coordination overhead (testing across nodes, joint upgrade cadence, multi-sig admin). Self-Custodial Deployment swaps the execution layer for stateless plasma and pushes state custody to the user: wallet retention, backup, recovery UX, and the exit-game proof-construction path all sit with the user and the institution's wallet team. Forced-withdrawal primitives are mandatory across all four so that user-level recovery does not depend on any single operator.
 
 ### Legal & risk perspective
 
-This is a perspective for legal review by the deploying institution(s), not legal advice. Each governance model raises distinct review surfaces. **Vendor-Managed** is typically treated as a critical-third-party outsourcing arrangement; counsel would review vendor due diligence, source escrow, exit rights, and the change-control delegation. **Institution-Controlled** aligns with the institution-as-licensee-and-operator model that regulated change control typically expects; whether a specific regulator accepts the implementation is a question for counsel. The institution-as-operator would need to bind itself out of master-key custody for end-user state (user-held viewing keys, per-request and scope-bound regulator disclosure, forced-exit reachability without operator cooperation); without that binding, the document does not classify the deployment as preserving end-user privacy. **Consortium** raises joint-governance review surfaces (charter enforceability, member-fee structure, dispute resolution, the disclosure framework across home regulators); cross-border deployments would surface the jurisdictional diversity of member operators and the supervisory-coordination implications, all of which are for counsel rather than this document.
+This is a perspective for legal review by the deploying institution(s), not legal advice. Each governance model raises distinct review surfaces. **Vendor-Managed** is typically treated as a critical-third-party outsourcing arrangement; counsel would review vendor due diligence, source escrow, exit rights, and the change-control delegation. **Institution-Controlled** aligns with the institution-as-licensee-and-operator model that regulated change control typically expects; whether a specific regulator accepts the implementation is a question for counsel. The institution-as-operator would need to bind itself out of master-key custody for end-user state (user-held viewing keys, per-request and scope-bound regulator disclosure, forced-exit reachability without operator cooperation); without that binding, the document does not classify the deployment as preserving end-user privacy. **Consortium** raises joint-governance review surfaces (charter enforceability, member-fee structure, dispute resolution, the disclosure framework across home regulators); cross-border deployments would surface the jurisdictional diversity of member operators and the supervisory-coordination implications, all of which are for counsel rather than this document. **Self-Custodial Deployment** inverts the disclosure model: there are no master viewing keys at the institution, so each regulator disclosure requires user co-signing per request; counsel would scope whether per-disclosure user consent meets the regulator's evidentiary expectations, and whether the exit-game challenge windows and bond parameters satisfy the resolution timelines the regulator expects under stress.
 
 ## Recommendation
 
@@ -214,6 +253,7 @@ For institutions launching a privacy product on a 6-12 month horizon with regula
 - If time-to-market dominates and engineering capacity is unavailable, choose **Vendor-Managed Deployment** and accept the vendor cadence.
 - If the goal is shared market infrastructure across multiple institutions, choose **Consortium Deployment** and invest in the governance charter.
 - If regulator demands institutional ownership of the full upgrade lifecycle, **Institution-Controlled** is the option that satisfies this constraint.
+- If the institution wants the smallest possible trust surface against itself and the user base can operate state-custody wallets, choose **Self-Custodial Deployment**.
 
 ### Hybrid
 
