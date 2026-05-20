@@ -83,7 +83,7 @@ A multinational bank executes daily institutional stablecoin transfers (USDC, EU
 
 ```yaml
 maturity: prototyped
-context: i2i
+context: both
 crops: { cr: high, o: yes, p: partial, s: high }
 uses_patterns:
   [
@@ -119,6 +119,7 @@ example_vendors: [railgun]
 - High-value transfers where L1 settlement security justifies gas
 - Anonymity-set sharing across many participants is acceptable
 - Counterparty privacy via per-token shielded pools is sufficient
+- End-user wallets can absorb mobile-grade proving with relayer-paid gas; the user is sovereign over funds and can self-exit independent of any operator
 
 **Avoid when:**
 
@@ -184,7 +185,7 @@ example_vendors: [aztec, fhenix]
 
 ```yaml
 maturity: prototyped
-context: i2i
+context: both
 crops: { cr: medium, o: partial, p: full, s: medium }
 uses_patterns: [pattern-plasma-stateless-privacy, pattern-forced-withdrawal]
 poc_spec: pocs/private-payment/plasma/SPEC.md
@@ -211,6 +212,7 @@ poc_spec: pocs/private-payment/plasma/SPEC.md
 - Volume is high and minimal L1 footprint matters
 - Institution can run or contract user-side state custody
 - Forced withdrawal as a recovery path is acceptable
+- End users custody their own state by design; operator cannot censor without triggering the exit game, making the I2U privacy property structural rather than contingent
 
 **Avoid when:**
 
@@ -362,7 +364,7 @@ example_vendors: []
 | Axis               | L1 Shielded                             | Privacy L2                          | Stateless Plasma                                     | TEE                              | MPC                                 | Resilient Disbursement                                   |
 | ------------------ | --------------------------------------- | ----------------------------------- | ---------------------------------------------------- | -------------------------------- | ----------------------------------- | -------------------------------------------------------- |
 | **Maturity**       | prototyped                              | prototyped                          | prototyped                                           | documented                       | prototyped                          | documented                                               |
-| **Context**        | i2i                                     | both                                | i2i                                                  | i2i                              | i2i                                 | i2u                                                      |
+| **Context**        | both                                    | both                                | both                                                 | i2i                              | i2i                                 | i2u                                                      |
 | **CROPS**          | CR:hi O:y P:part S:hi                   | CR:med O:part P:full S:med          | CR:med O:part P:full S:med                           | CR:med O:no P:full S:lo          | CR:med O:part P:part S:med          | CR:hi O:y P:full S:hi                                    |
 | **Trust model**    | L1 + relayer liveness                   | Sequencer + bridge                  | Operator + L1 anchor                                 | TEE vendor + supply chain        | Honest-majority MPC                 | Multi-relay + smartcard + IResilientIdentity             |
 | **Privacy scope**  | Anonymity (amounts may leak)            | Amounts + counterparties + patterns | Amounts + counterparties (commitments only on chain) | Full inside enclave              | Amounts only; counterparties public | Forward-secure + off-ramp unlinkable                     |

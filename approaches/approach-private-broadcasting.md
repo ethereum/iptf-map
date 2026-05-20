@@ -119,7 +119,7 @@ example_vendors: [shutter]
 
 ```yaml
 maturity: prototyped
-context: i2i
+context: both
 crops: { cr: medium, o: partial, p: full, s: medium }
 uses_patterns: [pattern-privacy-l2s, pattern-shielding]
 example_vendors: [aztec, fhenix, zksync, ey]
@@ -143,6 +143,7 @@ example_vendors: [aztec, fhenix, zksync, ey]
 - Comprehensive privacy (mempool + state + execution) is required
 - Trading volume justifies committing to a privacy rollup
 - Operator trust model fits the institution (consortium or shared)
+- End users on shared privacy-native rollups (Aztec, Fhenix) need protocol-default mempool privacy without venue trust; enterprise-permissioned variants (Prividium, Nightfall) remain institutional
 
 **Avoid when:**
 - Trading must remain on a public chain
@@ -153,7 +154,7 @@ example_vendors: [aztec, fhenix, zksync, ey]
 | Axis | OTC / Off-chain Matching | Encrypted Mempools | Private Rollups |
 |---|---|---|---|
 | **Maturity** | production | prototyped | prototyped |
-| **Context** | i2i | both | i2i |
+| **Context** | i2i | both | both |
 | **CROPS** | CR:med O:y P:full S:med | CR:hi O:y P:full S:hi | CR:med O:part P:full S:med |
 | **Trust model** | Venue or builder | Threshold key holders | Sequencer + bridge |
 | **Privacy scope** | Pre-trade content only | Pre-inclusion content | Mempool + state + execution |
