@@ -276,7 +276,7 @@ example_vendors: []
 - Single-issuer cooperation is reliable and the operational simplicity of A-D is preferred
 - Threshold OPRF network operation cannot meet jurisdictional independence requirements
 
-**Implementation notes:** PoC at [Resilient Private Identity](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity) (Noir / UltraHonk, BN254). Production roadmap: BLS12-381 migration via EIP-2537, private predicate circuits, EIP-4337 paymaster or purpose-built relay infrastructure. This sub-approach exposes the `IResilientIdentity` interface used by [Approach: Private Payments, Resilient Disbursement Rails](approach-private-payments.md).
+**Implementation notes:** PoC at [Resilient Private Identity](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity) (Noir / UltraHonk, BN254). Production roadmap: BLS12-381 migration via EIP-2537, private predicate circuits, EIP-4337 paymaster or purpose-built relay infrastructure. This sub-approach exposes the `IResilientIdentity` interface used by [Approach: Private Payments, Resilient Disbursement Rails](approach-private-payments.md) and [Approach: Civic Participation](approach-civic-participation.md).
 
 ## Comparison
 

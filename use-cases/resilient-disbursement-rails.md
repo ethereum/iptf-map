@@ -100,8 +100,8 @@ See [Approach: Private Payments, Section G](../approaches/approach-private-payme
 
 ## 7) Notes And Links
 
-- **Spec:** Resilient Disbursement Rails Protocol Specification (April 2026, draft)
-- **PoC:** Forthcoming (sibling to the [Resilient Private Identity PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity))
+- **Spec:** [Resilient Disbursement Rails Protocol Specification](https://github.com/ethereum/iptf-pocs/blob/master/pocs/private-payment/resilient-disbursement-rails/SPEC.md)
+- **PoC:** [Resilient Disbursement Rails](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment/resilient-disbursement-rails)
 - **Sibling Use Case:** [Resilient Identity Continuity](resilient-identity-continuity.md)
 - **Approach:** [Private Payments, Section G](../approaches/approach-private-payments.md#g-resilient-disbursement-rails-adversarial-jurisdiction-recipients); identity-layer dependency: [Private Identity, Section F](../approaches/approach-private-identity.md#f-issuer-independent-enrollment-via-distributed-oprf)
 - **Standards:** [RFC 6979](https://www.rfc-editor.org/rfc/rfc6979) (deterministic ECDSA), [EIP-2](https://eips.ethereum.org/EIPS/eip-2) (canonical-s), [NIST SP 800-88](https://csrc.nist.gov/publications/detail/sp/800-88/rev-1/final) (media sanitization), [BSI-CC-PP-0084](https://www.bsi.bund.de/dok/CC-PP-0084) (smartcard SE protection profile)
