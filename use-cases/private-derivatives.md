@@ -8,9 +8,7 @@ secondary_domain:
 
 Banks need to run ERC-6123 interest-rate swaps on public chains without leaking margin balances, settlement amounts, and trade terms. The solution requires all economic values and trade details to be confidential while retaining automation and auditability for institutional scale adoption.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

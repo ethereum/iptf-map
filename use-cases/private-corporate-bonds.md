@@ -11,9 +11,7 @@ Corporate debt issuance where companies raising capital need to hide financing a
 
 See [private-bonds.md](private-bonds.md) for general bond patterns. Corporate bonds have specific privacy requirements around hiding funding signals from competitors.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

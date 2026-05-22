@@ -8,7 +8,7 @@ secondary_domain: compliance
 
 Maintain the ability to prove identity attributes on-chain after the original credential issuer becomes unavailable, hostile, or ceases to exist. Extends [Private Identity](private-identity.md) to an issuer-hostile threat model: the issuer may refuse new issuance, mass-revoke credentials, publish false revocation lists, or go permanently offline. Holders need credential survival, recovery without issuer cooperation, and verification that requires no issuer or registry contact.
 
-## 2) Additional Business Context
+## 2) Additional Context
 
 Resilience here is the product of plurality. A single issuer is a single point of failure; composing credential sources with per-identity cost scaling in ~N² (see [Vitalik's zk-identity framework](https://vitalik.eth.limo/general/2025/06/28/zkid.html)) distributes dependence across issuers that fail independently. [Human Passport](https://passport.human.tech/) ships this shape for grant sybil resistance today; [TACEO](https://core.taceo.io/articles/taceo-oprf/) operates a 13-node threshold vOPRF that removes the issuer from the on-chain correlation path.
 

@@ -11,9 +11,7 @@ Blockchain query privacy for institutions interacting with public blockchains. I
 
 Private RPCs are one implementation approach; the broader scope includes query pattern obfuscation, timing analysis prevention, and read-path privacy across the entire blockchain interaction stack.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

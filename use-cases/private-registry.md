@@ -9,9 +9,7 @@ secondary_domain: Funds & Assets
 
 Operating authoritative registries (securities holders, business entities, licenses, environmental permits) on-chain where registry entries must be verifiable by authorized parties but the full registry state must not be publicly exposed. Distinct from authentication (which proves membership in a registry) — this use case is about institutions that *run* registries: maintaining records, processing updates, and enabling cross-border lookups, all with privacy.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

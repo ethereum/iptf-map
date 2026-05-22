@@ -9,9 +9,7 @@ secondary_domain: Payments
 
 Tokenized money market funds providing yield-bearing treasury management for institutions. Unlike stablecoins (which typically don't earn yield), money market funds are productive assets generating returns. Institutions prefer MMFs over non-yield stablecoins for treasury management but require privacy for position sizes and yield strategies.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

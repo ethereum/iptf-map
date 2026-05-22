@@ -9,9 +9,7 @@ secondary_domain: Trading
 
 Price feeds and data sources that protect query privacy - hiding which institutions are requesting specific information. Query patterns reveal trading intent, enabling front-running and information arbitrage. Going forward, the assumption is that oracles should be default private; the entire stack must be end-to-end with no information leakage.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

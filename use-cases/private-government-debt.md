@@ -11,9 +11,7 @@ Sovereign and municipal bond tokenization where the debt itself is public record
 
 See [private-bonds.md](private-bonds.md) for general bond patterns. Government debt has different privacy requirements focused on auction integrity and holder privacy rather than hiding the issuance itself.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

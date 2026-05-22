@@ -9,9 +9,7 @@ secondary_domain: Identity & Compliance
 
 Procurement and invoicing processes where bid prices, supplier relationships, payment terms, and contract details must remain confidential between parties. Both public and enterprise procurement involve competitive dynamics where premature disclosure distorts markets, enables collusion, or reveals strategic priorities.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

@@ -9,9 +9,7 @@ secondary_domain: Payments
 
 Tokenized repurchase agreements where counterparties and transaction amounts must remain confidential. Repo is short-term secured lending - conceptually similar to DeFi flash loans, though TradFi has used this instrument for decades. The intraday lending market processes enormous volumes daily through centralized infrastructure. Privacy prevents counterparty exposure and funding cost arbitrage.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

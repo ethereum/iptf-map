@@ -9,9 +9,7 @@ secondary_domain: Funds & Assets
 
 Tokenized equity trading where position sizes, trading activity, and ownership stakes must remain confidential. Traditional exchanges face competitive pressure from crypto-native platforms and seek tokenization to create new products while protecting institutional trading strategies from exposure.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

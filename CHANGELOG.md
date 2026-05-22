@@ -4,7 +4,8 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
-- docs(domains): reframe [Domains index](domains/README.md), [Payments](domains/payments.md), [Identity & Compliance](domains/identity-compliance.md), [Funds & Assets](domains/funds-assets.md), [Trading](domains/trading.md), and [Data & Oracles](domains/data-oracles.md) to cover public-sector, NGO, and resilience contexts alongside FIs; add [Civic Coordination & Governance](domains/governance.md) domain; add `Governance` to the use-case schema enum ([#169](https://github.com/ethereum/iptf-map/issues/169))
+- docs(domains): reframe [Domains index](domains/README.md), [Payments](domains/payments.md), [Identity & Compliance](domains/identity-compliance.md), [Funds & Assets](domains/funds-assets.md), [Trading](domains/trading.md), and [Data & Oracles](domains/data-oracles.md) to cover public-sector, NGO, and resilience contexts alongside FIs; add [Civic Coordination & Governance](domains/governance.md) domain; add `governance` to the use-case schema enum ([#169](https://github.com/ethereum/iptf-map/issues/169))
+- refactor(use-cases): rename `## 2) Additional Business Context` to `## 2) Additional Context` across [_template](use-cases/_template.md) and 23 use-case cards; strip reader-facing "Confidential context" placeholder line from 20 private-* cards ([#169](https://github.com/ethereum/iptf-map/issues/169))
 - feat(use-case): [Resilient Civic Participation](use-cases/resilient-civic-participation.md) -- credentialed petition protocol with per-signer forward-secure ratcheting, blob-anchored signature batches, and a chain-state-only resolution SNARK (ECI, repository governance, workplace organising); adds [Approach: Civic Participation](approaches/approach-civic-participation.md) and generic patterns [Forward-Secure Pseudorandom Tree](patterns/pattern-forward-secure-pseudorandom-tree.md) and [Blob-Anchored State With KZG Dispute](patterns/pattern-blob-anchored-state-with-dispute.md) ([#165](https://github.com/ethereum/iptf-map/pull/165))
 - chore(approach): I2U analysis pass across [Private Payments](approaches/approach-private-payments.md), [White-Label Deployment](approaches/approach-white-label-deployment.md), and [Private Broadcasting](approaches/approach-private-broadcasting.md). Adds [Self-Custodial Deployment](approaches/approach-white-label-deployment.md) (context: i2u) to White-Label. Relabels L1 Shielded Payments, Stateless Plasma, and Private Rollups from `i2i` to `both` where the underlying technology already serves end users. Closes [`#124`](https://github.com/ethereum/iptf-map/issues/124) ([`#167`](https://github.com/ethereum/iptf-map/pull/167))
 - feat(pattern): [Private Information Retrieval](patterns/pattern-private-information-retrieval.md), plugs client-side query leakage in shielded-pool path retrieval and note discovery, and applies to any indexed lookup whose index is itself sensitive ([`#168`](https://github.com/ethereum/iptf-map/pull/168), companion to [iptf-pocs#68](https://github.com/ethereum/iptf-pocs/issues/68))
@@ -134,7 +135,7 @@ All notable changes to the IPTF Map are documented here.
 
 ### Fixed
 
-- fix(pattern): include tradeoff around handling of stock splits in erc-3643 ([#81](https://github.com/ethereum/iptf-map/pull/81))
+- fix(pattern): include tradeoff around handling of stock splits in ERC-3643 ([#81](https://github.com/ethereum/iptf-map/pull/81))
 - fix(refs): Updated [Private Bonds](use-cases/private-bonds.md) PoC links to ethereum/iptf-pocs
 - fix(pattern): Required frontmatter fields across all patterns ([#42](https://github.com/ethereum/iptf-map/pull/42))
 

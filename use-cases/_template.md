@@ -7,21 +7,9 @@ secondary_domain: <Domain, ...>
 ## 1) Use Case
 <2–3 sentences: description of business case; what they are trying to achieve.>
 
-## 2) Additional Business Context
+## 2) Additional Context
 
-**TODO: Move this into confidential context doc**
-
-```
-## Business Context
-- <Org(s) + initiative>
-- <Scale/volume target>
-- <Regulatory context>
-
-## Evidence / Validation
-- <Signal 1 (audit/pilot) >
-- <Signal 2 (committed volume) >
-- <Signal 3 (regulator/market feedback) >
-```
+<Public references that ground the use case: related work, prior art, deployments, sibling use cases, standards. Keep it factual and link out.>
 
 ## 3) Actors
 Issuer · Investors · Registrar · Regulator · Oracle · <Others>

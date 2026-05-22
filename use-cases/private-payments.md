@@ -10,9 +10,7 @@ Cross-border and domestic payment transfers where transaction details must remai
 
 See [private-stablecoins.md](private-stablecoins.md) for stablecoin-specific privacy patterns. Private payments covers broader payment rails including non-stablecoin transfers, CBDCs, and traditional payment integration.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

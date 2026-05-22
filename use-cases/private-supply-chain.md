@@ -9,9 +9,7 @@ secondary_domain: Identity & Compliance
 
 Supply chain provenance and integrity verification where commercial relationships, pricing, volumes, and routing must remain confidential between parties. Manufacturers, distributors, and retailers need to prove product authenticity and regulatory compliance to downstream buyers and regulators without exposing their supplier networks or logistics operations to competitors.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

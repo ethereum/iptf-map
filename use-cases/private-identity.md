@@ -8,9 +8,8 @@ secondary_domain: Governance
 
 Prove identity claims, membership, eligibility, or attribute possession on-chain without revealing the underlying identity or creating linkable activity. Authentication is one key application — others include credential portability, sybil resistance, and selective disclosure. Applies to financial compliance (KYC registry membership), governance (anonymous voting), national identity (selective disclosure from government documents), and community membership (sybil-resistant access).
 
-## 2) Additional Business Context
+## 2) Additional Context
 
-**Confidential context:** Available in private IPTF repo
 
 **Validated deployments:**
 

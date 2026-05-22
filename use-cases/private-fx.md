@@ -9,9 +9,7 @@ secondary_domain: Trading
 
 Cross-border foreign exchange settlement on blockchain where trading intent, positions, and execution details must remain confidential. FX is one of the largest financial markets; 99% of stablecoins are USD-backed, making cross-currency settlement a natural blockchain application. Institutions require privacy to prevent front-running and protect trading strategies.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

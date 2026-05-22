@@ -11,9 +11,7 @@ Corporate treasury operations on-chain where multi-entity organizations need to 
 
 Note: This is corporate treasury management, NOT government securities (treasuries). Government debt is covered in [private-government-debt.md](private-government-debt.md).
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 
