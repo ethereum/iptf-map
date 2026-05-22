@@ -4,7 +4,8 @@ status: draft
 ---
 
 ## TLDR
-- Price feeds, ISO/SWIFT messages, disclosure anchors, and oracle trust models.
+- Price feeds, ISO/SWIFT messages, disclosure anchors, proofs of reserves, compliance attestations, and oracle trust models.
+- Resilience uses: trusted facts during crisis, local attestations, property and identity evidence, public verification without exposing the underlying source data.
 - Bind settlement to signed facts; anchor commitments/roots for audit.
 
 ## Primary use cases

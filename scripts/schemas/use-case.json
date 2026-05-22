@@ -21,7 +21,8 @@
         "settlement",
         "tokenization",
         "derivatives",
-        "lending"
+        "lending",
+        "governance"
       ],
       "description": "Primary business domain"
     },

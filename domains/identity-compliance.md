@@ -4,11 +4,14 @@ status: draft
 ---
 
 ## TLDR
-- KYC/AML credentials, allow/deny, accreditation, attestations, revocation.
-- Public verification without publishing PII; scoped disclosure for regulators.
+- Institutional credentials: KYC/AML, accreditation, allow/deny, attestations, revocation, scoped regulator disclosure.
+- Public-sector eligibility and issuer-independent verification: digital ID wallets, residency, age, citizenship, and benefit-eligibility claims that verify without contacting the issuer.
+- Resilience identity: prove attributes after the issuer goes offline, refuses re-issuance, mass-revokes, or turns adversarial; social or web-of-trust recovery without re-exposing PII.
+- Across all three: public verification without publishing PII; unlinkable proofs across contexts; scoped disclosure for legitimate oversight.
 
 ## Primary use cases
 - [Private Identity](../use-cases/private-identity.md)
+- [Resilient Identity Continuity](../use-cases/resilient-identity-continuity.md)
 - (Cross-cut; applied in all domains as a prerequisite)
 
 ## Approaches
