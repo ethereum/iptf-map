@@ -8,7 +8,7 @@ secondary_domain: Identity
 
 Deliver private humanitarian disbursements to recipients in adversarial jurisdictions, with off-ramp unlinkability as the primary cryptographic requirement. Off-ramp unlinkability matters because every documented financial-surveillance prosecution in the public record pivoted on a KYC'd exchange account, a merchant identifier visible to a domestic bank, or a subpoenaed exchange record; chain analytics on its own has not deanonymized a specific recipient. The cash-out point is therefore the load-bearing privacy boundary in the field, not the on-chain transfer. Recipients hold tamper-resistant smartcards with no client-side ZK proving capability, intermittent or absent internet connectivity, and a high probability of device loss or seizure. Every party in the path between funder and recipient (implementing partner, identity-layer operator, relay, custodian, exchange) is assumed to eventually be breached, compelled, or inherited by a hostile successor.
 
-## 2) Additional Business Context
+## 2) Additional Context
 
 Cash and Voucher Assistance (CVA) is the humanitarian sector's term for delivering aid as money or vouchers instead of physical goods. Major donors and implementers including ICRC, UN agencies, and the [CALP Network](https://www.calpnetwork.org/) ship CVA at scale; the [Sphere Handbook](https://spherestandards.org/) sets minimum standards across cash, voucher, and in-kind aid; the [ICRC Handbook on Data Protection in Humanitarian Action (2nd ed, 2020)](https://www.icrc.org/en/data-protection-humanitarian-action-handbook) is the authoritative guide on data protection in humanitarian operations.
 

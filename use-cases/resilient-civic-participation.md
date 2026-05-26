@@ -1,6 +1,6 @@
 ---
 title: "Resilient Civic Participation"
-primary_domain: Governance
+primary_domain: governance
 secondary_domain: identity
 ---
 
@@ -8,7 +8,7 @@ secondary_domain: identity
 
 Run credentialed petitions where signatures prove eligibility under a stated criterion. Repository-governance ballots and employee-organising lists fit the same shape. Who signed has to stay private, both within a petition and across any future ones, and the outcome has to remain checkable years after the host platform shuts down. Existing platforms either publish the signed list or route eligibility through an operator; either way, the operator staying cooperative is what holds it together. Extends [Resilient Identity Continuity](resilient-identity-continuity.md) from the credential layer to the petition layer.
 
-## 2) Additional Business Context
+## 2) Additional Context
 
 The European Citizens' Initiative ([ECI](https://citizens-initiative.europa.eu/)) requires 1M signatures across at least seven member states with per-state minima; today's signature-collection workflows lean on operator-mediated identity attestations and publish per-state statements as outcome evidence. Repository governance ballots on GitHub Discussions and DAO snapshots collapse eligibility to operator-side membership checks. Workplace organising-list collection in jurisdictions with explicit retaliation risk reproduces the same problem against a hostile-employer threat model. In every case, the operator step is where the compelled-disclosure pressure lands.
 

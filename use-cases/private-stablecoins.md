@@ -10,9 +10,7 @@ Institutions want to use stablecoins as settlement cash without exposing amounts
 
 **Note:** In jurisdictions where stablecoins are restricted, these same privacy patterns apply to authorized digital currencies (e.g., CBDCs, tokenized deposits).
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

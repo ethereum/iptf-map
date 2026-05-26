@@ -4,7 +4,8 @@ status: draft
 ---
 
 ## TLDR
-- Asset lifecycle: issuance, transfers, registry linkages, portfolio moves.
+- Asset lifecycle: issuance, transfers, registry linkages, portfolio moves for private funds, bonds, RWAs, collateral, treasury assets, and asset servicing.
+- Public-sector and NGO claims: entitlements, vouchers, permits, beneficiary rights, post-crisis records that need verifiable audit without exposing the holder.
 - Hide amounts/positions; preserve DvP finality; bridge legal records via attestations.
 - Derivatives: daily deltas/margins hidden; regulator replayable audit.
 - Pick cheapest viable privacy that meets audit needs; measure costs under 4844.

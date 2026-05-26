@@ -4,12 +4,14 @@ status: draft
 ---
 
 ## TLDR
-- Institutional cash movement: payouts, PvP, DvP cash legs, workflow/memo privacy.
-- Stakeholder-only visibility with selective disclosure; ISO/SWIFT linkage when needed.
-- Measure latency/finality/costs on target L2/app-chain; avoid HTLC brittleness.
+- Institutional cash movement: payouts, PvP, DvP cash legs, treasury flows, workflow/memo privacy with stakeholder-only visibility and ISO/SWIFT linkage when needed.
+- Public-sector and NGO disbursement: benefits, aid, grants, vouchers, emergency cash, donor-to-recipient flows with private eligibility and recipient unlinkability.
+- Resilience payments: offline or low-connectivity transfer, hostile-authority settings, off-ramp unlinkability, recipient devices without client-side proving capability.
+- Measure latency, finality, and costs on the target L2 or app-chain; avoid HTLC brittleness.
 
 ## Primary use cases
 - [Private Stablecoins for Institutional Payments](../use-cases/private-stablecoins.md)
+- [Resilient Disbursement Rails](../use-cases/resilient-disbursement-rails.md)
 
 ## Shortest-path patterns
 - [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)

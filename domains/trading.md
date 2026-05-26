@@ -4,7 +4,8 @@ status: draft
 ---
 
 ## TLDR
-- Execution privacy: RFQ intent/size/price, pre-trade leakage control.
+- Execution privacy: RFQ intent/size/price, pre-trade leakage control across private trading, derivatives, and OTC settlement.
+- Public-sector and NGO procurement and settlement where counterparties, prices, or allocations are sensitive.
 - Cross-domain atomicity (DvP/PvP) without HTLCs; optional zk-SPV for strong atomicity.
 
 ## Primary use cases

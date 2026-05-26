@@ -8,9 +8,7 @@ secondary_domain:
 
 Institutional bond issuance and trading on public blockchains where volumes, prices, and positions must remain confidential to prevent front-running and strategy exposure. The solution requires confidential amounts and positions with selective regulator visibility, atomic delivery-versus-payment (DvP) settlement, while maintaining public-chain finality and economically viable daily settlement cycles.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

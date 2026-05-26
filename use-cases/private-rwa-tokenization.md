@@ -8,9 +8,8 @@ secondary_domain:
 
 Regulated real-world assets (RWAs) are tokenized on-chain to enable permissioned transfers of ownership and co-ownership. The solution requires private pricing and valuation with full history, unlinkable ownership and transfer histories, exportable ownership with accreditation proofs, and policy enforcement based on attestations with regulatory intervention capabilities.
 
-## 2) Additional Business Context
+## 2) Additional Context
 
-**Confidential context:** Available in private IPTF repo
 
 ### Market Signals
 

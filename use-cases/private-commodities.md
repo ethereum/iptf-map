@@ -9,9 +9,7 @@ secondary_domain: Funds & Assets
 
 Tokenized commodity trading where position sizes, trading strategies, and physical delivery arrangements must remain confidential. Gold is the primary tokenized commodity today, typically using synthetic/digital twin models. Trading houses require privacy to protect proprietary strategies and prevent market manipulation through position exposure.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 

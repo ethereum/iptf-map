@@ -9,9 +9,7 @@ secondary_domain: Trading
 
 Encrypted communication channels for financial institutions conducting blockchain transactions. Pre-trade negotiation, deal structuring, and counterparty communication contain sensitive information that must remain confidential between parties while supporting regulatory oversight and audit requirements. The solution requires end-to-end encryption with selective disclosure capabilities.
 
-## 2) Additional Business Context
-
-**Confidential context:** Available in private IPTF repo
+## 2) Additional Context
 
 ## 3) Actors
 
