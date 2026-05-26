@@ -7,6 +7,8 @@ status: draft
 - Institutional cash movement: payouts, PvP, DvP cash legs, treasury flows, workflow/memo privacy with stakeholder-only visibility and ISO/SWIFT linkage when needed.
 - Public-sector and NGO disbursement: benefits, aid, grants, vouchers, emergency cash, donor-to-recipient flows with private eligibility and recipient unlinkability.
 - Resilience payments: offline or low-connectivity transfer, hostile-authority settings, off-ramp unlinkability, recipient devices without client-side proving capability.
+
+## Approach lens
 - Measure latency, finality, and costs on the target L2 or app-chain; avoid HTLC brittleness.
 
 ## Primary use cases

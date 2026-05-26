@@ -7,6 +7,8 @@ status: draft
 
 - A Cryptographically Relevant Quantum Computer (CRQC) breaks ECDSA, BLS, ECDH, Groth16, PLONK/KZG — Ethereum consensus, execution, and application privacy layers all affected.
 - Harvest Now, Decrypt Later (HNDL) means confidentiality-critical applications face urgency now, even though CRQC is years away.
+
+## Approach lens
 - Hash-based and lattice-based primitives provide migration paths; STARKs are already PQ-safe.
 
 ## PQ Threat Landscape

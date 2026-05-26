@@ -8,6 +8,8 @@ status: draft
 - Public-sector and NGO claims: entitlements, vouchers, permits, beneficiary rights, post-crisis records that need verifiable audit without exposing the holder.
 - Hide amounts/positions; preserve DvP finality; bridge legal records via attestations.
 - Derivatives: daily deltas/margins hidden; regulator replayable audit.
+
+## Approach lens
 - Pick cheapest viable privacy that meets audit needs; measure costs under 4844.
 
 ## Primary use cases
