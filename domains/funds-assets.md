@@ -1,6 +1,7 @@
 ---
 title: "Domain: Funds & Assets"
 status: draft
+description: "Hold and transfer claims with hidden positions and verifiable audit across the asset lifecycle."
 ---
 
 ## TLDR

@@ -1,6 +1,7 @@
 ---
 title: "Domain: Trading"
 status: draft
+description: "Execute and settle without leaking intent, size, or counterparties to the wider market."
 ---
 
 ## TLDR

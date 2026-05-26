@@ -1,6 +1,7 @@
 ---
 title: "Domain: Civic Coordination & Governance"
 status: draft
+description: "Coordinate, vote, and signal with verifiable outcomes but unlinkable participants."
 ---
 
 ## TLDR

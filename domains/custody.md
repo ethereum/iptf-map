@@ -1,6 +1,7 @@
 ---
 title: "Domain: Custody"
 status: draft
+description: "Protect keys, controls, and recovery while preserving scoped oversight for legitimate auditors and successors."
 ---
 
 ## TLDR
