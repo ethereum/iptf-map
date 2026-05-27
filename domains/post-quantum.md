@@ -1,6 +1,7 @@
 ---
 title: "Domain: Post-Quantum Threats"
 status: draft
+description: "Migrate privacy and authentication to PQ-safe foundations before harvested ciphertexts can be decrypted."
 ---
 
 ## TLDR

@@ -1,6 +1,7 @@
 ---
 title: "Domain: Payments"
 status: draft
+description: "Move value with stakeholder-scoped visibility, from institutional settlement to last-mile disbursement."
 ---
 
 ## TLDR

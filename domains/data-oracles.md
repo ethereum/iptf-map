@@ -1,6 +1,7 @@
 ---
 title: "Domain: Data & Oracles"
 status: draft
+description: "Bind onchain logic to signed facts while keeping the underlying source data confidential."
 ---
 
 ## TLDR

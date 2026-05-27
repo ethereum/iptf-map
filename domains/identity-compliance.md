@@ -1,6 +1,7 @@
 ---
 title: "Domain: Identity & Compliance"
 status: draft
+description: "Prove eligibility and authority without exposing PII, even when the issuer is unavailable or adversarial."
 ---
 
 ## TLDR
