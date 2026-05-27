@@ -26,9 +26,11 @@ jobs:
 
       - name: Summary
         if: always()
+        env:
+          LINK_CHECK_OUTCOME: ${{ steps.markdown-link-check.outcome }}
         run: |
           echo "## Full Link Check Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Checked all markdown files in the repository." >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Status:** ${{ steps.markdown-link-check.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${LINK_CHECK_OUTCOME}" >> $GITHUB_STEP_SUMMARY
