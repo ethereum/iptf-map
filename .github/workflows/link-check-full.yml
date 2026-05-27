@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Check all markdown links
+        id: markdown-link-check
         uses: gaurav-nelson/github-action-markdown-link-check@5c5dfc0ac2e225883c0e5f03a85311ec2830d368 # v1
         env:
           NODE_OPTIONS: --no-deprecation
@@ -29,3 +30,5 @@ jobs:
           echo "## Full Link Check Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Checked all markdown files in the repository." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${{ steps.markdown-link-check.outcome }}" >> $GITHUB_STEP_SUMMARY
