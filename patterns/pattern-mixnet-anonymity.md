@@ -1,6 +1,6 @@
 ---
 title: "Pattern: Mixnet Anonymity"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: offchain

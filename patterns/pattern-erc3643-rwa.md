@@ -36,7 +36,7 @@ post_quantum:
   vector: "ECDSA signatures on agent and holder keys are broken by a CRQC. HNDL risk is moderate since on-chain identity data is public but linkable to off-chain PII."
   mitigation: "Migrate agent and governance keys to post-quantum signature schemes; anchor claims via hash-based attestation schemes rather than ECDSA-signed claims."
 
-standards: [ERC-3643, ERC-734, ERC-735, ERC-8056]
+standards: [ERC-3643, ERC-734, ERC-735]
 
 related_patterns:
   composes_with: [pattern-crypto-registry-bridge-ewpg-eas, pattern-regulatory-disclosure-keys-proofs, pattern-zk-kyc-ml-id-erc734-735]
@@ -88,7 +88,6 @@ Threat model:
 - Additional compliance checks on every transfer raise gas costs.
 - Not suitable for permissionless DeFi composition. Many protocols will reject permissioned tokens.
 - Compliance rules must be maintained and updated as regulations evolve, which requires ongoing governance.
-- Limited support for stock split events: ERC-8056 proposes an extension that applies a UI multiplier rather than minting new tokens for each holder.
 
 ## Example
 
@@ -98,4 +97,3 @@ An issuer tokenizes a bond as a permissioned token with investor accreditation r
 
 - [Private Bonds Approach](../approaches/approach-private-bonds.md)
 - [ERC-3643 documentation](https://docs.erc3643.org/erc-3643)
-- [ERC-8056 UI-multiplier stock split extension](https://eips.ethereum.org/EIPS/eip-8056)

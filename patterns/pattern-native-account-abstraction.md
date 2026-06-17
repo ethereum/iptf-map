@@ -1,6 +1,6 @@
 ---
 title: "Pattern: Native Account Abstraction (EIP-8141)"
-status: draft
+status: ready
 maturity: concept
 type: standard
 layer: L1

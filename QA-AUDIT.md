@@ -45,13 +45,13 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 | Section | Total | OK | Claimed | Needs Fix | Deprecated | Pending |
 |---------|-------|----|---------|-----------|------------|---------|
-| Patterns | 70 | 0 | 10 | 0 | 0 | 60 |
+| Patterns | 70 | 10 | 0 | 0 | 0 | 60 |
 | Use Cases | 23 | 0 | 0 | 0 | 0 | 23 |
 | Approaches | 10 | 0 | 0 | 0 | 0 | 10 |
 | Domains | 8 | 0 | 0 | 0 | 0 | 8 |
 | Jurisdictions | 7 | 0 | 0 | 0 | 0 | 7 |
 | Vendors | 24 | 0 | 0 | 0 | 0 | 24 |
-| **Total** | **142** | **0** | **10** | **0** | **0** | **132** |
+| **Total** | **142** | **10** | **0** | **0** | **0** | **132** |
 
 ---
 
@@ -61,13 +61,13 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 |---|------|--------|----------|---------|----------|-------|
 | 1 | [pattern-blob-anchored-state-with-dispute.md](patterns/pattern-blob-anchored-state-with-dispute.md) | `pending` |  |  |  |  |
 | 2 | [pattern-co-snark.md](patterns/pattern-co-snark.md) | `pending` |  |  |  |  |
-| 3 | [pattern-commit-and-prove.md](patterns/pattern-commit-and-prove.md) | `claimed` | Meyanis95 | 2026-06-15 |  |  |
+| 3 | [pattern-commit-and-prove.md](patterns/pattern-commit-and-prove.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Retitled to cross-chain settlement; status→ready |
 | 4 | [pattern-compliance-monitoring.md](patterns/pattern-compliance-monitoring.md) | `pending` |  |  |  |  |
 | 5 | [pattern-cross-chain-privacy-bridge.md](patterns/pattern-cross-chain-privacy-bridge.md) | `pending` |  |  |  |  |
-| 6 | [pattern-crypto-registry-bridge-ewpg-eas.md](patterns/pattern-crypto-registry-bridge-ewpg-eas.md) | `claimed` | Meyanis95 | 2026-06-15 |  |  |
+| 6 | [pattern-crypto-registry-bridge-ewpg-eas.md](patterns/pattern-crypto-registry-bridge-ewpg-eas.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Title register→registry (matches filename) |
 | 7 | [pattern-dvp-erc7573.md](patterns/pattern-dvp-erc7573.md) | `pending` |  |  |  |  |
 | 8 | [pattern-eil.md](patterns/pattern-eil.md) | `pending` |  |  |  |  |
-| 9 | [pattern-erc3643-rwa.md](patterns/pattern-erc3643-rwa.md) | `claimed` | Meyanis95 | 2026-06-15 |  |  |
+| 9 | [pattern-erc3643-rwa.md](patterns/pattern-erc3643-rwa.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Removed unverified ERC-8056 refs; status→ready |
 | 10 | [pattern-focil-eip7805.md](patterns/pattern-focil-eip7805.md) | `pending` |  |  |  |  |
 | 11 | [pattern-forced-withdrawal.md](patterns/pattern-forced-withdrawal.md) | `pending` |  |  |  |  |
 | 12 | [pattern-forward-secure-pseudorandom-tree.md](patterns/pattern-forward-secure-pseudorandom-tree.md) | `pending` |  |  |  |  |
@@ -79,14 +79,14 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 18 | [pattern-l2-privacy-evaluation.md](patterns/pattern-l2-privacy-evaluation.md) | `pending` |  |  |  |  |
 | 19 | [pattern-lean-ethereum.md](patterns/pattern-lean-ethereum.md) | `pending` |  |  |  |  |
 | 20 | [pattern-mesh-store-forward-submission.md](patterns/pattern-mesh-store-forward-submission.md) | `pending` |  |  |  |  |
-| 21 | [pattern-mixnet-anonymity.md](patterns/pattern-mixnet-anonymity.md) | `claimed` | Meyanis95 | 2026-06-15 |  |  |
+| 21 | [pattern-mixnet-anonymity.md](patterns/pattern-mixnet-anonymity.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed; status→ready |
 | 22 | [pattern-modular-privacy-stack.md](patterns/pattern-modular-privacy-stack.md) | `pending` |  |  |  |  |
 | 23 | [pattern-mpc-custody.md](patterns/pattern-mpc-custody.md) | `pending` |  |  |  |  |
-| 24 | [pattern-native-account-abstraction.md](patterns/pattern-native-account-abstraction.md) | `claimed` | Meyanis95 | 2026-06-15 |  |  |
-| 25 | [pattern-network-anonymity.md](patterns/pattern-network-anonymity.md) | `claimed` | Meyanis95 | 2026-06-15 |  |  |
+| 24 | [pattern-native-account-abstraction.md](patterns/pattern-native-account-abstraction.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed; status→ready |
+| 25 | [pattern-network-anonymity.md](patterns/pattern-network-anonymity.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed; status→ready |
 | 26 | [pattern-noir-private-contracts.md](patterns/pattern-noir-private-contracts.md) | `pending` |  |  |  |  |
 | 27 | [pattern-oif.md](patterns/pattern-oif.md) | `pending` |  |  |  |  |
-| 28 | [pattern-onion-routing.md](patterns/pattern-onion-routing.md) | `claimed` | Meyanis95 | 2026-06-15 |  |  |
+| 28 | [pattern-onion-routing.md](patterns/pattern-onion-routing.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed; status→ready |
 | 29 | [pattern-origin-locked-confidential-ledger.md](patterns/pattern-origin-locked-confidential-ledger.md) | `pending` |  |  |  |  |
 | 30 | [pattern-permissioned-ledger-interoperability.md](patterns/pattern-permissioned-ledger-interoperability.md) | `pending` |  |  |  |  |
 | 31 | [pattern-permissionless-spend-auth.md](patterns/pattern-permissionless-spend-auth.md) | `pending` |  |  |  |  |
@@ -112,9 +112,9 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 51 | [pattern-regulatory-disclosure-keys-proofs.md](patterns/pattern-regulatory-disclosure-keys-proofs.md) | `pending` |  |  |  |  |
 | 52 | [pattern-relay-mediated-proving.md](patterns/pattern-relay-mediated-proving.md) | `pending` |  |  |  |  |
 | 53 | [pattern-safe-proof-delegation.md](patterns/pattern-safe-proof-delegation.md) | `pending` |  |  |  |  |
-| 54 | [pattern-shielding.md](patterns/pattern-shielding.md) | `claimed` | Meyanis95 | 2026-06-15 |  |  |
-| 55 | [pattern-social-recovery.md](patterns/pattern-social-recovery.md) | `claimed` | Meyanis95 | 2026-06-15 |  |  |
-| 56 | [pattern-stealth-addresses.md](patterns/pattern-stealth-addresses.md) | `claimed` | Meyanis95 | 2026-06-15 |  |  |
+| 54 | [pattern-shielding.md](patterns/pattern-shielding.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Dropped ERC-3643 from standards; added hardened-pool refs |
+| 55 | [pattern-social-recovery.md](patterns/pattern-social-recovery.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Removed bold + inline i2u/i2i; Protocol role tags; status→ready |
+| 56 | [pattern-stealth-addresses.md](patterns/pattern-stealth-addresses.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed, clean; status→ready |
 | 57 | [pattern-tee-based-privacy.md](patterns/pattern-tee-based-privacy.md) | `pending` |  |  |  |  |
 | 58 | [pattern-tee-key-manager.md](patterns/pattern-tee-key-manager.md) | `pending` |  |  |  |  |
 | 59 | [pattern-tee-network-anonymity.md](patterns/pattern-tee-network-anonymity.md) | `pending` |  |  |  |  |
