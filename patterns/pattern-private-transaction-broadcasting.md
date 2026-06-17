@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Private Transaction Broadcasting"
-status: draft
+status: ready
 maturity: production
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Transaction content must stay hidden from the public mempool until block inclusion to prevent MEV extraction.
@@ -39,8 +39,7 @@ post_quantum:
 standards: []
 
 related_patterns:
-  composes_with: [pattern-threshold-encrypted-mempool, pattern-pretrade-privacy-encryption, pattern-focil-eip7805, pattern-mixnet-anonymity, pattern-onion-routing]
-  alternative_to: [pattern-shielding]
+  composes_with: [pattern-threshold-encrypted-mempool, pattern-pretrade-privacy-encryption, pattern-focil-eip7805, pattern-mixnet-anonymity, pattern-onion-routing, pattern-shielding]
   see_also: [pattern-modular-privacy-stack, pattern-network-anonymity]
 
 open_source_implementations:

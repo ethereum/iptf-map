@@ -1,9 +1,9 @@
 ---
 title: "Pattern: Mesh Store-and-Forward Submission"
-status: draft
+status: ready
 maturity: production
 layer: offchain
-last_reviewed: 2026-04-27
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Senders lack persistent internet connectivity
@@ -46,8 +46,8 @@ open_source_implementations:
   - url: https://meshtastic.org/
     description: "Meshtastic: LoRa mesh messaging firmware"
     language: C++
-  - url: https://bridgefy.me/
-    description: "Bridgefy: commercial Bluetooth mesh SDK"
+  - url: https://github.com/bridgefy
+    description: "Bridgefy: Bluetooth mesh SDK (MIT-licensed)"
     language: Swift/Kotlin
 ---
 
@@ -99,6 +99,6 @@ Reporters and human-rights observers in a region with periodic internet shutdown
 
 - [Briar Project](https://briarproject.org/): peer-to-peer messenger over Bluetooth LE, Wi-Fi LAN, and Tor.
 - [Meshtastic](https://meshtastic.org/): LoRa mesh messaging firmware.
-- [Bridgefy](https://bridgefy.me/): commercial Bluetooth mesh SDK.
+- [Bridgefy](https://bridgefy.me/): Bluetooth mesh SDK (MIT-licensed).
 - [Sphinx mix format (Danezis & Goldberg, IEEE S&P 2009)](https://cypherpunks.ca/~iang/pubs/Sphinx_Oakland09.pdf).
 - [RFC 8439: ChaCha20 and Poly1305 for IETF Protocols](https://www.rfc-editor.org/rfc/rfc8439).
