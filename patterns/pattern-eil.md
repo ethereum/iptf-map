@@ -1,10 +1,10 @@
 ---
 title: "Pattern: EIL (Ethereum Interoperability Layer)"
-status: draft
+status: ready
 maturity: concept
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - User needs to execute calls on multiple L2s with one signature.

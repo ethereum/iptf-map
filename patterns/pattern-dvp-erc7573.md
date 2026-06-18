@@ -4,7 +4,7 @@ status: ready
 maturity: concept
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Asset and cash legs live on different networks (L1 or L2).
@@ -32,7 +32,7 @@ post_quantum:
   vector: "Oracle decryption relies on standard public-key encryption; outcome key commitments inherit hash assumptions. Payment-network signatures carry host-chain PQ exposure."
   mitigation: "Migrate decryption to PQ-safe KEM schemes (Kyber, ML-KEM) as ERC-7573 extensions mature. See [Post-Quantum Threats](../domains/post-quantum.md)."
 
-standards: [EIP-7573, ERC-20]
+standards: [ERC-7573, ERC-20]
 
 related_patterns:
   composes_with: [pattern-mpc-custody, pattern-regulatory-disclosure-keys-proofs, pattern-threshold-encrypted-mempool]

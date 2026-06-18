@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Immutable Guarantees"
-status: draft
+status: ready
 maturity: concept
 type: standard
 layer: hybrid
-last_reviewed: 2026-05-14
+last_reviewed: 2026-06-18
 
 works-best-when:
   - An institutional deployment uses admin keys, upgradeable contracts, or governance roles that could in principle be turned against users.

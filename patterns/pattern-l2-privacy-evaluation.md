@@ -1,10 +1,10 @@
 ---
 title: "Pattern: L2 Privacy Evaluation Framework"
-status: draft
+status: ready
 maturity: concept
 type: standard
 layer: L2
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Multiple privacy L2s must be compared for an institutional deployment decision.

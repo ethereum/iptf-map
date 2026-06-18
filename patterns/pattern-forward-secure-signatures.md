@@ -1,9 +1,9 @@
 ---
 title: "Pattern: Forward-Secure Signatures"
-status: draft
+status: ready
 maturity: concept
 layer: offchain
-last_reviewed: 2026-04-27
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Signer is physically seizable and erase-capable
@@ -44,7 +44,7 @@ related_patterns:
   see_also: [pattern-mpc-custody]
 
 open_source_implementations:
-  - url: https://cseweb.ucsd.edu/~mihir/papers/fsig.html
+  - url: https://eprint.iacr.org/1999/016
     description: "Bellare and Miner forward-secure signature scheme (1999, reference paper)"
     language: paper
 ---
@@ -57,10 +57,10 @@ The deployable instantiation on constrained signers is a hash-chain key-evolutio
 
 ## Components
 
-- **One-way derivation primitive**: SHA-2, or HMAC-SHA256 when per-epoch domain separation is needed.
-- **Underlying signature scheme**: ECDSA-secp256k1 with RFC 6979 deterministic nonces and canonical-s, EdDSA, or RSA-PSS. The forward-secure wrapper does not replace the signature scheme.
-- **Erase-capable storage**: per-epoch state securely erased at transition. Transactional erase prevents failure modes that leave both `epochSecret_{i-1}` and `epochSecret_i` resident.
-- **Epoch boundary signal**: external clock, on-chain event, or beacon. Signer and verifier must agree on the current epoch.
+- One-way derivation primitive: SHA-2, or HMAC-SHA256 when per-epoch domain separation is needed.
+- Underlying signature scheme: ECDSA-secp256k1 with RFC 6979 deterministic nonces and canonical-s, EdDSA, or RSA-PSS. The forward-secure wrapper does not replace the signature scheme.
+- Erase-capable storage: per-epoch state securely erased at transition. Transactional erase prevents failure modes that leave both `epochSecret_{i-1}` and `epochSecret_i` resident.
+- Epoch boundary signal: external clock, on-chain event, or beacon. Signer and verifier must agree on the current epoch.
 
 ## Protocol
 
@@ -73,10 +73,10 @@ The deployable instantiation on constrained signers is a hash-chain key-evolutio
 
 ## Guarantees & threat model
 
-- **Forward secrecy**: an adversary holding `epochSecret_i` cannot recover `epochSecret_j` for `j < i` because SHA-256 is one-way. Past signatures retain their privacy properties up to public-channel disclosure.
-- **Unforgeability of past signatures**: compromise at epoch `i` does not retroactively forge epoch `j < i` signatures.
-- **Bounded compromise window**: damage scope is the current and future epochs, not the device lifetime.
-- **Threat model**: adversary reads post-compromise device state. Out of scope: covert pre-compromise observation that captures `epochSecret_j` live; side-channel leakage that reveals stored secrets before erase.
+- Forward secrecy: an adversary holding `epochSecret_i` cannot recover `epochSecret_j` for `j < i` because SHA-256 is one-way. Past signatures retain their privacy properties up to public-channel disclosure.
+- Unforgeability of past signatures: compromise at epoch `i` does not retroactively forge epoch `j < i` signatures.
+- Bounded compromise window: damage scope is the current and future epochs, not the device lifetime.
+- Threat model: adversary reads post-compromise device state. Out of scope: covert pre-compromise observation that captures `epochSecret_j` live; side-channel leakage that reveals stored secrets before erase.
 
 ## Trade-offs
 
@@ -91,7 +91,7 @@ A document timestamping authority signs proof-of-existence statements weekly. Th
 
 ## See also
 
-- [Bellare and Miner, "A Forward-Secure Digital Signature Scheme" (CRYPTO 1999)](https://cseweb.ucsd.edu/~mihir/papers/fsig.html).
+- [Bellare and Miner, "A Forward-Secure Digital Signature Scheme" (CRYPTO 1999)](https://eprint.iacr.org/1999/016).
 - [NIST SP 800-88 Rev. 1: Guidelines for Media Sanitization](https://csrc.nist.gov/publications/detail/sp/800-88/rev-1/final).
 - [RFC 6979: Deterministic Usage of DSA and ECDSA](https://www.rfc-editor.org/rfc/rfc6979).
 - [FIPS 186-5: Digital Signature Standard](https://csrc.nist.gov/publications/detail/fips/186/5/final).
