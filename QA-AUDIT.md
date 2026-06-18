@@ -45,13 +45,13 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 | Section | Total | OK | Claimed | Needs Fix | Deprecated | Pending |
 |---------|-------|----|---------|-----------|------------|---------|
-| Patterns | 70 | 50 | 0 | 0 | 0 | 20 |
+| Patterns | 70 | 50 | 20 | 0 | 0 | 0 |
 | Use Cases | 23 | 0 | 0 | 0 | 0 | 23 |
 | Approaches | 10 | 0 | 0 | 0 | 0 | 10 |
 | Domains | 8 | 0 | 0 | 0 | 0 | 8 |
 | Jurisdictions | 7 | 0 | 0 | 0 | 0 | 7 |
 | Vendors | 24 | 0 | 0 | 0 | 0 | 24 |
-| **Total** | **142** | **50** | **0** | **0** | **0** | **92** |
+| **Total** | **142** | **50** | **20** | **0** | **0** | **72** |
 
 ---
 
@@ -59,28 +59,28 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
 |---|------|--------|----------|---------|----------|-------|
-| 1 | [pattern-blob-anchored-state-with-dispute.md](patterns/pattern-blob-anchored-state-with-dispute.md) | `pending` |  |  |  |  |
+| 1 | [pattern-blob-anchored-state-with-dispute.md](patterns/pattern-blob-anchored-state-with-dispute.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 2 | [pattern-co-snark.md](patterns/pattern-co-snark.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed, clean; status→ready |
 | 3 | [pattern-commit-and-prove.md](patterns/pattern-commit-and-prove.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Retitled to cross-chain settlement; status→ready |
 | 4 | [pattern-compliance-monitoring.md](patterns/pattern-compliance-monitoring.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | maturity testnet→concept (no impls, generic); dropped ERC-3643 from standards (kept in composes_with); softened latency figure; status→ready |
 | 5 | [pattern-cross-chain-privacy-bridge.md](patterns/pattern-cross-chain-privacy-bridge.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | maturity testnet→concept; fixed broken EIP-7281 link → ERC-7281 (migrated to ERCs); folded non-template Variants into Trade-offs; status→ready |
 | 6 | [pattern-crypto-registry-bridge-ewpg-eas.md](patterns/pattern-crypto-registry-bridge-ewpg-eas.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Title register→registry (matches filename) |
-| 7 | [pattern-dvp-erc7573.md](patterns/pattern-dvp-erc7573.md) | `pending` |  |  |  |  |
-| 8 | [pattern-eil.md](patterns/pattern-eil.md) | `pending` |  |  |  |  |
+| 7 | [pattern-dvp-erc7573.md](patterns/pattern-dvp-erc7573.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 8 | [pattern-eil.md](patterns/pattern-eil.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 9 | [pattern-erc3643-rwa.md](patterns/pattern-erc3643-rwa.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Removed unverified ERC-8056 refs; status→ready |
 | 10 | [pattern-focil-eip7805.md](patterns/pattern-focil-eip7805.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Protocol role tags [sequencer]→consensus/committee/validator/builder/proposer/attester; all params (16, 8 KiB, timings) verified vs EIP-7805; status→ready |
 | 11 | [pattern-forced-withdrawal.md](patterns/pattern-forced-withdrawal.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Dropped disputed proving-time figures; gas qualified to Groth16; arXiv 86%/129 stat verified; status→ready |
-| 12 | [pattern-forward-secure-pseudorandom-tree.md](patterns/pattern-forward-secure-pseudorandom-tree.md) | `pending` |  |  |  |  |
-| 13 | [pattern-forward-secure-signatures.md](patterns/pattern-forward-secure-signatures.md) | `pending` |  |  |  |  |
-| 14 | [pattern-hybrid-public-private-modes.md](patterns/pattern-hybrid-public-private-modes.md) | `pending` |  |  |  |  |
+| 12 | [pattern-forward-secure-pseudorandom-tree.md](patterns/pattern-forward-secure-pseudorandom-tree.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 13 | [pattern-forward-secure-signatures.md](patterns/pattern-forward-secure-signatures.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 14 | [pattern-hybrid-public-private-modes.md](patterns/pattern-hybrid-public-private-modes.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 15 | [pattern-icma-bdt-data-model.md](patterns/pattern-icma-bdt-data-model.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Privacy badge full→none (schema is not a privacy mechanism) |
-| 16 | [pattern-immutable-guarantees.md](patterns/pattern-immutable-guarantees.md) | `pending` |  |  |  |  |
+| 16 | [pattern-immutable-guarantees.md](patterns/pattern-immutable-guarantees.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 17 | [pattern-l2-encrypted-offchain-audit.md](patterns/pattern-l2-encrypted-offchain-audit.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Trimmed unjustified ERC-3643 from standards |
-| 18 | [pattern-l2-privacy-evaluation.md](patterns/pattern-l2-privacy-evaluation.md) | `pending` |  |  |  |  |
-| 19 | [pattern-lean-ethereum.md](patterns/pattern-lean-ethereum.md) | `pending` |  |  |  |  |
+| 18 | [pattern-l2-privacy-evaluation.md](patterns/pattern-l2-privacy-evaluation.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 19 | [pattern-lean-ethereum.md](patterns/pattern-lean-ethereum.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 20 | [pattern-mesh-store-forward-submission.md](patterns/pattern-mesh-store-forward-submission.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Bridgefy is MIT-licensed (fixed "commercial"); status→ready; maturity raised as Open Q |
 | 21 | [pattern-mixnet-anonymity.md](patterns/pattern-mixnet-anonymity.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed; status→ready |
-| 22 | [pattern-modular-privacy-stack.md](patterns/pattern-modular-privacy-stack.md) | `pending` |  |  |  |  |
+| 22 | [pattern-modular-privacy-stack.md](patterns/pattern-modular-privacy-stack.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 23 | [pattern-mpc-custody.md](patterns/pattern-mpc-custody.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Swapped ZenGo repo→klaytn-thresh-wallet (2-party); reworded "regulated-grade"; status→ready |
 | 24 | [pattern-native-account-abstraction.md](patterns/pattern-native-account-abstraction.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed; status→ready |
 | 25 | [pattern-network-anonymity.md](patterns/pattern-network-anonymity.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed; status→ready |
@@ -89,14 +89,14 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 28 | [pattern-onion-routing.md](patterns/pattern-onion-routing.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed; status→ready |
 | 29 | [pattern-origin-locked-confidential-ledger.md](patterns/pattern-origin-locked-confidential-ledger.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Softened ElGamal→"e.g." and MPC→threshold cryptography (threshold IBE) to match cited Fairblock design; status→ready |
 | 30 | [pattern-permissioned-ledger-interoperability.md](patterns/pattern-permissioned-ledger-interoperability.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Besu privacy groups deprecated+removed (noted) & repo→besu-eth/besu; DAML→Daml + dropped from standards; status→ready |
-| 31 | [pattern-permissionless-spend-auth.md](patterns/pattern-permissionless-spend-auth.md) | `pending` |  |  |  |  |
+| 31 | [pattern-permissionless-spend-auth.md](patterns/pattern-permissionless-spend-auth.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 32 | [pattern-plasma-stateless-privacy.md](patterns/pattern-plasma-stateless-privacy.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Fixed wrong eprint cites: removed 2023/1670 (actually a PSI paper); Intmax2 2025/021→2023/1082; status→ready |
 | 33 | [pattern-pretrade-privacy-encryption.md](patterns/pattern-pretrade-privacy-encryption.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Marked suave-geth as archived (2025) |
 | 34 | [pattern-privacy-l2s.md](patterns/pattern-privacy-l2s.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Removed Aleo (L1) + fhEVM refs; kept production (Aztec); status→ready; FHE framing raised as Open Q |
-| 35 | [pattern-private-information-retrieval.md](patterns/pattern-private-information-retrieval.md) | `pending` |  |  |  |  |
-| 36 | [pattern-private-iso20022.md](patterns/pattern-private-iso20022.md) | `pending` |  |  |  |  |
+| 35 | [pattern-private-information-retrieval.md](patterns/pattern-private-information-retrieval.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 36 | [pattern-private-iso20022.md](patterns/pattern-private-iso20022.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 37 | [pattern-private-mtp-auth.md](patterns/pattern-private-mtp-auth.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Dropped irrelevant EIP-7573 (DvP) from standards; kept ERC-3643+ERC-735; repos verified; status→ready |
-| 38 | [pattern-private-pvp-stablecoins-erc7573.md](patterns/pattern-private-pvp-stablecoins-erc7573.md) | `pending` |  |  |  |  |
+| 38 | [pattern-private-pvp-stablecoins-erc7573.md](patterns/pattern-private-pvp-stablecoins-erc7573.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 39 | [pattern-private-set-intersection-circuit.md](patterns/pattern-private-set-intersection-circuit.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Fixed Huang citation year (2012→2011); status→ready |
 | 40 | [pattern-private-set-intersection-dh.md](patterns/pattern-private-set-intersection-dh.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
 | 41 | [pattern-private-set-intersection-fhe.md](patterns/pattern-private-set-intersection-fhe.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
@@ -108,25 +108,25 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 47 | [pattern-private-transaction-broadcasting.md](patterns/pattern-private-transaction-broadcasting.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | shielding alternative_to→composes_with; MEV-Boost/Shutter claims confirmed; status→ready |
 | 48 | [pattern-private-vaults.md](patterns/pattern-private-vaults.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed, clean (fhevm + aztec repos verified active); status→ready |
 | 49 | [pattern-proof-of-innocence.md](patterns/pattern-proof-of-innocence.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Expanded PPOI acronym; repos confirmed; status→ready |
-| 50 | [pattern-recipient-derived-receive-addresses.md](patterns/pattern-recipient-derived-receive-addresses.md) | `pending` |  |  |  |  |
+| 50 | [pattern-recipient-derived-receive-addresses.md](patterns/pattern-recipient-derived-receive-addresses.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 51 | [pattern-regulatory-disclosure-keys-proofs.md](patterns/pattern-regulatory-disclosure-keys-proofs.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Title Case |
-| 52 | [pattern-relay-mediated-proving.md](patterns/pattern-relay-mediated-proving.md) | `pending` |  |  |  |  |
+| 52 | [pattern-relay-mediated-proving.md](patterns/pattern-relay-mediated-proving.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 53 | [pattern-safe-proof-delegation.md](patterns/pattern-safe-proof-delegation.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | EIP-8182 link draft PR→published EIP (merged 2026-03-17); intent-digest/output-secret refs verified; status→ready |
 | 54 | [pattern-shielding.md](patterns/pattern-shielding.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Dropped ERC-3643 from standards; added hardened-pool refs |
 | 55 | [pattern-social-recovery.md](patterns/pattern-social-recovery.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Removed bold + inline i2u/i2i; Protocol role tags; status→ready |
 | 56 | [pattern-stealth-addresses.md](patterns/pattern-stealth-addresses.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed, clean; status→ready |
 | 57 | [pattern-tee-based-privacy.md](patterns/pattern-tee-based-privacy.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Corrected HSM EAL claim (most are EAL4+); status→ready |
 | 58 | [pattern-tee-key-manager.md](patterns/pattern-tee-key-manager.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed, clean; status→ready |
-| 59 | [pattern-tee-network-anonymity.md](patterns/pattern-tee-network-anonymity.md) | `pending` |  |  |  |  |
-| 60 | [pattern-tee-zk-settlement.md](patterns/pattern-tee-zk-settlement.md) | `pending` |  |  |  |  |
+| 59 | [pattern-tee-network-anonymity.md](patterns/pattern-tee-network-anonymity.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 60 | [pattern-tee-zk-settlement.md](patterns/pattern-tee-zk-settlement.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 61 | [pattern-threshold-encrypted-mempool.md](patterns/pattern-threshold-encrypted-mempool.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Title Case; moved last_reviewed into identity block; emptied irrelevant standards; status→ready |
 | 62 | [pattern-tls-payment-bridge.md](patterns/pattern-tls-payment-bridge.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Title→Title Case; TLSNotary repo + PIX/UPI verified; status→ready |
 | 63 | [pattern-user-controlled-viewing-keys.md](patterns/pattern-user-controlled-viewing-keys.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed, clean; status→ready |
 | 64 | [pattern-verifiable-attestation.md](patterns/pattern-verifiable-attestation.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Verifiable Attestation (matches slug); last_reviewed bumped (already ready) |
 | 65 | [pattern-voprf-nullifiers.md](patterns/pattern-voprf-nullifiers.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
 | 66 | [pattern-zk-kyc-ml-id-erc734-735.md](patterns/pattern-zk-kyc-ml-id-erc734-735.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed, clean; status→ready |
-| 67 | [pattern-zk-promises.md](patterns/pattern-zk-promises.md) | `pending` |  |  |  |  |
-| 68 | [pattern-zk-proof-systems.md](patterns/pattern-zk-proof-systems.md) | `pending` |  |  |  |  |
+| 67 | [pattern-zk-promises.md](patterns/pattern-zk-promises.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 68 | [pattern-zk-proof-systems.md](patterns/pattern-zk-proof-systems.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 69 | [pattern-zk-tls.md](patterns/pattern-zk-tls.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Fixed "iEEE"→"IEEE"; status→ready |
 | 70 | [pattern-zk-wrappers.md](patterns/pattern-zk-wrappers.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Normalized to template (de-bold, role tags, frontmatter migrated); PQ vector adds proof-system exposure; zk-creds cite fixed; status→ready |
 
