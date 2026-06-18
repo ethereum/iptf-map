@@ -1,10 +1,10 @@
 ---
 title: "Pattern: User-controlled viewing keys"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - End users need to control who can see their transaction history and for how long.

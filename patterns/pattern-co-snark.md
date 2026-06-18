@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Delegated Proving (co-SNARKs)"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-23
+last_reviewed: 2026-06-18
 
 works-best-when:
   - A user or institution lacks the compute, memory, or battery to generate a zero-knowledge proof client-side and wants to offload the work without disclosing the witness.
