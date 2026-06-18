@@ -45,13 +45,13 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 | Section | Total | OK | Claimed | Needs Fix | Deprecated | Pending |
 |---------|-------|----|---------|-----------|------------|---------|
-| Patterns | 70 | 40 | 0 | 0 | 0 | 30 |
+| Patterns | 70 | 40 | 10 | 0 | 0 | 20 |
 | Use Cases | 23 | 0 | 0 | 0 | 0 | 23 |
 | Approaches | 10 | 0 | 0 | 0 | 0 | 10 |
 | Domains | 8 | 0 | 0 | 0 | 0 | 8 |
 | Jurisdictions | 7 | 0 | 0 | 0 | 0 | 7 |
 | Vendors | 24 | 0 | 0 | 0 | 0 | 24 |
-| **Total** | **142** | **40** | **0** | **0** | **0** | **102** |
+| **Total** | **142** | **40** | **10** | **0** | **0** | **92** |
 
 ---
 
@@ -62,13 +62,13 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 1 | [pattern-blob-anchored-state-with-dispute.md](patterns/pattern-blob-anchored-state-with-dispute.md) | `pending` |  |  |  |  |
 | 2 | [pattern-co-snark.md](patterns/pattern-co-snark.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed, clean; status→ready |
 | 3 | [pattern-commit-and-prove.md](patterns/pattern-commit-and-prove.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Retitled to cross-chain settlement; status→ready |
-| 4 | [pattern-compliance-monitoring.md](patterns/pattern-compliance-monitoring.md) | `pending` |  |  |  |  |
-| 5 | [pattern-cross-chain-privacy-bridge.md](patterns/pattern-cross-chain-privacy-bridge.md) | `pending` |  |  |  |  |
+| 4 | [pattern-compliance-monitoring.md](patterns/pattern-compliance-monitoring.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 5 | [pattern-cross-chain-privacy-bridge.md](patterns/pattern-cross-chain-privacy-bridge.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 6 | [pattern-crypto-registry-bridge-ewpg-eas.md](patterns/pattern-crypto-registry-bridge-ewpg-eas.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Title register→registry (matches filename) |
 | 7 | [pattern-dvp-erc7573.md](patterns/pattern-dvp-erc7573.md) | `pending` |  |  |  |  |
 | 8 | [pattern-eil.md](patterns/pattern-eil.md) | `pending` |  |  |  |  |
 | 9 | [pattern-erc3643-rwa.md](patterns/pattern-erc3643-rwa.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Removed unverified ERC-8056 refs; status→ready |
-| 10 | [pattern-focil-eip7805.md](patterns/pattern-focil-eip7805.md) | `pending` |  |  |  |  |
+| 10 | [pattern-focil-eip7805.md](patterns/pattern-focil-eip7805.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 11 | [pattern-forced-withdrawal.md](patterns/pattern-forced-withdrawal.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Dropped disputed proving-time figures; gas qualified to Groth16; arXiv 86%/129 stat verified; status→ready |
 | 12 | [pattern-forward-secure-pseudorandom-tree.md](patterns/pattern-forward-secure-pseudorandom-tree.md) | `pending` |  |  |  |  |
 | 13 | [pattern-forward-secure-signatures.md](patterns/pattern-forward-secure-signatures.md) | `pending` |  |  |  |  |
@@ -87,15 +87,15 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 26 | [pattern-noir-private-contracts.md](patterns/pattern-noir-private-contracts.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Dropped unverified 8GB RAM figure; last_reviewed bumped (already ready) |
 | 27 | [pattern-oif.md](patterns/pattern-oif.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title Intent→Intents; noted mostly-draft standards + openintents.xyz; status→ready |
 | 28 | [pattern-onion-routing.md](patterns/pattern-onion-routing.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed; status→ready |
-| 29 | [pattern-origin-locked-confidential-ledger.md](patterns/pattern-origin-locked-confidential-ledger.md) | `pending` |  |  |  |  |
-| 30 | [pattern-permissioned-ledger-interoperability.md](patterns/pattern-permissioned-ledger-interoperability.md) | `pending` |  |  |  |  |
+| 29 | [pattern-origin-locked-confidential-ledger.md](patterns/pattern-origin-locked-confidential-ledger.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 30 | [pattern-permissioned-ledger-interoperability.md](patterns/pattern-permissioned-ledger-interoperability.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 31 | [pattern-permissionless-spend-auth.md](patterns/pattern-permissionless-spend-auth.md) | `pending` |  |  |  |  |
-| 32 | [pattern-plasma-stateless-privacy.md](patterns/pattern-plasma-stateless-privacy.md) | `pending` |  |  |  |  |
+| 32 | [pattern-plasma-stateless-privacy.md](patterns/pattern-plasma-stateless-privacy.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 33 | [pattern-pretrade-privacy-encryption.md](patterns/pattern-pretrade-privacy-encryption.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Marked suave-geth as archived (2025) |
 | 34 | [pattern-privacy-l2s.md](patterns/pattern-privacy-l2s.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Removed Aleo (L1) + fhEVM refs; kept production (Aztec); status→ready; FHE framing raised as Open Q |
 | 35 | [pattern-private-information-retrieval.md](patterns/pattern-private-information-retrieval.md) | `pending` |  |  |  |  |
 | 36 | [pattern-private-iso20022.md](patterns/pattern-private-iso20022.md) | `pending` |  |  |  |  |
-| 37 | [pattern-private-mtp-auth.md](patterns/pattern-private-mtp-auth.md) | `pending` |  |  |  |  |
+| 37 | [pattern-private-mtp-auth.md](patterns/pattern-private-mtp-auth.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 38 | [pattern-private-pvp-stablecoins-erc7573.md](patterns/pattern-private-pvp-stablecoins-erc7573.md) | `pending` |  |  |  |  |
 | 39 | [pattern-private-set-intersection-circuit.md](patterns/pattern-private-set-intersection-circuit.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Fixed Huang citation year (2012→2011); status→ready |
 | 40 | [pattern-private-set-intersection-dh.md](patterns/pattern-private-set-intersection-dh.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
@@ -106,12 +106,12 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 45 | [pattern-private-shared-state-tee.md](patterns/pattern-private-shared-state-tee.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed, clean; status→ready |
 | 46 | [pattern-private-stablecoin-shielded-payments.md](patterns/pattern-private-stablecoin-shielded-payments.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed; FHE/Zama kept (coprocessor framing) |
 | 47 | [pattern-private-transaction-broadcasting.md](patterns/pattern-private-transaction-broadcasting.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | shielding alternative_to→composes_with; MEV-Boost/Shutter claims confirmed; status→ready |
-| 48 | [pattern-private-vaults.md](patterns/pattern-private-vaults.md) | `pending` |  |  |  |  |
+| 48 | [pattern-private-vaults.md](patterns/pattern-private-vaults.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 49 | [pattern-proof-of-innocence.md](patterns/pattern-proof-of-innocence.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Expanded PPOI acronym; repos confirmed; status→ready |
 | 50 | [pattern-recipient-derived-receive-addresses.md](patterns/pattern-recipient-derived-receive-addresses.md) | `pending` |  |  |  |  |
 | 51 | [pattern-regulatory-disclosure-keys-proofs.md](patterns/pattern-regulatory-disclosure-keys-proofs.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Title Case |
 | 52 | [pattern-relay-mediated-proving.md](patterns/pattern-relay-mediated-proving.md) | `pending` |  |  |  |  |
-| 53 | [pattern-safe-proof-delegation.md](patterns/pattern-safe-proof-delegation.md) | `pending` |  |  |  |  |
+| 53 | [pattern-safe-proof-delegation.md](patterns/pattern-safe-proof-delegation.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 54 | [pattern-shielding.md](patterns/pattern-shielding.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Dropped ERC-3643 from standards; added hardened-pool refs |
 | 55 | [pattern-social-recovery.md](patterns/pattern-social-recovery.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Removed bold + inline i2u/i2i; Protocol role tags; status→ready |
 | 56 | [pattern-stealth-addresses.md](patterns/pattern-stealth-addresses.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed, clean; status→ready |
@@ -120,7 +120,7 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 59 | [pattern-tee-network-anonymity.md](patterns/pattern-tee-network-anonymity.md) | `pending` |  |  |  |  |
 | 60 | [pattern-tee-zk-settlement.md](patterns/pattern-tee-zk-settlement.md) | `pending` |  |  |  |  |
 | 61 | [pattern-threshold-encrypted-mempool.md](patterns/pattern-threshold-encrypted-mempool.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Title Case; moved last_reviewed into identity block; emptied irrelevant standards; status→ready |
-| 62 | [pattern-tls-payment-bridge.md](patterns/pattern-tls-payment-bridge.md) | `pending` |  |  |  |  |
+| 62 | [pattern-tls-payment-bridge.md](patterns/pattern-tls-payment-bridge.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 63 | [pattern-user-controlled-viewing-keys.md](patterns/pattern-user-controlled-viewing-keys.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed, clean; status→ready |
 | 64 | [pattern-verifiable-attestation.md](patterns/pattern-verifiable-attestation.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Verifiable Attestation (matches slug); last_reviewed bumped (already ready) |
 | 65 | [pattern-voprf-nullifiers.md](patterns/pattern-voprf-nullifiers.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
