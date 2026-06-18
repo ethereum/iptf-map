@@ -1,10 +1,10 @@
 ---
 title: "Pattern: vOPRF Nullifiers"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - You need deterministic per-scope nullifiers or pseudonyms for credentials and signals without revealing the underlying identifier.

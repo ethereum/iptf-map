@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Private Set Intersection (DH-based)"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: offchain
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Both parties hold private sets of comparable size (under 10k elements).

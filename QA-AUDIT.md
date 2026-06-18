@@ -45,13 +45,13 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 | Section | Total | OK | Claimed | Needs Fix | Deprecated | Pending |
 |---------|-------|----|---------|-----------|------------|---------|
-| Patterns | 70 | 20 | 10 | 0 | 0 | 40 |
+| Patterns | 70 | 30 | 0 | 0 | 0 | 40 |
 | Use Cases | 23 | 0 | 0 | 0 | 0 | 23 |
 | Approaches | 10 | 0 | 0 | 0 | 0 | 10 |
 | Domains | 8 | 0 | 0 | 0 | 0 | 8 |
 | Jurisdictions | 7 | 0 | 0 | 0 | 0 | 7 |
 | Vendors | 24 | 0 | 0 | 0 | 0 | 24 |
-| **Total** | **142** | **20** | **10** | **0** | **0** | **112** |
+| **Total** | **142** | **30** | **0** | **0** | **0** | **112** |
 
 ---
 
@@ -75,7 +75,7 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 14 | [pattern-hybrid-public-private-modes.md](patterns/pattern-hybrid-public-private-modes.md) | `pending` |  |  |  |  |
 | 15 | [pattern-icma-bdt-data-model.md](patterns/pattern-icma-bdt-data-model.md) | `pending` |  |  |  |  |
 | 16 | [pattern-immutable-guarantees.md](patterns/pattern-immutable-guarantees.md) | `pending` |  |  |  |  |
-| 17 | [pattern-l2-encrypted-offchain-audit.md](patterns/pattern-l2-encrypted-offchain-audit.md) | `claimed` | Meyanis95 | 2026-06-17 |  |  |
+| 17 | [pattern-l2-encrypted-offchain-audit.md](patterns/pattern-l2-encrypted-offchain-audit.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Trimmed unjustified ERC-3643 from standards |
 | 18 | [pattern-l2-privacy-evaluation.md](patterns/pattern-l2-privacy-evaluation.md) | `pending` |  |  |  |  |
 | 19 | [pattern-lean-ethereum.md](patterns/pattern-lean-ethereum.md) | `pending` |  |  |  |  |
 | 20 | [pattern-mesh-store-forward-submission.md](patterns/pattern-mesh-store-forward-submission.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Bridgefy is MIT-licensed (fixed "commercial"); status→ready; maturity raised as Open Q |
@@ -91,25 +91,25 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 30 | [pattern-permissioned-ledger-interoperability.md](patterns/pattern-permissioned-ledger-interoperability.md) | `pending` |  |  |  |  |
 | 31 | [pattern-permissionless-spend-auth.md](patterns/pattern-permissionless-spend-auth.md) | `pending` |  |  |  |  |
 | 32 | [pattern-plasma-stateless-privacy.md](patterns/pattern-plasma-stateless-privacy.md) | `pending` |  |  |  |  |
-| 33 | [pattern-pretrade-privacy-encryption.md](patterns/pattern-pretrade-privacy-encryption.md) | `claimed` | Meyanis95 | 2026-06-17 |  |  |
+| 33 | [pattern-pretrade-privacy-encryption.md](patterns/pattern-pretrade-privacy-encryption.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Marked suave-geth as archived (2025) |
 | 34 | [pattern-privacy-l2s.md](patterns/pattern-privacy-l2s.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Removed Aleo (L1) + fhEVM refs; kept production (Aztec); status→ready; FHE framing raised as Open Q |
 | 35 | [pattern-private-information-retrieval.md](patterns/pattern-private-information-retrieval.md) | `pending` |  |  |  |  |
 | 36 | [pattern-private-iso20022.md](patterns/pattern-private-iso20022.md) | `pending` |  |  |  |  |
 | 37 | [pattern-private-mtp-auth.md](patterns/pattern-private-mtp-auth.md) | `pending` |  |  |  |  |
 | 38 | [pattern-private-pvp-stablecoins-erc7573.md](patterns/pattern-private-pvp-stablecoins-erc7573.md) | `pending` |  |  |  |  |
-| 39 | [pattern-private-set-intersection-circuit.md](patterns/pattern-private-set-intersection-circuit.md) | `claimed` | Meyanis95 | 2026-06-17 |  |  |
-| 40 | [pattern-private-set-intersection-dh.md](patterns/pattern-private-set-intersection-dh.md) | `claimed` | Meyanis95 | 2026-06-17 |  |  |
-| 41 | [pattern-private-set-intersection-fhe.md](patterns/pattern-private-set-intersection-fhe.md) | `claimed` | Meyanis95 | 2026-06-17 |  |  |
-| 42 | [pattern-private-set-intersection-oprf.md](patterns/pattern-private-set-intersection-oprf.md) | `claimed` | Meyanis95 | 2026-06-17 |  |  |
+| 39 | [pattern-private-set-intersection-circuit.md](patterns/pattern-private-set-intersection-circuit.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Fixed Huang citation year (2012→2011); status→ready |
+| 40 | [pattern-private-set-intersection-dh.md](patterns/pattern-private-set-intersection-dh.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
+| 41 | [pattern-private-set-intersection-fhe.md](patterns/pattern-private-set-intersection-fhe.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
+| 42 | [pattern-private-set-intersection-oprf.md](patterns/pattern-private-set-intersection-oprf.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Removed mis-listed OpenMined (ECDH) impl; status→ready |
 | 43 | [pattern-private-shared-state-cosnark.md](patterns/pattern-private-shared-state-cosnark.md) | `pending` |  |  |  |  |
 | 44 | [pattern-private-shared-state-fhe.md](patterns/pattern-private-shared-state-fhe.md) | `pending` |  |  |  |  |
 | 45 | [pattern-private-shared-state-tee.md](patterns/pattern-private-shared-state-tee.md) | `pending` |  |  |  |  |
-| 46 | [pattern-private-stablecoin-shielded-payments.md](patterns/pattern-private-stablecoin-shielded-payments.md) | `claimed` | Meyanis95 | 2026-06-17 |  |  |
+| 46 | [pattern-private-stablecoin-shielded-payments.md](patterns/pattern-private-stablecoin-shielded-payments.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed; FHE/Zama kept (coprocessor framing) |
 | 47 | [pattern-private-transaction-broadcasting.md](patterns/pattern-private-transaction-broadcasting.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | shielding alternative_to→composes_with; MEV-Boost/Shutter claims confirmed; status→ready |
 | 48 | [pattern-private-vaults.md](patterns/pattern-private-vaults.md) | `pending` |  |  |  |  |
 | 49 | [pattern-proof-of-innocence.md](patterns/pattern-proof-of-innocence.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Expanded PPOI acronym; repos confirmed; status→ready |
 | 50 | [pattern-recipient-derived-receive-addresses.md](patterns/pattern-recipient-derived-receive-addresses.md) | `pending` |  |  |  |  |
-| 51 | [pattern-regulatory-disclosure-keys-proofs.md](patterns/pattern-regulatory-disclosure-keys-proofs.md) | `claimed` | Meyanis95 | 2026-06-17 |  |  |
+| 51 | [pattern-regulatory-disclosure-keys-proofs.md](patterns/pattern-regulatory-disclosure-keys-proofs.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Title Case |
 | 52 | [pattern-relay-mediated-proving.md](patterns/pattern-relay-mediated-proving.md) | `pending` |  |  |  |  |
 | 53 | [pattern-safe-proof-delegation.md](patterns/pattern-safe-proof-delegation.md) | `pending` |  |  |  |  |
 | 54 | [pattern-shielding.md](patterns/pattern-shielding.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Dropped ERC-3643 from standards; added hardened-pool refs |
@@ -119,11 +119,11 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 58 | [pattern-tee-key-manager.md](patterns/pattern-tee-key-manager.md) | `pending` |  |  |  |  |
 | 59 | [pattern-tee-network-anonymity.md](patterns/pattern-tee-network-anonymity.md) | `pending` |  |  |  |  |
 | 60 | [pattern-tee-zk-settlement.md](patterns/pattern-tee-zk-settlement.md) | `pending` |  |  |  |  |
-| 61 | [pattern-threshold-encrypted-mempool.md](patterns/pattern-threshold-encrypted-mempool.md) | `claimed` | Meyanis95 | 2026-06-17 |  |  |
+| 61 | [pattern-threshold-encrypted-mempool.md](patterns/pattern-threshold-encrypted-mempool.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Title Case; moved last_reviewed into identity block; emptied irrelevant standards; status→ready |
 | 62 | [pattern-tls-payment-bridge.md](patterns/pattern-tls-payment-bridge.md) | `pending` |  |  |  |  |
 | 63 | [pattern-user-controlled-viewing-keys.md](patterns/pattern-user-controlled-viewing-keys.md) | `pending` |  |  |  |  |
 | 64 | [pattern-verifiable-attestation.md](patterns/pattern-verifiable-attestation.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Verifiable Attestation (matches slug); last_reviewed bumped (already ready) |
-| 65 | [pattern-voprf-nullifiers.md](patterns/pattern-voprf-nullifiers.md) | `claimed` | Meyanis95 | 2026-06-17 |  |  |
+| 65 | [pattern-voprf-nullifiers.md](patterns/pattern-voprf-nullifiers.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
 | 66 | [pattern-zk-kyc-ml-id-erc734-735.md](patterns/pattern-zk-kyc-ml-id-erc734-735.md) | `pending` |  |  |  |  |
 | 67 | [pattern-zk-promises.md](patterns/pattern-zk-promises.md) | `pending` |  |  |  |  |
 | 68 | [pattern-zk-proof-systems.md](patterns/pattern-zk-proof-systems.md) | `pending` |  |  |  |  |
@@ -252,4 +252,3 @@ Questions, uncertainties, or decisions that surface during the audit. Resolve or
 | # | Question | Raised by | Date | Related file(s) | Resolution |
 |---|----------|-----------|------|------------------|------------|
 | 1 | Is `maturity: production` applied consistently? It sits on an offchain pattern with no mainnet usage (mesh) and recent frameworks (OIF). What is the rubric for non-onchain patterns? | Meyanis95 | 2026-06-17 | [pattern-mesh-store-forward-submission.md](patterns/pattern-mesh-store-forward-submission.md), [pattern-oif.md](patterns/pattern-oif.md) | |
-| 2 | Should the FHE-rollup framing be removed from privacy-l2s entirely (Intent, Components, Protocol, post_quantum), not just the fhEVM links? fhEVM was flagged as "not a privacy L2". | Meyanis95 | 2026-06-17 | [pattern-privacy-l2s.md](patterns/pattern-privacy-l2s.md) | |

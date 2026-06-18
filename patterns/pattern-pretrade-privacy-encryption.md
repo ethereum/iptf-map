@@ -4,7 +4,7 @@ status: ready
 maturity: testnet
 type: meta
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 sub_patterns:
   - name: "Threshold-encrypted mempool"
@@ -64,7 +64,7 @@ open_source_implementations:
     description: "Threshold-encrypted mempool reference implementation"
     language: "Rust, Go"
   - url: https://github.com/flashbots/suave-geth
-    description: "Private builder and confidential compute environment for order flow"
+    description: "Private builder and confidential compute environment for order flow (archived 2025; historical reference)"
     language: "Go"
 ---
 

@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Private Set Intersection (OPRF-based)"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: offchain
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Sets are large (10k to millions of elements).
@@ -47,9 +47,6 @@ related_patterns:
 open_source_implementations:
   - url: https://github.com/microsoft/APSI
     description: "Microsoft APSI: asymmetric PSI library supporting labeled and unlabeled modes with unbalanced set sizes"
-    language: "C++"
-  - url: https://github.com/OpenMined/PSI
-    description: "OpenMined PSI: cardinality protocol based on ECDH and Bloom filters, with bindings for several languages"
     language: "C++"
   - url: https://github.com/encryptogroup/PSI
     description: "Encrypto Group PSI: benchmarking suite for multiple PSI protocol variants including OT-based"
