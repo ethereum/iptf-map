@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Private PvP (cash to cash) Settlement via ERC-7573"
-status: draft
+status: ready
 maturity: concept
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Two permissioned or regulated stablecoins (same L2 or cross-L2) must settle atomically with amount privacy.
@@ -97,4 +97,4 @@ Two regulated banks settle a shielded USD-stablecoin leg against a shielded EUR-
 
 ## See also
 
-- [ERC-7573: Conditional-upon-Event Asset Transfer](https://eips.ethereum.org/EIPS/eip-7573)
+- [ERC-7573: Conditional-upon-Transfer-Decryption for DvP](https://eips.ethereum.org/EIPS/eip-7573)

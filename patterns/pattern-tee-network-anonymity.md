@@ -1,10 +1,10 @@
 ---
 title: "Pattern: TEE-Assisted Network Anonymity"
-status: draft
+status: ready
 maturity: research
 type: standard
 layer: offchain
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Metadata leakage (IP, timing, query patterns) is a threat.

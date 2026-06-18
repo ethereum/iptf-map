@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Private ISO 20022 Messaging & Settlement"
-status: draft
+status: ready
 maturity: concept
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Institutions already exchange ISO 20022 messages (pacs.008, pacs.009, pacs.002, camt.\*).

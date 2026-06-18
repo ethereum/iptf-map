@@ -1,10 +1,10 @@
 ---
 title: "Pattern: zk-promises (stateful anonymous credentials)"
-status: draft
+status: ready
 maturity: research
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - A service must enforce compliance, moderation, or rate-limit rules on anonymous users without identifying them.

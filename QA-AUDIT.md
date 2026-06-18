@@ -45,13 +45,13 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 | Section | Total | OK | Claimed | Needs Fix | Deprecated | Pending |
 |---------|-------|----|---------|-----------|------------|---------|
-| Patterns | 70 | 60 | 10 | 0 | 0 | 0 |
+| Patterns | 70 | 70 | 0 | 0 | 0 | 0 |
 | Use Cases | 23 | 0 | 0 | 0 | 0 | 23 |
 | Approaches | 10 | 0 | 0 | 0 | 0 | 10 |
 | Domains | 8 | 0 | 0 | 0 | 0 | 8 |
 | Jurisdictions | 7 | 0 | 0 | 0 | 0 | 7 |
 | Vendors | 24 | 0 | 0 | 0 | 0 | 24 |
-| **Total** | **142** | **60** | **10** | **0** | **0** | **72** |
+| **Total** | **142** | **70** | **0** | **0** | **0** | **72** |
 
 ---
 
@@ -77,7 +77,7 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 16 | [pattern-immutable-guarantees.md](patterns/pattern-immutable-guarantees.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed clean; arXiv 2512.12732 86%/129 verified; status→ready |
 | 17 | [pattern-l2-encrypted-offchain-audit.md](patterns/pattern-l2-encrypted-offchain-audit.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Trimmed unjustified ERC-3643 from standards |
 | 18 | [pattern-l2-privacy-evaluation.md](patterns/pattern-l2-privacy-evaluation.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed; sources verified. Relocation candidate → Open Q2; status→ready |
-| 19 | [pattern-lean-ethereum.md](patterns/pattern-lean-ethereum.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 19 | [pattern-lean-ethereum.md](patterns/pattern-lean-ethereum.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Fixed client-team count (15→8 per roadmap) + removed unsourced 2030 date; 1-ETH/PQ-sigs/zkVM verified; status→ready |
 | 20 | [pattern-mesh-store-forward-submission.md](patterns/pattern-mesh-store-forward-submission.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Bridgefy is MIT-licensed (fixed "commercial"); status→ready; maturity raised as Open Q |
 | 21 | [pattern-mixnet-anonymity.md](patterns/pattern-mixnet-anonymity.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed; status→ready |
 | 22 | [pattern-modular-privacy-stack.md](patterns/pattern-modular-privacy-stack.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | attest.sh→attest.org; sub_patterns + links verified; status→ready |
@@ -93,10 +93,10 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 32 | [pattern-plasma-stateless-privacy.md](patterns/pattern-plasma-stateless-privacy.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Fixed wrong eprint cites: removed 2023/1670 (actually a PSI paper); Intmax2 2025/021→2023/1082; status→ready |
 | 33 | [pattern-pretrade-privacy-encryption.md](patterns/pattern-pretrade-privacy-encryption.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Marked suave-geth as archived (2025) |
 | 34 | [pattern-privacy-l2s.md](patterns/pattern-privacy-l2s.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Removed Aleo (L1) + fhEVM refs; kept production (Aztec); status→ready; FHE framing raised as Open Q |
-| 35 | [pattern-private-information-retrieval.md](patterns/pattern-private-information-retrieval.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
-| 36 | [pattern-private-iso20022.md](patterns/pattern-private-iso20022.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 35 | [pattern-private-information-retrieval.md](patterns/pattern-private-information-retrieval.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Fixed wrong Respire eprint (2024/187→2024/1165); SimplePIR/FrodoPIR cites + 5 repos verified; status→ready |
+| 36 | [pattern-private-iso20022.md](patterns/pattern-private-iso20022.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed; pacs/camt + BIC + SplmtryData verified. iso20022.org See-also links unverifiable (bot-blocked) → Open Q3; status→ready |
 | 37 | [pattern-private-mtp-auth.md](patterns/pattern-private-mtp-auth.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Dropped irrelevant EIP-7573 (DvP) from standards; kept ERC-3643+ERC-735; repos verified; status→ready |
-| 38 | [pattern-private-pvp-stablecoins-erc7573.md](patterns/pattern-private-pvp-stablecoins-erc7573.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 38 | [pattern-private-pvp-stablecoins-erc7573.md](patterns/pattern-private-pvp-stablecoins-erc7573.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Fixed ERC-7573 See-also title (→Conditional-upon-Transfer-Decryption for DvP); status→ready |
 | 39 | [pattern-private-set-intersection-circuit.md](patterns/pattern-private-set-intersection-circuit.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Fixed Huang citation year (2012→2011); status→ready |
 | 40 | [pattern-private-set-intersection-dh.md](patterns/pattern-private-set-intersection-dh.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
 | 41 | [pattern-private-set-intersection-fhe.md](patterns/pattern-private-set-intersection-fhe.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
@@ -108,25 +108,25 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 47 | [pattern-private-transaction-broadcasting.md](patterns/pattern-private-transaction-broadcasting.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | shielding alternative_to→composes_with; MEV-Boost/Shutter claims confirmed; status→ready |
 | 48 | [pattern-private-vaults.md](patterns/pattern-private-vaults.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed, clean (fhevm + aztec repos verified active); status→ready |
 | 49 | [pattern-proof-of-innocence.md](patterns/pattern-proof-of-innocence.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Expanded PPOI acronym; repos confirmed; status→ready |
-| 50 | [pattern-recipient-derived-receive-addresses.md](patterns/pattern-recipient-derived-receive-addresses.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 50 | [pattern-recipient-derived-receive-addresses.md](patterns/pattern-recipient-derived-receive-addresses.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | De-bolded; HMAC/secp256k1/EIP-5564 refs verified; status→ready |
 | 51 | [pattern-regulatory-disclosure-keys-proofs.md](patterns/pattern-regulatory-disclosure-keys-proofs.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Title Case |
-| 52 | [pattern-relay-mediated-proving.md](patterns/pattern-relay-mediated-proving.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 52 | [pattern-relay-mediated-proving.md](patterns/pattern-relay-mediated-proving.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | De-bolded; Noir/plonky2/aztec repos + submitter-binding logic verified; status→ready |
 | 53 | [pattern-safe-proof-delegation.md](patterns/pattern-safe-proof-delegation.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | EIP-8182 link draft PR→published EIP (merged 2026-03-17); intent-digest/output-secret refs verified; status→ready |
 | 54 | [pattern-shielding.md](patterns/pattern-shielding.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Dropped ERC-3643 from standards; added hardened-pool refs |
 | 55 | [pattern-social-recovery.md](patterns/pattern-social-recovery.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Removed bold + inline i2u/i2i; Protocol role tags; status→ready |
 | 56 | [pattern-stealth-addresses.md](patterns/pattern-stealth-addresses.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed, clean; status→ready |
 | 57 | [pattern-tee-based-privacy.md](patterns/pattern-tee-based-privacy.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Corrected HSM EAL claim (most are EAL4+); status→ready |
 | 58 | [pattern-tee-key-manager.md](patterns/pattern-tee-key-manager.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed, clean; status→ready |
-| 59 | [pattern-tee-network-anonymity.md](patterns/pattern-tee-network-anonymity.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
-| 60 | [pattern-tee-zk-settlement.md](patterns/pattern-tee-zk-settlement.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 59 | [pattern-tee-network-anonymity.md](patterns/pattern-tee-network-anonymity.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed clean; Flashnet design + rfps link verified; status→ready |
+| 60 | [pattern-tee-zk-settlement.md](patterns/pattern-tee-zk-settlement.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Softened unverifiable 10-50% overhead; See-also left as bare heading per review (CI-required); status→ready |
 | 61 | [pattern-threshold-encrypted-mempool.md](patterns/pattern-threshold-encrypted-mempool.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Title Case; moved last_reviewed into identity block; emptied irrelevant standards; status→ready |
 | 62 | [pattern-tls-payment-bridge.md](patterns/pattern-tls-payment-bridge.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Title→Title Case; TLSNotary repo + PIX/UPI verified; status→ready |
 | 63 | [pattern-user-controlled-viewing-keys.md](patterns/pattern-user-controlled-viewing-keys.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed, clean; status→ready |
 | 64 | [pattern-verifiable-attestation.md](patterns/pattern-verifiable-attestation.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Verifiable Attestation (matches slug); last_reviewed bumped (already ready) |
 | 65 | [pattern-voprf-nullifiers.md](patterns/pattern-voprf-nullifiers.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
 | 66 | [pattern-zk-kyc-ml-id-erc734-735.md](patterns/pattern-zk-kyc-ml-id-erc734-735.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed, clean; status→ready |
-| 67 | [pattern-zk-promises.md](patterns/pattern-zk-promises.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
-| 68 | [pattern-zk-proof-systems.md](patterns/pattern-zk-proof-systems.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 67 | [pattern-zk-promises.md](patterns/pattern-zk-promises.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed clean; eprint 2024/1260 + USENIX (Shih) + ZK podcast 389 cites verified; status→ready |
+| 68 | [pattern-zk-proof-systems.md](patterns/pattern-zk-proof-systems.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed clean; comparison table + co-snark 2021/1530 + arkworks/Plonky3/stone repos verified; status→ready |
 | 69 | [pattern-zk-tls.md](patterns/pattern-zk-tls.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Fixed "iEEE"→"IEEE"; status→ready |
 | 70 | [pattern-zk-wrappers.md](patterns/pattern-zk-wrappers.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Normalized to template (de-bold, role tags, frontmatter migrated); PQ vector adds proof-system exposure; zk-creds cite fixed; status→ready |
 
@@ -253,3 +253,4 @@ Questions, uncertainties, or decisions that surface during the audit. Resolve or
 |---|----------|-----------|------|------------------|------------|
 | 1 | Is `maturity: production` applied consistently? It sits on an offchain pattern with no mainnet usage (mesh) and recent frameworks (OIF). What is the rubric for non-onchain patterns? | Meyanis95 | 2026-06-17 | [pattern-mesh-store-forward-submission.md](patterns/pattern-mesh-store-forward-submission.md), [pattern-oif.md](patterns/pattern-oif.md) | 2026-06-18: related data point — compliance-monitoring + cross-chain-privacy-bridge re-tiered testnet→concept (empty impls, generic archetypes). Production-tier rubric for non-onchain patterns still open. |
 | 2 | Should `pattern-l2-privacy-evaluation` stay in `patterns/` or move to `approaches/` (or a methodology doc)? It is an evaluation framework (crops_profile `n/a`, table-driven), not a reusable privacy primitive — the card self-flags this. | Meyanis95 | 2026-06-18 | [pattern-l2-privacy-evaluation.md](patterns/pattern-l2-privacy-evaluation.md) | |
+| 3 | `private-iso20022` See-also links to iso20022.org (message-definitions, `supplementary_data.page`) could not be verified — iso20022.org blocks automated fetchers (curl 000, WebFetch timeout) and the `.page` URL looks legacy. Needs a manual browser check, or repoint to the iso20022.org catalogue root. | Meyanis95 | 2026-06-18 | [pattern-private-iso20022.md](patterns/pattern-private-iso20022.md) | |
