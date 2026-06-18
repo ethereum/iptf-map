@@ -45,13 +45,13 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 | Section | Total | OK | Claimed | Needs Fix | Deprecated | Pending |
 |---------|-------|----|---------|-----------|------------|---------|
-| Patterns | 70 | 30 | 0 | 0 | 0 | 40 |
+| Patterns | 70 | 30 | 10 | 0 | 0 | 30 |
 | Use Cases | 23 | 0 | 0 | 0 | 0 | 23 |
 | Approaches | 10 | 0 | 0 | 0 | 0 | 10 |
 | Domains | 8 | 0 | 0 | 0 | 0 | 8 |
 | Jurisdictions | 7 | 0 | 0 | 0 | 0 | 7 |
 | Vendors | 24 | 0 | 0 | 0 | 0 | 24 |
-| **Total** | **142** | **30** | **0** | **0** | **0** | **112** |
+| **Total** | **142** | **30** | **10** | **0** | **0** | **102** |
 
 ---
 
@@ -60,7 +60,7 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
 |---|------|--------|----------|---------|----------|-------|
 | 1 | [pattern-blob-anchored-state-with-dispute.md](patterns/pattern-blob-anchored-state-with-dispute.md) | `pending` |  |  |  |  |
-| 2 | [pattern-co-snark.md](patterns/pattern-co-snark.md) | `pending` |  |  |  |  |
+| 2 | [pattern-co-snark.md](patterns/pattern-co-snark.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 3 | [pattern-commit-and-prove.md](patterns/pattern-commit-and-prove.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Retitled to cross-chain settlement; status→ready |
 | 4 | [pattern-compliance-monitoring.md](patterns/pattern-compliance-monitoring.md) | `pending` |  |  |  |  |
 | 5 | [pattern-cross-chain-privacy-bridge.md](patterns/pattern-cross-chain-privacy-bridge.md) | `pending` |  |  |  |  |
@@ -73,7 +73,7 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 12 | [pattern-forward-secure-pseudorandom-tree.md](patterns/pattern-forward-secure-pseudorandom-tree.md) | `pending` |  |  |  |  |
 | 13 | [pattern-forward-secure-signatures.md](patterns/pattern-forward-secure-signatures.md) | `pending` |  |  |  |  |
 | 14 | [pattern-hybrid-public-private-modes.md](patterns/pattern-hybrid-public-private-modes.md) | `pending` |  |  |  |  |
-| 15 | [pattern-icma-bdt-data-model.md](patterns/pattern-icma-bdt-data-model.md) | `pending` |  |  |  |  |
+| 15 | [pattern-icma-bdt-data-model.md](patterns/pattern-icma-bdt-data-model.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 16 | [pattern-immutable-guarantees.md](patterns/pattern-immutable-guarantees.md) | `pending` |  |  |  |  |
 | 17 | [pattern-l2-encrypted-offchain-audit.md](patterns/pattern-l2-encrypted-offchain-audit.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Trimmed unjustified ERC-3643 from standards |
 | 18 | [pattern-l2-privacy-evaluation.md](patterns/pattern-l2-privacy-evaluation.md) | `pending` |  |  |  |  |
@@ -101,9 +101,9 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 40 | [pattern-private-set-intersection-dh.md](patterns/pattern-private-set-intersection-dh.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
 | 41 | [pattern-private-set-intersection-fhe.md](patterns/pattern-private-set-intersection-fhe.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
 | 42 | [pattern-private-set-intersection-oprf.md](patterns/pattern-private-set-intersection-oprf.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Removed mis-listed OpenMined (ECDH) impl; status→ready |
-| 43 | [pattern-private-shared-state-cosnark.md](patterns/pattern-private-shared-state-cosnark.md) | `pending` |  |  |  |  |
-| 44 | [pattern-private-shared-state-fhe.md](patterns/pattern-private-shared-state-fhe.md) | `pending` |  |  |  |  |
-| 45 | [pattern-private-shared-state-tee.md](patterns/pattern-private-shared-state-tee.md) | `pending` |  |  |  |  |
+| 43 | [pattern-private-shared-state-cosnark.md](patterns/pattern-private-shared-state-cosnark.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 44 | [pattern-private-shared-state-fhe.md](patterns/pattern-private-shared-state-fhe.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 45 | [pattern-private-shared-state-tee.md](patterns/pattern-private-shared-state-tee.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 46 | [pattern-private-stablecoin-shielded-payments.md](patterns/pattern-private-stablecoin-shielded-payments.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed; FHE/Zama kept (coprocessor framing) |
 | 47 | [pattern-private-transaction-broadcasting.md](patterns/pattern-private-transaction-broadcasting.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | shielding alternative_to→composes_with; MEV-Boost/Shutter claims confirmed; status→ready |
 | 48 | [pattern-private-vaults.md](patterns/pattern-private-vaults.md) | `pending` |  |  |  |  |
@@ -116,19 +116,19 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 55 | [pattern-social-recovery.md](patterns/pattern-social-recovery.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Removed bold + inline i2u/i2i; Protocol role tags; status→ready |
 | 56 | [pattern-stealth-addresses.md](patterns/pattern-stealth-addresses.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed, clean; status→ready |
 | 57 | [pattern-tee-based-privacy.md](patterns/pattern-tee-based-privacy.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Corrected HSM EAL claim (most are EAL4+); status→ready |
-| 58 | [pattern-tee-key-manager.md](patterns/pattern-tee-key-manager.md) | `pending` |  |  |  |  |
+| 58 | [pattern-tee-key-manager.md](patterns/pattern-tee-key-manager.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 59 | [pattern-tee-network-anonymity.md](patterns/pattern-tee-network-anonymity.md) | `pending` |  |  |  |  |
 | 60 | [pattern-tee-zk-settlement.md](patterns/pattern-tee-zk-settlement.md) | `pending` |  |  |  |  |
 | 61 | [pattern-threshold-encrypted-mempool.md](patterns/pattern-threshold-encrypted-mempool.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Title Case; moved last_reviewed into identity block; emptied irrelevant standards; status→ready |
 | 62 | [pattern-tls-payment-bridge.md](patterns/pattern-tls-payment-bridge.md) | `pending` |  |  |  |  |
-| 63 | [pattern-user-controlled-viewing-keys.md](patterns/pattern-user-controlled-viewing-keys.md) | `pending` |  |  |  |  |
+| 63 | [pattern-user-controlled-viewing-keys.md](patterns/pattern-user-controlled-viewing-keys.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 64 | [pattern-verifiable-attestation.md](patterns/pattern-verifiable-attestation.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Title→Verifiable Attestation (matches slug); last_reviewed bumped (already ready) |
 | 65 | [pattern-voprf-nullifiers.md](patterns/pattern-voprf-nullifiers.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Reviewed, clean; status→ready |
-| 66 | [pattern-zk-kyc-ml-id-erc734-735.md](patterns/pattern-zk-kyc-ml-id-erc734-735.md) | `pending` |  |  |  |  |
+| 66 | [pattern-zk-kyc-ml-id-erc734-735.md](patterns/pattern-zk-kyc-ml-id-erc734-735.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 | 67 | [pattern-zk-promises.md](patterns/pattern-zk-promises.md) | `pending` |  |  |  |  |
 | 68 | [pattern-zk-proof-systems.md](patterns/pattern-zk-proof-systems.md) | `pending` |  |  |  |  |
-| 69 | [pattern-zk-tls.md](patterns/pattern-zk-tls.md) | `pending` |  |  |  |  |
-| 70 | [pattern-zk-wrappers.md](patterns/pattern-zk-wrappers.md) | `pending` |  |  |  |  |
+| 69 | [pattern-zk-tls.md](patterns/pattern-zk-tls.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
+| 70 | [pattern-zk-wrappers.md](patterns/pattern-zk-wrappers.md) | `claimed` | Meyanis95 | 2026-06-18 |  |  |
 
 ## Use Cases (23)
 
