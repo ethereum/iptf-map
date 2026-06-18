@@ -48,10 +48,10 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | Patterns | 70 | 70 | 0 | 0 | 0 | 0 |
 | Use Cases | 23 | 0 | 0 | 0 | 0 | 23 |
 | Approaches | 10 | 0 | 0 | 0 | 0 | 10 |
-| Domains | 8 | 0 | 0 | 0 | 0 | 8 |
+| Domains | 8 | 8 | 0 | 0 | 0 | 0 |
 | Jurisdictions | 7 | 0 | 0 | 0 | 0 | 7 |
 | Vendors | 24 | 0 | 0 | 0 | 0 | 24 |
-| **Total** | **142** | **70** | **0** | **0** | **0** | **72** |
+| **Total** | **142** | **78** | **0** | **0** | **0** | **64** |
 
 ---
 
@@ -177,14 +177,14 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
 |---|------|--------|----------|---------|----------|-------|
-| 1 | [custody.md](domains/custody.md) | `pending` |  |  |  |  |
-| 2 | [data-oracles.md](domains/data-oracles.md) | `pending` |  |  |  |  |
-| 3 | [funds-assets.md](domains/funds-assets.md) | `pending` |  |  |  |  |
-| 4 | [governance.md](domains/governance.md) | `pending` |  |  |  |  |
-| 5 | [identity-compliance.md](domains/identity-compliance.md) | `pending` |  |  |  |  |
-| 6 | [payments.md](domains/payments.md) | `pending` |  |  |  |  |
-| 7 | [post-quantum.md](domains/post-quantum.md) | `pending` |  |  |  |  |
-| 8 | [trading.md](domains/trading.md) | `pending` |  |  |  |  |
+| 1 | [custody.md](domains/custody.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 |  |
+| 2 | [data-oracles.md](domains/data-oracles.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 |  |
+| 3 | [funds-assets.md](domains/funds-assets.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 |  |
+| 4 | [governance.md](domains/governance.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 |  |
+| 5 | [identity-compliance.md](domains/identity-compliance.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 |  |
+| 6 | [payments.md](domains/payments.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 |  |
+| 7 | [post-quantum.md](domains/post-quantum.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 |  |
+| 8 | [trading.md](domains/trading.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 |  |
 
 ## Jurisdictions (7)
 
