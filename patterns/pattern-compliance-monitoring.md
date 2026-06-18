@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Compliance Monitoring"
-status: draft
-maturity: testnet
+status: ready
+maturity: concept
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Institution must monitor transactions for AML or sanctions compliance.
@@ -36,7 +36,7 @@ post_quantum:
   vector: "Signatures on screening attestations inherit host-chain and oracle signature assumptions. zero-knowledge proofs used in privacy-preserving screening inherit their proof system's exposure."
   mitigation: "Hash-based signatures and STARK-based screening proofs. See [Post-Quantum Threats](../domains/post-quantum.md)."
 
-standards: [EAS, ERC-3643]
+standards: [EAS]
 
 related_patterns:
   composes_with: [pattern-regulatory-disclosure-keys-proofs, pattern-user-controlled-viewing-keys, pattern-verifiable-attestation, pattern-zk-kyc-ml-id-erc734-735, pattern-erc3643-rwa]
@@ -89,7 +89,7 @@ Threat model:
 
 ## Trade-offs
 
-- Real-time screening adds 100 to 500 ms per transaction. Batch screening for low-risk flows mitigates this.
+- Real-time screening adds latency to each transaction, typically tens to hundreds of milliseconds depending on implementation and ruleset. Batch screening for low-risk flows mitigates this.
 - False positives from overly strict rules block legitimate transactions. Tiered thresholds and human review for edge cases are standard mitigations.
 - Oracle trust is a concentration point. Threshold operation with multiple providers or TEE-based screening reduces this risk.
 - Per-transaction screening fees can be significant at volume; internal screening for high-frequency flows is common.

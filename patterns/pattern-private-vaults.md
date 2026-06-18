@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Private Intent-Based Vaults"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Institutions or funds need private strategy execution while deposited assets remain transparently custodied.

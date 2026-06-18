@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Stateless Plasma Privacy"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: L2
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - High transaction volume with privacy requirements.
@@ -116,6 +116,5 @@ Threat model:
 ## See also
 
 - [Plasma original paper](https://plasma.io/)
-- [Plasma-free paper (eprint 2023/1670)](https://eprint.iacr.org/2023/1670)
-- [Intmax2 paper (eprint 2025/021)](https://eprint.iacr.org/2025/021)
+- [Intmax2 paper (eprint 2023/1082)](https://eprint.iacr.org/2023/1082)
 - [Post-Quantum Threats](../domains/post-quantum.md)

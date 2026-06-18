@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Safe Proof Delegation"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: L1
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Users cannot generate zero-knowledge proofs locally (mobile wallets, hardware wallets, constrained devices).
@@ -44,8 +44,8 @@ related_patterns:
   see_also: [pattern-user-controlled-viewing-keys]
 
 open_source_implementations:
-  - url: https://github.com/ethereum/EIPs/pull/11373
-    description: "EIP-8182 draft: canonical intent digest and rotatable output-secret protocol"
+  - url: https://eips.ethereum.org/EIPS/eip-8182
+    description: "EIP-8182 (Private ETH and ERC-20 Transfers): canonical intent digest and rotatable output-secret protocol"
     language: "specification"
 ---
 
@@ -99,5 +99,5 @@ A user holds shielded balances in a mobile wallet that cannot generate zero-know
 
 ## See also
 
-- [EIP-8182 draft](https://github.com/ethereum/EIPs/pull/11373)
+- [EIP-8182: Private ETH and ERC-20 Transfers](https://eips.ethereum.org/EIPS/eip-8182)
 - [Railgun](../vendors/railgun.md)

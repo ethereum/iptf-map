@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Private Client Authentication for Institutional EOAs"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Institutions must comply with KYC/AML but want to protect client privacy on-chain.
@@ -36,7 +36,7 @@ post_quantum:
   vector: "Pairing-based and elliptic-curve proof systems (Groth16, PLONK/KZG) are broken by a CRQC, letting an attacker forge membership proofs. HNDL risk is bounded because the Merkle tree itself uses hash-based commitments."
   mitigation: "Migrate to STARK-based membership circuits with hash-based commitments. See [Post-Quantum Threats](../domains/post-quantum.md)."
 
-standards: [ERC-3643, EIP-7573, ERC-735]
+standards: [ERC-3643, ERC-735]
 
 related_patterns:
   composes_with: [pattern-verifiable-attestation, pattern-voprf-nullifiers, pattern-regulatory-disclosure-keys-proofs, pattern-zk-kyc-ml-id-erc734-735]

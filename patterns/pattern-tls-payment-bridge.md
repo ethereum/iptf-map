@@ -1,10 +1,10 @@
 ---
-title: "Pattern: TLS payment bridge"
-status: draft
+title: "Pattern: TLS Payment Bridge"
+status: ready
 maturity: testnet
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Instant payment rails (for example PIX, UPI, mobile money apps) are available in the target geography.
