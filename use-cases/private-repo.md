@@ -1,13 +1,13 @@
 ---
 title: Private Repo
-status: stub
+status: ready
 primary_domain: Trading
 secondary_domain: Payments
 ---
 
 ## 1) Use Case
 
-Tokenized repurchase agreements where counterparties and transaction amounts must remain confidential. Repo is short-term secured lending - conceptually similar to DeFi flash loans, though TradFi has used this instrument for decades. The intraday lending market processes enormous volumes daily through centralized infrastructure. Privacy prevents counterparty exposure and funding cost arbitrage.
+Tokenized repurchase agreements where counterparties and transaction amounts must remain confidential. Repo is short-term secured lending - conceptually similar to DeFi over-collateralized lending, though TradFi has used this instrument for decades. The intraday lending market processes enormous volumes daily through centralized infrastructure. Privacy prevents counterparty exposure and funding cost arbitrage.
 
 ## 2) Additional Context
 
@@ -68,4 +68,4 @@ Approach TBD. Consider:
 - Related: [private-bonds.md](private-bonds.md) (collateral type, DvP patterns)
 - Related: [private-stablecoins.md](private-stablecoins.md) (cash leg privacy)
 - Market context: Major clearing infrastructure processes billions daily in repo transactions
-- Analogy: Conceptually similar to DeFi flash loans
+- Analogy: Conceptually similar to DeFi over-collateralized lending (not flash loans, which are uncollateralized and same-transaction)

@@ -1,13 +1,13 @@
 ---
 title: Private FX
-status: stub
+status: ready
 primary_domain: Payments
 secondary_domain: Trading
 ---
 
 ## 1) Use Case
 
-Cross-border foreign exchange settlement on blockchain where trading intent, positions, and execution details must remain confidential. FX is one of the largest financial markets; 99% of stablecoins are USD-backed, making cross-currency settlement a natural blockchain application. Institutions require privacy to prevent front-running and protect trading strategies.
+Cross-border foreign exchange settlement on blockchain where trading intent, positions, and execution details must remain confidential. FX is one of the largest financial markets, and the vast majority of stablecoins are USD-pegged, making cross-currency settlement a natural blockchain application. Institutions require privacy to prevent front-running and protect trading strategies.
 
 ## 2) Additional Context
 

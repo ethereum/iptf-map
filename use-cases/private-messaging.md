@@ -1,6 +1,6 @@
 ---
 title: Private Messaging
-status: stub
+status: ready
 primary_domain: Identity & Compliance
 secondary_domain: Trading
 ---
@@ -68,4 +68,3 @@ Approach TBD. Consider:
 
 - Related: Pre-trade negotiation in [private-bonds.md](private-bonds.md), [private-fx.md](private-fx.md), [private-derivatives.md](private-derivatives.md)
 - Related: [private-identity.md](private-identity.md) (identity for message authentication)
-- Open question: What changes from existing messaging platforms (e.g., Bloomberg) when moving to blockchain?

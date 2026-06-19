@@ -13,8 +13,8 @@ Regulated real-world assets (RWAs) are tokenized on-chain to enable permissioned
 
 ### Market Signals
 
-- **Market size:** Total RWA Value at $15.801b (Sep 2025, [Defillama](https://defillama.com/protocols/RWA))
-- **Growth:** 245× growth from $85M (April 2020) to $21B (April 2025) - [Coinbase Report](https://assets.ctfassets.net/sygt3q11s4a9/6oinXHvVekdIUw2Ch7yIQw/22d0185eba3c49322ce7cf0d287ea872/SOCQ2Report_final.pdf)
+- **Market size:** ~$15.8B on-chain RWA TVL (Sep 2025, [DefiLlama](https://defillama.com/protocols/RWA), excludes stablecoins); broader trackers (e.g. [rwa.xyz](https://app.rwa.xyz/)) report higher under wider scope
+- **Growth:** [Coinbase](https://assets.ctfassets.net/sygt3q11s4a9/6oinXHvVekdIUw2Ch7yIQw/22d0185eba3c49322ce7cf0d287ea872/SOCQ2Report_final.pdf) reported ~245× growth, $85M (April 2020) → $21B (April 2025) — different scope from DefiLlama, not directly comparable
 - **Asset distribution:** Private credit (61%), Treasuries (30%), Commodities (7%), Institutional funds (2%)
 - **Deployed categories:** [US Treasuries](https://app.rwa.xyz/treasuries), [Global Bonds](https://app.rwa.xyz/global-bonds), [Private Credits](https://app.rwa.xyz/private-credit), [Commodities](https://app.rwa.xyz/commodities), [Institutional Funds](https://app.rwa.xyz/institutional-funds), [Stocks](https://app.rwa.xyz/stocks)
 

@@ -1,6 +1,6 @@
 ---
 title: Private Supply Chain
-status: stub
+status: ready
 primary_domain: Data & Oracles
 secondary_domain: Identity & Compliance
 ---

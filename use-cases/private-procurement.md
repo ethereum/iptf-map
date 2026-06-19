@@ -1,6 +1,6 @@
 ---
 title: Private Procurement
-status: stub
+status: ready
 primary_domain: Payments
 secondary_domain: Identity & Compliance
 ---

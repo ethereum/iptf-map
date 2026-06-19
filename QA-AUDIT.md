@@ -46,12 +46,12 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | Section | Total | OK | Claimed | Needs Fix | Deprecated | Pending |
 |---------|-------|----|---------|-----------|------------|---------|
 | Patterns | 70 | 70 | 0 | 0 | 0 | 0 |
-| Use Cases | 23 | 0 | 0 | 0 | 0 | 23 |
+| Use Cases | 23 | 23 | 0 | 0 | 0 | 0 |
 | Approaches | 10 | 0 | 0 | 0 | 0 | 10 |
 | Domains | 8 | 8 | 0 | 0 | 0 | 0 |
 | Jurisdictions | 7 | 0 | 0 | 0 | 0 | 7 |
 | Vendors | 24 | 0 | 0 | 0 | 0 | 24 |
-| **Total** | **142** | **78** | **0** | **0** | **0** | **64** |
+| **Total** | **142** | **101** | **0** | **0** | **0** | **41** |
 
 ---
 
@@ -132,31 +132,33 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 ## Use Cases (23)
 
+> Cross-cutting (2026-06-19): `status: stub`→`ready` on the 14 former stubs; domain labels normalized to Title Case; `scripts/schemas/use-case.json` `primary_domain` enum updated to the reframed domain taxonomy (was stale lowercase tokens, couldn't validate Funds & Assets / Data & Oracles). Use-case schema validation now clean.
+
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
 |---|------|--------|----------|---------|----------|-------|
-| 1 | [private-bonds.md](use-cases/private-bonds.md) | `pending` |  |  |  |  |
-| 2 | [private-commodities.md](use-cases/private-commodities.md) | `pending` |  |  |  |  |
-| 3 | [private-corporate-bonds.md](use-cases/private-corporate-bonds.md) | `pending` |  |  |  |  |
-| 4 | [private-derivatives.md](use-cases/private-derivatives.md) | `pending` |  |  |  |  |
-| 5 | [private-fx.md](use-cases/private-fx.md) | `pending` |  |  |  |  |
-| 6 | [private-government-debt.md](use-cases/private-government-debt.md) | `pending` |  |  |  |  |
-| 7 | [private-identity.md](use-cases/private-identity.md) | `pending` |  |  |  |  |
-| 8 | [private-messaging.md](use-cases/private-messaging.md) | `pending` |  |  |  |  |
-| 9 | [private-money-market-funds.md](use-cases/private-money-market-funds.md) | `pending` |  |  |  |  |
-| 10 | [private-oracles.md](use-cases/private-oracles.md) | `pending` |  |  |  |  |
-| 11 | [private-payments.md](use-cases/private-payments.md) | `pending` |  |  |  |  |
-| 12 | [private-procurement.md](use-cases/private-procurement.md) | `pending` |  |  |  |  |
-| 13 | [private-read.md](use-cases/private-read.md) | `pending` |  |  |  |  |
-| 14 | [private-registry.md](use-cases/private-registry.md) | `pending` |  |  |  |  |
-| 15 | [private-repo.md](use-cases/private-repo.md) | `pending` |  |  |  |  |
-| 16 | [private-rwa-tokenization.md](use-cases/private-rwa-tokenization.md) | `pending` |  |  |  |  |
-| 17 | [private-stablecoins.md](use-cases/private-stablecoins.md) | `pending` |  |  |  |  |
-| 18 | [private-stocks.md](use-cases/private-stocks.md) | `pending` |  |  |  |  |
-| 19 | [private-supply-chain.md](use-cases/private-supply-chain.md) | `pending` |  |  |  |  |
-| 20 | [private-treasuries.md](use-cases/private-treasuries.md) | `pending` |  |  |  |  |
-| 21 | [resilient-civic-participation.md](use-cases/resilient-civic-participation.md) | `pending` |  |  |  |  |
-| 22 | [resilient-disbursement-rails.md](use-cases/resilient-disbursement-rails.md) | `pending` |  |  |  |  |
-| 23 | [resilient-identity-continuity.md](use-cases/resilient-identity-continuity.md) | `pending` |  |  |  |  |
+| 1 | [private-bonds.md](use-cases/private-bonds.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Private iptf-pm umbrella link → public iptf-pocs ref; EIP-6123→ERC-6123 |
+| 2 | [private-commodities.md](use-cases/private-commodities.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed clean |
+| 3 | [private-corporate-bonds.md](use-cases/private-corporate-bonds.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | EIP-6123→ERC-6123 |
+| 4 | [private-derivatives.md](use-cases/private-derivatives.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed clean (ERC-6123 naming already correct) |
+| 5 | [private-fx.md](use-cases/private-fx.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Softened unverified "99% USD-backed stablecoins" (sources: >90%) |
+| 6 | [private-government-debt.md](use-cases/private-government-debt.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed clean; EPIC link → Open Q4 |
+| 7 | [private-identity.md](use-cases/private-identity.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | World ID 25M+→18M+ verified humans; ERC-7943/OpenAC(2026/251)/ZKPassport verified |
+| 8 | [private-messaging.md](use-cases/private-messaging.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Dropped duplicated Bloomberg open-question |
+| 9 | [private-money-market-funds.md](use-cases/private-money-market-funds.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Linked existing Approach (was "Approach TBD"); trimmed vague cost-reduction slop |
+| 10 | [private-oracles.md](use-cases/private-oracles.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | domain Data Oracles→Data & Oracles; removed duplicated "default private" note |
+| 11 | [private-payments.md](use-cases/private-payments.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed clean; EPIC link → Open Q4 |
+| 12 | [private-procurement.md](use-cases/private-procurement.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed clean; EPIC link → Open Q4 |
+| 13 | [private-read.md](use-cases/private-read.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | domain Data Oracles→Data & Oracles; status→ready; RFP link verified |
+| 14 | [private-registry.md](use-cases/private-registry.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed clean; status→ready; EPIC link → Open Q4 |
+| 15 | [private-repo.md](use-cases/private-repo.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Corrected flash-loan analogy → over-collateralized lending; status→ready |
+| 16 | [private-rwa-tokenization.md](use-cases/private-rwa-tokenization.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | RWA figures: scope note (DefiLlama vs Coinbase) + fixed $15.801b precision; ERC-7943 verified real (Final) |
+| 17 | [private-stablecoins.md](use-cases/private-stablecoins.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed clean (ERC-7573 ercs links + GENIUS/MiCA refs ok) |
+| 18 | [private-stocks.md](use-cases/private-stocks.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | CLARITY Act refined (passed House Jul 2025; tokenized securities); status→ready |
+| 19 | [private-supply-chain.md](use-cases/private-supply-chain.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed clean; status→ready; EPIC link → Open Q4 |
+| 20 | [private-treasuries.md](use-cases/private-treasuries.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed clean; status→ready |
+| 21 | [resilient-civic-participation.md](use-cases/resilient-civic-participation.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | domain labels → Title Case (Governance / Identity & Compliance) |
+| 22 | [resilient-disbursement-rails.md](use-cases/resilient-disbursement-rails.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | domain secondary → Identity & Compliance; fixed stale approach #anchors (Section F/G) |
+| 23 | [resilient-identity-continuity.md](use-cases/resilient-identity-continuity.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | domain → Identity & Compliance (dropped redundant secondary); fixed #anchor; zk-promises 2025→2024; World ID 25M+→18M+ |
 
 ## Approaches (10)
 
@@ -254,3 +256,5 @@ Questions, uncertainties, or decisions that surface during the audit. Resolve or
 | 1 | Is `maturity: production` applied consistently? It sits on an offchain pattern with no mainnet usage (mesh) and recent frameworks (OIF). What is the rubric for non-onchain patterns? | Meyanis95 | 2026-06-17 | [pattern-mesh-store-forward-submission.md](patterns/pattern-mesh-store-forward-submission.md), [pattern-oif.md](patterns/pattern-oif.md) | 2026-06-18: related data point — compliance-monitoring + cross-chain-privacy-bridge re-tiered testnet→concept (empty impls, generic archetypes). Production-tier rubric for non-onchain patterns still open. |
 | 2 | Should `pattern-l2-privacy-evaluation` stay in `patterns/` or move to `approaches/` (or a methodology doc)? It is an evaluation framework (crops_profile `n/a`, table-driven), not a reusable privacy primitive — the card self-flags this. | Meyanis95 | 2026-06-18 | [pattern-l2-privacy-evaluation.md](patterns/pattern-l2-privacy-evaluation.md) | |
 | 3 | `private-iso20022` See-also links to iso20022.org (message-definitions, `supplementary_data.page`) could not be verified — iso20022.org blocks automated fetchers (curl 000, WebFetch timeout) and the `.page` URL looks legacy. Needs a manual browser check, or repoint to the iso20022.org catalogue root. | Meyanis95 | 2026-06-18 | [pattern-private-iso20022.md](patterns/pattern-private-iso20022.md) | |
+| 4 | EPIC map demo link (`epic-webapp.vercel.app`) is referenced from 7 use-cases but is a Vercel preview URL (linkrot risk). Repoint to a stable/canonical URL, or confirm this is the canonical partner location. | Meyanis95 | 2026-06-19 | private-government-debt, private-payments, private-identity, private-registry, private-oracles, private-procurement, private-supply-chain | |
+| 5 | Use-case `status`: the 14 former stubs are now `ready`, but the 9 complete/resilient files carry no `status` and the use-case `_template.md` omits it. Standardize (add `status: ready` to all + document in template) or keep `status` optional? | Meyanis95 | 2026-06-19 | [use-cases/_template.md](use-cases/_template.md) | |

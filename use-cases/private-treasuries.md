@@ -1,6 +1,6 @@
 ---
 title: Private Treasuries
-status: stub
+status: ready
 primary_domain: Payments
 secondary_domain: Funds & Assets
 ---

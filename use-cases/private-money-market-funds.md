@@ -1,6 +1,6 @@
 ---
 title: Private Money Market Funds
-status: stub
+status: ready
 primary_domain: Funds & Assets
 secondary_domain: Payments
 ---
@@ -32,7 +32,6 @@ Large MMF positions reveal treasury management strategies and cash reserves. Com
 - Daily NAV calculations
 - SEC Rule 2a-7 compliance (for US funds)
 - Liquidity requirements for redemptions
-- significant cost reduction expectations driving adoption
 
 ### Problem 2: Redemption Pattern Privacy
 
@@ -52,7 +51,8 @@ Redemption patterns signal liquidity needs or market views. Large redemptions ca
 
 ## 5) Recommended Approaches
 
-Approach TBD. Consider:
+See detailed solution architecture and trade-offs in [**Approach: Private Money Market Funds**](../approaches/approach-private-money-market-funds.md). Key considerations:
+
 - Privacy-preserving subscription/redemption mechanisms
 - Confidential NAV sharing with authorized parties
 - Integration with custody and settlement infrastructure
@@ -68,4 +68,4 @@ Approach TBD. Consider:
 - Related: [private-stablecoins.md](private-stablecoins.md) (non-yield alternative; settlement cash)
 - Related: [private-treasuries.md](private-treasuries.md) (corporate treasury use of MMFs)
 - Differentiation: Unlike stablecoins, money market funds earn yield. Institutions prefer MMFs over non-yield stablecoins for treasury management.
-- Market context: Largest RWA category outside stablecoins; significant cost reduction driving adoption
+- Market context: Tokenized treasuries/MMFs are among the largest RWA categories outside stablecoins

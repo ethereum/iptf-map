@@ -1,6 +1,6 @@
 ---
 title: Private Government Debt
-status: stub
+status: ready
 primary_domain: Funds & Assets
 secondary_domain: Payments
 ---

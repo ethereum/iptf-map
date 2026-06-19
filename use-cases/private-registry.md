@@ -1,6 +1,6 @@
 ---
 title: Private Registry
-status: stub
+status: ready
 primary_domain: Identity & Compliance
 secondary_domain: Funds & Assets
 ---

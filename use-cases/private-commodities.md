@@ -1,6 +1,6 @@
 ---
 title: Private Commodities
-status: stub
+status: ready
 primary_domain: Trading
 secondary_domain: Funds & Assets
 ---

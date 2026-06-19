@@ -1,7 +1,7 @@
 ---
 title: Private Oracles
-status: stub
-primary_domain: Data Oracles
+status: ready
+primary_domain: Data & Oracles
 secondary_domain: Trading
 ---
 
@@ -87,5 +87,4 @@ Consider:
 - Cross-cutting concern: affects all use cases requiring external data
 - Related: [private-read.md](private-read.md) (query privacy for blockchain state)
 - Related: [private-derivatives.md](private-derivatives.md) (oracle-dependent pricing)
-- Note: "Going forward, assumption is oracles are all default private. Entire stack must be end-to-end with no information leakage."
 - See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team) — consent, data sharing, audit trails
