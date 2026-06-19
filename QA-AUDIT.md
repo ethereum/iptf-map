@@ -49,9 +49,9 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | Use Cases | 23 | 23 | 0 | 0 | 0 | 0 |
 | Approaches | 10 | 0 | 0 | 0 | 0 | 10 |
 | Domains | 8 | 8 | 0 | 0 | 0 | 0 |
-| Jurisdictions | 7 | 0 | 0 | 0 | 0 | 7 |
+| Jurisdictions | 7 | 7 | 0 | 0 | 0 | 0 |
 | Vendors | 24 | 0 | 0 | 0 | 0 | 24 |
-| **Total** | **142** | **101** | **0** | **0** | **0** | **41** |
+| **Total** | **142** | **108** | **0** | **0** | **0** | **34** |
 
 ---
 
@@ -190,15 +190,17 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 ## Jurisdictions (7)
 
+> Cross-cutting (2026-06-19): all cards reshaped to a high-level, no-legal-advice form (disclaimer + At a Glance + What to Watch + See also), ~70% shorter. Cut Actionable Best Practices / per-domain playbooks / Enterprise Opportunities. `_template.md` + validator updated (required sections relaxed to At a Glance only); schema fixes (title `Jurisdiction:` prefix, region enums, `status: in-review`→`ready`).
+
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
 |---|------|--------|----------|---------|----------|-------|
-| 1 | [cn-crypto-ban.md](jurisdictions/cn-crypto-ban.md) | `pending` |  |  |  |  |
-| 2 | [de-eWpG.md](jurisdictions/de-eWpG.md) | `pending` |  |  |  |  |
-| 3 | [eu-data-protection.md](jurisdictions/eu-data-protection.md) | `pending` |  |  |  |  |
-| 4 | [eu-MiCA.md](jurisdictions/eu-MiCA.md) | `pending` |  |  |  |  |
-| 5 | [hk-crypto-licensing.md](jurisdictions/hk-crypto-licensing.md) | `pending` |  |  |  |  |
-| 6 | [int-banking-secrecy.md](jurisdictions/int-banking-secrecy.md) | `pending` |  |  |  |  |
-| 7 | [us-SEC.md](jurisdictions/us-SEC.md) | `pending` |  |  |  |  |
+| 1 | [cn-crypto-ban.md](jurisdictions/cn-crypto-ban.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reshaped 478→180w; status in-review→ready; cut prescriptive + privacy sections |
+| 2 | [de-eWpG.md](jurisdictions/de-eWpG.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reshaped 457→155w; region EU/Germany→EU; cut playbooks + Glossary; added See also |
+| 3 | [eu-data-protection.md](jurisdictions/eu-data-protection.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reshaped 354→178w; title gained Jurisdiction: prefix; cut Enterprise Opportunities |
+| 4 | [eu-MiCA.md](jurisdictions/eu-MiCA.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reshaped 761→154w; cut 6 per-domain compliance playbooks |
+| 5 | [hk-crypto-licensing.md](jurisdictions/hk-crypto-licensing.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reshaped 564→160w; fixed duplicate heading; status in-review→ready |
+| 6 | [int-banking-secrecy.md](jurisdictions/int-banking-secrecy.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reshaped 522→183w; title +Jurisdiction:; region→Global; cut operational advice |
+| 7 | [us-SEC.md](jurisdictions/us-SEC.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reshaped 511→190w; cut Howey/GENIUS/per-domain playbooks |
 
 ## Vendors (24)
 

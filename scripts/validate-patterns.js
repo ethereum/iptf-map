@@ -130,16 +130,15 @@ const REQUIRED_APPROACH_FRONTMATTER = [
 ];
 
 // Required sections for jurisdiction documents
+// Jurisdiction cards are deliberately high-level (developer orientation, not legal
+// advice): a short posture summary, optional things to watch, and links.
 const REQUIRED_JURISDICTION_SECTIONS = [
-  '## At a Glance',
-  '## Core Compliance Expectations',
-  '## Actionable Best Practices'
+  '## At a Glance'
 ];
 
 // Recommended sections for jurisdiction documents
 const RECOMMENDED_JURISDICTION_SECTIONS = [
-  '## Key Risks to Watch',
-  '## Enterprise Opportunities',
+  '## What to Watch',
   '## See also'
 ];
 
