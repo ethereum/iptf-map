@@ -24,7 +24,6 @@ reviews:
     - "!scripts/node_modules/**"
     - "!package-lock.json"
     - "!.husky/**"
-    - "!weekly-updates/**"
 
   path_instructions:
     # ── Patterns ──────────────────────────────────────────────────────────
