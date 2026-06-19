@@ -1,5 +1,6 @@
 ---
-title: "Private Identity"
+title: Private Identity
+status: ready
 primary_domain: Identity & Compliance
 secondary_domain: Governance
 ---

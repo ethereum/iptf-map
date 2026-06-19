@@ -1,5 +1,6 @@
 ---
 title: <Use Case Name>
+status: <draft|ready>
 primary_domain: <Domain>
 secondary_domain: <Domain, ...>
 ---

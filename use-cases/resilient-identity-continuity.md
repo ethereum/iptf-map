@@ -1,5 +1,6 @@
 ---
-title: "Resilient Identity Continuity"
+title: Resilient Identity Continuity
+status: ready
 primary_domain: Identity & Compliance
 ---
 

@@ -1,5 +1,6 @@
 ---
 title: Private RWA Tokenization
+status: ready
 primary_domain: Funds & Assets
 secondary_domain:
 ---

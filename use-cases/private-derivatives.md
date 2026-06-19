@@ -1,5 +1,6 @@
 ---
-title: Private Smart Derivatives (ERC-6123)
+title: Private Smart Derivatives
+status: ready
 primary_domain: Funds & Assets
 secondary_domain:
 ---

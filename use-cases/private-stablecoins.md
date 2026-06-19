@@ -1,5 +1,6 @@
 ---
 title: Private Stablecoins for Institutional Payments
+status: ready
 primary_domain: Payments
 secondary_domain:
 ---

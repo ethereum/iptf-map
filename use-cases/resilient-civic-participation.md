@@ -1,5 +1,6 @@
 ---
-title: "Resilient Civic Participation"
+title: Resilient Civic Participation
+status: ready
 primary_domain: Governance
 secondary_domain: Identity & Compliance
 ---

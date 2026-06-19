@@ -1,5 +1,6 @@
 ---
-title: "Resilient Disbursement Rails"
+title: Resilient Disbursement Rails
+status: ready
 primary_domain: Payments
 secondary_domain: Identity & Compliance
 ---

@@ -1,5 +1,6 @@
 ---
 title: Private Payments
+status: ready
 primary_domain: Payments
 secondary_domain: Identity & Compliance
 ---

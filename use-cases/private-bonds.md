@@ -1,5 +1,6 @@
 ---
 title: Private Bonds
+status: ready
 primary_domain: Funds & Assets
 secondary_domain:
 ---
