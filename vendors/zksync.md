@@ -1,6 +1,6 @@
 ---
 title: "Vendor: ZKsync Prividium"
-status: draft
+status: ready
 ---
 
 # ZKsync - Prividium (Privacy L2 for Ethereum)
@@ -9,12 +9,11 @@ status: draft
 
 An Ethereum-secured blockchain platform purpose-built for institutions that demand privacy, compliance, and full control of their data. Prividium is part of ZKsync's suite of enterprise solutions, designed for real-world asset tokenization, private capital markets, and institutional-grade financial infrastructure with selective disclosure capabilities.
 
-## Fits with patterns (names only)
+## Fits with patterns
 
-- Privacy L2s
-- Private Stablecoin Shielded Payments
-- Shielding
-- ZK Shielded Balances
+- [Privacy L2s](../patterns/pattern-privacy-l2s.md)
+- [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
+- [Shielding](../patterns/pattern-shielding.md)
 
 ## Not a substitute for
 
@@ -28,7 +27,7 @@ An Ethereum-secured blockchain platform purpose-built for institutions that dema
 - Each Prividium manages their own private state and permission controls
 - Prividiums uses the ZKsync Gateway for setllement, who ZK commit blocks on the Ethereum L1
 
-## Privacy domains (if applicable)
+## Privacy domains
 
 - User-level privacy with selective disclosure for policy compliance
 - Private order flow execution with public price integrity proofs

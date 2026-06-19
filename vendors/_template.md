@@ -9,7 +9,7 @@ status: draft
 
 [2-3 sentences describing the product and its primary purpose]
 
-## Fits with patterns (names only)
+## Fits with patterns
 
 - [Pattern name 1]
 - [Pattern name 2]
@@ -24,7 +24,7 @@ status: draft
 
 [Technical architecture details, components, and how they work together]
 
-## Privacy domains (if applicable)
+## Privacy domains
 
 [Different privacy approaches or modes the product supports]
 
@@ -39,12 +39,6 @@ status: draft
 ## Strengths
 
 [Key advantages and differentiators]
-
-## CROPS profile
-
-| Product | CR | OS | Privacy | Security | Context |
-|---------|----|----|---------|----------|---------|
-| [Product A] | high\|medium\|low\|negative | yes\|partial\|no | high\|medium\|low | high\|medium\|low | i2i\|i2u\|both |
 
 ## Risks and open questions
 

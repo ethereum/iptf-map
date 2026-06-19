@@ -1,6 +1,6 @@
 ---
 title: "Vendor: iExec"
-status: draft
+status: ready
 maturity: mainnet
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: "Vendor: Railgun"
-status: draft
+status: ready
 maturity: production
 ---
 
@@ -11,12 +11,12 @@ maturity: production
 Railgun is a set of smart contracts providing **shielded transfers and private DeFi interactions** on Ethereum and other EVM-compatible chains.  
 It uses zkSNARKs to maintain a UTXO-like note system (commitments and nullifiers) that allows users to send, receive, and interact with DeFi protocols while hiding wallet balances and transaction details.
 
-## Fits with patterns (names only)
+## Fits with patterns
 
-- Pattern: Private ISO 20022 Messaging & Settlement
-- Pattern: Shielded-Pool Atomic Swap (ZK-HTLC)
-- Pattern: ZK Shielded Balances for Derivatives
-- Pattern: Confidential ERC-20 (FHE/L2 ERC-7573)
+- [Shielding](../patterns/pattern-shielding.md)
+- [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
+- [Proof of Innocence](../patterns/pattern-proof-of-innocence.md)
+- [Private ISO 20022](../patterns/pattern-private-iso20022.md)
 
 ## Not a substitute for
 

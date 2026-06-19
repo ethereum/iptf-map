@@ -1,6 +1,6 @@
 ---
 title: "Vendor: Fireblocks"
-status: draft
+status: ready
 ---
 
 # Fireblocks – Institutional Digital Asset Custody & Tokenization
@@ -11,10 +11,10 @@ Fireblocks is a custody and infrastructure platform that provides secure wallet 
 
 ## Fits with patterns
 
-- MPC Custody
-- DvP ERC-7573
-- ISO-20022
-- TEE ZK Settlement
+- [MPC Custody](../patterns/pattern-mpc-custody.md)
+- [DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md)
+- [Private ISO 20022](../patterns/pattern-private-iso20022.md)
+- [TEE + ZK Settlement](../patterns/pattern-tee-zk-settlement.md)
 
 ## Not a substitute for
 
@@ -25,7 +25,7 @@ Fireblocks is a custody and infrastructure platform that provides secure wallet 
 
 Fireblocks’ core system is based on a multi-party computation (MPC) wallet engine. Keys are never reconstructed in a single place; signing requires multiple parties within a distributed network of secure environments. Institutions connect through APIs to initiate transfers, approvals, and tokenization workflows. Tokenization is performed on supported networks (Ethereum, Polygon, and selected permissioned ledgers) using Fireblocks’ issuance modules.
 
-## Privacy domains (if applicable)
+## Privacy domains
 
 - Custodial privacy: private key material is never exposed, fragmented across MPC nodes
 - Transaction privacy: limited; transaction metadata visible on underlying blockchain, but workflows can integrate with permissioned ledgers for confidentiality

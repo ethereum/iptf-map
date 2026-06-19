@@ -1,6 +1,6 @@
 ---
 title: "Vendor: Privacy Pools"
-status: draft
+status: ready
 maturity: production
 ---
 
@@ -11,12 +11,12 @@ maturity: production
 Privacy Pools is a smart contract protocol that extends the mixer model by allowing users to prove that their withdrawals come from (or do not come from) deposits belonging to a specific **association set**.  
 Instead of merely unlinking deposits and withdrawals, users can provide **membership** or **exclusion** proofs, enabling them to disassociate from illicit deposits while retaining privacy within compliant sets.
 
-## Fits with patterns (names only)
+## Fits with patterns
 
-- Pattern: Private ISO 20022 Messaging & Settlement
-- Pattern: ZK Shielded Balances for Derivatives
-- Pattern: Shielded-Pool Atomic Swap (ZK-HTLC)
-- Pattern: Regulatory Disclosure Keys & Proofs
+- [Private ISO 20022](../patterns/pattern-private-iso20022.md)
+- [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
+- [Proof of Innocence](../patterns/pattern-proof-of-innocence.md)
+- [Shielding](../patterns/pattern-shielding.md)
 
 ## Not a substitute for
 

@@ -46,7 +46,7 @@
     },
     "maturity": {
       "type": "string",
-      "enum": ["experimental", "PoC", "pilot", "production", "prod"],
+      "enum": ["experimental", "PoC", "pilot", "testnet", "mainnet", "production", "prod"],
       "description": "Product maturity level"
     }
   },

@@ -1,6 +1,6 @@
 ---
 title: "Vendor: TACEO Merces"
-status: draft
+status: ready
 maturity: testnet
 ---
 

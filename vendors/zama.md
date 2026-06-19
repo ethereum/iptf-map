@@ -1,6 +1,6 @@
 ---
 title: "Vendor: Zama"
-status: draft
+status: ready
 maturity: testnet
 ---
 

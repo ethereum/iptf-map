@@ -1,7 +1,7 @@
 ---
 title: "Vendor: Aztec Rollup"
-status: draft
-maturity: production (Ignition Chain)
+status: ready
+maturity: production
 ---
 
 # Aztec - Privacy ZK Rollup

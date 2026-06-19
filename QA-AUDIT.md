@@ -50,8 +50,8 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | Approaches | 10 | 0 | 0 | 0 | 0 | 10 |
 | Domains | 8 | 8 | 0 | 0 | 0 | 0 |
 | Jurisdictions | 7 | 7 | 0 | 0 | 0 | 0 |
-| Vendors | 24 | 0 | 0 | 0 | 0 | 24 |
-| **Total** | **142** | **108** | **0** | **0** | **0** | **34** |
+| Vendors | 24 | 24 | 0 | 0 | 0 | 0 |
+| **Total** | **142** | **132** | **0** | **0** | **0** | **10** |
 
 ---
 
@@ -204,32 +204,34 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 ## Vendors (24)
 
+> Cross-cutting (2026-06-19): **format + coherence pass** — vendor card *content* stays owned by vendors (open-source model). Normalized: stripped template-placeholder heading suffixes; titles → `Vendor:`; expanded `maturity` schema enum (added `testnet`/`mainnet` = product state); `status` → `ready` on all cards (= card-review state). Dropped `## CROPS profile` from the template + peer's inline CROPS (see Open Q6). flashbots + shutter restructured to the template; ey left as a two-product card. **Fits-with-patterns** made all-links: ~22 entries referenced non-existent patterns → dropped and replaced with the patterns each vendor actually implements (fireblocks, curvy, privacypools, railgun, renegade, zksync, hinkal, tx-shield; tx-shield `erc5753`→`erc7573` typo fixed). All vendor pattern links verified to resolve. Per-card terminology variants (ZK proof, ERC3643, …) left as a separate backlog.
+
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
 |---|------|--------|----------|---------|----------|-------|
-| 1 | [aztec.md](vendors/aztec.md) | `pending` |  |  |  |  |
-| 2 | [chainlink-ace.md](vendors/chainlink-ace.md) | `pending` |  |  |  |  |
-| 3 | [curvy.md](vendors/curvy.md) | `pending` |  |  |  |  |
-| 4 | [ey.md](vendors/ey.md) | `pending` |  |  |  |  |
-| 5 | [fairblock.md](vendors/fairblock.md) | `pending` |  |  |  |  |
-| 6 | [fhenix.md](vendors/fhenix.md) | `pending` |  |  |  |  |
-| 7 | [fireblocks.md](vendors/fireblocks.md) | `pending` |  |  |  |  |
-| 8 | [flashbots.md](vendors/flashbots.md) | `pending` |  |  |  |  |
-| 9 | [hinkal.md](vendors/hinkal.md) | `pending` |  |  |  |  |
-| 10 | [iexec.md](vendors/iexec.md) | `pending` |  |  |  |  |
-| 11 | [miden.md](vendors/miden.md) | `pending` |  |  |  |  |
-| 12 | [orion-finance.md](vendors/orion-finance.md) | `pending` |  |  |  |  |
-| 13 | [paladin.md](vendors/paladin.md) | `pending` |  |  |  |  |
-| 14 | [peer.md](vendors/peer.md) | `pending` |  |  |  |  |
-| 15 | [privacypools.md](vendors/privacypools.md) | `pending` |  |  |  |  |
-| 16 | [railgun.md](vendors/railgun.md) | `pending` |  |  |  |  |
-| 17 | [renegade.md](vendors/renegade.md) | `pending` |  |  |  |  |
-| 18 | [shutter.md](vendors/shutter.md) | `pending` |  |  |  |  |
-| 19 | [soda-labs.md](vendors/soda-labs.md) | `pending` |  |  |  |  |
-| 20 | [space-and-time.md](vendors/space-and-time.md) | `pending` |  |  |  |  |
-| 21 | [taceo-merces.md](vendors/taceo-merces.md) | `pending` |  |  |  |  |
-| 22 | [tx-shield.md](vendors/tx-shield.md) | `pending` |  |  |  |  |
-| 23 | [zama.md](vendors/zama.md) | `pending` |  |  |  |  |
-| 24 | [zksync.md](vendors/zksync.md) | `pending` |  |  |  |  |
+| 1 | [aztec.md](vendors/aztec.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | maturity `production (Ignition Chain)`→`production` |
+| 2 | [chainlink-ace.md](vendors/chainlink-ace.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Heading placeholders stripped |
+| 3 | [curvy.md](vendors/curvy.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Heading placeholders stripped |
+| 4 | [ey.md](vendors/ey.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | status `production`→`ready`; **flagged**: non-standard two-product card (Nightfall v4 / Starlight) left for vendor |
+| 5 | [fairblock.md](vendors/fairblock.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Heading suffix stripped; extra Selective-disclosure section kept |
+| 6 | [fhenix.md](vendors/fhenix.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Title `Product Fhenix`→`Fhenix`; placeholders stripped |
+| 7 | [fireblocks.md](vendors/fireblocks.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Heading placeholders stripped |
+| 8 | [flashbots.md](vendors/flashbots.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Restructured Overview-scheme → template (no claim changes) |
+| 9 | [hinkal.md](vendors/hinkal.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Heading placeholders stripped |
+| 10 | [iexec.md](vendors/iexec.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed; maturity `mainnet` now valid (schema) |
+| 11 | [miden.md](vendors/miden.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Title `Vendor/Pattern:`→`Vendor:` |
+| 12 | [orion-finance.md](vendors/orion-finance.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed; maturity `testnet` now valid |
+| 13 | [paladin.md](vendors/paladin.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Placeholders stripped; missing Privacy domains (recommended) → vendor |
+| 14 | [peer.md](vendors/peer.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Removed inline CROPS profile; placeholders stripped |
+| 15 | [privacypools.md](vendors/privacypools.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Heading placeholders stripped |
+| 16 | [railgun.md](vendors/railgun.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Heading placeholders stripped |
+| 17 | [renegade.md](vendors/renegade.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Heading placeholders stripped |
+| 18 | [shutter.md](vendors/shutter.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Restructured Overview-scheme → template (no claim changes) |
+| 19 | [soda-labs.md](vendors/soda-labs.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | maturity verbose→`mainnet`; removed `<br>` from H1 |
+| 20 | [space-and-time.md](vendors/space-and-time.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed; maturity `mainnet` now valid |
+| 21 | [taceo-merces.md](vendors/taceo-merces.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed; maturity `testnet` now valid |
+| 22 | [tx-shield.md](vendors/tx-shield.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | status `published`→`ready`; Fits→links (dropped 4 broken refs; `erc5753`→`erc7573` typo fixed) |
+| 23 | [zama.md](vendors/zama.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed; maturity `testnet` now valid |
+| 24 | [zksync.md](vendors/zksync.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Heading placeholders stripped |
 
 ---
 
@@ -260,3 +262,4 @@ Questions, uncertainties, or decisions that surface during the audit. Resolve or
 | 3 | `private-iso20022` See-also links to iso20022.org (message-definitions, `supplementary_data.page`) could not be verified — iso20022.org blocks automated fetchers (curl 000, WebFetch timeout) and the `.page` URL looks legacy. Needs a manual browser check, or repoint to the iso20022.org catalogue root. | Meyanis95 | 2026-06-18 | [pattern-private-iso20022.md](patterns/pattern-private-iso20022.md) | |
 | 4 | EPIC map demo link (`epic-webapp.vercel.app`) is referenced from 7 use-cases but is a Vercel preview URL (linkrot risk). Repoint to a stable/canonical URL, or confirm this is the canonical partner location. | Meyanis95 | 2026-06-19 | private-government-debt, private-payments, private-identity, private-registry, private-oracles, private-procurement, private-supply-chain | |
 | 5 | Use-case `status`: the 14 former stubs are now `ready`, but the 9 complete/resilient files carry no `status` and the use-case `_template.md` omits it. Standardize (add `status: ready` to all + document in template) or keep `status` optional? | Meyanis95 | 2026-06-19 | [use-cases/_template.md](use-cases/_template.md) | Resolved 2026-06-19: `status: ready` on all 23 + added to `_template.md`; titles also normalized (unquoted, `(ERC-6123)` dropped from derivatives title) |
+| 6 | Dropped `## CROPS profile` from the vendor template + removed peer's inline CROPS (per decision), but the vendor [README](vendors/README.md) and [CONTRIBUTING § CROPS Evaluation](CONTRIBUTING.md#crops-evaluation) still present CROPS as the core vendor-evaluation framework. Reconcile the README/CONTRIBUTING, or reintroduce CROPS in another form? | Meyanis95 | 2026-06-19 | [vendors/README.md](vendors/README.md), [CONTRIBUTING.md](CONTRIBUTING.md) | |

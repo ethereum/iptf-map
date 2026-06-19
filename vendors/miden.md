@@ -1,6 +1,6 @@
 ---
-title: "Vendor/Pattern: Miden"
-status: draft
+title: "Vendor: Miden"
+status: ready
 maturity: PoC
 ---
 

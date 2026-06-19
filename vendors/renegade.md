@@ -1,6 +1,6 @@
 ---
 title: "Vendor: Renegade"
-status: draft
+status: ready
 maturity: production
 ---
 
@@ -11,12 +11,11 @@ maturity: production
 Renegade is a decentralized dark pool protocol for trading digital assets.  
 It combines **maliciously-secure MPC** (for private order matching) with **zkSNARK proofs** (for verifiable settlement), ensuring balances, orders, and trade history remain confidential while still settling on-chain.
 
-## Fits with patterns (names only)
+## Fits with patterns
 
-- Pattern: ZK Shielded Balances for Derivatives
-- Pattern: Shielded-Pool Atomic Swap (ZK-HTLC)
-- Pattern: Private ISO 20022 Messaging & Settlement
-- Pattern: MPC + CoSNARK Proofs for Derivatives
+- [Private Shared State (co-SNARK)](../patterns/pattern-private-shared-state-cosnark.md)
+- [co-SNARK](../patterns/pattern-co-snark.md)
+- [Private ISO 20022](../patterns/pattern-private-iso20022.md)
 
 ## Not a substitute for
 

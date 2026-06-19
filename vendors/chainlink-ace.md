@@ -1,6 +1,6 @@
 ---
 title: "Vendor: Chainlink ACE"
-status: draft
+status: ready
 ---
 
 # Chainlink - ACE (Automated compliance for digital assets)
@@ -8,7 +8,7 @@ status: draft
 ## What it is
 Modular compliance layer built on the Chainlink Runtime Environment (CRE) to define, execute, and enforce identity- and policy-based controls for digital assets across public and private chains. Core onchain components (CCID, CCT Compliance Extension) pair with CRE services (Policy/Identity/Monitoring managers). Offchain policy execution returns signed approvals; onchain enforcement is required. PII/NPI remains offchain. It enables private transactions, with one of the main target use cases being CBDCs management.
 
-## Fits with patterns (names only)
+## Fits with patterns
 - [Regulatory Disclosure Keys Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
 - [Crypto Registry Bridge eWpG EAS](../patterns/pattern-crypto-registry-bridge-ewpg-eas.md)
 - [DvP ERC7573](../patterns/pattern-dvp-erc7573.md)
@@ -26,7 +26,7 @@ Modular compliance layer built on the Chainlink Runtime Environment (CRE) to def
 - Cross-chain interop: CCIP used so identity/policy artifacts apply across networks; optional CCIP Private Transactions and Blockchain Privacy Manager for data minimization.
 - Developer tooling: SDK, API, CLI, admin UI; compliance sandbox and audited onchain policy templates (allow/deny lists, RBAC, limits).
 
-## Privacy domains (if applicable)
+## Privacy domains
 - Onchain policies
   - Fully verifiable in contracts; inputs/logic public.
 - Offchain policies
