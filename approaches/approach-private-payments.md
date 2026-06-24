@@ -1,7 +1,7 @@
 ---
 title: "Approach: Private Payments"
-status: draft
-last_reviewed: 2026-05-05
+status: ready
+last_reviewed: 2026-06-24
 
 use_case: private-stablecoins
 related_use_cases: [resilient-disbursement-rails]
@@ -354,7 +354,7 @@ example_vendors: []
 
 **Avoid when:**
 
-- Recipients have reliable internet and modern wallet capability (use Sections A-C with viewing keys instead)
+- Recipients have reliable internet and modern wallet capability (use the institutional rails — L1 Shielded, Privacy L2, or Stateless Plasma — with viewing keys instead)
 - Single-jurisdiction deployment cannot meet relay-set floors
 
 **Implementation notes:** Spec stage; PoC forthcoming. Production dependencies: Tor, Briar, Meshtastic, EAL4+ secure elements (Keycard-class), Noir + UltraHonk for ECDSA-in-SNARK at the relay. Cohort attestation uses ECDSA-pubkey leaves so the smartcard signs ECDSA only; in-circuit Poseidon hashing happens at the relay. Rotating EOAs funded via shielded unshield handle relay submission.

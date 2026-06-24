@@ -1,7 +1,7 @@
 ---
 title: "Approach: Private Smart Derivatives"
-status: draft
-last_reviewed: 2026-05-05
+status: ready
+last_reviewed: 2026-06-24
 
 use_case: private-derivatives
 related_use_cases: [private-bonds, private-stablecoins]
@@ -130,12 +130,12 @@ example_vendors: [taceo-merces]
 **How it works:** A 3-party MPC committee holds secret-shared margin balances offchain. Daily settlement runs under MPC, producing a co-SNARK that proves correct computation. The chain verifies the SNARK; counterparty addresses remain visible. Multi-asset basket logic and path-dependent payoffs are easier to express under MPC than in pure ZK circuits.
 
 **Trust assumptions:**
-- 3-of-3 honest nodes (no threshold tolerance in current TACEO design)
+- Honest-majority 3-party MPC committee (TACEO coNoir uses REP3 / 3-party Shamir, tolerating one corrupt node)
 - Co-SNARK soundness
 - Liveness of the MPC committee on the daily settlement window
 
 **Threat model:**
-- Single-node compromise breaks confidentiality
+- Collusion of two of the three nodes breaks confidentiality
 - Counterparty addresses leak; only amount and payoff confidentiality is provided
 - Batch latency creates a settlement window
 
@@ -146,7 +146,7 @@ example_vendors: [taceo-merces]
 
 **Avoid when:**
 - Address-level privacy is required
-- Threshold-honest assumption is incompatible with the threat model
+- Honest-majority assumption is incompatible with the threat model
 
 ## Comparison
 
@@ -155,19 +155,19 @@ example_vendors: [taceo-merces]
 | **Maturity** | documented | documented | documented |
 | **Context** | i2i | i2i | i2i |
 | **CROPS** | CR:hi O:y P:full S:hi | CR:med O:part P:part S:med | CR:med O:part P:part S:med |
-| **Trust model** | L1/L2 + oracle | t-of-n threshold network | 3-of-3 MPC honest |
+| **Trust model** | L1/L2 + oracle | t-of-n threshold network | Honest-majority 3-party MPC |
 | **Privacy scope** | Margin, delta, notional, addresses | Margin, delta; addresses public | Margin, delta, payoff; addresses public |
 | **Performance** | ZK proving budget per settlement | Shared FHE network throughput | ~200 TPS batched |
 | **Operator req.** | None (relayer optional) | Yes (threshold network) | Yes (MPC committee) |
 | **Cost class** | Medium-high (verification gas) | Medium | Low (batched) |
 | **Regulatory fit** | Strong (per-note view keys) | Strong (per-balance ACL, no revocation) | Strong (committee disclosure) |
-| **Failure modes** | Oracle compromise; circuit complexity ceiling | Threshold compromise; no revocation | Single-node compromise; batch latency |
+| **Failure modes** | Oracle compromise; circuit complexity ceiling | Threshold compromise; no revocation | Node collusion; batch latency |
 
 ## Persona perspectives
 
 ### Business perspective
 
-For institutional derivatives at the daily settlement cadence, **ZK + Shielded Pool** is the default: it provides the amount, counterparty, and address privacy (margin, delta, notional, and addresses through gas relayer), maps onto existing shielded-pool infrastructure, and offers a clean disclosure interface for regulators. **FHE** is the option to consider when the derivative logic involves complex arithmetic (Asian options, basket structured notes) where homomorphic computation removes the awkwardness of expressing path-dependent payoffs in circuits. **co-SNARK** is suited for multi-asset baskets where bilateral settlement among named counterparties is acceptable and the MPC committee is operationally feasible.
+For institutional derivatives at the daily settlement cadence, ZK + Shielded Pool is the default: it provides privacy over margin, delta, notional, and addresses (addresses via gas relayer), maps onto existing shielded-pool infrastructure, and offers a clean disclosure interface for regulators. FHE is the option to consider when the derivative logic involves complex arithmetic (Asian options, basket structured notes) where homomorphic computation removes the awkwardness of expressing path-dependent payoffs in circuits. co-SNARK is suited for multi-asset baskets where bilateral settlement among named counterparties is acceptable and the MPC committee is operationally feasible.
 
 ### Technical perspective
 
@@ -175,19 +175,19 @@ ZK + Shielded Pool reuses production shielded-pool infrastructure but requires b
 
 ### Legal & risk perspective
 
-This is a perspective for legal review by the deploying institution, not legal advice. ZK + Shielded Pool exposes per-note viewing keys, scoped regulator access, and an audit fingerprint via nullifier publication. FHE exposes per-balance ACL granularity with no per-ciphertext revocation; revocation depends on subsequent balance updates triggering re-grants. co-SNARK ties disclosure scope to committee membership and slashing logic. Whether any of these patterns satisfies the derivative-reporting framework that applies to a specific desk (e.g., EMIR / Dodd-Frank / MiFID II under MiCA) is a question for counsel; proving frequency would similarly need to be aligned with the applicable reporting cadence under jurisdictional review.
+This is a perspective for legal review by the deploying institution, not legal advice. ZK + Shielded Pool exposes per-note viewing keys, scoped regulator access, and an audit fingerprint via nullifier publication. FHE exposes per-balance ACL granularity with no per-ciphertext revocation; revocation depends on subsequent balance updates triggering re-grants. co-SNARK ties disclosure scope to committee membership and slashing logic. Whether any of these patterns satisfies the derivative-reporting framework that applies to a specific desk (e.g., EMIR / Dodd-Frank / MiFID II) is a question for counsel; proving frequency would similarly need to be aligned with the applicable reporting cadence under jurisdictional review.
 
 ## Recommendation
 
 ### Default
 
-For institutional derivatives among bilateral or named counterparties on a daily settlement cadence, default to **ZK + Shielded Pool** on a privacy L2 ([Aztec](../vendors/aztec.md)) or L1 shielded pool ([Railgun](../vendors/railgun.md)) with privacy-aware ERC-6123 wrappers. Selective disclosure runs through regulator viewing keys; oracle quorum gates daily price inputs.
+For institutional derivatives among bilateral or named counterparties on a daily settlement cadence, default to ZK + Shielded Pool on a privacy L2 ([Aztec](../vendors/aztec.md)) or L1 shielded pool ([Railgun](../vendors/railgun.md)) with privacy-aware ERC-6123 wrappers. Selective disclosure runs through regulator viewing keys; oracle quorum gates daily price inputs.
 
 ### Decision factors
 
-- If derivatives are structured products or multi-asset baskets, choose **co-SNARK** and accept the MPC committee dependency.
-- If derivative logic is computation-heavy (Asian options, exotic payoffs) and per-balance ACL granularity is required, choose **FHE**.
-- If circuit complexity exceeds practical proving budgets for plain ZK, choose **co-SNARK** or **FHE** depending on the dominant constraint.
+- If derivatives are structured products or multi-asset baskets, choose co-SNARK and accept the MPC committee dependency.
+- If derivative logic is computation-heavy (Asian options, exotic payoffs) and per-balance ACL granularity is required, choose FHE.
+- If circuit complexity exceeds practical proving budgets for plain ZK, choose co-SNARK or FHE depending on the dominant constraint.
 
 ### Hybrid
 

@@ -47,11 +47,11 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 |---------|-------|----|---------|-----------|------------|---------|
 | Patterns | 70 | 70 | 0 | 0 | 0 | 0 |
 | Use Cases | 23 | 23 | 0 | 0 | 0 | 0 |
-| Approaches | 10 | 0 | 0 | 0 | 0 | 10 |
+| Approaches | 10 | 10 | 0 | 0 | 0 | 0 |
 | Domains | 8 | 8 | 0 | 0 | 0 | 0 |
 | Jurisdictions | 7 | 7 | 0 | 0 | 0 | 0 |
 | Vendors | 24 | 24 | 0 | 0 | 0 | 0 |
-| **Total** | **142** | **132** | **0** | **0** | **0** | **10** |
+| **Total** | **142** | **142** | **0** | **0** | **0** | **0** |
 
 ---
 
@@ -162,18 +162,20 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 ## Approaches (10)
 
+> Cross-cutting (2026-06-24): all 10 approaches reviewed against the v2 template (issue #151). Verified per card: frontmatter; each sub-approach's YAML (maturity / context / CROPS); the Comparison table's CROPS/maturity lifts against the YAML; `uses_patterns` ⊆ frontmatter primary/supporting; and that every pattern / use-case / vendor / anchor cross-reference resolves. All GitHub `open_source_implementations` URLs return 200. `status: draft`→`ready` + `last_reviewed`→2026-06-24 on all 10. Naming standardized to repo convention (`EIP-6123`→`ERC-6123` in DvP; `EIP-7683`→`ERC-7683` in trade-settlement). Cross-doc fix: stale `Section F` anchor in [pattern-social-recovery.md](patterns/pattern-social-recovery.md) repointed to the current `#issuer-independent-enrollment-via-distributed-oprf` heading. Substantive factual fixes (HTLC ordering, TACEO trust model, Rule 2a-7, SUAVE status) verified via web before editing.
+
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
 |---|------|--------|----------|---------|----------|-------|
-| 1 | [approach-civic-participation.md](approaches/approach-civic-participation.md) | `pending` |  |  |  |  |
-| 2 | [approach-dvp-atomic-settlement.md](approaches/approach-dvp-atomic-settlement.md) | `pending` |  |  |  |  |
-| 3 | [approach-private-bonds.md](approaches/approach-private-bonds.md) | `pending` |  |  |  |  |
-| 4 | [approach-private-broadcasting.md](approaches/approach-private-broadcasting.md) | `pending` |  |  |  |  |
-| 5 | [approach-private-derivatives.md](approaches/approach-private-derivatives.md) | `pending` |  |  |  |  |
-| 6 | [approach-private-identity.md](approaches/approach-private-identity.md) | `pending` |  |  |  |  |
-| 7 | [approach-private-money-market-funds.md](approaches/approach-private-money-market-funds.md) | `pending` |  |  |  |  |
-| 8 | [approach-private-payments.md](approaches/approach-private-payments.md) | `pending` |  |  |  |  |
-| 9 | [approach-private-trade-settlement.md](approaches/approach-private-trade-settlement.md) | `pending` |  |  |  |  |
-| 10 | [approach-white-label-deployment.md](approaches/approach-white-label-deployment.md) | `pending` |  |  |  |  |
+| 1 | [approach-civic-participation.md](approaches/approach-civic-participation.md) | `ok` | Meyanis95 | 2026-06-24 | 2026-06-24 | Reviewed clean; EIP-4844 retention math (4096 epochs ≈ 18d), UltraHonk/BN254, FOCIL/EIP-7805 refs verified; status→ready |
+| 2 | [approach-dvp-atomic-settlement.md](approaches/approach-dvp-atomic-settlement.md) | `ok` | Meyanis95 | 2026-06-24 | 2026-06-24 | **Fixed HTLC timeout ordering** (`T2 < T1`→`T2 > T1`, 3×): secret-revealer's leg must expire last — old ordering let a malicious seller refund the asset at T2 and still claim payment (verified vs Tier Nolan). EIP-6123→ERC-6123 (5×); status→ready. **Review 2026-06-24** (plannotator): reframed in place — HTLC demoted to cross-chain primitive (privacy→none), constraints corrected to native L1 atomicity, personas/recommendation reworked; out-of-scope ERC-6123 lifecycle table removed + 6123/3643 made optional; FINOS→chatch HTLC repo; added pattern-shielding (incl. zk-tee poc) |
+| 3 | [approach-private-bonds.md](approaches/approach-private-bonds.md) | `ok` | Meyanis95 | 2026-06-24 | 2026-06-24 | TACEO co-SNARK re-tiered `3-of-3 (no tolerance)`→honest-majority 3-party (matches co-snark pattern + payments card + TACEO REP3/Shamir); Railgun `>$4b`→`~$4b (2025)`; de-duped privacy phrasing; status→ready. **Review 2026-06-24** (plannotator): UTXO threat model rewritten to real threats (circuit-soundness bug, loss of local note state, relayer/issuer censorship) |
+| 4 | [approach-private-broadcasting.md](approaches/approach-private-broadcasting.md) | `ok` | Meyanis95 | 2026-06-24 | 2026-06-24 | SUAVE/suave-geth marked archived (May 2025 → BuilderNet) in impls list + 2 prose refs; ey.md#nightfall-v4 anchor verified; status→ready |
+| 5 | [approach-private-derivatives.md](approaches/approach-private-derivatives.md) | `ok` | Meyanis95 | 2026-06-24 | 2026-06-24 | TACEO `3-of-3`→honest-majority (as bonds); dropped garbled "MiFID II under MiCA"→"MiFID II"; de-duped privacy phrasing; status→ready |
+| 6 | [approach-private-identity.md](approaches/approach-private-identity.md) | `ok` | Meyanis95 | 2026-06-24 | 2026-06-24 | TACEO OPRF `13-node production`→`public beta` (verified 8-node 5-of-8 beta); removed dangling `A-E`/`A-D` letter refs; ZKPassport 120+ countries & Aztec-sale OFAC/Swiss/EU/UK claims verified (stand); status→ready |
+| 7 | [approach-private-money-market-funds.md](approaches/approach-private-money-market-funds.md) | `ok` | Meyanis95 | 2026-06-24 | 2026-06-24 | Rule 2a-7 example `liquidity ratio > 30%`→`weekly liquid assets ≥ 50%` (2023 amendments, compliance Apr 2024); status→ready |
+| 8 | [approach-private-payments.md](approaches/approach-private-payments.md) | `ok` | Meyanis95 | 2026-06-24 | 2026-06-24 | Removed dangling `Sections A-C` ref → named rails; PoC benchmarks + honest-majority MPC framing already correct; status→ready |
+| 9 | [approach-private-trade-settlement.md](approaches/approach-private-trade-settlement.md) | `ok` | Meyanis95 | 2026-06-24 | 2026-06-24 | EIP-7683→ERC-7683 (4×); 5 sub-approach CROPS/maturity + cross-refs verified; status→ready |
+| 10 | [approach-white-label-deployment.md](approaches/approach-white-label-deployment.md) | `ok` | Meyanis95 | 2026-06-24 | 2026-06-24 | Removed broken `related_use_cases` slug `private-trade-settlement` (that's an approach, no such use-case); DIY-Validium/RISC Zero refs verified; status→ready |
 
 ## Domains (8)
 
@@ -263,3 +265,5 @@ Questions, uncertainties, or decisions that surface during the audit. Resolve or
 | 4 | EPIC map demo link (`epic-webapp.vercel.app`) is referenced from 7 use-cases but is a Vercel preview URL (linkrot risk). Repoint to a stable/canonical URL, or confirm this is the canonical partner location. | Meyanis95 | 2026-06-19 | private-government-debt, private-payments, private-identity, private-registry, private-oracles, private-procurement, private-supply-chain | |
 | 5 | Use-case `status`: the 14 former stubs are now `ready`, but the 9 complete/resilient files carry no `status` and the use-case `_template.md` omits it. Standardize (add `status: ready` to all + document in template) or keep `status` optional? | Meyanis95 | 2026-06-19 | [use-cases/_template.md](use-cases/_template.md) | Resolved 2026-06-19: `status: ready` on all 23 + added to `_template.md`; titles also normalized (unquoted, `(ERC-6123)` dropped from derivatives title) |
 | 6 | Dropped `## CROPS profile` from the vendor template + removed peer's inline CROPS (per decision), but the vendor [README](vendors/README.md) and [CONTRIBUTING § CROPS Evaluation](CONTRIBUTING.md#crops-evaluation) still present CROPS as the core vendor-evaluation framework. Reconcile the README/CONTRIBUTING, or reintroduce CROPS in another form? | Meyanis95 | 2026-06-19 | [vendors/README.md](vendors/README.md), [CONTRIBUTING.md](CONTRIBUTING.md) | |
+| 7 | Some approaches list `primary_patterns` that no sub-approach `uses_patterns` references — dvp-atomic-settlement (`pattern-commit-and-prove`), private-payments (`pattern-private-iso20022`, `pattern-private-stablecoin-shielded-payments`). The template's subset rule is satisfied, but a *primary* pattern unused by every sub-approach is odd. Demote to supporting, or accept primaries as thematic anchors? | Meyanis95 | 2026-06-24 | [approach-dvp-atomic-settlement.md](approaches/approach-dvp-atomic-settlement.md), [approach-private-payments.md](approaches/approach-private-payments.md) | |
+| 8 | Throughput figures in co-SNARK / FHE sub-approaches (`~200 TPS` co-SNARK, `500-1000 TPS` FHE in bonds; PoC benchmarks in payments) are stated as fact but trace to IPTF PoCs / vendor claims and were not independently verifiable in this pass. Add explicit sourcing or qualify as PoC-measured? Also: "Trusted setup is not required (UltraHonk)" recurs map-wide but UltraHonk uses a universal KZG SRS — precise wording is "no per-circuit trusted setup". | Meyanis95 | 2026-06-24 | [approach-private-bonds.md](approaches/approach-private-bonds.md), [approach-private-derivatives.md](approaches/approach-private-derivatives.md) | |

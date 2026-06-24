@@ -1,10 +1,10 @@
 ---
 title: "Approach: White-Label Infrastructure Deployment"
-status: draft
-last_reviewed: 2026-05-05
+status: ready
+last_reviewed: 2026-06-24
 
 use_case: private-stablecoins
-related_use_cases: [private-bonds, private-derivatives, private-rwa-tokenization, private-treasuries, private-trade-settlement]
+related_use_cases: [private-bonds, private-derivatives, private-rwa-tokenization, private-treasuries]
 
 primary_patterns:
   - pattern-modular-privacy-stack
@@ -232,7 +232,7 @@ example_vendors: []
 
 ### Business perspective
 
-For institutions whose dominant constraint is time-to-market, **Vendor-Managed Deployment** is the default: production-grade privacy infrastructure under the institution's brand within months, with the vendor retaining the engineering lift. **Institution-Controlled** is the suitable choice for long-term strategic commitments where the institution intends to own the stack and the regulator demands change-control sovereignty. **Consortium** is the choice for shared market infrastructure (interbank settlement, central-bank pilots, industry utilities) where multi-party governance is itself the requirement. **Self-Custodial Deployment** is the choice when end-user sovereignty is itself the institutional or donor commitment: humanitarian programs, jurisdictions where institution-as-sovereign is unacceptable, or any deployment where the trust surface against the institution itself must be the smallest practical.
+For institutions whose dominant constraint is time-to-market, Vendor-Managed Deployment is the default: production-grade privacy infrastructure under the institution's brand within months, with the vendor retaining the engineering lift. Institution-Controlled is the suitable choice for long-term strategic commitments where the institution intends to own the stack and the regulator demands change-control sovereignty. Consortium is the choice for shared market infrastructure (interbank settlement, central-bank pilots, industry utilities) where multi-party governance is itself the requirement. Self-Custodial Deployment is the choice when end-user sovereignty is itself the institutional or donor commitment: humanitarian programs, jurisdictions where institution-as-sovereign is unacceptable, or any deployment where the trust surface against the institution itself must be the smallest practical.
 
 ### Technical perspective
 
@@ -240,24 +240,24 @@ The technical work is the same across the first three governance models, deploy 
 
 ### Legal & risk perspective
 
-This is a perspective for legal review by the deploying institution(s), not legal advice. Each governance model raises distinct review surfaces. **Vendor-Managed** is typically treated as a critical-third-party outsourcing arrangement; counsel would review vendor due diligence, source escrow, exit rights, and the change-control delegation. **Institution-Controlled** aligns with the institution-as-licensee-and-operator model that regulated change control typically expects; whether a specific regulator accepts the implementation is a question for counsel. The institution-as-operator would need to bind itself out of master-key custody for end-user state (user-held viewing keys, per-request and scope-bound regulator disclosure, forced-exit reachability without operator cooperation); without that binding, the document does not classify the deployment as preserving end-user privacy. **Consortium** raises joint-governance review surfaces (charter enforceability, member-fee structure, dispute resolution, the disclosure framework across home regulators); cross-border deployments would surface the jurisdictional diversity of member operators and the supervisory-coordination implications, all of which are for counsel rather than this document. **Self-Custodial Deployment** inverts the disclosure model: there are no master viewing keys at the institution, so each regulator disclosure requires user co-signing per request; counsel would scope whether per-disclosure user consent meets the regulator's evidentiary expectations, and whether the exit-game challenge windows and bond parameters satisfy the resolution timelines the regulator expects under stress.
+This is a perspective for legal review by the deploying institution(s), not legal advice. Each governance model raises distinct review surfaces. Vendor-Managed is typically treated as a critical-third-party outsourcing arrangement; counsel would review vendor due diligence, source escrow, exit rights, and the change-control delegation. Institution-Controlled aligns with the institution-as-licensee-and-operator model that regulated change control typically expects; whether a specific regulator accepts the implementation is a question for counsel. The institution-as-operator would need to bind itself out of master-key custody for end-user state (user-held viewing keys, per-request and scope-bound regulator disclosure, forced-exit reachability without operator cooperation); without that binding, the document does not classify the deployment as preserving end-user privacy. Consortium raises joint-governance review surfaces (charter enforceability, member-fee structure, dispute resolution, the disclosure framework across home regulators); cross-border deployments would surface the jurisdictional diversity of member operators and the supervisory-coordination implications, all of which are for counsel rather than this document. Self-Custodial Deployment inverts the disclosure model: there are no master viewing keys at the institution, so each regulator disclosure requires user co-signing per request; counsel would scope whether per-disclosure user consent meets the regulator's evidentiary expectations, and whether the exit-game challenge windows and bond parameters satisfy the resolution timelines the regulator expects under stress.
 
 ## Recommendation
 
 ### Default
 
-For institutions launching a privacy product on a 6-12 month horizon with regulator-led change control, default to **Institution-Controlled Deployment** with [Aztec](../vendors/aztec.md) or [Miden](../vendors/miden.md) as the Execution-layer vendor, off-chain encrypted Data, Ethereum L1 Settlement, and view-key Disclosure. Source escrow and audit rights are negotiated up front; quarterly upgrade cadence runs through the institution's change-control gate. The default is conditional on user-privacy guardrails being load-bearing, not optional: end users custody their own [viewing keys](../patterns/pattern-user-controlled-viewing-keys.md), regulator disclosure is scoped per request via [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md), and any user can self-exit via [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md). Without these primitives, Institution-Controlled collapses into a panopticon and the deployment should not be classified as private.
+For institutions launching a privacy product on a 6-12 month horizon with regulator-led change control, default to Institution-Controlled Deployment with [Aztec](../vendors/aztec.md) or [Miden](../vendors/miden.md) as the Execution-layer vendor, off-chain encrypted Data, Ethereum L1 Settlement, and view-key Disclosure. Source escrow and audit rights are negotiated up front; quarterly upgrade cadence runs through the institution's change-control gate. The default is conditional on user-privacy guardrails being load-bearing, not optional: end users custody their own [viewing keys](../patterns/pattern-user-controlled-viewing-keys.md), regulator disclosure is scoped per request via [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md), and any user can self-exit via [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md). Without these primitives, Institution-Controlled collapses into a panopticon and the deployment should not be classified as private.
 
 ### Decision factors
 
-- If time-to-market dominates and engineering capacity is unavailable, choose **Vendor-Managed Deployment** and accept the vendor cadence.
-- If the goal is shared market infrastructure across multiple institutions, choose **Consortium Deployment** and invest in the governance charter.
-- If regulator demands institutional ownership of the full upgrade lifecycle, **Institution-Controlled** is the option that satisfies this constraint.
-- If the institution wants the smallest possible trust surface against itself and the user base can operate state-custody wallets, choose **Self-Custodial Deployment**.
+- If time-to-market dominates and engineering capacity is unavailable, choose Vendor-Managed Deployment and accept the vendor cadence.
+- If the goal is shared market infrastructure across multiple institutions, choose Consortium Deployment and invest in the governance charter.
+- If regulator demands institutional ownership of the full upgrade lifecycle, Institution-Controlled is the option that satisfies this constraint.
+- If the institution wants the smallest possible trust surface against itself and the user base can operate state-custody wallets, choose Self-Custodial Deployment.
 
 ### Hybrid
 
-Begin with **Vendor-Managed** to compress time-to-market, with a contractual transition path to **Institution-Controlled** at month 18-24 once the institution's engineering team is staffed and the operational runbook is mature. **Consortium** can layer over an Institution-Controlled deployment when peer institutions join and joint governance becomes the new operating model.
+Begin with Vendor-Managed to compress time-to-market, with a contractual transition path to Institution-Controlled at month 18-24 once the institution's engineering team is staffed and the operational runbook is mature. Consortium can layer over an Institution-Controlled deployment when peer institutions join and joint governance becomes the new operating model.
 
 ## Open questions
 

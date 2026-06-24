@@ -1,7 +1,7 @@
 ---
 title: "Approach: Private Identity"
-status: draft
-last_reviewed: 2026-05-05
+status: ready
+last_reviewed: 2026-06-24
 
 use_case: private-identity
 related_use_cases: [resilient-identity-continuity]
@@ -253,7 +253,7 @@ example_vendors: []
 
 **Summary:** Holders prove identity to a threshold vOPRF network, yielding a deterministic enrollment nullifier and a Poseidon leaf in an on-chain LeanIMT; post-enrollment, the on-chain root is the sole trust anchor, no issuer contact during verification.
 
-**How it works:** Any A-E source can enroll (passport, national ID, email DKIM, TLS notary, biometric, community vouch). The holder runs RFC 9497 + Jarecki threshold OPRF against the network (TACEO operates a 13-node production network). Output: a deterministic enrollment nullifier and a leaf added to the on-chain LeanIMT. Verification at any verifier checks a zero-knowledge proof against the on-chain root with public inputs (root, scope-bound nullifier, predicate parameters). Sybil resistance is layered: cryptographic (one enrollment per source credential), economic (refundable stake, default 0.1 ETH), social (web-of-trust vouching, future). Recovery via Shamir threshold splitting and guardian-based social recovery.
+**How it works:** Any of these credential sources can enroll (passport, national ID, email DKIM, TLS notary, biometric, community vouch). The holder runs RFC 9497 + Jarecki threshold OPRF against the network (TACEO operates a threshold OPRF network, currently in public beta). Output: a deterministic enrollment nullifier and a leaf added to the on-chain LeanIMT. Verification at any verifier checks a zero-knowledge proof against the on-chain root with public inputs (root, scope-bound nullifier, predicate parameters). Sybil resistance is layered: cryptographic (one enrollment per source credential), economic (refundable stake, default 0.1 ETH), social (web-of-trust vouching, future). Recovery via Shamir threshold splitting and guardian-based social recovery.
 
 **Trust assumptions:**
 - Threshold OPRF network availability (t-of-n liveness)
@@ -273,7 +273,7 @@ example_vendors: []
 - Multi-source enrollment with issuer-free verification is required
 
 **Avoid when:**
-- Single-issuer cooperation is reliable and the operational simplicity of A-D is preferred
+- Single-issuer cooperation is reliable and the operational simplicity of the issuer-dependent approaches is preferred
 - Threshold OPRF network operation cannot meet jurisdictional independence requirements
 
 **Implementation notes:** PoC at [Resilient Private Identity](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity) (Noir / UltraHonk, BN254). Production roadmap: BLS12-381 migration via EIP-2537, private predicate circuits, EIP-4337 paymaster or purpose-built relay infrastructure. This sub-approach exposes the `IResilientIdentity` interface used by [Approach: Private Payments, Resilient Disbursement Rails](approach-private-payments.md) and [Approach: Civic Participation](approach-civic-participation.md).
@@ -297,7 +297,7 @@ example_vendors: []
 
 ### Business perspective
 
-For institutional KYC, sanctions compliance, and ERC-3643 permissioned token transfers, **On-Chain Attestation** with EAS and ONCHAINID is the production-default; pair with **OpenAC** for cross-verifier unlinkability where the issuer-linkage signal is competitively sensitive. **Registry Membership** suits well-defined institutional whitelists where the operator is administratively tractable. **Document ZK** is suited for sanctions and age verification where attribute-only proofs are sufficient and full KYC is overhead. **Issuer-Independent OPRF** is the suitable choice when issuer continuity is a documented risk: institutions in sanctioned jurisdictions, humanitarian programs, or governance contexts where the issuer cannot remain available indefinitely.
+For institutional KYC, sanctions compliance, and ERC-3643 permissioned token transfers, On-Chain Attestation with EAS and ONCHAINID is the production-default; pair with OpenAC for cross-verifier unlinkability where the issuer-linkage signal is competitively sensitive. Registry Membership suits well-defined institutional whitelists where the operator is administratively tractable. Document ZK is suited for sanctions and age verification where attribute-only proofs are sufficient and full KYC is overhead. Issuer-Independent OPRF is the suitable choice when issuer continuity is a documented risk: institutions in sanctioned jurisdictions, humanitarian programs, or governance contexts where the issuer cannot remain available indefinitely.
 
 ### Technical perspective
 
@@ -311,13 +311,13 @@ This is a perspective for legal review by the deploying institution, not legal a
 
 ### Default
 
-For institutional permissioned-asset access today, default to **On-Chain Attestation** with EAS and ONCHAINID; add **OpenAC** when cross-verifier unlinkability matters. For institutional KYC whitelists with operator-controlled membership, default to **Registry Membership Proofs** (Semaphore-class). For sanctions and age verification on a global user base, default to **Document ZK** (ZKPassport) on supported documents.
+For institutional permissioned-asset access today, default to On-Chain Attestation with EAS and ONCHAINID; add OpenAC when cross-verifier unlinkability matters. For institutional KYC whitelists with operator-controlled membership, default to Registry Membership Proofs (Semaphore-class). For sanctions and age verification on a global user base, default to Document ZK (ZKPassport) on supported documents.
 
 ### Decision factors
 
-- If issuer continuity is a documented risk (sanctions, jurisdictional disruption, humanitarian context), choose **Issuer-Independent OPRF** and design the threshold network for jurisdictional diversity.
-- If web2 data sources without APIs must be brought on chain, choose **TLS Transcript Proofs** and validate the Notary governance.
-- If the ecosystem requires composable attestations across heterogeneous communities, choose **POD2** and accept the community-tooling maturity trade-off.
+- If issuer continuity is a documented risk (sanctions, jurisdictional disruption, humanitarian context), choose Issuer-Independent OPRF and design the threshold network for jurisdictional diversity.
+- If web2 data sources without APIs must be brought on chain, choose TLS Transcript Proofs and validate the Notary governance.
+- If the ecosystem requires composable attestations across heterogeneous communities, choose POD2 and accept the community-tooling maturity trade-off.
 
 ### Hybrid
 

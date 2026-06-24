@@ -1,7 +1,7 @@
 ---
 title: "Approach: Atomic DvP Settlement"
-status: draft
-last_reviewed: 2026-05-05
+status: ready
+last_reviewed: 2026-06-24
 
 use_case: private-bonds
 related_use_cases: [private-derivatives, private-corporate-bonds, private-government-debt, private-rwa-tokenization]
@@ -14,6 +14,7 @@ supporting_patterns:
   - pattern-mpc-custody
   - pattern-private-pvp-stablecoins-erc7573
   - pattern-tee-zk-settlement
+  - pattern-shielding
 
 iptf_pocs:
   folder: pocs/private-trade-settlement
@@ -25,8 +26,8 @@ iptf_pocs:
       status: implemented
 
 open_source_implementations:
-  - url: https://github.com/finos/finos
-    description: "FINOS reference implementations for cross-chain DvP (ERC-7573)"
+  - url: https://github.com/chatch/hashed-timelock-contract-ethereum
+    description: "Hashed Timelock Contracts for ETH, ERC-20, and ERC-721 on Ethereum"
     language: Solidity
 ---
 
@@ -36,19 +37,19 @@ open_source_implementations:
 
 ### Scenario
 
-An asset manager sells a EUR 1M corporate bond position to a bank on an L2 network. Both parties want assurance that the bond and the EURC payment exchange atomically: either both legs settle or neither does, with deterministic recovery if a leg fails. The same primitive must serve derivatives margin and termination flows.
+An asset manager sells a EUR 1M corporate bond position to a bank on an L2 network. Both parties want assurance that the bond and the EURC payment exchange atomically: either both legs settle or neither does, with deterministic recovery if a leg fails. The same atomic-settlement primitive generalizes to other instrument types.
 
 ### Requirements
 
 - Both legs complete atomically or neither does; no partial settlement
 - Counterparty risk is structurally eliminated (assets in escrow, not held by the other party)
 - Deterministic conditions and timeouts; clear failure semantics for legal review
-- Composable with EIP-6123 derivative lifecycle and ERC-3643 securities
+- Optional: compatible with the proposed ERC-6123 (derivative lifecycle) and ERC-3643 (securities token) standards, both still Draft
 
 ### Constraints
 
-- Single-network atomicity is inherent in transaction execution; cross-network atomicity requires trusted intermediaries or oracles
-- Capital is locked during the settlement window; lockup duration is a design parameter
+- Single-network DvP is atomic by construction: one transaction settles both legs or reverts. Cross-network atomicity is the hard case and needs a trusted intermediary, an oracle, or a hashlock + timeout (HTLC)
+- The cross-network and HTLC paths lock capital for the settlement or timeout window; lockup duration is a design parameter on those paths only
 - Escrow contracts are practically immutable in production; upgrades imply migration
 
 ## Approaches
@@ -58,14 +59,14 @@ An asset manager sells a EUR 1M corporate bond position to a bank on an L2 netwo
 ```yaml
 maturity: prototyped
 context: i2i
-crops: { cr: high, o: yes, p: partial, s: high }
+crops: { cr: high, o: yes, p: none, s: high }
 uses_patterns: [pattern-dvp-erc7573]
 example_vendors: []
 ```
 
-**Summary:** Payment and asset are each locked to a hash; revealing the preimage releases both legs.
+**Summary:** Payment and asset are each locked to a hash; revealing the preimage releases both legs. Primarily a cross-chain primitive — for single-network DvP a native atomic swap or escrow is simpler and leaks less.
 
-**How it works:** The seller generates secret S and shares H(S). The buyer locks payment with H(S) and timeout T1; the seller locks the asset with H(S) and timeout T2 < T1. The seller reveals S to claim payment, which makes S public; the buyer uses S to claim the asset before T1. If S is never revealed, both sides refund at their respective timeouts.
+**How it works:** The seller generates secret S and shares H(S). The buyer locks payment with H(S) and timeout T1; the seller locks the asset with H(S) and timeout T2 > T1. The seller reveals S to claim payment before T1, which makes S public; the buyer then uses S to claim the asset before the later timeout T2. The secret-revealer's own leg must expire last, so the counterparty always has time to claim once S is public. If S is never revealed, both sides refund at their respective timeouts.
 
 **Trust assumptions:**
 - Hash function preimage resistance
@@ -74,15 +75,17 @@ example_vendors: []
 
 **Threat model:**
 - Network congestion at the timeout boundary can strand a leg
-- T2 < T1 ordering must hold; mis-parameterization breaks atomicity
+- T2 > T1 ordering must hold (the secret-revealer's leg expires last); mis-parameterization breaks atomicity
 - Free-option problem: the holder of S chooses whether to reveal, which has implicit option value
 
 **Works best when:**
-- Counterparties are unknown or untrusted
-- Single-network atomic swaps where capital lockup is acceptable
-- Cross-chain atomic swaps where each chain supports HTLC
+- The two legs sit on different chains and each chain supports hashlock + timeout (HTLC's distinctive niche is cross-chain)
+- Counterparties are untrusted and no shared escrow contract is available
+- Public visibility of the hashlock, preimage, amounts, and parties is acceptable
 
 **Avoid when:**
+- Both legs are on one network: a single atomic swap or escrow transaction settles atomically with no lockup and less leakage (add a shielded pool for privacy)
+- Trade details must stay private: HTLC publishes the hashlock, preimage, amounts, and counterparties
 - Free-option exposure must be eliminated (use escrow instead)
 - Assets do not tolerate the lockup window required by safe timeout margins
 
@@ -125,7 +128,7 @@ example_vendors: []
 maturity: prototyped
 context: i2i
 crops: { cr: medium, o: partial, p: partial, s: medium }
-uses_patterns: [pattern-dvp-erc7573, pattern-private-pvp-stablecoins-erc7573, pattern-tee-zk-settlement]
+uses_patterns: [pattern-dvp-erc7573, pattern-private-pvp-stablecoins-erc7573, pattern-tee-zk-settlement, pattern-shielding]
 poc_spec: pocs/private-trade-settlement/tee_swap/SPEC.md
 example_vendors: []
 ```
@@ -161,25 +164,15 @@ example_vendors: []
 | Event-based | Payment finality confirmation; regulatory approval; multi-sig threshold approval |
 | Value-based | Price-bound limit orders; collateral-ratio margin calls; net settlement against batched obligations |
 
-For derivative contracts using EIP-6123 lifecycle management, the DvP integration maps onto each lifecycle event:
-
-| EIP-6123 lifecycle event | DvP integration |
-|---|---|
-| Trade confirmation | Lock initial margin in escrow |
-| Valuation update | Adjust escrow based on mark-to-market |
-| Margin call | Conditional release requires margin top-up |
-| Settlement | Final exchange of payment vs position closure |
-| Early termination | Escrow handles close-out netting |
-
 ## Comparison
 
 | Axis | HTLC | Escrow with Dual Approval | Conditional Transfer with Oracle |
 |---|---|---|---|
 | **Maturity** | prototyped | prototyped | prototyped |
 | **Context** | i2i | i2i | i2i |
-| **CROPS** | CR:hi O:y P:part S:hi | CR:med O:y P:part S:hi | CR:med O:part P:part S:med |
+| **CROPS** | CR:hi O:y P:none S:hi | CR:med O:y P:part S:hi | CR:med O:part P:part S:med |
 | **Trust model** | Trustless (hash + timeout) | Counterparties + arbitrator | Oracle |
-| **Privacy scope** | Public escrow contract; preimage and timing visible | Public escrow; party identities visible | Public escrow + oracle attestation |
+| **Privacy scope** | None on chain: hashlock, preimage, amounts, parties visible | Public escrow; party identities visible | Public escrow + oracle attestation |
 | **Performance** | Two transactions per leg | Deposit + dual signature + release | Deposit + attestation + release |
 | **Operator req.** | None | Arbitrator on dispute | Oracle (single or quorum) |
 | **Cost class** | Low | Medium (dispute path) | Medium (oracle infra) |
@@ -190,31 +183,31 @@ For derivative contracts using EIP-6123 lifecycle management, the DvP integratio
 
 ### Business perspective
 
-For institutional bond settlement among known counterparties, **Escrow with Dual Approval** is the default: it matches the human-in-the-loop nature of traditional settlement, accommodates compliance and operational checks before release, and provides an explicit dispute path that legal review can rely on. **HTLC** suits trustless contexts (cross-chain atomic swaps, dealer-to-dealer settlement with no prior relationship) but exposes a free-option problem that institutional desks penalize. **Oracle-based settlement** is suited for event-driven flows (derivatives expiry, cross-network DvP via ERC-7573) where the trigger is external; the operational burden is the oracle governance rather than the contract itself.
+On a single network, DvP is atomic by construction: one transaction settles both legs or reverts. The remaining design work is the release logic — the conditions and compliance checks that gate settlement. For institutional settlement among known counterparties, Escrow with Dual Approval is the default: it matches the human-in-the-loop nature of traditional settlement, accommodates compliance and operational checks before release, and provides an explicit dispute path that legal review can rely on. Conditional Transfer with Oracle suits event-driven flows (regulatory approval, payment-finality confirmation, cross-network triggers) where the release condition is external; the operational burden is the oracle governance rather than the contract itself. HTLC is a cross-chain primitive, relevant only when the two legs sit on different chains; institutional desks rarely use it for single-network DvP, where a native swap or escrow is simpler and the hashlock would otherwise publish the trade. On any of these paths, privacy comes from settling the legs inside a shielded pool; the atomicity mechanism alone leaves the trade visible.
 
 ### Technical perspective
 
-HTLC is the simplest contract surface but the trickiest to parameterize: T2 < T1 with margins for network congestion is load-bearing, and incident response on a stalled leg has no recovery path beyond timeout. Escrow contracts are larger but easier to reason about: deposit, verify, release, refund, with clear state machines for each branch. Oracle-based settlement adds the oracle-integration surface (push vs pull, single vs quorum, fallback semantics) and inherits the attestation infrastructure's failure modes. Cross-network atomicity is the open frontier: ERC-7573 is the working draft, but trustless cross-chain DvP remains unresolved.
+Single-network atomicity is free: a single contract call that swaps both legs either commits or reverts, with no capital lockup. The engineering question is the release logic. Escrow is the most legible: deposit, verify, release, refund, with a clear state machine per branch. Conditional Transfer with Oracle adds the oracle-integration surface (push vs pull, single vs quorum, fallback semantics) and inherits the attestation infrastructure's failure modes. HTLC is the cross-chain option and the trickiest to parameterize: T2 > T1 with margins for network congestion is load-bearing, a stalled leg has no recovery beyond timeout, and the preimage publishes the trade — so it is reserved for the genuinely cross-chain case. Cross-network atomicity is the open frontier: ERC-7573 is the working draft, but trustless cross-chain DvP remains unresolved (see [Private Trade Settlement](approach-private-trade-settlement.md) for the privacy rails).
 
 ### Legal & risk perspective
 
-This is a perspective for legal review by the deploying institution, not legal advice. HTLC has a deterministic outcome (preimage revealed or timeout) that can be documented precisely; whether that documentation suffices for a specific dispute regime is for legal review. Escrow with a named arbitrator references existing arbitration frameworks (LCIA, ICC); whether the chosen framework binds in cross-border settlement is a question for counsel. Oracle-based settlement raises a classification question about the oracle's role (data provider, attestation issuer, fiduciary?) and the audit access to its evidence trail. For each option, the dispute and recovery path (timeout refund, arbitrator decision, oracle non-response, escrow bug) would need to be modelled explicitly under the applicable law.
+This is a perspective for legal review by the deploying institution, not legal advice. Escrow with a named arbitrator references existing arbitration frameworks (LCIA, ICC); whether the chosen framework binds in cross-border settlement is a question for counsel. Conditional Transfer with Oracle raises a classification question about the oracle's role (data provider, attestation issuer, fiduciary?) and the audit access to its evidence trail. HTLC, where used for a cross-chain leg, has a deterministic outcome (preimage revealed or timeout) that can be documented precisely, but it publishes the trade on chain; whether that documentation and disclosure suit a specific dispute regime is for legal review. For each option, the dispute and recovery path (arbitrator decision, oracle non-response, timeout refund, escrow bug) would need to be modelled explicitly under the applicable law.
 
 ## Recommendation
 
 ### Default
 
-For institutional bond and derivative DvP among known counterparties on a single network, default to **Escrow with Dual Approval**, integrated with ERC-3643 for security tokens and EIP-6123 for derivative lifecycle. The arbitration path is named in the trade documentation; the oracle (if invoked) is scoped to specific external triggers (e.g., regulatory approval, payment finality).
+For institutional bond DvP among known counterparties on a single network, default to Escrow with Dual Approval, integrated with ERC-3643 for security tokens. The arbitration path is named in the trade documentation; the oracle (if invoked) is scoped to specific external triggers (e.g., regulatory approval, payment finality).
 
 ### Decision factors
 
-- If counterparties are unknown or trust is structurally absent, choose **HTLC** and accept the free-option exposure.
-- If settlement is event-driven and the trigger is external (derivatives expiry, cross-network payment), choose **Conditional Transfer with Oracle**, ideally via ERC-7573.
-- If cross-network atomicity is required, plan to compose **HTLC** or **Oracle**-based settlement with ERC-7573 coordination; trustless cross-chain DvP remains an open problem.
+- If settlement is event-driven and the trigger is external (regulatory approval, payment finality, cross-network confirmation), choose Conditional Transfer with Oracle, ideally via ERC-7573.
+- If the two legs sit on different chains, use HTLC or oracle/intermediary coordination and accept that the hashlock publishes the trade; trustless cross-chain DvP remains an open problem (see [Private Trade Settlement](approach-private-trade-settlement.md)).
+- If amounts and counterparties must stay private, settle the legs inside a shielded pool rather than relying on the atomicity mechanism for privacy.
 
 ### Hybrid
 
-Bond DvP can run primary settlement through Escrow with Dual Approval and fall back to a timed unilateral refund path on counterparty non-response, with an oracle attesting to payment finality on an external rail. Derivatives lifecycle (EIP-6123) calls into the same escrow for margin lock and final settlement, with the oracle gating margin calls and termination events.
+Bond DvP can run primary settlement through Escrow with Dual Approval and fall back to a timed unilateral refund path on counterparty non-response, with an oracle attesting to payment finality on an external rail. For privacy, the escrow legs settle inside a shielded pool so trade IDs and party identities are not exposed on chain.
 
 ## Open questions
 

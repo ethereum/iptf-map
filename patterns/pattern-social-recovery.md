@@ -48,7 +48,7 @@ Let a quorum of guardians authorize rotation of the signing key or enrollment an
 
 - Recovery path with no issuer, custodian, or centralized service in the loop.
 - Cancelable rotation: the timelock gives the holder a window to block unauthorized proposals if the original key is still reachable.
-- Identity anchor variant: in the issuer-independent enrollment flow, guardians authorize rotation of the enrollment key bound to the on-chain commitment, not of a credential. See [Approach: Private Identity, Section F](../approaches/approach-private-identity.md#f-issuer-independent-enrollment-via-distributed-oprf).
+- Identity anchor variant: in the issuer-independent enrollment flow, guardians authorize rotation of the enrollment key bound to the on-chain commitment, not of a credential. See [Approach: Private Identity, Issuer-Independent Enrollment via Distributed OPRF](../approaches/approach-private-identity.md#issuer-independent-enrollment-via-distributed-oprf).
 
 ## Trade-offs
 

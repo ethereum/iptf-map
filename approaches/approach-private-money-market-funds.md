@@ -1,7 +1,7 @@
 ---
 title: "Approach: Private Money Market Funds"
-status: draft
-last_reviewed: 2026-05-05
+status: ready
+last_reviewed: 2026-06-24
 
 use_case: private-money-market-funds
 related_use_cases: [private-stablecoins, private-treasuries, private-rwa-tokenization]
@@ -82,7 +82,7 @@ example_vendors: [paladin, railgun, privacypools]
 - Yield logic is complex enough that circuit complexity exceeds practical bounds
 - Threshold administration overhead (key rotation, custodian onboarding) is unacceptable
 
-**Implementation notes:** PoC uses Railgun-class shielded pool primitives. Compliance gates encoded as ZK public outputs (e.g., post-redemption liquidity ratio > 30%); regulator scope via per-position view keys logged through EAS. Yield attribution uses pro-rata share-of-total computation: each redeemer proves `my_shares / total_shares * total_yield = entitled_amount`.
+**Implementation notes:** PoC uses Railgun-class shielded pool primitives. Compliance gates encoded as ZK public outputs (e.g., post-redemption weekly liquid assets ≥ 50%, the SEC Rule 2a-7 minimum since the 2023 amendments); regulator scope via per-position view keys logged through EAS. Yield attribution uses pro-rata share-of-total computation: each redeemer proves `my_shares / total_shares * total_yield = entitled_amount`.
 
 ### FHE Encrypted Balances
 
@@ -169,7 +169,7 @@ example_vendors: []
 
 ### Business perspective
 
-For a yield-bearing tokenized treasury product where operator-independent NAV verification is the load-bearing property, **ZK Shielded Commitments** is the default: positions and redemptions are private, the running-total commitment is opened by a threshold subset of custodians and auditors who do not include the operator, and the fund continues to function under operator outage. **FHE** suits funds with complex yield logic (multi-strategy MMFs, dynamic allocation) where homomorphic arithmetic removes circuit-design overhead; the trade-off is reliance on the FHE network for both decryption and throughput. **TEE** is a viable PoC starting point and a near-term production option for funds whose custodians already accept hardware-rooted trust.
+For a yield-bearing tokenized treasury product where operator-independent NAV verification is the load-bearing property, ZK Shielded Commitments is the default: positions and redemptions are private, the running-total commitment is opened by a threshold subset of custodians and auditors who do not include the operator, and the fund continues to function under operator outage. FHE suits funds with complex yield logic (multi-strategy MMFs, dynamic allocation) where homomorphic arithmetic removes circuit-design overhead; the trade-off is reliance on the FHE network for both decryption and throughput. TEE is a viable PoC starting point and a near-term production option for funds whose custodians already accept hardware-rooted trust.
 
 ### Technical perspective
 
@@ -183,12 +183,12 @@ This is a perspective for legal review by the deploying fund operator, not legal
 
 ### Default
 
-For institutional-grade private money market funds where operator-independent NAV is required, default to **ZK Shielded Commitments** with a Pedersen running-total opened by a t-of-n threshold of custodians and auditors who do not include the fund operator. Periodic full-audit checkpoints run off the redemption critical path. Selective disclosure runs through per-position view keys logged via EAS; gate compliance is encoded as ZK public outputs.
+For institutional-grade private money market funds where operator-independent NAV is required, default to ZK Shielded Commitments with a Pedersen running-total opened by a t-of-n threshold of custodians and auditors who do not include the fund operator. Periodic full-audit checkpoints run off the redemption critical path. Selective disclosure runs through per-position view keys logged via EAS; gate compliance is encoded as ZK public outputs.
 
 ### Decision factors
 
-- If yield logic is complex (multi-strategy, path-dependent) and per-balance ACL granularity is required, choose **FHE Encrypted Balances**.
-- If near-term deployment is required and custodians already accept hardware-rooted trust, choose **TEE Enclave** as a PoC or transitional path.
+- If yield logic is complex (multi-strategy, path-dependent) and per-balance ACL granularity is required, choose FHE Encrypted Balances.
+- If near-term deployment is required and custodians already accept hardware-rooted trust, choose TEE Enclave as a PoC or transitional path.
 - If operator independence cannot be administered through threshold custody, none of the three approaches removes the trust assumption, re-scope the requirement.
 
 ### Hybrid
