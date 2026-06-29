@@ -17,8 +17,6 @@ The tracker below is the single source of truth for who is reviewing what. Claim
 
 **Stale claims:** a `claimed` row untouched for 7+ days may be reclaimed by someone else.
 
-**Keeping the tracker in sync:** `node scripts/audit-sync.js` checks the file list against `origin/master` (run `git fetch origin master` first); `node scripts/audit-sync.js --sync` adds new files as `pending` and recomputes the summary without touching existing review data. CI runs the check on every push to `feat/audit`.
-
 ### Status legend
 
 | Status | Meaning |
