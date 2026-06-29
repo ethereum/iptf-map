@@ -92,7 +92,7 @@ example_vendors: [paladin, railgun]
 - L1 consensus and the verifier contract
 - Gas relayer for liveness on private withdrawals
 - Issuer for the global-note-to-holder-notes split at issuance
-- Trusted setup is not required (UltraHonk)
+- No per-circuit trusted setup (UltraHonk uses a universal KZG SRS)
 
 **Threat model:**
 - A circuit or verifier soundness bug (e.g., an under-constrained circuit) lets an attacker forge or double-spend notes; metadata leakage at deposit/withdraw boundaries is the practical privacy exposure
@@ -171,7 +171,7 @@ example_vendors: [taceo-merces]
 **Works best when:**
 - Institutional custodial models are acceptable
 - Amount confidentiality is sufficient and counterparty privacy is not required
-- Throughput target matches batched proving (~200 TPS)
+- Throughput target matches batched proving (~200 TPS, TACEO-reported)
 
 **Avoid when:**
 - Honest-majority assumption among MPC nodes is incompatible with the threat model
@@ -200,7 +200,7 @@ example_vendors: [zama, fhenix]
 **Threat model:**
 - Threshold compromise reveals ciphertexts
 - No revocation per ciphertext; revocation requires a re-encryption / re-grant on balance update
-- Shared throughput (500-1000 TPS) is a network-wide bottleneck
+- Shared throughput (500-1000 TPS, vendor-reported) is a network-wide bottleneck
 
 **Works best when:**
 - Bond logic involves complex calculations (coupon accruals, derivatives) that map naturally to FHE
@@ -220,7 +220,7 @@ example_vendors: [zama, fhenix]
 | **CROPS** | CR:hi O:y P:full S:hi | CR:med O:part P:full S:med | CR:med O:part P:part S:med | CR:med O:part P:part S:med |
 | **Trust model** | Self-custody (L1 + ZK) | Sequencer + bridge | Honest-majority 3-party MPC | t-of-n threshold network |
 | **Privacy scope** | Amounts + addresses (via gas relayer) | Amounts + addresses (account level) | Amounts only; addresses public | Amounts only; addresses public |
-| **Performance** | High gas, chain-dependent throughput | L2-internal fees, unknown TPS | ~95K gas/tx batched, ~200 TPS | ~300K gas/tx, 500-1000 TPS shared |
+| **Performance** | High gas, chain-dependent throughput | L2-internal fees, unknown TPS | ~95K gas/tx batched, ~200 TPS (vendor) | ~300K gas/tx, 500-1000 TPS shared (vendor) |
 | **Operator req.** | No (gas relayer optional) | Yes (sequencer) | Yes (MPC committee) | Yes (threshold network) |
 | **Cost class** | High (L1 verify) | Low (L2-internal) | Low (batched) | Medium |
 | **Regulatory fit** | Strong (per-note view keys) | Strong (IVKs, app-siloed nullifiers) | Strong for known counterparty | Strong (per-balance ACL) |

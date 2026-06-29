@@ -45,13 +45,13 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 | Section | Total | OK | Claimed | Needs Fix | Deprecated | Pending |
 |---------|-------|----|---------|-----------|------------|---------|
-| Patterns | 70 | 70 | 0 | 0 | 0 | 0 |
+| Patterns | 70 | 69 | 0 | 0 | 1 | 0 |
 | Use Cases | 23 | 23 | 0 | 0 | 0 | 0 |
 | Approaches | 10 | 10 | 0 | 0 | 0 | 0 |
 | Domains | 8 | 8 | 0 | 0 | 0 | 0 |
 | Jurisdictions | 7 | 7 | 0 | 0 | 0 | 0 |
 | Vendors | 24 | 24 | 0 | 0 | 0 | 0 |
-| **Total** | **142** | **142** | **0** | **0** | **0** | **0** |
+| **Total** | **142** | **141** | **0** | **0** | **1** | **0** |
 
 ---
 
@@ -76,7 +76,7 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 15 | [pattern-icma-bdt-data-model.md](patterns/pattern-icma-bdt-data-model.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Privacy badge full→none (schema is not a privacy mechanism) |
 | 16 | [pattern-immutable-guarantees.md](patterns/pattern-immutable-guarantees.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed clean; arXiv 2512.12732 86%/129 verified; status→ready |
 | 17 | [pattern-l2-encrypted-offchain-audit.md](patterns/pattern-l2-encrypted-offchain-audit.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Trimmed unjustified ERC-3643 from standards |
-| 18 | [pattern-l2-privacy-evaluation.md](patterns/pattern-l2-privacy-evaluation.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed; sources verified. Relocation candidate → Open Q2; status→ready |
+| 18 | [pattern-l2-privacy-evaluation.md](patterns/pattern-l2-privacy-evaluation.md) | `deprecated` | Meyanis95 | 2026-06-24 | 2026-06-24 | Removed from the map (Open Q2): evaluation framework, not a reusable primitive; inbound see_also + RFP refs cleaned (historical CHANGELOG entry left intact) |
 | 19 | [pattern-lean-ethereum.md](patterns/pattern-lean-ethereum.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Fixed client-team count (15→8 per roadmap) + removed unsourced 2030 date; 1-ETH/PQ-sigs/zkVM verified; status→ready |
 | 20 | [pattern-mesh-store-forward-submission.md](patterns/pattern-mesh-store-forward-submission.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Bridgefy is MIT-licensed (fixed "commercial"); status→ready; maturity raised as Open Q |
 | 21 | [pattern-mixnet-anonymity.md](patterns/pattern-mixnet-anonymity.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed; status→ready |
@@ -132,8 +132,6 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 ## Use Cases (23)
 
-> Cross-cutting (2026-06-19): `status: stub`→`ready` on the 14 former stubs; domain labels normalized to Title Case; `scripts/schemas/use-case.json` `primary_domain` enum updated to the reframed domain taxonomy (was stale lowercase tokens, couldn't validate Funds & Assets / Data & Oracles). Use-case schema validation now clean. Follow-up: `status: ready` standardized across all 23 + added to `_template.md`; titles normalized (unquoted, no parentheticals).
-
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
 |---|------|--------|----------|---------|----------|-------|
 | 1 | [private-bonds.md](use-cases/private-bonds.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Private iptf-pm umbrella link → public iptf-pocs ref; EIP-6123→ERC-6123 |
@@ -161,8 +159,6 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 23 | [resilient-identity-continuity.md](use-cases/resilient-identity-continuity.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | domain → Identity & Compliance (dropped redundant secondary); fixed #anchor; zk-promises 2025→2024; World ID 25M+→18M+ |
 
 ## Approaches (10)
-
-> Cross-cutting (2026-06-24): all 10 approaches reviewed against the v2 template (issue #151). Verified per card: frontmatter; each sub-approach's YAML (maturity / context / CROPS); the Comparison table's CROPS/maturity lifts against the YAML; `uses_patterns` ⊆ frontmatter primary/supporting; and that every pattern / use-case / vendor / anchor cross-reference resolves. All GitHub `open_source_implementations` URLs return 200. `status: draft`→`ready` + `last_reviewed`→2026-06-24 on all 10. Naming standardized to repo convention (`EIP-6123`→`ERC-6123` in DvP; `EIP-7683`→`ERC-7683` in trade-settlement). Cross-doc fix: stale `Section F` anchor in [pattern-social-recovery.md](patterns/pattern-social-recovery.md) repointed to the current `#issuer-independent-enrollment-via-distributed-oprf` heading. Substantive factual fixes (HTLC ordering, TACEO trust model, Rule 2a-7, SUAVE status) verified via web before editing.
 
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
 |---|------|--------|----------|---------|----------|-------|
@@ -192,8 +188,6 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 ## Jurisdictions (7)
 
-> Cross-cutting (2026-06-19): all cards reshaped to a high-level, no-legal-advice form (disclaimer + At a Glance + What to Watch + See also), ~70% shorter. Cut Actionable Best Practices / per-domain playbooks / Enterprise Opportunities. `_template.md` + validator updated (required sections relaxed to At a Glance only); schema fixes (title `Jurisdiction:` prefix, region enums, `status: in-review`→`ready`).
-
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
 |---|------|--------|----------|---------|----------|-------|
 | 1 | [cn-crypto-ban.md](jurisdictions/cn-crypto-ban.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reshaped 478→180w; status in-review→ready; cut prescriptive + privacy sections |
@@ -205,8 +199,6 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 7 | [us-SEC.md](jurisdictions/us-SEC.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reshaped 511→190w; cut Howey/GENIUS/per-domain playbooks |
 
 ## Vendors (24)
-
-> Cross-cutting (2026-06-19): **format + coherence pass** — vendor card *content* stays owned by vendors (open-source model). Normalized: stripped template-placeholder heading suffixes; titles → `Vendor:`; expanded `maturity` schema enum (added `testnet`/`mainnet` = product state); `status` → `ready` on all cards (= card-review state). Dropped `## CROPS profile` from the template + peer's inline CROPS (see Open Q6). flashbots + shutter restructured to the template; ey left as a two-product card. **Fits-with-patterns** made all-links: ~22 entries referenced non-existent patterns → dropped and replaced with the patterns each vendor actually implements (fireblocks, curvy, privacypools, railgun, renegade, zksync, hinkal, tx-shield; tx-shield `erc5753`→`erc7573` typo fixed). All vendor pattern links verified to resolve. Per-card terminology variants (ZK proof, ERC3643, …) left as a separate backlog.
 
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
 |---|------|--------|----------|---------|----------|-------|
@@ -243,13 +235,13 @@ These are one-time checks on the overall map integrity:
 
 | Check | Status | Reviewer | Date | Notes |
 |-------|--------|----------|------|-------|
-| GLOSSARY.md - all terms accurate | `pending` | | | |
-| README.md - navigation links valid | `pending` | | | |
-| CONTRIBUTING.md - up to date | `pending` | | | |
-| All internal cross-links resolve | `pending` | | | |
-| No orphan files (unreferenced content) | `pending` | | | |
-| Frontmatter schema validation passes | `pending` | | | |
-| Vale linting passes on all files | `pending` | | | |
+| GLOSSARY.md - all terms accurate | `ok` | Meyanis95 | 2026-06-24 | glossary definitions reviewed/accurate; per-card terminology-variant consistency (e.g. ZK proof→zero-knowledge proof, ERC3643→ERC-3643; 18 hits/11 files, mostly vendors) is a known separate backlog |
+| README.md - navigation links valid | `ok` | Meyanis95 | 2026-06-24 | all 8 root nav links resolve |
+| CONTRIBUTING.md - up to date | `ok` | Meyanis95 | 2026-06-24 | CROPS rubric retained (used by patterns/approaches); vendor docs keep CROPS as a curation guideline — no change needed (Q6) |
+| All internal cross-links resolve | `ok` | Meyanis95 | 2026-06-24 | content links resolve after l2-eval cleanup; intentional non-resolving refs left as-is — template/example placeholders (rfps/_template.md, CONTRIBUTING.md), historical CHANGELOG release links to since-removed content (l2-eval/survey/weekly-updates; past releases are immutable), QA-AUDIT deprecated-row link (tracker bookkeeping) |
+| No orphan files (unreferenced content) | `ok` | Meyanis95 | 2026-06-24 | reviewed — prose-link "orphans" are mostly frontmatter/README-reachable (taxonomy); approach-white-label-deployment flagged for a use-case backlink (backlog) |
+| Frontmatter schema validation passes | `ok` | Meyanis95 | 2026-06-24 | `validate-patterns.js` passes (only content word-count warnings) |
+| Vale linting passes on all files | `ok` | Meyanis95 | 2026-06-24 | 0 errors; ~196 advisory warnings (IPTF.Marketing / IPTF.Terminology) → prose-sweep backlog |
 
 ---
 
@@ -259,11 +251,11 @@ Questions, uncertainties, or decisions that surface during the audit. Resolve or
 
 | # | Question | Raised by | Date | Related file(s) | Resolution |
 |---|----------|-----------|------|------------------|------------|
-| 1 | Is `maturity: production` applied consistently? It sits on an offchain pattern with no mainnet usage (mesh) and recent frameworks (OIF). What is the rubric for non-onchain patterns? | Meyanis95 | 2026-06-17 | [pattern-mesh-store-forward-submission.md](patterns/pattern-mesh-store-forward-submission.md), [pattern-oif.md](patterns/pattern-oif.md) | 2026-06-18: related data point — compliance-monitoring + cross-chain-privacy-bridge re-tiered testnet→concept (empty impls, generic archetypes). Production-tier rubric for non-onchain patterns still open. |
-| 2 | Should `pattern-l2-privacy-evaluation` stay in `patterns/` or move to `approaches/` (or a methodology doc)? It is an evaluation framework (crops_profile `n/a`, table-driven), not a reusable privacy primitive — the card self-flags this. | Meyanis95 | 2026-06-18 | [pattern-l2-privacy-evaluation.md](patterns/pattern-l2-privacy-evaluation.md) | |
-| 3 | `private-iso20022` See-also links to iso20022.org (message-definitions, `supplementary_data.page`) could not be verified — iso20022.org blocks automated fetchers (curl 000, WebFetch timeout) and the `.page` URL looks legacy. Needs a manual browser check, or repoint to the iso20022.org catalogue root. | Meyanis95 | 2026-06-18 | [pattern-private-iso20022.md](patterns/pattern-private-iso20022.md) | |
-| 4 | EPIC map demo link (`epic-webapp.vercel.app`) is referenced from 7 use-cases but is a Vercel preview URL (linkrot risk). Repoint to a stable/canonical URL, or confirm this is the canonical partner location. | Meyanis95 | 2026-06-19 | private-government-debt, private-payments, private-identity, private-registry, private-oracles, private-procurement, private-supply-chain | |
+| 1 | Is `maturity: production` applied consistently? It sits on an offchain pattern with no mainnet usage (mesh) and recent frameworks (OIF). What is the rubric for non-onchain patterns? | Meyanis95 | 2026-06-17 | [pattern-mesh-store-forward-submission.md](patterns/pattern-mesh-store-forward-submission.md), [pattern-oif.md](patterns/pattern-oif.md) | 2026-06-18: related data point — compliance-monitoring + cross-chain-privacy-bridge re-tiered testnet→concept (empty impls, generic archetypes). Production-tier rubric for non-onchain patterns still open. **Resolved 2026-06-24:** rubric = judge the primitive's maturity in the Ethereum context — mesh-store-forward-submission `production`→`concept` (no Ethereum-context implementation); OIF kept `production` (ERC-7683 intents live via Across/UniswapX). |
+| 2 | Should `pattern-l2-privacy-evaluation` stay in `patterns/` or move to `approaches/` (or a methodology doc)? It is an evaluation framework (crops_profile `n/a`, table-driven), not a reusable privacy primitive — the card self-flags this. | Meyanis95 | 2026-06-18 | pattern-l2-privacy-evaluation.md _(removed)_ | **Resolved 2026-06-24:** removed from the map (maintainer decision). Cleaned 3 `see_also` refs + 2 rfp-benchmark-dashboard links; tracker row 18 → `deprecated`. Historical CHANGELOG [0.3.0] entry left intact (past releases are immutable). |
+| 3 | `private-iso20022` See-also links to iso20022.org (message-definitions, `supplementary_data.page`) could not be verified — iso20022.org blocks automated fetchers (curl 000, WebFetch timeout) and the `.page` URL looks legacy. Needs a manual browser check, or repoint to the iso20022.org catalogue root. | Meyanis95 | 2026-06-18 | [pattern-private-iso20022.md](patterns/pattern-private-iso20022.md) | **Resolved 2026-06-24:** kept the message-definitions link; repointed the legacy `supplementary_data.page` link to the iso20022.org catalogue root (stable). |
+| 4 | EPIC map demo link (`epic-webapp.vercel.app`) is referenced from 7 use-cases but is a Vercel preview URL (linkrot risk). Repoint to a stable/canonical URL, or confirm this is the canonical partner location. | Meyanis95 | 2026-06-19 | private-government-debt, private-payments, private-identity, private-registry, private-oracles, private-procurement, private-supply-chain | **Resolved 2026-06-24:** `epic-webapp.vercel.app` confirmed canonical by maintainer; kept across the 7 use-cases. |
 | 5 | Use-case `status`: the 14 former stubs are now `ready`, but the 9 complete/resilient files carry no `status` and the use-case `_template.md` omits it. Standardize (add `status: ready` to all + document in template) or keep `status` optional? | Meyanis95 | 2026-06-19 | [use-cases/_template.md](use-cases/_template.md) | Resolved 2026-06-19: `status: ready` on all 23 + added to `_template.md`; titles also normalized (unquoted, `(ERC-6123)` dropped from derivatives title) |
-| 6 | Dropped `## CROPS profile` from the vendor template + removed peer's inline CROPS (per decision), but the vendor [README](vendors/README.md) and [CONTRIBUTING § CROPS Evaluation](CONTRIBUTING.md#crops-evaluation) still present CROPS as the core vendor-evaluation framework. Reconcile the README/CONTRIBUTING, or reintroduce CROPS in another form? | Meyanis95 | 2026-06-19 | [vendors/README.md](vendors/README.md), [CONTRIBUTING.md](CONTRIBUTING.md) | |
-| 7 | Some approaches list `primary_patterns` that no sub-approach `uses_patterns` references — dvp-atomic-settlement (`pattern-commit-and-prove`), private-payments (`pattern-private-iso20022`, `pattern-private-stablecoin-shielded-payments`). The template's subset rule is satisfied, but a *primary* pattern unused by every sub-approach is odd. Demote to supporting, or accept primaries as thematic anchors? | Meyanis95 | 2026-06-24 | [approach-dvp-atomic-settlement.md](approaches/approach-dvp-atomic-settlement.md), [approach-private-payments.md](approaches/approach-private-payments.md) | |
-| 8 | Throughput figures in co-SNARK / FHE sub-approaches (`~200 TPS` co-SNARK, `500-1000 TPS` FHE in bonds; PoC benchmarks in payments) are stated as fact but trace to IPTF PoCs / vendor claims and were not independently verifiable in this pass. Add explicit sourcing or qualify as PoC-measured? Also: "Trusted setup is not required (UltraHonk)" recurs map-wide but UltraHonk uses a universal KZG SRS — precise wording is "no per-circuit trusted setup". | Meyanis95 | 2026-06-24 | [approach-private-bonds.md](approaches/approach-private-bonds.md), [approach-private-derivatives.md](approaches/approach-private-derivatives.md) | |
+| 6 | Dropped `## CROPS profile` from the vendor template + removed peer's inline CROPS (per decision), but the vendor [README](vendors/README.md) and [CONTRIBUTING § CROPS Evaluation](CONTRIBUTING.md#crops-evaluation) still present CROPS as the core vendor-evaluation framework. Reconcile the README/CONTRIBUTING, or reintroduce CROPS in another form? | Meyanis95 | 2026-06-19 | [vendors/README.md](vendors/README.md), [CONTRIBUTING.md](CONTRIBUTING.md) | **Resolved 2026-06-24:** keep CROPS as a curation guideline in the vendor docs (vendors/README + CONTRIBUTING left intact). The reconciliation is the already-completed drop of the *per-card* CROPS profile from the vendor template; the docs may reference CROPS as a selection guideline without per-card scoring. |
+| 7 | Some approaches list `primary_patterns` that no sub-approach `uses_patterns` references — dvp-atomic-settlement (`pattern-commit-and-prove`), private-payments (`pattern-private-iso20022`, `pattern-private-stablecoin-shielded-payments`). The template's subset rule is satisfied, but a *primary* pattern unused by every sub-approach is odd. Demote to supporting, or accept primaries as thematic anchors? | Meyanis95 | 2026-06-24 | [approach-dvp-atomic-settlement.md](approaches/approach-dvp-atomic-settlement.md), [approach-private-payments.md](approaches/approach-private-payments.md) | **Resolved 2026-06-24:** demoted the unused primaries to supporting — dvp (commit-and-prove); payments (private-iso20022, private-stablecoin-shielded-payments). |
+| 8 | Throughput figures in co-SNARK / FHE sub-approaches (`~200 TPS` co-SNARK, `500-1000 TPS` FHE in bonds; PoC benchmarks in payments) are stated as fact but trace to IPTF PoCs / vendor claims and were not independently verifiable in this pass. Add explicit sourcing or qualify as PoC-measured? Also: "Trusted setup is not required (UltraHonk)" recurs map-wide but UltraHonk uses a universal KZG SRS — precise wording is "no per-circuit trusted setup". | Meyanis95 | 2026-06-24 | [approach-private-bonds.md](approaches/approach-private-bonds.md), [approach-private-derivatives.md](approaches/approach-private-derivatives.md) | **Resolved 2026-06-24:** qualified co-SNARK ~200 TPS (TACEO-reported) + FHE 500-1000 TPS (vendor-reported) in bonds/derivatives; fixed "trusted setup not required (UltraHonk)" → "no per-circuit trusted setup (universal KZG SRS)" in bonds + payments; corrected the zk-wrappers UltraHonk transparency claim. |

@@ -8,8 +8,8 @@ related_use_cases: [private-derivatives, private-corporate-bonds, private-govern
 
 primary_patterns:
   - pattern-dvp-erc7573
-  - pattern-commit-and-prove
 supporting_patterns:
+  - pattern-commit-and-prove
   - pattern-erc3643-rwa
   - pattern-mpc-custody
   - pattern-private-pvp-stablecoins-erc7573

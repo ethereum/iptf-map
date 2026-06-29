@@ -41,7 +41,7 @@ standards: [ERC-7573, ERC-3643, EIP-4844, EAS]
 
 related_patterns:
   composes_with: [pattern-privacy-l2s, pattern-commit-and-prove, pattern-dvp-erc7573, pattern-regulatory-disclosure-keys-proofs, pattern-tee-based-privacy, pattern-l2-encrypted-offchain-audit]
-  see_also: [pattern-shielding, pattern-l2-privacy-evaluation]
+  see_also: [pattern-shielding]
 
 sub_patterns:
   - name: "Data layer"

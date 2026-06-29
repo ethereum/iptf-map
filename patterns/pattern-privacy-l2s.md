@@ -47,7 +47,7 @@ standards: [ERC-20, ERC-3643, ERC-7573]
 related_patterns:
   composes_with: [pattern-shielding, pattern-regulatory-disclosure-keys-proofs, pattern-dvp-erc7573, pattern-erc3643-rwa]
   alternative_to: [pattern-plasma-stateless-privacy]
-  see_also: [pattern-forced-withdrawal, pattern-l2-privacy-evaluation, pattern-user-controlled-viewing-keys]
+  see_also: [pattern-forced-withdrawal, pattern-user-controlled-viewing-keys]
 
 open_source_implementations:
   - url: https://github.com/AztecProtocol/aztec-packages

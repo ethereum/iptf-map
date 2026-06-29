@@ -1,7 +1,7 @@
 ---
 title: "Pattern: Mesh Store-and-Forward Submission"
 status: ready
-maturity: production
+maturity: concept
 layer: offchain
 last_reviewed: 2026-06-17
 

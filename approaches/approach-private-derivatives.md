@@ -142,7 +142,7 @@ example_vendors: [taceo-merces]
 **Works best when:**
 - Derivatives are structured products or multi-asset baskets
 - Counterparties are bilateral or named and accept committee-mediated settlement
-- Throughput target matches batched proving (~200 TPS)
+- Throughput target matches batched proving (~200 TPS, TACEO-reported)
 
 **Avoid when:**
 - Address-level privacy is required
@@ -157,7 +157,7 @@ example_vendors: [taceo-merces]
 | **CROPS** | CR:hi O:y P:full S:hi | CR:med O:part P:part S:med | CR:med O:part P:part S:med |
 | **Trust model** | L1/L2 + oracle | t-of-n threshold network | Honest-majority 3-party MPC |
 | **Privacy scope** | Margin, delta, notional, addresses | Margin, delta; addresses public | Margin, delta, payoff; addresses public |
-| **Performance** | ZK proving budget per settlement | Shared FHE network throughput | ~200 TPS batched |
+| **Performance** | ZK proving budget per settlement | Shared FHE network throughput | ~200 TPS batched (vendor) |
 | **Operator req.** | None (relayer optional) | Yes (threshold network) | Yes (MPC committee) |
 | **Cost class** | Medium-high (verification gas) | Medium | Low (batched) |
 | **Regulatory fit** | Strong (per-note view keys) | Strong (per-balance ACL, no revocation) | Strong (committee disclosure) |

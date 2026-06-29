@@ -114,6 +114,6 @@ Threat model:
 ## See also
 
 - [ISO 20022 message definitions](https://www.iso20022.org/iso-20022-message-definitions)
-- [ISO 20022 `<SplmtryData>` extension mechanism](https://www.iso20022.org/supplementary_data.page)
+- [ISO 20022 `<SplmtryData>` extension mechanism](https://www.iso20022.org/)
 - [ERC-7573 (conditional settlement)](https://eips.ethereum.org/EIPS/eip-7573)
 - [ERC-3643 (tokenized RWA)](https://eips.ethereum.org/EIPS/eip-3643)

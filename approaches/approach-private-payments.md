@@ -9,10 +9,10 @@ related_use_cases: [resilient-disbursement-rails]
 primary_patterns:
   - pattern-shielding
   - pattern-privacy-l2s
-  - pattern-private-stablecoin-shielded-payments
-  - pattern-private-iso20022
   - pattern-regulatory-disclosure-keys-proofs
 supporting_patterns:
+  - pattern-private-stablecoin-shielded-payments
+  - pattern-private-iso20022
   - pattern-plasma-stateless-privacy
   - pattern-tee-based-privacy
   - pattern-co-snark
@@ -105,7 +105,7 @@ example_vendors: [railgun]
 
 - L1 consensus and the verifier contract
 - Gas relayer is willing to relay (liveness only; not custodial)
-- Trusted setup is not required (UltraHonk)
+- No per-circuit trusted setup (UltraHonk uses a universal KZG SRS)
 
 **Threat model:**
 

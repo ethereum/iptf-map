@@ -41,7 +41,7 @@ standards: [EIP-1967]
 
 related_patterns:
   composes_with: [pattern-forced-withdrawal, pattern-permissionless-spend-auth]
-  see_also: [pattern-l2-privacy-evaluation, pattern-modular-privacy-stack, pattern-hybrid-public-private-modes]
+  see_also: [pattern-modular-privacy-stack, pattern-hybrid-public-private-modes]
 ---
 
 ## Intent

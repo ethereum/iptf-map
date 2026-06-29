@@ -95,7 +95,7 @@ Threat model:
 
 - Circuits for non-arithmetic-friendly primitives are large. RSA-4096 with SHA-512, or ECDSA over P-521 emulated in BN254, reach millions of constraints. Proof generation on mobile is feasible but not cheap.
 - The issuer still controls new issuance. Existing signed credentials remain provable after issuer failure, but revocation and refresh depend on the issuer unless paired with an on-chain anchor. See [Resilient Identity Continuity](../use-cases/resilient-identity-continuity.md).
-- Trusted setup depends on the proof system. Groth16 is per-circuit with ceremony requirements; UltraHonk and Halo2 are transparent.
+- Trusted setup depends on the proof system. Groth16 is per-circuit with ceremony requirements; UltraHonk needs a one-time universal (updatable) SRS rather than a per-circuit ceremony; Halo2 is transparent with IPA.
 - Issuer key rotation is a liveness risk. Circuits or on-chain registries need to accept the new key without invalidating historical proofs.
 
 ## Example
