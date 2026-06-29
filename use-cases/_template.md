@@ -2,6 +2,7 @@
 title: <Use Case Name>
 status: <draft|ready>
 primary_domain: <Domain>
+# Optional.
 secondary_domain: <Domain, ...>
 ---
 
