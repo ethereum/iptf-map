@@ -44,12 +44,12 @@ An asset manager sells a EUR 1M corporate bond position to a bank on an L2 netwo
 - Both legs complete atomically or neither does; no partial settlement
 - Counterparty risk is structurally eliminated (assets in escrow, not held by the other party)
 - Deterministic conditions and timeouts; clear failure semantics for legal review
-- Optional: compatible with the proposed ERC-6123 (derivative lifecycle) and ERC-3643 (securities token) standards, both still Draft
+- Optional: compatible with ERC-6123 (derivative lifecycle, Draft) and ERC-3643 (securities token, Final)
 
 ### Constraints
 
 - Single-network DvP is atomic by construction: one transaction settles both legs or reverts. Cross-network atomicity is the hard case and needs a trusted intermediary, an oracle, or a hashlock + timeout (HTLC)
-- The cross-network and HTLC paths lock capital for the settlement or timeout window; lockup duration is a design parameter on those paths only
+- The cross-network and HTLC paths lock capital for the settlement or timeout window; lockup duration is a design parameter specific to those paths
 - Escrow contracts are practically immutable in production; upgrades imply migration
 
 ## Approaches

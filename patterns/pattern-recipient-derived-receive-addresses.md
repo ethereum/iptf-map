@@ -2,6 +2,7 @@
 title: "Pattern: Recipient-Derived Receive Addresses"
 status: ready
 maturity: concept
+type: standard
 layer: L1
 last_reviewed: 2026-06-18
 

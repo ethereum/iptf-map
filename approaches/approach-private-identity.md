@@ -253,7 +253,7 @@ example_vendors: []
 
 **Summary:** Holders prove identity to a threshold vOPRF network, yielding a deterministic enrollment nullifier and a Poseidon leaf in an on-chain LeanIMT; post-enrollment, the on-chain root is the sole trust anchor, no issuer contact during verification.
 
-**How it works:** Any of these credential sources can enroll (passport, national ID, email DKIM, TLS notary, biometric, community vouch). The holder runs RFC 9497 + Jarecki threshold OPRF against the network (TACEO operates a threshold OPRF network, currently in public beta). Output: a deterministic enrollment nullifier and a leaf added to the on-chain LeanIMT. Verification at any verifier checks a zero-knowledge proof against the on-chain root with public inputs (root, scope-bound nullifier, predicate parameters). Sybil resistance is layered: cryptographic (one enrollment per source credential), economic (refundable stake, default 0.1 ETH), social (web-of-trust vouching, future). Recovery via Shamir threshold splitting and guardian-based social recovery.
+**How it works:** Any of these credential sources can enroll (passport, national ID, email DKIM, TLS notary, biometric, community vouch). The holder runs RFC 9497 + Jarecki threshold OPRF against the network (TACEO operates a threshold OPRF network, live in production). Output: a deterministic enrollment nullifier and a leaf added to the on-chain LeanIMT. Verification at any verifier checks a zero-knowledge proof against the on-chain root with public inputs (root, scope-bound nullifier, predicate parameters). Sybil resistance is layered: cryptographic (one enrollment per source credential), economic (refundable stake, default 0.1 ETH), social (web-of-trust vouching, future). Recovery via Shamir threshold splitting and guardian-based social recovery.
 
 **Trust assumptions:**
 - Threshold OPRF network availability (t-of-n liveness)
@@ -316,7 +316,7 @@ For institutional permissioned-asset access today, default to On-Chain Attestati
 ### Decision factors
 
 - If issuer continuity is a documented risk (sanctions, jurisdictional disruption, humanitarian context), choose Issuer-Independent OPRF and design the threshold network for jurisdictional diversity.
-- If web2 data sources without APIs must be brought on chain, choose TLS Transcript Proofs and validate the Notary governance.
+- If web2 data sources without APIs must be brought on-chain, choose TLS Transcript Proofs and validate the Notary governance.
 - If the ecosystem requires composable attestations across heterogeneous communities, choose POD2 and accept the community-tooling maturity trade-off.
 
 ### Hybrid

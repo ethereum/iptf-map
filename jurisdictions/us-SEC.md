@@ -28,4 +28,4 @@ The SEC's posture is **restrictive but evolving**, applied substantially through
 ## See also
 
 - [White House Digital Assets Report (EO 14178, Jul 2025)](https://whitehouse.gov/wp-content/uploads/2025/07/Digital-Assets-Report-EO14178.pdf)
-- [SEC Written Proposal: Digital Asset Regulation (Sep 2025)](https://www.sec.gov/files/ctf-written-sec-proposal-digital-asset-09-08-2025.pdf)
+- [Public submission to the SEC's Crypto Task Force: Proposal for a Regulatory Framework for Digital Assets (Sep 2025)](https://www.sec.gov/files/ctf-written-sec-proposal-digital-asset-09-08-2025.pdf)

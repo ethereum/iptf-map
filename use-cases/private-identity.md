@@ -2,7 +2,7 @@
 title: Private Identity
 status: ready
 primary_domain: Identity & Compliance
-secondary_domain: Governance
+secondary_domain: Civic Coordination & Governance
 ---
 
 ## 1) Use Case

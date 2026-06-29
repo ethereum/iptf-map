@@ -55,6 +55,22 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 ---
 
+## CodeRabbit review follow-up (PR #130, 2026-06-29)
+
+Post-audit corrections from the CodeRabbit review pass — content/style only, no new content. See the [PR #130](https://github.com/ethereum/iptf-map/pull/130) conversation for the full triage and the dismissed/deferred comments.
+
+- **approaches/approach-dvp-atomic-settlement.md** — standards line: ERC-3643 is Final (was "both still Draft"); ERC-6123 stays Draft. Cleared a Vale "only" on the constraints line.
+- **approaches/approach-private-identity.md** — TACEO:OPRF "currently in public beta" → "live in production"; "brought on chain" → "on-chain".
+- **patterns/pattern-lean-ethereum.md** — client-team count "Eight" → "Multiple … as of mid-2026": leanroadmap.org lists ~9 teams, is evolving, and states no fixed total, so a specific number risks going stale. (Supersedes the "15→8 per roadmap" note in the Patterns table.)
+- **patterns/pattern-cross-chain-privacy-bridge.md** — "maximum privacy" → "privacy on both sender and receiver ends"; dropped a stray "only".
+- **patterns/pattern-recipient-derived-receive-addresses.md** — added `type: standard` (optional field; makes the pattern kind explicit).
+- **jurisdictions/us-SEC.md** — relabeled the second "See also" link: it is a public submission to the SEC's Crypto Task Force, not an SEC-authored proposal.
+- **use-cases/resilient-civic-participation.md**, **use-cases/private-identity.md**, **scripts/schemas/use-case.json** — domain taxonomy: `Governance` → canonical `Civic Coordination & Governance` (schema enum + both use-cases).
+
+Tooling/config (not content files): reverted `vendors/_template.md` to master (keeps `## CROPS profile` documented in the template); relaxed the `.coderabbit.yaml` vendor CROPS rule to optional (no longer enforced — populating CROPS in the cards is deferred); updated the `.coderabbit.yaml` jurisdiction path instructions to the current `At a Glance / What to Watch / See also` structure. Remaining vendor-card comments (marketing/typo, Privacy domains) are deferred and answered on the PR.
+
+---
+
 ## Patterns (70)
 
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
@@ -77,7 +93,7 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 | 16 | [pattern-immutable-guarantees.md](patterns/pattern-immutable-guarantees.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Reviewed clean; arXiv 2512.12732 86%/129 verified; status→ready |
 | 17 | [pattern-l2-encrypted-offchain-audit.md](patterns/pattern-l2-encrypted-offchain-audit.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Trimmed unjustified ERC-3643 from standards |
 | 18 | [pattern-l2-privacy-evaluation.md](patterns/pattern-l2-privacy-evaluation.md) | `deprecated` | Meyanis95 | 2026-06-24 | 2026-06-24 | Removed from the map (Open Q2): evaluation framework, not a reusable primitive; inbound see_also + RFP refs cleaned (historical CHANGELOG entry left intact) |
-| 19 | [pattern-lean-ethereum.md](patterns/pattern-lean-ethereum.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Fixed client-team count (15→8 per roadmap) + removed unsourced 2030 date; 1-ETH/PQ-sigs/zkVM verified; status→ready |
+| 19 | [pattern-lean-ethereum.md](patterns/pattern-lean-ethereum.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | Fixed client-team count (15→8 per roadmap) + removed unsourced 2030 date; 1-ETH/PQ-sigs/zkVM verified; status→ready (CR follow-up 2026-06-29: count → "multiple", roadmap ~9 and evolving) |
 | 20 | [pattern-mesh-store-forward-submission.md](patterns/pattern-mesh-store-forward-submission.md) | `ok` | Meyanis95 | 2026-06-17 | 2026-06-17 | Bridgefy is MIT-licensed (fixed "commercial"); status→ready; maturity raised as Open Q |
 | 21 | [pattern-mixnet-anonymity.md](patterns/pattern-mixnet-anonymity.md) | `ok` | Meyanis95 | 2026-06-15 | 2026-06-15 | Reviewed; status→ready |
 | 22 | [pattern-modular-privacy-stack.md](patterns/pattern-modular-privacy-stack.md) | `ok` | Meyanis95 | 2026-06-18 | 2026-06-18 | attest.sh→attest.org; sub_patterns + links verified; status→ready |

@@ -1,7 +1,7 @@
 ---
 title: Resilient Civic Participation
 status: ready
-primary_domain: Governance
+primary_domain: Civic Coordination & Governance
 secondary_domain: Identity & Compliance
 ---
 

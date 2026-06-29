@@ -58,7 +58,7 @@ Plan a long-range redesign of the Ethereum consensus layer, targeting a single m
 - Networking upgrades: Gossipsub v2 for throughput and DOS resilience, and rateless set reconciliation to support very large validator sets.
 - Lower validator thresholds in hardware, bandwidth, and stake, making solo staking accessible on commodity devices.
 - Formal verification tooling (Lean 4) used to prove key properties of the signature aggregation and consensus logic.
-- Eight independent client teams as of mid-2026, implementing the specification in a range of languages.
+- Multiple independent client teams as of mid-2026, implementing the specification in a range of languages.
 
 ## Protocol
 
