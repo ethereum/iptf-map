@@ -12,11 +12,11 @@ key-regulations:
 last_reviewed: 2026-06-19
 ---
 
-> High-level orientation for developers — not legal advice.
+> Developer orientation. Not legal advice.
 
 ## At a Glance
 
-Banking-secrecy laws (strongest in places like Switzerland) protect client financial data from disclosure — but they are **not absolute**: they yield to AML/CTF, sanctions, tax cooperation (CRS/FATCA), court orders, and supervisory requests. For crypto builders the practical question is **what client data you store, where, who can access it, and how cross-border disclosure works** — a data-residency and minimisation concern as much as a confidentiality one. Posture: **confidential by default, disclosable by law**.
+Banking-secrecy laws (strongest in places like Switzerland) protect client financial data from disclosure, but they are not absolute: they yield to AML/CTF, sanctions, tax cooperation (CRS/FATCA), court orders, and supervisory requests. For crypto builders the practical question is what client data you store, where, who can access it, and how cross-border disclosure works, a data-residency and minimisation concern as much as a confidentiality one. In practice, such data is confidential by default but disclosable by law.
 
 ## What to Watch
 

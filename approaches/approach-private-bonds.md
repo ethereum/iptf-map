@@ -230,7 +230,7 @@ example_vendors: [zama, fhenix]
 
 ### Business perspective
 
-For institutional bond issuance and trading at scale, UTXO Shielded Notes is the default: production maturity (Railgun ~USD 4b lifetime shielded volume as of 2025), white-label vendor coverage (Paladin), privacy over amounts, counterparties, and addresses (addresses via gas relayer), and a regulatory story built on per-note viewing keys that maps cleanly onto eWpG and MiCA disclosure regimes. Privacy L2 fits where bond logic is complex (coupons, structured lifecycle) because it removes circuit-engineering work, but the issuer must accept the rollup's decentralization timeline. co-SNARKs and FHE fit specific institutional contexts: bilateral or club-mode markets where address visibility is acceptable, or coupon-heavy products where homomorphic arithmetic is the natural model.
+For institutional bond issuance and trading at scale, UTXO Shielded Notes is the default: production maturity (Railgun ~USD 5b lifetime shielded volume as of 2026), white-label vendor coverage (Paladin), privacy over amounts, counterparties, and addresses (addresses via gas relayer), and a regulatory story built on per-note viewing keys that maps cleanly onto eWpG and MiCA disclosure regimes. Privacy L2 fits where bond logic is complex (coupons, structured lifecycle) because it removes circuit-engineering work, but the issuer must accept the rollup's decentralization timeline. co-SNARKs and FHE fit specific institutional contexts: bilateral or club-mode markets where address visibility is acceptable, or coupon-heavy products where homomorphic arithmetic is the natural model.
 
 ### Technical perspective
 

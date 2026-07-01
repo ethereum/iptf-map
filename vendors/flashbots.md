@@ -8,12 +8,12 @@ maturity: production
 
 ## What it is
 
-Flashbots develops MEV infrastructure including private mempools, block building, and SUAVE (Single Unifying Auction for Value Expression) — a decentralized platform for private intent expression and execution. Flashbots Auction is in production on Ethereum mainnet; SUAVE is under development.
+Flashbots develops MEV infrastructure including private mempools, block building, and SUAVE (Single Unifying Auction for Value Expression), a decentralized platform for private intent expression and execution. Flashbots Auction is in production on Ethereum mainnet; SUAVE is under development.
 
 ## Fits with patterns
 
-- [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-encryption.md) — private intent expression via SUAVE
-- [Private Broadcasting](../approaches/approach-private-broadcasting.md) — MEV protection through private mempools
+- [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-encryption.md): private intent expression via SUAVE
+- [Private Broadcasting](../approaches/approach-private-broadcasting.md): MEV protection through private mempools
 
 ## Not a substitute for
 

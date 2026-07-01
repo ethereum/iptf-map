@@ -34,7 +34,7 @@ crops_context:
 
 post_quantum:
   risk: high
-  vector: "Two independent exposures: the wrapped signature (RSA, ECDSA) is broken by a CRQC — a wrapped signature is only as strong as its underlying scheme — and the proving backend itself, when pairing/EC-based (Groth16, UltraHonk over BN254, KZG), is also broken by a CRQC. Transparent hash-based systems are not affected."
+  vector: "Two independent exposures: the wrapped signature (RSA, ECDSA) is broken by a CRQC (a wrapped signature is only as strong as its underlying scheme), and the proving backend itself, when pairing/EC-based (Groth16, UltraHonk over BN254, KZG), is also broken by a CRQC. Transparent hash-based systems are not affected."
   mitigation: "Migrate the underlying credential signatures to post-quantum schemes and use a hash-based or STARK proof system; pair with an on-chain freshness anchor for re-issuance. See [Post-Quantum Threats](../domains/post-quantum.md)."
 
 standards: []

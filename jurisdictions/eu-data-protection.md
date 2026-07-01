@@ -12,15 +12,15 @@ key-regulations:
 last_reviewed: 2026-06-19
 ---
 
-> High-level orientation for developers — not legal advice.
+> Developer orientation. Not legal advice.
 
 ## At a Glance
 
-GDPR (personal-data processing) and DORA (ICT resilience and incident reporting) apply to crypto entities alongside MiCA. The live tension for builders is **personal data on immutable ledgers** — erasure rights and the anonymisation-vs-pseudonymisation line are being actively clarified by the EDPB. Privacy-enhancing technologies (PETs) such as zero-knowledge proofs and selective disclosure are increasingly discussed as ways to reconcile data protection with on-chain transparency.
+GDPR (personal-data processing) and DORA (ICT resilience and incident reporting) apply to crypto entities alongside MiCA. The live tension for builders is personal data on immutable ledgers: erasure rights and the anonymisation-vs-pseudonymisation line are being actively clarified by the EDPB. Privacy-enhancing technologies (PETs) such as zero-knowledge proofs and selective disclosure are increasingly discussed as ways to reconcile data protection with on-chain transparency.
 
 ## What to Watch
 
-- Anonymisation vs pseudonymisation classification (EDPB Guidelines 01/2025) — determines whether GDPR applies.
+- Anonymisation vs pseudonymisation classification (EDPB Guidelines 01/2025), which determines whether GDPR applies.
 - Right-to-erasure vs ledger immutability (EDPB Guidelines 02/2025).
 - Divergent Member-State views on whether PETs satisfy AML record-keeping.
 

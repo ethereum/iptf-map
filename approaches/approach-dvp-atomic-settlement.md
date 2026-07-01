@@ -64,7 +64,7 @@ uses_patterns: [pattern-dvp-erc7573]
 example_vendors: []
 ```
 
-**Summary:** Payment and asset are each locked to a hash; revealing the preimage releases both legs. Primarily a cross-chain primitive — for single-network DvP a native atomic swap or escrow is simpler and leaks less.
+**Summary:** Payment and asset are each locked to a hash; revealing the preimage releases both legs. Primarily a cross-chain primitive; for single-network DvP a native atomic swap or escrow is simpler and leaks less.
 
 **How it works:** The seller generates secret S and shares H(S). The buyer locks payment with H(S) and timeout T1; the seller locks the asset with H(S) and timeout T2 > T1. The seller reveals S to claim payment before T1, which makes S public; the buyer then uses S to claim the asset before the later timeout T2. The secret-revealer's own leg must expire last, so the counterparty always has time to claim once S is public. If S is never revealed, both sides refund at their respective timeouts.
 
@@ -183,15 +183,27 @@ example_vendors: []
 
 ### Business perspective
 
-On a single network, DvP is atomic by construction: one transaction settles both legs or reverts. The remaining design work is the release logic — the conditions and compliance checks that gate settlement. For institutional settlement among known counterparties, Escrow with Dual Approval is the default: it matches the human-in-the-loop nature of traditional settlement, accommodates compliance and operational checks before release, and provides an explicit dispute path that legal review can rely on. Conditional Transfer with Oracle suits event-driven flows (regulatory approval, payment-finality confirmation, cross-network triggers) where the release condition is external; the operational burden is the oracle governance rather than the contract itself. HTLC is a cross-chain primitive, relevant only when the two legs sit on different chains; institutional desks rarely use it for single-network DvP, where a native swap or escrow is simpler and the hashlock would otherwise publish the trade. On any of these paths, privacy comes from settling the legs inside a shielded pool; the atomicity mechanism alone leaves the trade visible.
+On a single network, DvP is atomic by construction: one transaction settles both legs or reverts. The remaining design work is the release logic: the conditions and compliance checks that gate settlement.
+
+For institutional settlement among known counterparties, Escrow with Dual Approval is the default: it matches the human-in-the-loop nature of traditional settlement, accommodates compliance and operational checks before release, and provides an explicit dispute path that legal review can rely on. Conditional Transfer with Oracle suits event-driven flows (regulatory approval, payment-finality confirmation, cross-network triggers) where the release condition is external; the operational burden is the oracle governance rather than the contract itself. HTLC is a cross-chain primitive, relevant only when the two legs sit on different chains; institutional desks rarely use it for single-network DvP, where a native swap or escrow is simpler and the hashlock would otherwise publish the trade.
+
+On any of these paths, privacy comes from settling the legs inside a shielded pool; the atomicity mechanism alone leaves the trade visible.
 
 ### Technical perspective
 
-Single-network atomicity is free: a single contract call that swaps both legs either commits or reverts, with no capital lockup. The engineering question is the release logic. Escrow is the most legible: deposit, verify, release, refund, with a clear state machine per branch. Conditional Transfer with Oracle adds the oracle-integration surface (push vs pull, single vs quorum, fallback semantics) and inherits the attestation infrastructure's failure modes. HTLC is the cross-chain option and the trickiest to parameterize: T2 > T1 with margins for network congestion is load-bearing, a stalled leg has no recovery beyond timeout, and the preimage publishes the trade — so it is reserved for the genuinely cross-chain case. Cross-network atomicity is the open frontier: ERC-7573 is the working draft, but trustless cross-chain DvP remains unresolved (see [Private Trade Settlement](approach-private-trade-settlement.md) for the privacy rails).
+Single-network atomicity is free: a single contract call that swaps both legs either commits or reverts, with no capital lockup. The engineering question is the release logic.
+
+Escrow is the most legible: deposit, verify, release, refund, with a clear state machine per branch. Conditional Transfer with Oracle adds the oracle-integration surface (push vs pull, single vs quorum, fallback semantics) and inherits the attestation infrastructure's failure modes. HTLC is the cross-chain option and the trickiest to parameterize: T2 > T1 with margins for network congestion is load-bearing, a stalled leg has no recovery beyond timeout, and the preimage publishes the trade, so it is reserved for the genuinely cross-chain case.
+
+Cross-network atomicity is the open frontier: ERC-7573 is the working draft, but trustless cross-chain DvP remains unresolved (see [Private Trade Settlement](approach-private-trade-settlement.md) for the privacy rails).
 
 ### Legal & risk perspective
 
-This is a perspective for legal review by the deploying institution, not legal advice. Escrow with a named arbitrator references existing arbitration frameworks (LCIA, ICC); whether the chosen framework binds in cross-border settlement is a question for counsel. Conditional Transfer with Oracle raises a classification question about the oracle's role (data provider, attestation issuer, fiduciary?) and the audit access to its evidence trail. HTLC, where used for a cross-chain leg, has a deterministic outcome (preimage revealed or timeout) that can be documented precisely, but it publishes the trade on chain; whether that documentation and disclosure suit a specific dispute regime is for legal review. For each option, the dispute and recovery path (arbitrator decision, oracle non-response, timeout refund, escrow bug) would need to be modelled explicitly under the applicable law.
+This is a perspective for legal review by the deploying institution, not legal advice.
+
+Escrow with a named arbitrator references existing arbitration frameworks (LCIA, ICC); whether the chosen framework binds in cross-border settlement is a question for counsel. Conditional Transfer with Oracle raises a classification question about the oracle's role (data provider, attestation issuer, fiduciary?) and the audit access to its evidence trail. HTLC, where used for a cross-chain leg, has a deterministic outcome (preimage revealed or timeout) that can be documented precisely, but it publishes the trade on chain; whether that documentation and disclosure suit a specific dispute regime is for legal review.
+
+For each option, the dispute and recovery path (arbitrator decision, oracle non-response, timeout refund, escrow bug) would need to be modelled explicitly under the applicable law.
 
 ## Recommendation
 

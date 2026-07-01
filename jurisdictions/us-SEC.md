@@ -7,20 +7,20 @@ scope:
   activities: [issuance, custody, staking, stablecoins, ETPs]
 key-regulations:
   - SEC "investment contract" (Howey) analysis of digital assets
-  - GENIUS Act (2025) — federal stablecoin law
+  - GENIUS Act (2025), federal stablecoin law
   - SEC generic listing standards for commodity-based ETPs (2025)
 last_reviewed: 2026-06-19
 ---
 
-> High-level orientation for developers — not legal advice.
+> Developer orientation. Not legal advice.
 
 ## At a Glance
 
-The SEC's posture is **restrictive but evolving**, applied substantially through enforcement: assets deemed securities fall under full registration and disclosure rules. Recent clarity has opened doors — stablecoins are now federally regulated under the **GENIUS Act (2025)**, spot commodity-based **ETPs** can use generic listing standards, and a 2025 staff statement said **protocol staking** is not always a securities transaction. SEC and CFTC jurisdiction still overlaps.
+The SEC's posture is restrictive but evolving, applied substantially through enforcement: assets deemed securities fall under full registration and disclosure rules. Recent clarity has opened doors: stablecoins are now federally regulated under the GENIUS Act (2025), spot commodity-based ETPs can use generic listing standards, and a 2025 staff statement said protocol staking is not always a securities transaction. SEC and CFTC jurisdiction still overlaps.
 
 ## What to Watch
 
-- Whether a given token is an "investment contract" (security) — still largely case-by-case.
+- Whether a given token is an "investment contract" (security), still largely case-by-case.
 - Liquid staking and staking-as-a-service: unsettled.
 - NFTs and DeFi: no formal framework; enforcement-driven.
 - SEC/CFTC jurisdictional boundary.

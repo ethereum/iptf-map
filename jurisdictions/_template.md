@@ -9,13 +9,13 @@ key-regulations: [the 2–3 most relevant laws/rules]
 last_reviewed: YYYY-MM-DD
 ---
 
-> High-level orientation for developers — not legal advice.
+> Developer orientation. Not legal advice.
 
 ## At a Glance
 
 - 3–5 sentences on the jurisdiction's posture (restrictive / permissive / evolving) and the
-  one or two facts a developer actually needs. Keep it **descriptive, not prescriptive** —
-  no "you must / you should" compliance steps, no operational playbooks.
+  one or two facts a developer actually needs. Keep it descriptive, not prescriptive: no
+  "you must / you should" compliance steps, no operational playbooks.
 
 ## What to Watch
 

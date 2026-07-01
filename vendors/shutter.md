@@ -12,8 +12,8 @@ Shutter Network provides encrypted-mempool infrastructure that prevents MEV extr
 
 ## Fits with patterns
 
-- [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-encryption.md) — encrypted mempool with threshold decryption
-- [Private Broadcasting](../approaches/approach-private-broadcasting.md) — intent signaling protection
+- [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-encryption.md): encrypted mempool with threshold decryption
+- [Private Broadcasting](../approaches/approach-private-broadcasting.md): intent signaling protection
 
 ## Not a substitute for
 

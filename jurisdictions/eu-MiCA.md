@@ -12,11 +12,11 @@ key-regulations:
 last_reviewed: 2026-06-19
 ---
 
-> High-level orientation for developers — not legal advice.
+> Developer orientation. Not legal advice.
 
 ## At a Glance
 
-The EU offers a single, passportable regime under **MiCA**: prescriptive but predictable. Stablecoins (asset-referenced and e-money tokens) came into scope mid-2024; CASP authorisation and conduct rules apply from end-2024. The AML "Travel Rule" and DORA operational-resilience obligations sit alongside MiCA for in-scope entities. Posture: **permissive but heavily regulated**.
+The EU offers a single, passportable regime under MiCA: prescriptive but predictable. Stablecoins (asset-referenced and e-money tokens) came into scope mid-2024; CASP authorisation and conduct rules apply from end-2024. The AML "Travel Rule" and DORA operational-resilience obligations sit alongside MiCA for in-scope entities. The regime is permissive but heavily regulated.
 
 ## What to Watch
 

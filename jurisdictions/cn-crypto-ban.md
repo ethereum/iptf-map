@@ -12,11 +12,11 @@ key-regulations:
 last_reviewed: 2026-06-19
 ---
 
-> High-level orientation for developers — not legal advice.
+> Developer orientation. Not legal advice.
 
 ## At a Glance
 
-China holds one of the world's strictest stances: cryptocurrency trading, mining, and payment services have been **banned since 2021**, and related business activity is treated as illegal. In parallel the state promotes **permissioned** enterprise blockchain (the Blockchain Service Network, BSN) and its **CBDC, the e-CNY** — under full data localisation and state oversight, so privacy features that limit government visibility are not viable. Posture: **prohibitive** for public crypto, **directed** for permissioned/CBDC use.
+China holds one of the world's strictest stances: cryptocurrency trading, mining, and payment services have been banned since 2021, and related business activity is treated as illegal. In parallel the state promotes permissioned enterprise blockchain (the Blockchain Service Network, BSN) and its CBDC, the e-CNY, under full data localisation and state oversight, so privacy features that limit government visibility are not viable. China is prohibitive toward public crypto and directive about permissioned and CBDC use.
 
 ## What to Watch
 

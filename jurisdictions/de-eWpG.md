@@ -11,11 +11,11 @@ key-regulations:
 last_reviewed: 2026-06-19
 ---
 
-> High-level orientation for developers — not legal advice.
+> Developer orientation. Not legal advice.
 
 ## At a Glance
 
-Germany's **eWpG** gives electronic securities — including **crypto-securities** recorded on a DLT register — the same legal standing as paper certificates. Operating a crypto-securities register and providing crypto custody are **BaFin-regulated activities**. Posture: **enabling**, and one of the clearer EU paths to native on-chain securities, though it overlaps with MiCA/MiFID classification.
+Germany's eWpG gives electronic securities, including crypto-securities recorded on a DLT register, the same legal standing as paper certificates. Operating a crypto-securities register and providing crypto custody are BaFin-regulated activities. The regime is enabling and one of the clearer EU paths to native on-chain securities, though it overlaps with MiCA/MiFID classification.
 
 ## What to Watch
 
