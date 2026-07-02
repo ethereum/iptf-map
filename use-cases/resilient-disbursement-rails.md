@@ -1,7 +1,8 @@
 ---
-title: "Resilient Disbursement Rails"
+title: Resilient Disbursement Rails
+status: ready
 primary_domain: Payments
-secondary_domain: Identity
+secondary_domain: Identity & Compliance
 ---
 
 ## 1) Use Case
@@ -87,7 +88,7 @@ Mobile forensics (HIIDE Afghanistan 2021, Cellebrite in Hong Kong and Belarus) e
 | Recipient ZK-incapable | Relay-mediated proving with submitter-bound public input | Front-runner who lifts a proof off the mempool cannot re-submit; relay sees voucher contents but no recipient identity |
 | Recipient offline | Mesh / store-and-forward voucher submission with source-fingerprinting mitigations | End-to-end (recipient-to-relay) confidentiality; transport tolerates high latency |
 
-See [Approach: Private Payments, Section G](../approaches/approach-private-payments.md#g-resilient-disbursement-rails-adversarial-jurisdiction-recipients) for detailed architecture and trade-offs.
+See the [Resilient Disbursement Rails approach](../approaches/approach-private-payments.md#resilient-disbursement-rails) for detailed architecture and trade-offs.
 
 ## 6) Open Questions
 
@@ -103,7 +104,7 @@ See [Approach: Private Payments, Section G](../approaches/approach-private-payme
 - **Spec:** [Resilient Disbursement Rails Protocol Specification](https://github.com/ethereum/iptf-pocs/blob/master/pocs/private-payment/resilient-disbursement-rails/SPEC.md)
 - **PoC:** [Resilient Disbursement Rails](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment/resilient-disbursement-rails)
 - **Sibling Use Case:** [Resilient Identity Continuity](resilient-identity-continuity.md)
-- **Approach:** [Private Payments, Section G](../approaches/approach-private-payments.md#g-resilient-disbursement-rails-adversarial-jurisdiction-recipients); identity-layer dependency: [Private Identity, Section F](../approaches/approach-private-identity.md#f-issuer-independent-enrollment-via-distributed-oprf)
+- **Approach:** [Private Payments: Resilient Disbursement Rails](../approaches/approach-private-payments.md#resilient-disbursement-rails); identity-layer dependency: [Private Identity: Issuer-Independent Enrollment](../approaches/approach-private-identity.md#issuer-independent-enrollment-via-distributed-oprf)
 - **Standards:** [RFC 6979](https://www.rfc-editor.org/rfc/rfc6979) (deterministic ECDSA), [EIP-2](https://eips.ethereum.org/EIPS/eip-2) (canonical-s), [NIST SP 800-88](https://csrc.nist.gov/publications/detail/sp/800-88/rev-1/final) (media sanitization), [BSI-CC-PP-0084](https://www.bsi.bund.de/dok/CC-PP-0084) (smartcard SE protection profile)
 - **Related Patterns:** [Forward-Secure Signatures](../patterns/pattern-forward-secure-signatures.md), [Recipient-Derived Receive Addresses](../patterns/pattern-recipient-derived-receive-addresses.md), [Relay-Mediated Proving](../patterns/pattern-relay-mediated-proving.md), [Mesh Store-and-Forward Submission](../patterns/pattern-mesh-store-forward-submission.md), [Shielding](../patterns/pattern-shielding.md), [Network-Level Anonymity](../patterns/pattern-network-anonymity.md), [Proof of Innocence](../patterns/pattern-proof-of-innocence.md), [Forced Withdrawal](../patterns/pattern-forced-withdrawal.md), [Private MTP Auth](../patterns/pattern-private-mtp-auth.md)
 - **Humanitarian References:** [CALP Network: Programme Quality Toolbox](https://www.calpnetwork.org/), [Sphere Handbook: Cash/Voucher Minimum Standards](https://spherestandards.org/), [ICRC Handbook on Data Protection in Humanitarian Action (2nd ed, 2020)](https://www.icrc.org/en/data-protection-humanitarian-action-handbook)

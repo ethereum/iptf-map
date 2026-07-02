@@ -1,64 +1,54 @@
 ---
 title: "Vendor: Shutter"
-status: draft
+status: ready
 maturity: production
 ---
 
 # Shutter Network – Encrypted Mempool & MEV Protection
 
-**Category:** Privacy Infrastructure  
-**Maturity:** Pilot/Production (Gnosis Chain)  
-**Focus:** Pre-trade privacy through encrypted mempools and threshold decryption
+## What it is
 
-## Overview
+Shutter Network provides encrypted-mempool infrastructure that prevents MEV extraction and front-running by encrypting transactions until they are included in blocks, using threshold cryptography for decryption. It is live on Gnosis Chain, with Ethereum integration planned.
 
-Shutter Network provides **encrypted mempool** infrastructure that prevents MEV extraction and front-running by encrypting transactions until they are included in blocks, using **threshold cryptography** for decryption.
+## Fits with patterns
 
-## Key Use Cases / Patterns
+- [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-encryption.md): encrypted mempool with threshold decryption
+- [Private Broadcasting](../approaches/approach-private-broadcasting.md): intent signaling protection
 
-- [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-encryption.md) - Encrypted mempool with threshold decryption
-- [Private Broadcasting](../approaches/approach-private-broadcasting.md) - Intent signaling protection
+## Not a substitute for
 
-## Technical Approach
-
-Shutter uses **threshold encryption** where:
-
-- **Transaction Encryption:** Users encrypt transactions with a shared public key
-- **Distributed Decryption:** Network of validators collectively decrypt transactions after block inclusion
-- **MEV Prevention:** Searchers cannot see transaction content during the vulnerable mempool phase
-- **Ordering Protection:** Prevents front-running while maintaining transaction validity
-
-## What It Provides
-
-- Encrypted mempool preventing MEV extraction during broadcasting
-- Threshold decryption ensuring no single point of failure
-- Integration with existing Ethereum infrastructure
-- Censorship resistance through distributed key management
-
-## What It Doesn't Cover
-
-- Post-execution privacy (transactions visible after inclusion)
+- Post-execution privacy (transactions are visible after inclusion)
 - Cross-chain MEV protection
 - Complex intent expression (focuses on transaction-level protection)
 
-## Integration Notes
+## Architecture
 
-- **Networks:** Live on Gnosis Chain, Ethereum integration planned
-- **Compatibility:** Works with standard Ethereum transactions
-- **Validator Requirements:** Requires network of threshold key holders
-- **Developer Experience:** Minimal changes to existing dApp integration
+Shutter uses threshold encryption: users encrypt transactions with a shared public key; a network of validators collectively decrypts them after block inclusion; searchers cannot see transaction content during the vulnerable mempool phase; ordering protection prevents front-running while maintaining transaction validity.
+
+## Enterprise demand and use cases
+
+- Encrypted mempool preventing MEV extraction during broadcasting
+- Threshold decryption with no single point of failure
+- Censorship resistance through distributed key management
+
+## Technical details
+
+- **Networks:** live on Gnosis Chain; Ethereum integration planned
+- **Compatibility:** works with standard Ethereum transactions
+- **Validator requirements:** requires a network of threshold key holders
+- **Developer experience:** minimal changes to existing dApp integration
 
 ## Strengths
 
 - Proven solution with mainnet deployment
 - Strong cryptographic foundations (threshold encryption)
 - Minimal impact on existing Ethereum workflows
-- Effective MEV prevention during critical mempool phase
+- Effective MEV prevention during the critical mempool phase
 
-## Limitations
+## Risks and open questions
 
 - Limited to supported networks (Gnosis Chain currently)
-- Adds latency due to threshold decryption process
+- Adds latency due to the threshold decryption process
 - Requires coordination among threshold key holders
 - No protection against MEV after transaction execution
 

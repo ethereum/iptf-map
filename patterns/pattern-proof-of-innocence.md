@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Proof of Innocence (Association Set Proofs)"
-status: draft
+status: ready
 maturity: production
 type: standard
 layer: L1
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Users need to prove compliance (clean funds) to an institution or exchange.
@@ -50,7 +50,7 @@ open_source_implementations:
     description: "Privacy Pools reference implementation with association-set proofs at withdrawal"
     language: "Solidity, Circom"
   - url: https://github.com/Railgun-Privacy/contract
-    description: "Railgun shielded pool with PPOI exclusion proofs at deposit and proof inheritance"
+    description: "Railgun shielded pool with Private Proof of Innocence (PPOI) exclusion proofs at deposit and proof inheritance"
     language: "Solidity, Circom"
 ---
 

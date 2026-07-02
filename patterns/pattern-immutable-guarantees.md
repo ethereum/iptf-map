@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Immutable Guarantees"
-status: draft
+status: ready
 maturity: concept
 type: standard
 layer: hybrid
-last_reviewed: 2026-05-14
+last_reviewed: 2026-06-18
 
 works-best-when:
   - An institutional deployment uses admin keys, upgradeable contracts, or governance roles that could in principle be turned against users.
@@ -41,7 +41,7 @@ standards: [EIP-1967]
 
 related_patterns:
   composes_with: [pattern-forced-withdrawal, pattern-permissionless-spend-auth]
-  see_also: [pattern-l2-privacy-evaluation, pattern-modular-privacy-stack, pattern-hybrid-public-private-modes]
+  see_also: [pattern-modular-privacy-stack, pattern-hybrid-public-private-modes]
 ---
 
 ## Intent

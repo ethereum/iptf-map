@@ -1,10 +1,10 @@
 ---
 title: "Pattern: FOCIL - Fork-Choice Enforced Inclusion Lists"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: L1
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Censorship resistance is critical and must not depend on builder honesty.
@@ -62,14 +62,14 @@ Prevent censorship of Ethereum transactions by sophisticated block builders. A c
 
 ## Protocol
 
-1. [sequencer] A committee of 16 validators is selected for slot N to build inclusion lists for slot N+1.
-2. [sequencer] Between t=0s and t=8s of slot N, committee members monitor the public mempool and assemble inclusion lists of transactions they want force-included.
-3. [sequencer] At t=8s, committee members broadcast signed inclusion lists over the P2P network after processing slot N's block.
-4. [sequencer] At t=9s, validators freeze their view of inclusion lists; later ILs are rejected, and equivocators are flagged.
-5. [sequencer] At t=11s, the builder for slot N+1 collects observed inclusion lists and constructs an execution payload that includes their transactions anywhere in the block.
-6. [sequencer] At t=0s of slot N+1, the proposer broadcasts the block containing the IL transactions.
-7. [sequencer] At t=4s, attesters verify that every non-equivocated IL transaction is included or provably invalid; otherwise they withhold attestations.
-8. [contract] Fork-choice rejects any block that fails IL satisfaction, so a non-compliant block cannot become canonical.
+1. [consensus] A committee of 16 validators is selected for slot N to build inclusion lists for slot N+1.
+2. [committee] Between t=0s and t=8s of slot N, committee members monitor the public mempool and assemble inclusion lists of transactions they want force-included.
+3. [committee] At t=8s, committee members broadcast signed inclusion lists over the P2P network after processing slot N's block.
+4. [validator] At t=9s, validators freeze their view of inclusion lists; later ILs are rejected, and equivocators are flagged.
+5. [builder] At t=11s, the builder for slot N+1 collects observed inclusion lists and constructs an execution payload that includes their transactions anywhere in the block.
+6. [proposer] At t=0s of slot N+1, the proposer broadcasts the block containing the IL transactions.
+7. [attester] At t=4s, attesters verify that every non-equivocated IL transaction is included or provably invalid; otherwise they withhold attestations.
+8. [consensus] Fork-choice rejects any block that fails IL satisfaction, so a non-compliant block cannot become canonical.
 
 ## Guarantees & threat model
 

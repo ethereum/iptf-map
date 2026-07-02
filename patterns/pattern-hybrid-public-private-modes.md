@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Hybrid Public-Private Modes"
-status: draft
+status: ready
 maturity: concept
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Different legs of a trade have different privacy requirements (for example, private cash, public asset).

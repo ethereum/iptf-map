@@ -1,7 +1,7 @@
 ---
 title: "Approach: Private Trade Settlement"
-status: draft
-last_reviewed: 2026-05-05
+status: ready
+last_reviewed: 2026-06-24
 
 use_case: private-bonds
 related_use_cases: [private-derivatives, private-rwa-tokenization, private-corporate-bonds, private-government-debt]
@@ -33,7 +33,7 @@ open_source_implementations:
     description: "Aztec privacy-native L2"
     language: TypeScript / Noir
   - url: https://github.com/across-protocol/contracts
-    description: "Across (EIP-7683 intents-based cross-chain settlement)"
+    description: "Across (ERC-7683 intents-based cross-chain settlement)"
     language: Solidity
 ---
 
@@ -193,7 +193,7 @@ example_vendors: []
 - Honest-majority assumption among MPC nodes is unacceptable
 - Trade sizes exceed feasible collateral pools
 
-### Intent-Based Settlement (EIP-7683)
+### Intent-Based Settlement (ERC-7683)
 
 ```yaml
 maturity: prototyped
@@ -205,7 +205,7 @@ example_vendors: []
 
 **Summary:** Counterparties express settlement intents; competitive solvers fill orders using their own capital across chains, bearing execution risk.
 
-**How it works:** A user publishes an EIP-7683 intent (asset, amount, acceptable rate). Solvers compete to fill the destination leg from their own inventory; the protocol reimburses the winning solver from the source leg after fill. Solver collateral and reputation gate participation. Settlement on the destination chain is fast; source-side reimbursement runs over a slower verification path.
+**How it works:** A user publishes an ERC-7683 intent (asset, amount, acceptable rate). Solvers compete to fill the destination leg from their own inventory; the protocol reimburses the winning solver from the source leg after fill. Solver collateral and reputation gate participation. Settlement on the destination chain is fast; source-side reimbursement runs over a slower verification path.
 
 **Trust assumptions:**
 - Solver collateral is adequate for the trade size
@@ -245,7 +245,7 @@ example_vendors: []
 
 ### Business perspective
 
-For institutional same-network settlement among known counterparties, **UTXO Shielded Pool DvP** is the default: production maturity, vendor coverage, and a disclosure interface that maps onto eWpG / MiCA. **Privacy L2 Native DvP** fits where bond logic is complex and the rollup's decentralization timeline is acceptable. Cross-network settlement carries unavoidable trust: **TEE+ZK** suits institutions with hardware trust already in scope; **MPC/Threshold** fits decentralized coordination without hardware vendors; **Intent-Based** is the suitable choice for asynchronous flows where competitive execution matters more than order privacy. The default is to keep both legs on one network whenever possible; only resort to cross-network when liquidity or regulation forces it.
+For institutional same-network settlement among known counterparties, UTXO Shielded Pool DvP is the default: production maturity, vendor coverage, and a disclosure interface that maps onto eWpG / MiCA. Privacy L2 Native DvP fits where bond logic is complex and the rollup's decentralization timeline is acceptable. Cross-network settlement carries unavoidable trust: TEE+ZK suits institutions with hardware trust already in scope; MPC/Threshold fits decentralized coordination without hardware vendors; Intent-Based is the suitable choice for asynchronous flows where competitive execution matters more than order privacy. The default is to keep both legs on one network whenever possible; only resort to cross-network when liquidity or regulation forces it.
 
 ### Technical perspective
 
@@ -259,14 +259,14 @@ This is a perspective for legal review by the deploying institution, not legal a
 
 ### Default
 
-For institutional trade settlement where both legs can coexist on a single network, default to **UTXO Shielded Pool DvP** on a production shielded pool ([Railgun](../vendors/railgun.md), [Paladin](../vendors/paladin.md), or [Privacy Pools](../vendors/privacypools.md)). Settlement runs as a coordinated JoinSplit; selective disclosure runs through per-note viewing keys; the dispute path is the standard institutional arbitration framework.
+For institutional trade settlement where both legs can coexist on a single network, default to UTXO Shielded Pool DvP on a production shielded pool ([Railgun](../vendors/railgun.md), [Paladin](../vendors/paladin.md), or [Privacy Pools](../vendors/privacypools.md)). Settlement runs as a coordinated JoinSplit; selective disclosure runs through per-note viewing keys; the dispute path is the standard institutional arbitration framework.
 
 ### Decision factors
 
-- If both legs cannot coexist on a single network and hardware trust is acceptable, choose **TEE+ZK Coordination**.
-- If decentralized cross-chain coordination without hardware vendors is required, choose **MPC/Threshold Settlement** and validate that staked collateral covers the trade-size envelope.
-- If the flow is asynchronous and competitive execution matters more than order privacy, choose **Intent-Based Settlement** (EIP-7683).
-- If bond logic is complex and the rollup's decentralization timeline is acceptable, choose **Privacy L2 Native DvP**.
+- If both legs cannot coexist on a single network and hardware trust is acceptable, choose TEE+ZK Coordination.
+- If decentralized cross-chain coordination without hardware vendors is required, choose MPC/Threshold Settlement and validate that staked collateral covers the trade-size envelope.
+- If the flow is asynchronous and competitive execution matters more than order privacy, choose Intent-Based Settlement (ERC-7683).
+- If bond logic is complex and the rollup's decentralization timeline is acceptable, choose Privacy L2 Native DvP.
 
 ### Hybrid
 

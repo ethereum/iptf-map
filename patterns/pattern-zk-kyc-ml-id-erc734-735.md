@@ -1,10 +1,10 @@
 ---
 title: "Pattern: zk-KYC/ML + ERC-734/735 identity claims"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Onboarding identities must be publicly verifiable on-chain, for example to enable instant settlement without manual gate-keeping.

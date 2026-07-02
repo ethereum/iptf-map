@@ -1,7 +1,8 @@
 ---
-title: "Resilient Civic Participation"
-primary_domain: governance
-secondary_domain: identity
+title: Resilient Civic Participation
+status: ready
+primary_domain: Civic Coordination & Governance
+secondary_domain: Identity & Compliance
 ---
 
 ## 1) Use Case

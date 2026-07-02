@@ -1,6 +1,6 @@
 ---
 title: "Pattern: Stealth Addresses"
-status: draft
+status: ready
 maturity: production
 type: standard
 layer: L1

@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Modular Privacy Stack"
-status: draft
+status: ready
 maturity: concept
 type: meta
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Different privacy requirements apply to different transaction phases.
@@ -41,7 +41,7 @@ standards: [ERC-7573, ERC-3643, EIP-4844, EAS]
 
 related_patterns:
   composes_with: [pattern-privacy-l2s, pattern-commit-and-prove, pattern-dvp-erc7573, pattern-regulatory-disclosure-keys-proofs, pattern-tee-based-privacy, pattern-l2-encrypted-offchain-audit]
-  see_also: [pattern-shielding, pattern-l2-privacy-evaluation]
+  see_also: [pattern-shielding]
 
 sub_patterns:
   - name: "Data layer"
@@ -130,4 +130,4 @@ The issuer can later swap the execution environment for a different ZK system, a
 - [Railgun](../vendors/railgun.md)
 - [ERC-7573](https://eips.ethereum.org/EIPS/eip-7573)
 - [ERC-3643](https://eips.ethereum.org/EIPS/eip-3643)
-- [Ethereum Attestation Service](https://attest.sh/)
+- [Ethereum Attestation Service](https://attest.org/)

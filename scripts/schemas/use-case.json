@@ -13,25 +13,24 @@
     "primary_domain": {
       "type": "string",
       "enum": [
-        "payments",
-        "trading",
-        "custody",
-        "identity",
-        "compliance",
-        "settlement",
-        "tokenization",
-        "derivatives",
-        "lending",
-        "governance"
+        "Payments",
+        "Trading",
+        "Custody",
+        "Funds & Assets",
+        "Identity & Compliance",
+        "Data & Oracles",
+        "Civic Coordination & Governance",
+        "Post-Quantum Threats"
       ],
-      "description": "Primary business domain"
+      "description": "Primary business domain (matches domains/ taxonomy)"
     },
     "secondary_domain": {
       "oneOf": [
         { "type": "string" },
-        { "type": "array", "items": { "type": "string" } }
+        { "type": "array", "items": { "type": "string" } },
+        { "type": "null" }
       ],
-      "description": "Secondary business domains"
+      "description": "Secondary business domain(s); optional"
     },
     "status": {
       "type": "string",

@@ -1,7 +1,7 @@
 ---
 title: Private Read
-status: stub
-primary_domain: Data Oracles
+status: ready
+primary_domain: Data & Oracles
 secondary_domain: Trading
 ---
 

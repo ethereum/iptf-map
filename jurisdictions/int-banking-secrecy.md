@@ -1,71 +1,30 @@
 ---
-title: "Jurisdictional Focus: Banking Secrecy (Operating Constraints)"
-status: draft
-region: Multi-jurisdiction (CH/DE/LU/EU context)
+title: "Jurisdiction: Banking Secrecy (multi-jurisdiction)"
+status: ready
+region: Global
 scope:
   entities: [banks, custodians, brokers, CASPs, asset managers]
   activities: [onboarding, data handling, investigations, cross-border ops]
 key-regulations:
-  - National banking-secrecy laws (e.g., CH Banking Act Art. 47; DE contractual secrecy)
+  - National banking-secrecy laws (e.g., CH Banking Act Art. 47)
   - AML/CTF & sanctions regimes (EU AML, FATF, BSA/FinCEN)
-  - Cross-border transfer rules
+  - Cross-border tax cooperation (CRS / FATCA)
+last_reviewed: 2026-06-19
 ---
+
+> Developer orientation. Not legal advice.
 
 ## At a Glance
 
-**Banking secrecy** protects client financial data from unauthorised disclosure, but it is **not absolute**: it yields to **AML/CTF, tax cooperation (CRS/FATCA), court orders, and supervisory requests**. For crypto enterprises, secrecy rules primarily impact **what you store, where you store it, who can access it, and how you disclose it** across borders.
+Banking-secrecy laws (strongest in places like Switzerland) protect client financial data from disclosure, but they are not absolute: they yield to AML/CTF, sanctions, tax cooperation (CRS/FATCA), court orders, and supervisory requests. For crypto builders the practical question is what client data you store, where, who can access it, and how cross-border disclosure works, a data-residency and minimisation concern as much as a confidentiality one. In practice, such data is confidential by default but disclosable by law.
 
-## Core Compliance Expectations
+## What to Watch
 
-- **Lawful basis & purpose limitation** for all client data; retain only what is necessary.
-- **Access controls & confidentiality** obligations for staff and vendors.
-- **Regulator & court cooperation** procedures that comply with secrecy laws while meeting legal requests.
-- **Cross-border data transfer** mechanisms (e.g., SCCs, adequacy, intra-group agreements).
+- Conflict of laws: secrecy vs AML/sanctions disclosure obligations.
+- Cross-border data transfer and residency constraints.
+- Vendor/analytics tooling leaking client data across jurisdictions.
 
-## Actionable Best Practices
+## See also
 
-### Custody
-
-- **Data minimisation by design**: separate **identity data** from **on-chain addresses**; store link tables in a **restricted enclave**.
-- **Role-based access** (RBAC) + **need-to-know**; rotate access keys; maintain **keystroke-level audit logs**.
-- **Encryption** end-to-end (HSM/MPC for keys; TDE for databases; secrets rotation).
-- **Client statements** and attestations should avoid unnecessary PII; expose **proofs** (balances, events) without raw data when possible.
-
-### Identity & Compliance
-
-- Document a **secrecy-aware KYC/CDD/EDD** flow: explain lawful basis, retention, and sharing with authorities/partners.
-- Build a **Regulatory Request Gateway**: standard operating procedure for handling subpoenas/supervisory requests with legal review and **minimum necessary disclosure**.
-- Keep **jurisdictional routing rules** (which data can leave the country; which NCA/authority is competent).
-
-### Trading
-
-- When sharing order-flow or surveillance data with venues/analytics providers, **pseudonymise** and **tokenise** customer IDs; use **clean-rooms** where feasible.
-- Contract **no onward disclosure** and **audit rights** with data vendors; test logs for leakage (trade re-identification).
-
-### Data & Oracles
-
-- Maintain a **data map** (systems, locations, vendors) and a **Register of Information** (align with DORA for EU ops).
-- Apply **differential privacy / aggregation** for dashboards; avoid raw client data in analytics.
-- For cross-border replication, use **geo-fencing** and **encryption with local key custody** where secrecy laws require local control.
-
-### Payments
-
-- For **stablecoin integrations** and banking rails, implement **Travel Rule** tooling that transmits only required fields, with **policy-based redaction** and **fail-closed** when counterparty data is missing.
-- Keep **client notifications** templates for lawful disclosures (tax, AML) to preserve trust.
-
-## Key Risks to Watch
-
-- **Conflict of laws**: secrecy vs. AML/sanctions disclosure; pre-clear your escalation paths.
-- **Vendor leakage**: analytics/monitoring tools exporting PII to foreign jurisdictions.
-- **Shadow copies** in backups/logs violating data-minimisation or residency commitments.
-
-## Enterprise Opportunities
-
-- **Privacy-by-design** as a competitive edge (institutional RFPs score on this).
-- **Selective-disclosure** (ZK proofs, signed attestations) to answer audits without over-sharing raw data.
-
-## Glossary
-
-- **Banking secrecy** — Statutory/contractual duty to keep client financial data confidential
-- **CRS/FATCA** — Cross-border tax reporting regimes that override secrecy in defined cases
-- **SCCs** — Standard Contractual Clauses used for compliant cross-border data transfers
+- [Jurisdiction: EU Data Protection & PETs](./eu-data-protection.md)
+- [Selective Disclosure pattern](../patterns/pattern-regulatory-disclosure-keys-proofs.md)

@@ -1,6 +1,6 @@
 ---
 title: "Vendor: EY"
-status: production
+status: ready
 ---
 
 # EY (Enterprise Privacy Stack)
@@ -13,10 +13,10 @@ A production-ready Zero-Knowledge rollup for private token transfers with enterp
 
 ### Fits with patterns
 
-- Private Stablecoin Shielded Payments
-- Privacy L2s
-- Regulatory Disclosure Keys Proofs
-- Private ISO20022
+- [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
+- [Privacy L2s](../patterns/pattern-privacy-l2s.md)
+- [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
+- [Private ISO 20022](../patterns/pattern-private-iso20022.md)
 
 ### Not a substitute for
 

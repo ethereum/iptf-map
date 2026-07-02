@@ -34,7 +34,7 @@ post_quantum:
   vector: "EC-based commitments (Groth16, PLONK/KZG) broken by CRQC; HNDL risk high for encrypted notes."
   mitigation: "STARK-based shielded pools with hash commitments. See [Post-Quantum Threats](../domains/post-quantum.md)."
 
-standards: [ERC-20, ERC-5564, ERC-3643]
+standards: [ERC-20, ERC-5564]
 
 related_patterns:
   composes_with: [pattern-stealth-addresses, pattern-erc3643-rwa, pattern-regulatory-disclosure-keys-proofs, pattern-private-information-retrieval]
@@ -108,3 +108,5 @@ Threat model:
 - [Railgun](../vendors/railgun.md)
 - [Hinkal](../vendors/hinkal.md)
 - [Aztec](../vendors/aztec.md)
+- [Exploring hardened shielded pools](https://iptf.ethereum.org/blog/exploring-hardened-shielded-pools/)
+- [Shielded-pool extension PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment/shielded-pool-extension)

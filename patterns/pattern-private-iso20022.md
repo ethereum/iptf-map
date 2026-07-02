@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Private ISO 20022 Messaging & Settlement"
-status: draft
+status: ready
 maturity: concept
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Institutions already exchange ISO 20022 messages (pacs.008, pacs.009, pacs.002, camt.\*).
@@ -114,6 +114,6 @@ Threat model:
 ## See also
 
 - [ISO 20022 message definitions](https://www.iso20022.org/iso-20022-message-definitions)
-- [ISO 20022 `<SplmtryData>` extension mechanism](https://www.iso20022.org/supplementary_data.page)
+- [ISO 20022 `<SplmtryData>` extension mechanism](https://www.iso20022.org/)
 - [ERC-7573 (conditional settlement)](https://eips.ethereum.org/EIPS/eip-7573)
 - [ERC-3643 (tokenized RWA)](https://eips.ethereum.org/EIPS/eip-3643)

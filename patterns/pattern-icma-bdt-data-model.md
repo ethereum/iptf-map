@@ -4,7 +4,7 @@ status: ready
 maturity: production
 type: standard
 layer: offchain
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - You want machine-readable bond terms and lifecycle events across tools.
@@ -17,7 +17,7 @@ context: i2i
 crops_profile:
   cr: none
   o: yes
-  p: full
+  p: none
   s: high
 
 crops_context:

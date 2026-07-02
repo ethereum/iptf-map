@@ -1,6 +1,6 @@
 ---
 title: "Vendor: Peer"
-status: draft
+status: ready
 ---
 
 # Peer (ex-ZKP2P) - Peer-to-peer fiat onramp using zk-TLS and TEE attestations
@@ -9,12 +9,11 @@ status: draft
 
 Peer (ex-ZKP2P) is an open-source protocol that enables peer-to-peer fiat-to-crypto swaps by proving fiat payments were completed on instant payment rails (Venmo, Revolut, and others). V3 uses a modular verification architecture: a TEE attestation service validates zk-TLS proofs offchain and emits EIP-712 payment attestations, which a Unified Payment Verifier contract checks onchain before releasing escrowed crypto.
 
-## Fits with patterns (names only)
+## Fits with patterns
 
 - [TLS Payment Bridge](../patterns/pattern-tls-payment-bridge.md)
 - [zk-TLS](../patterns/pattern-zk-tls.md)
 - [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md)
-- [Shielding](../patterns/pattern-shielding.md)
 
 ## Not a substitute for
 
@@ -51,17 +50,6 @@ Peer (ex-ZKP2P) is an open-source protocol that enables peer-to-peer fiat-to-cry
 - Payment privacy preserved — zero-knowledge proofs reveal necessary payment attributes without exposing full account details
 - Extensible to payment rails with TLS-accessible confirmation endpoints
 - Permissionless participation for both liquidity providers and takers
-
-## CROPS profile
-
-| Product | CR     | OS  | Privacy | Security | Context |
-| ------- | ------ | --- | ------- | -------- | ------- |
-| Peer    | medium | yes | partial | medium   | i2u     |
-
-- **CR**: Medium — onchain escrow is permissionless, but Notary availability and payment rail access can vary by geography.
-- **OS**: Yes — protocol, contracts, and client code are open source under MIT license ([zkp2p-contracts](https://github.com/zkp2p/zkp2p-contracts)).
-- **Privacy**: Partial — payment proofs hide full account details, but onchain escrow transactions are visible. Amounts and participant addresses are public unless combined with shielding.
-- **Security**: Medium — security depends on TEE attestation service integrity, underlying zk-TLS trust model, escrow contract correctness, and payment rail API stability.
 
 ## Risks and open questions
 

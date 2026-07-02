@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Private Information Retrieval"
-status: draft
+status: ready
 maturity: research
 type: standard
 layer: offchain
-last_reviewed: 2026-05-15
+last_reviewed: 2026-06-18
 
 works-best-when:
   - The index of a lookup is itself sensitive (e.g., which note, which order book entry, which directory record).
@@ -116,5 +116,5 @@ Threat model:
 - [PSE write-up on Ethereum Privacy with PIR](https://pse.dev/blog/ethereum-privacy-pir)
 - [SimplePIR / DoublePIR (Henzinger et al., USENIX Security 2023)](https://eprint.iacr.org/2022/949)
 - [FrodoPIR (Davidson et al., PoPETs 2023)](https://eprint.iacr.org/2022/981)
-- [Respire (Burton, Menon, Wu, CCS 2024)](https://eprint.iacr.org/2024/187)
+- [Respire (Burton, Menon, Wu, CCS 2024)](https://eprint.iacr.org/2024/1165)
 - [Sharded PIR design for the Ethereum state](https://ethresear.ch/t/sharded-pir-design-for-the-ethereum-state/24552)

@@ -1,13 +1,13 @@
 ---
 title: "Pattern: MPC Custody and Transaction Control"
-status: draft
+status: ready
 maturity: production
 type: standard
 layer: offchain
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
-  - An institution needs regulated-grade custody for digital assets.
+  - An institution must custody digital assets under regulatory and internal-control requirements.
   - Key material must never exist in one place while signing must still be quick.
   - Policy-based approvals (role, limit, allowlist) are required before signing.
 avoid-when:
@@ -45,8 +45,8 @@ related_patterns:
   see_also: [pattern-tee-zk-settlement, pattern-forced-withdrawal]
 
 open_source_implementations:
-  - url: https://github.com/ZenGo-X/multi-party-ecdsa
-    description: "Threshold ECDSA reference implementation (Gennaro-Goldfeder family)"
+  - url: https://github.com/ZenGo-X/klaytn-thresh-wallet
+    description: "Two-party ECDSA wallet (ZenGo)"
     language: Rust
   - url: https://github.com/taurusgroup/multi-party-sig
     description: "Threshold signing library covering CMP, FROST, and related protocols"

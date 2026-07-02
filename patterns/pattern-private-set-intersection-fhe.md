@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Private Set Intersection (FHE-based)"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: offchain
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Set sizes are asymmetric (one party holds a much larger set than the other).

@@ -1,7 +1,7 @@
 ---
 title: "Approach: Private Transaction Broadcasting"
-status: draft
-last_reviewed: 2026-05-05
+status: ready
+last_reviewed: 2026-06-24
 
 use_case: private-stocks
 related_use_cases: [private-derivatives, private-fx, private-bonds, private-stablecoins]
@@ -15,7 +15,7 @@ supporting_patterns:
 
 open_source_implementations:
   - url: https://github.com/flashbots/suave-geth
-    description: "SUAVE (private intent expression and execution)"
+    description: "SUAVE private-intent execution (suave-geth archived May 2025; Flashbots migrated to BuilderNet)"
     language: Go
   - url: https://github.com/shutter-network/shutter
     description: "Shutter Network (threshold-encrypted mempool)"
@@ -94,7 +94,7 @@ example_vendors: [shutter]
 
 **Summary:** Transactions are encrypted before submission and decrypted only after ordering is fixed. See [Pre-trade Privacy Encryption](../patterns/pattern-pretrade-privacy-encryption.md) for the underlying primitive.
 
-**How it works:** The user encrypts the transaction or expresses an intent under a private execution environment ([Shutter](../vendors/shutter.md), SUAVE). Submissions are ordered by the proposer first and decrypted afterwards by a threshold network. Content is not visible until the ordering is committed.
+**How it works:** The user encrypts the transaction or expresses an intent under a private execution environment ([Shutter](../vendors/shutter.md); the earlier SUAVE design has been superseded by Flashbots BuilderNet). Submissions are ordered by the proposer first and decrypted afterwards by a threshold network. Content is not visible until the ordering is committed.
 
 **Trust assumptions:**
 - Threshold key holders (t-of-n) for decryption
@@ -168,11 +168,11 @@ example_vendors: [aztec, fhenix, zksync, ey]
 
 ### Business perspective
 
-For institutional desks executing large trades on public chains, **OTC / Off-chain Matching** is the default for production deployments: Flashbots-class infrastructure is mature, Renegade and similar dark-pool venues offer ZK-backed matching, and the operational integration with custody is well-trodden. **Encrypted Mempools** win where venue trust is unattractive and the chain supports threshold-encrypted ordering. **Private Rollups** are the suitable choice when comprehensive privacy across mempool, state, and execution is required and the institution accepts the rollup operator model. The hybrid is to route by trade size and venue: large blocks through OTC, mid-size through encrypted mempools, comprehensive flow through a private rollup.
+For institutional desks executing large trades on public chains, OTC / Off-chain Matching is the default for production deployments: Flashbots-class infrastructure is mature, Renegade and similar dark-pool venues offer ZK-backed matching, and the operational integration with custody is well-trodden. Encrypted Mempools win where venue trust is unattractive and the chain supports threshold-encrypted ordering. Private Rollups are the suitable choice when comprehensive privacy across mempool, state, and execution is required and the institution accepts the rollup operator model. The hybrid is to route by trade size and venue: large blocks through OTC, mid-size through encrypted mempools, comprehensive flow through a private rollup.
 
 ### Technical perspective
 
-OTC / Off-chain Matching is the lightest engineering integration: connect to a venue or builder relay, ship signed bundles. Encrypted Mempools require integrating with the threshold network (Shutter SDK, SUAVE intent expression) and tolerating the encrypt-decrypt round trip. Private Rollups are the heaviest commit: deploy or join a privacy-native rollup, integrate with its sequencer model, and accept the bridge boundary as a liquidity surface. None of the three offers cryptographic ordering atomicity across builders or rollups; cross-domain MEV remains an open frontier for chains that have multiple block builders or sequencers competing for inclusion.
+OTC / Off-chain Matching is the lightest engineering integration: connect to a venue or builder relay, ship signed bundles. Encrypted Mempools require integrating with the threshold network (Shutter SDK) and tolerating the encrypt-decrypt round trip. Private Rollups are the heaviest commit: deploy or join a privacy-native rollup, integrate with its sequencer model, and accept the bridge boundary as a liquidity surface. None of the three offers cryptographic ordering atomicity across builders or rollups; cross-domain MEV remains an open frontier for chains that have multiple block builders or sequencers competing for inclusion.
 
 ### Legal & risk perspective
 
@@ -182,12 +182,12 @@ This is a perspective for legal review by the deploying desk, not legal advice. 
 
 ### Default
 
-For institutional desks on public chains, default to **OTC / Off-chain Matching** through Flashbots-class infrastructure for large blocks and Renegade-class ZK dark-pool matching for size-sensitive trades. Pair with venue-side compliance reporting and custody integration. For chains with mature threshold-encrypted mempools, layer **Encrypted Mempools** as the second-line protection for orders that must reach the public chain.
+For institutional desks on public chains, default to OTC / Off-chain Matching through Flashbots-class infrastructure for large blocks and Renegade-class ZK dark-pool matching for size-sensitive trades. Pair with venue-side compliance reporting and custody integration. For chains with mature threshold-encrypted mempools, layer Encrypted Mempools as the second-line protection for orders that must reach the public chain.
 
 ### Decision factors
 
-- If venue trust is unacceptable and the chain supports threshold-encrypted ordering, choose **Encrypted Mempools**.
-- If comprehensive privacy across mempool, state, and execution is required and the rollup operator model is acceptable, choose **Private Rollups**.
+- If venue trust is unacceptable and the chain supports threshold-encrypted ordering, choose Encrypted Mempools.
+- If comprehensive privacy across mempool, state, and execution is required and the rollup operator model is acceptable, choose Private Rollups.
 - If trading must remain on a public chain and threshold-encrypted ordering is unavailable, OTC is the only option that has reached production at this layer.
 
 ### Hybrid

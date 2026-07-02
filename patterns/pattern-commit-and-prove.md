@@ -1,6 +1,6 @@
 ---
-title: "Pattern: Commit-and-Prove Fallback"
-status: draft
+title: "Pattern: Commit-and-Prove Cross-Chain Settlement"
+status: ready
 maturity: testnet
 type: standard
 layer: hybrid

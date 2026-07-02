@@ -1,7 +1,7 @@
 ---
 title: "Approach: Civic Participation"
-status: draft
-last_reviewed: 2026-05-13
+status: ready
+last_reviewed: 2026-06-24
 
 use_case: resilient-civic-participation
 related_use_cases: [resilient-identity-continuity]
@@ -115,7 +115,7 @@ This is a perspective for legal review by the deploying institution, not legal a
 
 ### Default
 
-For petitions whose threat model includes compelled disclosure, successor-regime inheritance, or operator breach, default to the **Resilient Civic Participation Protocol**. Durability and dispute coverage come from the bounty-funded Resolver and the on-chain Registry; the deploying institution carries no signer roster after the petition closes.
+For petitions whose threat model includes compelled disclosure, successor-regime inheritance, or operator breach, default to the Resilient Civic Participation Protocol. Durability and dispute coverage come from the bounty-funded Resolver and the on-chain Registry; the deploying institution carries no signer roster after the petition closes.
 
 ### Decision factors
 

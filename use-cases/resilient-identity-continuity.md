@@ -1,7 +1,7 @@
 ---
-title: "Resilient Identity Continuity"
-primary_domain: identity
-secondary_domain: compliance
+title: Resilient Identity Continuity
+status: ready
+primary_domain: Identity & Compliance
 ---
 
 ## 1) Use Case
@@ -16,7 +16,7 @@ Resilience here is the product of plurality. A single issuer is a single point o
 
 - **Passport enrollment:** [ZKPassport](https://zkpassport.id/) (120+ country passports, NFC + Noir); [Self](https://self.xyz/)
 - **National ID:** [Anon Aadhaar](https://github.com/anon-aadhaar) (Indian Aadhaar, RSA signature verification)
-- **Biometric:** [World ID](https://worldcoin.org/world-id) (25M+ registrations)
+- **Biometric:** [World ID](https://worldcoin.org/world-id) (18M+ verified humans)
 - **Merkle membership:** [Semaphore](https://semaphore.pse.dev/) (PSE)
 - **Email identity:** [zkEmail](https://prove.email/) (DKIM proofs)
 - **TLS proofs:** [TLSNotary](https://tlsnotary.org/) (web2 data export)
@@ -85,7 +85,7 @@ Verification in existing private identity systems often requires contacting a re
 | Recovery | Threshold (Shamir) + social (guardian-based) | No issuer participation required |
 | Verification | Universal (on-chain trust anchor + ZK proof) | Any verifier, no registry contact |
 
-See [**Approach: Private Identity, Section F**](../approaches/approach-private-identity.md#f-issuer-independent-enrollment-via-distributed-oprf) for detailed architecture and trade-offs.
+See the [**Issuer-Independent Enrollment approach**](../approaches/approach-private-identity.md#issuer-independent-enrollment-via-distributed-oprf) for detailed architecture and trade-offs.
 
 ## 6) Open Questions
 
@@ -102,6 +102,6 @@ See [**Approach: Private Identity, Section F**](../approaches/approach-private-i
 - **Standards:** [RFC 9497 (OPRF)](https://www.rfc-editor.org/rfc/rfc9497) + [Jarecki threshold extension](https://eprint.iacr.org/2017/363), [RFC 9380 (hashToCurve)](https://www.rfc-editor.org/rfc/rfc9380), [W3C VC Data Model v2.0](https://www.w3.org/TR/vc-data-model-2.0/)
 - **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Anon Aadhaar](https://github.com/anon-aadhaar), [World ID](https://worldcoin.org/world-id), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [Semaphore](https://semaphore.pse.dev/), [Human Passport](https://passport.human.tech/), [Holonym](https://holonym.id/)
 - **Related Patterns:** [Private MTP Auth](../patterns/pattern-private-mtp-auth.md), [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [zk-TLS](../patterns/pattern-zk-tls.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md)
-- **Prior Art:** [Vitalik zk-identity framework](https://vitalik.eth.limo/general/2025/06/28/zkid.html), [Human](https://human.tech/) (plural-identity scoring), [zk-creds (Rosenberg et al., 2023)](https://eprint.iacr.org/2022/878), [zk-promises (Shih et al., 2025)](https://eprint.iacr.org/2024/1260)
+- **Prior Art:** [Vitalik zk-identity framework](https://vitalik.eth.limo/general/2025/06/28/zkid.html), [Human](https://human.tech/) (plural-identity scoring), [zk-creds (Rosenberg et al., 2023)](https://eprint.iacr.org/2022/878), [zk-promises (Shih et al., 2024)](https://eprint.iacr.org/2024/1260)
 - **Deployed vOPRF:** [TACEO](https://core.taceo.io/articles/taceo-oprf/) (13-node threshold)
 - **Allies:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Aztec](https://aztec.network/), [Anon Aadhaar](https://github.com/anon-aadhaar), [World ID](https://worldcoin.org/world-id), [Semaphore](https://semaphore.pse.dev/)

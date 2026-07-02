@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Hybrid TEE + ZK settlement"
-status: draft
+status: ready
 maturity: research
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Counterparty risk is the primary concern and atomic settlement is the goal.
@@ -94,7 +94,7 @@ Threat model:
 
 - Privacy depends on enclave integrity while financial correctness does not; this is the core design trade-off versus client-side zero-knowledge proving, which provides both at the cost of latency.
 - Cross-chain atomicity is timeout-based rather than cryptographic. One leg can succeed while the other fails, and timeout refunds provide safety but not true atomicity. Same-network settlement remains the cleanest atomic-DvP path.
-- Performance overhead of roughly 10 to 50 percent versus native execution, plus enclave memory limits that constrain batch sizes on some hardware.
+- Performance overhead versus native execution (implementation-dependent), plus enclave memory limits that constrain batch sizes on some hardware.
 - Multiple enclave nodes with replicated encrypted state are required to avoid a single point of failure; otherwise one crash locks all in-flight settlements until the timeout path triggers.
 - Common anti-patterns (plaintext inputs or outputs, missing nonce monotonicity, shared encryption keys, in-memory-only state) silently weaken the guarantees and must be explicitly guarded against.
 

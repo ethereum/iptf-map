@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Origin-Locked Cross-Chain Confidential Ledger"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Amount and balance confidentiality is needed for existing ERC-20 assets, without changing token contracts or migrating liquidity.
@@ -33,7 +33,7 @@ crops_context:
 
 post_quantum:
   risk: high
-  vector: "ElGamal homomorphic encryption over elliptic curves is broken by CRQC. HNDL risk is high for on-chain encrypted balances and transfer ciphertexts."
+  vector: "EC-based additively homomorphic encryption (e.g., ElGamal) is broken by CRQC. HNDL risk is high for on-chain encrypted balances and transfer ciphertexts."
   mitigation: "Lattice-based additively homomorphic PKE or hybrid schemes. See [Post-Quantum Threats](../domains/post-quantum.md)."
 
 standards: [ERC-20]
@@ -59,11 +59,11 @@ Provide confidential balances and transfers for an existing ERC-20 on an origin 
 ## Components
 
 - Origin locking contract: minimal contract on the origin EVM chain that escrows deposits and releases withdrawals. It is the only place user funds live.
-- Encrypted ledger: per-account balances stored as ElGamal ciphertext under the account holder's key on a separate confidentiality execution layer.
+- Encrypted ledger: per-account balances stored as additively homomorphic ciphertext (e.g., ElGamal) under the account holder's key on a separate confidentiality execution layer.
 - ZK verifier: validates state transitions on the encrypted ledger (no overspend, conservation of value, correct key usage) without decrypting balances.
-- Homomorphic update logic: encrypted balances update via ElGamal additive homomorphism; plaintext balances are never reconstructed by any component.
+- Homomorphic update logic: encrypted balances update via additive homomorphism (e.g., ElGamal); plaintext balances are never reconstructed by any component.
 - Verifiable cross-chain messaging: light-client or IBC-style messaging between the origin chain and the confidentiality layer. Relayers move packets but are not trusted for correctness.
-- Disclosure layer (optional): scoped viewing keys or per-transaction audit keys generated via MPC, so a designated auditor can decrypt specific transactions under review.
+- Disclosure layer (optional): scoped viewing keys or per-transaction audit keys generated via threshold cryptography (e.g., threshold IBE), so a designated auditor can decrypt specific transactions under review.
 
 ## Protocol
 
@@ -80,17 +80,17 @@ Provide confidential balances and transfers for an existing ERC-20 on an origin 
 
 Guarantees:
 
-- Amounts and balances are encrypted from the public. ElGamal private keys stay with the account holder; no protocol component stores them.
+- Amounts and balances are encrypted from the public. Decryption keys stay with the account holder; no protocol component stores them.
 - Underlying ERC-20 issuance and liquidity remain on the origin chain. No wrapped token, no fund bridge, no mirror supply.
 - Custody is governed by the origin locking contract. Cross-chain messaging failures affect availability and withdrawal latency, not custody.
-- Selective disclosure is controlled: audit keys are generated per transaction through an MPC network, and a verified auditor can decrypt only the specific transaction under review.
+- Selective disclosure is controlled: audit keys are generated per transaction through a threshold-cryptography network, and a verified auditor can decrypt only the specific transaction under review.
 
 Threat model:
 
 - Sender and receiver addresses can remain transparent unless combined with identity-obfuscation patterns. This pattern alone does not deliver counterparty privacy.
 - Relayers and the messaging layer can delay or drop packets, stalling transfers and withdrawals. Contract-level timeouts and retries bound the impact.
 - Soundness of the ZK verifier and correctness of the homomorphic update logic are critical; a bug can mint or burn encrypted balances.
-- MPC-based audit key generation relies on its participant honesty threshold; a compromised threshold can leak arbitrary transactions to the auditor.
+- Threshold-based audit key generation relies on its participant honesty threshold; a compromised threshold can leak arbitrary transactions to the auditor.
 
 ## Trade-offs
 

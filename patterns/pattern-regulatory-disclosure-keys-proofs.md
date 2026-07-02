@@ -1,10 +1,10 @@
 ---
-title: "Pattern: Selective disclosure (viewing keys + zero-knowledge proofs)"
+title: "Pattern: Selective Disclosure (Viewing Keys + Zero-Knowledge Proofs)"
 status: ready
 maturity: testnet
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - A regulator needs targeted visibility into specific trades or accounts without blanket transparency.

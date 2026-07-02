@@ -1,6 +1,6 @@
 ---
 title: "Vendor: Fairblock"
-status: draft
+status: ready
 maturity: testnet
 ---
 
@@ -58,7 +58,7 @@ FairyRing supports selective disclosure for audits and investigations via scoped
 - Payroll and vendor payouts: amount confidentiality with the ability to disclose specific transactions when required
 - B2B payment rails: confidentiality layer for regulated payment operations that still require reporting and audit
 
-## Technical details (as described publicly)
+## Technical details
 
 - Cross-chain design connecting an origin chain locking contract with FairyRing as confidentiality layer
 - Encrypted layer and ZK proof verification for valid state transitions

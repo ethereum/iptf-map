@@ -1,6 +1,6 @@
 ---
 title: "Vendor: Space and Time"
-status: draft
+status: ready
 maturity: mainnet
 ---
 

@@ -1,71 +1,58 @@
 ---
 title: "Vendor: Flashbots"
-status: draft
+status: ready
 maturity: production
 ---
 
 # Flashbots – MEV Infrastructure & SUAVE
 
-**Category:** MEV Infrastructure / Privacy Infrastructure  
-**Maturity:** Production (Flashbots Auction), Development (SUAVE)  
-**Focus:** MEV mitigation, private mempools, and decentralized block building
+## What it is
 
-## Overview
+Flashbots develops MEV infrastructure including private mempools, block building, and SUAVE (Single Unifying Auction for Value Expression), a decentralized platform for private intent expression and execution. Flashbots Auction is in production on Ethereum mainnet; SUAVE is under development.
 
-Flashbots develops **MEV infrastructure** including private mempools, block building, and **SUAVE** (Single Unifying Auction for Value Expression) - a decentralized platform for private intent expression and execution.
+## Fits with patterns
 
-## Key Use Cases / Patterns
+- [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-encryption.md): private intent expression via SUAVE
+- [Private Broadcasting](../approaches/approach-private-broadcasting.md): MEV protection through private mempools
 
-- [Pre-trade Privacy](../patterns/pattern-pretrade-privacy-encryption.md) - Private intent expression via SUAVE
-- [Private Broadcasting](../approaches/approach-private-broadcasting.md) - MEV protection through private mempools
-
-## Technical Approach
-
-**Flashbots Auction:**
-
-- **Private Mempools:** Transactions submitted directly to builders, bypassing public mempool
-- **MEV-Share:** Users capture portion of MEV from their transactions
-- **Block Building:** Competitive block construction with MEV extraction
-
-**SUAVE (Under Development):**
-
-- **Universal Intent Pool:** Cross-domain intent expression and matching
-- **Programmable Privacy:** Selective revelation of intent information
-- **Decentralized Execution:** Multiple execution environments for intent fulfillment
-
-## What It Provides
-
-- Private transaction submission bypassing public mempool
-- MEV protection through direct builder relationships
-- Revenue sharing mechanisms (MEV-Share)
-- Cross-chain intent expression (SUAVE)
-- Decentralized block building infrastructure
-
-## What It Doesn't Cover
+## Not a substitute for
 
 - Complete MEV elimination (redistributes rather than eliminates)
-- Privacy after execution (transactions still visible on-chain)
+- Privacy after execution (transactions remain visible on-chain)
 - Regulatory compliance frameworks
 - Long-term privacy guarantees (relies on builder trust)
 
-## Integration Notes
+## Architecture
 
-- **Networks:** Ethereum mainnet (Flashbots), Multi-chain (SUAVE)
-- **Developer Tools:** MEV-Share SDK, Flashbots Auction APIs
-- **Builder Network:** Requires integration with participating builders
-- **Intent Standards:** SUAVE developing cross-chain intent standards
+**Flashbots Auction:** transactions are submitted directly to builders, bypassing the public mempool; MEV-Share lets users capture a portion of the MEV from their transactions; competitive block construction handles MEV extraction.
+
+**SUAVE (under development):** a universal intent pool for cross-domain intent expression and matching, programmable privacy (selective revelation of intent information), and decentralized execution across multiple environments.
+
+## Enterprise demand and use cases
+
+- Private transaction submission bypassing the public mempool
+- MEV protection through direct builder relationships
+- Revenue sharing via MEV-Share
+- Cross-chain intent expression (SUAVE)
+
+## Technical details
+
+- **Networks:** Ethereum mainnet (Flashbots Auction); multi-chain (SUAVE)
+- **Developer tools:** MEV-Share SDK, Flashbots Auction APIs
+- **Builder network:** requires integration with participating builders
+- **Intent standards:** SUAVE is developing cross-chain intent standards
 
 ## Strengths
 
 - Established MEV mitigation with significant adoption
-- Strong relationship with Ethereum ecosystem
+- Strong relationship with the Ethereum ecosystem
 - Active development of next-generation infrastructure (SUAVE)
-- Revenue sharing mechanisms align user incentives
+- Revenue-sharing mechanisms align user incentives
 
-## Limitations
+## Risks and open questions
 
-- Centralization concerns with builder relationships
-- SUAVE still in development phase
+- Centralization concerns around builder relationships
+- SUAVE still in development
 - Limited privacy guarantees (trust-based model)
 - Regulatory uncertainty around MEV redistribution
 

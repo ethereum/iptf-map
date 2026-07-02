@@ -4,7 +4,7 @@ status: ready
 maturity: testnet
 type: standard
 layer: L2
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - The cash leg must be private in both amounts and counterparties, with selective disclosure available to auditors.

@@ -4,7 +4,7 @@ status: ready
 maturity: testnet
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - You need hidden amounts and positions with a minimal on-chain footprint.
@@ -36,7 +36,7 @@ post_quantum:
   vector: "Symmetric record encryption (AES-GCM) is PQ-safe; key wrapping under EC-based threshold schemes is broken by CRQC, with HNDL risk for long-retention archives."
   mitigation: "Rotate wrapped keys using ML-KEM or hash-based threshold schemes before CRQC arrival. See [Post-Quantum Threats](../domains/post-quantum.md)."
 
-standards: [ERC-7573, EIP-4844, ERC-3643, EAS]
+standards: [ERC-7573, EIP-4844, EAS]
 
 related_patterns:
   composes_with: [pattern-dvp-erc7573, pattern-regulatory-disclosure-keys-proofs, pattern-forced-withdrawal]

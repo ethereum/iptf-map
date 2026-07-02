@@ -1,6 +1,6 @@
 ---
 title: Private Corporate Bonds
-status: stub
+status: ready
 primary_domain: Funds & Assets
 secondary_domain: Trading
 ---
@@ -68,4 +68,4 @@ See [approach-private-bonds.md](../approaches/approach-private-bonds.md) for gen
 
 - Related: [private-bonds.md](private-bonds.md) (general bond pattern)
 - Related: [private-government-debt.md](private-government-debt.md) (different privacy model - less critical)
-- Standards: EIP-6123 (bond lifecycle), ERC-7573 (atomic DvP)
+- Standards: ERC-6123 (bond lifecycle), ERC-7573 (atomic DvP)

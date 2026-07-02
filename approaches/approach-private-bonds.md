@@ -1,7 +1,7 @@
 ---
 title: "Approach: Private Bond Issuance & Trading"
-status: draft
-last_reviewed: 2026-05-05
+status: ready
+last_reviewed: 2026-06-24
 
 use_case: private-bonds
 related_use_cases: [private-corporate-bonds, private-government-debt]
@@ -92,12 +92,12 @@ example_vendors: [paladin, railgun]
 - L1 consensus and the verifier contract
 - Gas relayer for liveness on private withdrawals
 - Issuer for the global-note-to-holder-notes split at issuance
-- Trusted setup is not required (UltraHonk)
+- No per-circuit trusted setup (UltraHonk uses a universal KZG SRS)
 
 **Threat model:**
-- Adversary observing L1 cannot break ZK soundness; metadata leakage at deposit/withdraw boundaries is the practical exposure
-- Issuer compromise at issuance produces incorrect holder allocations
-- Per-note viewing-key compromise scopes damage to that note
+- A circuit or verifier soundness bug (e.g., an under-constrained circuit) lets an attacker forge or double-spend notes; metadata leakage at deposit/withdraw boundaries is the practical privacy exposure
+- Loss of local note state (spending key or note secrets) is unrecoverable and collapses to lost funds
+- Relayer or issuer censorship (withheld inclusion, or gated KYC entry); mitigated by direct withdraw at the cost of address linkage
 
 **Works best when:**
 - Production maturity matters and proven infrastructure (Railgun, Paladin) is available
@@ -159,22 +159,22 @@ example_vendors: [taceo-merces]
 **How it works:** Bond state lives offchain under MPC sharing; institutional senders submit shares, the committee computes the transition under MPC, and emits a co-SNARK on chain. Account-model simplicity is preserved at the application layer; addresses remain visible.
 
 **Trust assumptions:**
-- 3-of-3 honest nodes (no threshold tolerance in current TACEO design)
+- Honest-majority 3-party MPC committee (TACEO coNoir uses REP3 / 3-party Shamir, tolerating one corrupt node)
 - Co-SNARK soundness
 - Committee liveness
 
 **Threat model:**
-- Single node compromise breaks confidentiality
+- Collusion of two of the three nodes breaks confidentiality
 - Counterparty addresses leak; only amount confidentiality is provided
 - Batch latency creates a settlement window
 
 **Works best when:**
 - Institutional custodial models are acceptable
 - Amount confidentiality is sufficient and counterparty privacy is not required
-- Throughput target matches batched proving (~200 TPS)
+- Throughput target matches batched proving (~200 TPS, TACEO-reported)
 
 **Avoid when:**
-- Threshold-honest assumption among MPC nodes is incompatible with the threat model
+- Honest-majority assumption among MPC nodes is incompatible with the threat model
 - Sender or receiver anonymity is required
 
 ### FHE Coprocessor
@@ -200,7 +200,7 @@ example_vendors: [zama, fhenix]
 **Threat model:**
 - Threshold compromise reveals ciphertexts
 - No revocation per ciphertext; revocation requires a re-encryption / re-grant on balance update
-- Shared throughput (500-1000 TPS) is a network-wide bottleneck
+- Shared throughput (500-1000 TPS, vendor-reported) is a network-wide bottleneck
 
 **Works best when:**
 - Bond logic involves complex calculations (coupon accruals, derivatives) that map naturally to FHE
@@ -218,19 +218,19 @@ example_vendors: [zama, fhenix]
 | **Maturity** | production | prototyped | prototyped | prototyped |
 | **Context** | i2i | i2i | i2i | i2i |
 | **CROPS** | CR:hi O:y P:full S:hi | CR:med O:part P:full S:med | CR:med O:part P:part S:med | CR:med O:part P:part S:med |
-| **Trust model** | Self-custody (L1 + ZK) | Sequencer + bridge | 3-of-3 MPC nodes honest | t-of-n threshold network |
+| **Trust model** | Self-custody (L1 + ZK) | Sequencer + bridge | Honest-majority 3-party MPC | t-of-n threshold network |
 | **Privacy scope** | Amounts + addresses (via gas relayer) | Amounts + addresses (account level) | Amounts only; addresses public | Amounts only; addresses public |
-| **Performance** | High gas, chain-dependent throughput | L2-internal fees, unknown TPS | ~95K gas/tx batched, ~200 TPS | ~300K gas/tx, 500-1000 TPS shared |
+| **Performance** | High gas, chain-dependent throughput | L2-internal fees, unknown TPS | ~95K gas/tx batched, ~200 TPS (vendor) | ~300K gas/tx, 500-1000 TPS shared (vendor) |
 | **Operator req.** | No (gas relayer optional) | Yes (sequencer) | Yes (MPC committee) | Yes (threshold network) |
 | **Cost class** | High (L1 verify) | Low (L2-internal) | Low (batched) | Medium |
 | **Regulatory fit** | Strong (per-note view keys) | Strong (IVKs, app-siloed nullifiers) | Strong for known counterparty | Strong (per-balance ACL) |
-| **Failure modes** | Relayer censor; metadata at boundaries | Sequencer outage; bridge exploit | Single-node compromise; batch latency | Threshold compromise; no revocation per ciphertext |
+| **Failure modes** | Relayer censor; metadata at boundaries | Sequencer outage; bridge exploit | Node collusion; batch latency | Threshold compromise; no revocation per ciphertext |
 
 ## Persona perspectives
 
 ### Business perspective
 
-For institutional bond issuance and trading at scale, UTXO Shielded Notes is the default: production maturity (Railgun > USD 4b lifetime volume), white-label vendor coverage (Paladin), amount, counterparty, and address privacy (amounts, counterparties, and addresses via gas relayer), and a regulatory story built on per-note viewing keys that maps cleanly onto eWpG and MiCA disclosure regimes. Privacy L2 fits where bond logic is complex (coupons, structured lifecycle) because it removes circuit-engineering work, but the issuer must accept the rollup's decentralization timeline. co-SNARKs and FHE fit specific institutional contexts: bilateral or club-mode markets where address visibility is acceptable, or coupon-heavy products where homomorphic arithmetic is the natural model.
+For institutional bond issuance and trading at scale, UTXO Shielded Notes is the default: production maturity (Railgun ~USD 5b lifetime shielded volume as of 2026), white-label vendor coverage (Paladin), privacy over amounts, counterparties, and addresses (addresses via gas relayer), and a regulatory story built on per-note viewing keys that maps cleanly onto eWpG and MiCA disclosure regimes. Privacy L2 fits where bond logic is complex (coupons, structured lifecycle) because it removes circuit-engineering work, but the issuer must accept the rollup's decentralization timeline. co-SNARKs and FHE fit specific institutional contexts: bilateral or club-mode markets where address visibility is acceptable, or coupon-heavy products where homomorphic arithmetic is the natural model.
 
 ### Technical perspective
 
@@ -244,13 +244,13 @@ This is a perspective for legal review by the deploying issuer, not legal advice
 
 ### Default
 
-For institutional bond issuance and trading on a 1-2 year production timeline, default to **UTXO Shielded Notes** with [Paladin](../vendors/paladin.md) or [Railgun](../vendors/railgun.md) as the underlying shielded pool. This is the category with documented production volume, vendor coverage, and a disclosure interface that has been mapped onto eWpG / MiCA expectations.
+For institutional bond issuance and trading on a 1-2 year production timeline, default to UTXO Shielded Notes with [Paladin](../vendors/paladin.md) or [Railgun](../vendors/railgun.md) as the underlying shielded pool. This is the category with documented production volume, vendor coverage, and a disclosure interface that has been mapped onto eWpG / MiCA expectations.
 
 ### Decision factors
 
-- If bond logic is dominated by coupon and lifecycle arithmetic that is awkward in circuits, choose **Privacy L2** (Aztec, Miden) and accept the rollup-decentralization timeline.
-- If counterparties are bilateral or named (e.g., dealer-to-dealer), and address visibility is acceptable, choose **co-SNARKs** (TACEO Merces) for MPC-based disclosure with simpler programming.
-- If per-balance ACL granularity is mandated by the disclosure model and complex computation is needed, choose **FHE** (Zama, Fhenix) and plan for shared-throughput bottlenecks.
+- If bond logic is dominated by coupon and lifecycle arithmetic that is awkward in circuits, choose Privacy L2 (Aztec, Miden) and accept the rollup-decentralization timeline.
+- If counterparties are bilateral or named (e.g., dealer-to-dealer), and address visibility is acceptable, choose co-SNARKs (TACEO Merces) for MPC-based disclosure with simpler programming.
+- If per-balance ACL granularity is mandated by the disclosure model and complex computation is needed, choose FHE (Zama, Fhenix) and plan for shared-throughput bottlenecks.
 
 ### Hybrid
 

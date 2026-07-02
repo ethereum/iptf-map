@@ -1,10 +1,10 @@
 ---
-title: "Pattern: Open Intent Framework (OIF)"
-status: draft
+title: "Pattern: Open Intents Framework (OIF)"
+status: ready
 maturity: production
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Cross-chain settlement is needed.
@@ -27,7 +27,7 @@ crops_profile:
 
 crops_context:
   cr: "High because any solver meeting the protocol can participate; no centralised solver set is required."
-  o: "Reference contracts, solver implementation, and the underlying intent standard are open-source and composable with alternative settlement, oracle, and messaging layers."
+  o: "Reference contracts, solver implementation, and the underlying intent standards (ERC-7683 and related, most still draft) are open-source and composable with alternative settlement, oracle, and messaging layers."
   p: "None by default. Intents are visible during solver discovery. Could reach `full` by adopting encrypted intent encoding with sealed-bid commitments via threshold encryption, revealed only after solver execution and L1 finality."
   s: "Medium while cross-chain atomicity depends on external settlement and oracle assumptions. Reaches `high` once settlement atomicity and oracle integrity are hardened."
 
@@ -100,4 +100,5 @@ Threat model:
 ## See also
 
 - [ERC-7683: Cross-Chain Intents Standard](https://eips.ethereum.org/EIPS/eip-7683)
-- [Open Intents Framework documentation](https://github.com/openintentsframework)
+- [Open Intents Framework](https://openintents.xyz/): framework and its set of (mostly draft) intent standards
+- [Open Intents Framework on GitHub](https://github.com/openintentsframework)

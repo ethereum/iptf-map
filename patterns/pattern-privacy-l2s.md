@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Privacy L2s"
-status: draft
+status: ready
 maturity: production
 type: standard
 layer: L2
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Strong privacy is required beyond value-hiding, including identity unlinkability and programmable access controls.
@@ -47,7 +47,7 @@ standards: [ERC-20, ERC-3643, ERC-7573]
 related_patterns:
   composes_with: [pattern-shielding, pattern-regulatory-disclosure-keys-proofs, pattern-dvp-erc7573, pattern-erc3643-rwa]
   alternative_to: [pattern-plasma-stateless-privacy]
-  see_also: [pattern-forced-withdrawal, pattern-l2-privacy-evaluation, pattern-user-controlled-viewing-keys]
+  see_also: [pattern-forced-withdrawal, pattern-user-controlled-viewing-keys]
 
 open_source_implementations:
   - url: https://github.com/AztecProtocol/aztec-packages
@@ -56,9 +56,6 @@ open_source_implementations:
   - url: https://github.com/0xMiden/miden-node
     description: "Miden zkVM client-side proving rollup"
     language: "Rust"
-  - url: https://github.com/zama-ai/fhevm
-    description: "fhEVM: FHE-based confidential EVM"
-    language: "Solidity, Rust"
   - url: https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-bond/privacy-l2
     description: "IPTF PoC: private institutional bond on a privacy L2"
     language: "Noir, Solidity"
@@ -117,11 +114,9 @@ Threat model:
 ## Example
 
 - Bond issuance and secondary trading on native shielded notes.
-- An FHE-based L2 running a private credit risk model where inputs remain encrypted end-to-end and only the final attestation is revealed to the counterparty.
+- A private institutional payment rollup where amounts, sender, and receiver are shielded within the L2 and only state-root commitments anchor on L1.
 
 ## See also
 
 - [Aztec documentation](https://docs.aztec.network/)
-- [Aleo](https://aleo.org/)
-- [fhEVM documentation](https://docs.zama.org/protocol/protocol/overview)
 - [Miden](https://miden.xyz/)

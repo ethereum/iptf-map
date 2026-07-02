@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Private Set Intersection (Circuit-based)"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: offchain
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - The result needed is a function over the intersection (count, sum, threshold), not the raw intersection itself.
@@ -105,6 +105,6 @@ Two compliance teams want to count how many wallet addresses appear on both of t
 
 ## See also
 
-- [Huang et al. 2012: Faster Secure Two-Party Computation Using Garbled Circuits](https://www.usenix.org/system/files/conference/usenixsecurity11/sec11-final229.pdf)
+- [Huang et al. 2011: Faster Secure Two-Party Computation Using Garbled Circuits](https://www.usenix.org/system/files/conference/usenixsecurity11/sec11-final229.pdf)
 - [Wang, Ranellucci, Katz 2017: Authenticated Garbling and Efficient Maliciously Secure Two-Party Computation](https://eprint.iacr.org/2017/030)
 - [Pinkas et al. 2019: Efficient Circuit-based PSI with Linear Communication](https://eprint.iacr.org/2019/241)

@@ -1,6 +1,6 @@
 ---
 title: "Pattern: Network-Level Anonymity"
-status: draft
+status: ready
 maturity: concept
 type: meta
 layer: offchain

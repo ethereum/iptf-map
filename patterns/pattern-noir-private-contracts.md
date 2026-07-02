@@ -4,7 +4,7 @@ status: ready
 maturity: production
 type: standard
 layer: L2
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Applications need composable private and public state in a single contract.
@@ -63,7 +63,7 @@ Give developers a privacy-focused DSL to write smart contracts that blend public
 
 - Private contract DSL: Rust-inspired language for authoring functions, compiling to a circuit intermediate representation.
 - Circuit intermediate representation: backend-agnostic IR that the prover backend compiles into proving and verification keys.
-- Client-side prover: generates proofs for private-function executions on the user's machine (typically 8 GB RAM recommended).
+- Client-side prover: generates proofs for private-function executions on the user's machine; memory- and CPU-intensive, with ongoing optimization for consumer hardware including browsers.
 - Privacy rollup: private execution runtime, public execution VM, note-discovery infrastructure, and validity-proof pipeline to Ethereum L1.
 - Encrypted logs: note discovery mechanism; only the holders of decryption keys can read log contents.
 

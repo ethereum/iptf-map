@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Cross-Chain Privacy Bridge"
-status: draft
-maturity: testnet
+status: ready
+maturity: concept
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Moving assets between domains while minimizing linkability.
@@ -98,6 +98,7 @@ Threat model:
 - Reorg handling and cross-domain confusion (wrong chain ID, token mismatch) are recurring failure modes that must be guarded at the contract layer.
 - Griefing through deposits that are never minted locks funds until timeout. The recovery path must be robust and well-documented.
 - Key and governance risks: TSS or MPC signer collusion, view-key misuse, and malicious contract upgrades each sit outside the cryptographic trust model and require operational controls.
+- Deployment topologies: pre-bridge mixing (deposit through a source-chain shielded pool first, then bridge: full sender privacy at added latency); hub-and-spoke (L1 as verification hub; multiple L2s prove deposits via the L1 bridge contract); privacy-to-privacy (shielded pools on both ends: privacy on both sender and receiver ends, more complex verification); asymmetric (one direction private, e.g. public L1 to private L2).
 
 ## Example
 
@@ -108,13 +109,6 @@ Threat model:
 - The bond holder trades privately within the L2 shielded pool; counterparties and amounts are hidden from chain observers.
 - On redemption, the holder burns the shielded note on the L2, proves the burn to L1, and unlocks the escrow.
 
-## Variants
-
-- Pre-bridge mixing: Deposit through a source-chain shielded pool first, then bridge. Achieves full sender privacy at the cost of additional latency.
-- Hub-and-spoke: Use L1 as a verification hub; multiple L2s prove deposits via the L1 bridge contract.
-- Privacy-to-privacy: Both source and destination have shielded pools. Maximum privacy but verification is more complex.
-- Asymmetric: Only one direction is private (for example, public L1 to private L2).
-
 ## See also
 
-- [EIP-7281 (xERC20)](https://eips.ethereum.org/EIPS/eip-7281)
+- [ERC-7281: Sovereign Bridged Tokens (xERC20)](https://ethereum-magicians.org/t/erc-7281-sovereign-bridged-tokens/14979)

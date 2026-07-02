@@ -1,6 +1,6 @@
 ---
 title: "Vendor: Paladin"
-status: draft
+status: ready
 ---
 
 # Paladin - Modular System for Programmable Privacy on EVM chains
@@ -17,7 +17,7 @@ Runs as a sidecar next to a standard EVM client (for example Hyperledger Besu, o
 A strong design principle of the project is that existing privacy preserving tokens should be able to become compatible with Paladin wallet/vault functions and programmability with limited changes. Three privacy domains are implemented today (see below), with planned future support for other privacy preserving tokens such as confidential ERC20 based on FHE.
 
 
-## Fits with patterns (names only)
+## Fits with patterns
 - [Shielding](../patterns/pattern-shielding.md)
 - [DvP ERC7573](../patterns/pattern-dvp-erc7573.md)
 - [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)

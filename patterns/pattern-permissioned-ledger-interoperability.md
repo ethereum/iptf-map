@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Permissioned Ledger Interoperability"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: offchain
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Multiple financial institutions each operate their own permissioned ledger but require atomic cross-ledger settlement.
@@ -39,7 +39,7 @@ visibility:
   regulator: [full_tx with scoped disclosure]
   public: []
 
-standards: [DAML, ISO-20022, EAS, ERC-7573]
+standards: [ISO-20022, EAS, ERC-7573]
 
 related_patterns:
   composes_with: [pattern-dvp-erc7573, pattern-private-iso20022, pattern-crypto-registry-bridge-ewpg-eas]
@@ -48,10 +48,10 @@ related_patterns:
 
 open_source_implementations:
   - url: https://github.com/digital-asset/daml
-    description: "Digital Asset's DAML smart contract language and Canton runtime"
-    language: "Scala, DAML"
-  - url: https://github.com/hyperledger/besu
-    description: "Enterprise EVM client with permissioned networking and privacy groups"
+    description: "Digital Asset's Daml smart contract language and Canton runtime"
+    language: "Scala, Daml"
+  - url: https://github.com/besu-eth/besu
+    description: "Enterprise EVM client with permissioned networking (Tessera-based privacy groups deprecated and removed in recent releases)"
     language: "Java"
 ---
 
@@ -112,5 +112,5 @@ Threat model:
 ## See also
 
 - [Canton Network overview](https://www.canton.network/)
-- [DAML documentation](https://docs.daml.com/)
-- [Hyperledger Besu privacy groups](https://besu.hyperledger.org/)
+- [Daml documentation](https://docs.daml.com/)
+- [Hyperledger Besu documentation](https://besu.hyperledger.org/)

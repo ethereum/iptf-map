@@ -1,10 +1,10 @@
 ---
 title: "Pattern: TEE Key Manager"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: offchain
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - An institution needs hot or warm key custody with stronger isolation than a software-only wallet.

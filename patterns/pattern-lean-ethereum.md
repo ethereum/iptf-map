@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Lean Ethereum"
-status: draft
+status: ready
 maturity: research
 type: standard
 layer: L1
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - A long-term redesign of Ethereum consensus is on the table.
@@ -49,7 +49,7 @@ open_source_implementations:
 
 ## Intent
 
-Plan a long-range redesign of the Ethereum consensus layer, targeting a single major fork around 2030 that consolidates several research tracks: post-quantum signatures, minimal zkVMs for signature aggregation and proof compression, reduced hardware and stake thresholds for validators, and networking upgrades that support a larger validator set. The goal is a consensus protocol that is stable for decades, resilient against quantum adversaries, and verifiable on minimal devices.
+Plan a long-range redesign of the Ethereum consensus layer, targeting a single major fork that consolidates several research tracks: post-quantum signatures, minimal zkVMs for signature aggregation and proof compression, reduced hardware and stake thresholds for validators, and networking upgrades that support a larger validator set. The goal is a consensus protocol that is stable for decades, resilient against quantum adversaries, and verifiable on minimal devices.
 
 ## Components
 
@@ -58,7 +58,7 @@ Plan a long-range redesign of the Ethereum consensus layer, targeting a single m
 - Networking upgrades: Gossipsub v2 for throughput and DOS resilience, and rateless set reconciliation to support very large validator sets.
 - Lower validator thresholds in hardware, bandwidth, and stake, making solo staking accessible on commodity devices.
 - Formal verification tooling (Lean 4) used to prove key properties of the signature aggregation and consensus logic.
-- Approximately fifteen client teams implementing the specification across Rust, Zig, C, C++, Go, Java, .NET, TypeScript, Nim, and Elixir.
+- Multiple independent client teams as of mid-2026, implementing the specification in a range of languages.
 
 ## Protocol
 

@@ -1,7 +1,8 @@
 ---
-title: "Private Identity"
+title: Private Identity
+status: ready
 primary_domain: Identity & Compliance
-secondary_domain: Governance
+secondary_domain: Civic Coordination & Governance
 ---
 
 ## 1) Use Case
@@ -15,7 +16,7 @@ Prove identity claims, membership, eligibility, or attribute possession on-chain
 
 - **National identity:** ZKPassport used in Aztec token sale (120+ country passports, NFC + Noir circuits); Anon Aadhaar
 - **Governance:** NounsDAO Private Voting (Aztec + Noir storage proofs); MACI deployed at ETHDam, ETHMexico, ETH Tegucigalpa (anti-collusion)
-- **Community/sybil:** [POD2](https://github.com/0xPARC/pod2) (0xPARC); World ID (25M+ registrations)
+- **Community/sybil:** [POD2](https://github.com/0xPARC/pod2) (0xPARC); World ID (18M+ verified humans)
 - **Email identity:** zkEmail (DKIM proofs, email wallets on Arbitrum)
 
 ## 3) Actors

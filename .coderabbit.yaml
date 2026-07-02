@@ -24,7 +24,6 @@ reviews:
     - "!scripts/node_modules/**"
     - "!package-lock.json"
     - "!.husky/**"
-    - "!weekly-updates/**"
 
   path_instructions:
     # ── Patterns ──────────────────────────────────────────────────────────
@@ -64,10 +63,10 @@ reviews:
         advances shared privacy patterns, or brings institutional adoption to Ethereum).
         Flag products that primarily serve non-Ethereum L1s without meaningful Ethereum integration.
 
-        **CROPS evaluation (CRITICAL):**
-        Vendor cards MUST include a `## CROPS profile` section with a table evaluating each product.
-        Table columns: Product | CR | OS | Privacy | Security | Context.
-        Validate scores against the rubrics in `CONTRIBUTING.md § CROPS Evaluation`.
+        **CROPS evaluation (optional):**
+        Vendor cards MAY include a `## CROPS profile` section with a table evaluating each product
+        (columns: Product | CR | OS | Privacy | Security | Context). Do not flag cards that omit it.
+        When the section is present, validate scores against the rubrics in `CONTRIBUTING.md § CROPS Evaluation`.
         CROPS is assessed per product, not per vendor — a single vendor may have products with different profiles.
         For vendors, the Security score should also consider: audit status, upgrade key controls, admin key scope, incident history, and bug bounty program.
 
@@ -107,11 +106,12 @@ reviews:
     # ── Jurisdictions ─────────────────────────────────────────────────────
     - path: "jurisdictions/**/*.md"
       instructions: |
-        This is a **jurisdiction card**.
+        This is a **jurisdiction card**. These are deliberately high-level (developer
+        orientation, not legal advice): a short posture summary, things to watch, and links.
 
         **Structure & frontmatter:** Validate against the template at `jurisdictions/_template.md`.
-        All required subsections under `## Actionable Best Practices` must be present
-        (Payments, Trading, Funds & Assets, Custody, Identity & Compliance, Data & Oracles).
+        Require `## At a Glance`. `## What to Watch` and `## See also` are recommended.
+        Do not require the old `## Actionable Best Practices` section or its subsections.
 
     # ── Changelog ─────────────────────────────────────────────────────────
     - path: "CHANGELOG.md"

@@ -1,6 +1,6 @@
 ---
 title: "Vendor: Hinkal"
-status: draft
+status: ready
 maturity: production
 ---
 
@@ -10,13 +10,12 @@ maturity: production
 
 Hinkal is a smart contract on public chains that lets users hold private balances controlled through their existing wallet keys. This enables users to send, receive and operate in stablecoins confidentially, without changing chains or custody. Through zero-knowledge proofs, every transaction is proven valid and verifiable on public chains, while participants and amounts stay private. Via viewing keys, users can selectively disclose transaction history to preserve auditability. And for compliance, Chainalysis KYT screens wallet addresses before execution to prevent high-risk funds from entering the smart contract.
 
-## Fits with patterns (names only)
+## Fits with patterns
 
--	Pattern: Shielded Account-Based Payments (ZK UTXO Hybrid)
--	Pattern: Private Multi-Asset Transfers (ZK-SNARKs)
--	Pattern: Cross-Chain Private Settlement Layer
--	Pattern: Compliance-Aware Privacy (Selective Disclosure ZK)
--	Pattern: Relayer-Based Private Execution (Gas Abstraction)
+- [Shielding](../patterns/pattern-shielding.md)
+- [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
+- [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
+- [Relay-Mediated Proving](../patterns/pattern-relay-mediated-proving.md)
 
 ## Not a substitute for
 

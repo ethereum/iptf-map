@@ -1,9 +1,10 @@
 ---
-title: "Pattern: Threshold-encrypted mempool"
-status: draft
+title: "Pattern: Threshold-Encrypted Mempool"
+status: ready
 maturity: testnet
 type: standard
 layer: L1
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Miner Extractable Value protection is needed at the protocol level rather than through a trusted relay.
@@ -13,8 +14,6 @@ avoid-when:
   - The committee liveness dependency is unacceptable for the target use case.
   - Decryption latency is incompatible with the workload.
   - A single trusted operator is acceptable, in which case a private relay is simpler.
-
-last_reviewed: 2026-04-22
 
 context: both
 context_differentiation:
@@ -38,7 +37,7 @@ post_quantum:
   vector: "Pairing-based threshold encryption schemes rely on elliptic-curve primitives broken by a CRQC; pre-inclusion ciphertext collected today has Harvest-Now-Decrypt-Later exposure."
   mitigation: "Lattice-based threshold encryption schemes. See [Post-Quantum Threats](../domains/post-quantum.md)."
 
-standards: [ERC-20, EIP-7573]
+standards: []
 
 related_patterns:
   requires: [pattern-private-transaction-broadcasting]
@@ -49,7 +48,7 @@ related_patterns:
 open_source_implementations:
   - url: https://github.com/shutter-network/shutter
     description: "Shutter threshold-encryption toolkit for Ethereum-compatible chains"
-    language: "Go"
+    language: "Rust, Go"
 ---
 
 ## Intent

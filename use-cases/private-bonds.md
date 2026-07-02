@@ -1,5 +1,6 @@
 ---
 title: Private Bonds
+status: ready
 primary_domain: Funds & Assets
 secondary_domain:
 ---
@@ -53,6 +54,6 @@ _Notes below reference the PoC implementation._
 
 ## 7) Notes And Links
 
-- **Umbrella issue:** https://github.com/iptf-eth/iptf-pm/issues/4
-- **Standards:** EIP-6123 (derivative/bond lifecycle), ERC-7573 (atomic cross-domain DvP), ICMA Bond Data Taxonomy (BDT)
+- **Tracking:** Public workstream in [iptf-pocs / private-bond](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-bond)
+- **Standards:** ERC-6123 (derivative/bond lifecycle), ERC-7573 (atomic cross-domain DvP), ICMA Bond Data Taxonomy (BDT)
 - **Current standards:** ERC-20 tokens; HTLC sequences for DvP (to be replaced by ERC-7573)

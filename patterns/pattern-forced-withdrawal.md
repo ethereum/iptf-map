@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Forced Withdrawal (L1 Escape Hatch)"
-status: draft
+status: ready
 maturity: production
 type: standard
 layer: hybrid
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Users need a guaranteed exit from L2 or shielded pools even if the operator is offline or hostile.
@@ -55,7 +55,7 @@ When an L2 sequencer, relayer, or operator becomes unavailable, users need a uni
 - Proof verifier contract accepts Merkle proofs (transparent systems) or zero-knowledge proofs (privacy systems) and checks them against the anchored root.
 - Nullifier registry records completed withdrawals to prevent double-claims.
 - Bridge liquidity contract holds the locked deposits that forced exits draw from; no new funds are created.
-- Client-side prover with the required circuit, proving keys or SRS artifacts, and local compute (roughly 0.5 to 3 seconds native or 20 to 30 seconds in browser WASM on current hardware).
+- Client-side prover with the required circuit, proving keys or SRS artifacts, and local compute.
 
 Where the data lives determines the trust assumption:
 
@@ -109,11 +109,11 @@ Threat model:
 - DA withholding: validium DA committees can freeze all funds by refusing to share state. External DA layers add a liveness dependency. On-chain calldata and blobs are immune but expensive. For privacy systems, data can sit on-chain yet be useless without decryption keys.
 - State freshness gap: users can prove only against the most recently anchored root. Any transactions after that root are lost. Anchoring intervals range from minutes (validity rollups) to hours.
 - Mass exit: everyone hits L1 at once. Gas prices spike, users with no L1 ETH cannot participate, and leveraged DeFi positions may create claims exceeding underlying bridge deposits.
-- Proving liveness: for privacy systems, the user must retain secrets and run a compatible prover. The prover code must be open-source, deterministically compilable, and match the L1 verifier's expected proof format. A version mismatch means funds are frozen until governance acts. Browser WASM proving works but is 5 to 15 times slower than native.
+- Proving liveness: for privacy systems, the user must retain secrets and run a compatible prover. The prover code must be open-source, deterministically compilable, and match the L1 verifier's expected proof format. A version mismatch means funds are frozen until governance acts. Browser WASM proving works but is materially slower than native.
 
 ## Example
 
-A bank operates a private payment L2 for its clients. The sequencer goes offline. A client holds 500 000 USDC in shielded notes on the L2 and their withdrawal requests time out. The client retrieves the latest state root anchored on L1 and builds a Merkle inclusion proof for their commitment. They generate a ZK ownership proof and submit it to the L1 escape-hatch contract (~300 000 gas). After the 7-day challenge period, the client claims 500 000 USDC on L1 to a fresh address. The L1 transaction reveals that someone withdrew 500 000 USDC, but not which client or which L2 transactions funded the balance.
+A bank operates a private payment L2 for its clients. The sequencer goes offline. A client holds 500 000 USDC in shielded notes on the L2 and their withdrawal requests time out. The client retrieves the latest state root anchored on L1 and builds a Merkle inclusion proof for their commitment. They generate a ZK ownership proof and submit it to the L1 escape-hatch contract (~300 000 gas for a Groth16 verification). After the 7-day challenge period, the client claims 500 000 USDC on L1 to a fresh address. The L1 transaction reveals that someone withdrew 500 000 USDC, but not which client or which L2 transactions funded the balance.
 
 ## See also
 

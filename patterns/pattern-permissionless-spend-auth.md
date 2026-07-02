@@ -1,10 +1,10 @@
 ---
 title: "Pattern: Permissionless Spend Auth"
-status: draft
+status: ready
 maturity: concept
 type: standard
 layer: L1
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Multiple auth methods must coexist in one shielded pool (ECDSA, P-256, post-quantum schemes).
@@ -99,5 +99,5 @@ Threat model:
 
 ## See also
 
-- [EIP-8182 draft](https://github.com/ethereum/EIPs/pull/11373)
+- [EIP-8182: Private ETH and ERC-20 Transfers](https://eips.ethereum.org/EIPS/eip-8182)
 - [Post-Quantum Threats](../domains/post-quantum.md)

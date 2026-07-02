@@ -1,9 +1,9 @@
 ---
 title: "Pattern: Relay-Mediated Proving"
-status: draft
+status: ready
 maturity: concept
 layer: offchain
-last_reviewed: 2026-04-27
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Client cannot run a SNARK prover (constrained hardware, low power, intermittent connectivity)
@@ -63,10 +63,10 @@ The pattern is distinct from `pattern-safe-proof-delegation.md`, which addresses
 
 ## Components
 
-- **Client-side signing primitive**: a signature the client device already supports (ECDSA-secp256k1 with RFC 6979 plus canonical-s, EdDSA, or RSA-PSS). The client never holds witness data the relay can extract beyond what the signed message carries.
-- **In-circuit signature verification**: Noir `std::ecdsa_secp256k1`, in-circuit EdDSA, or equivalent gadget. The circuit recomputes the signed-message encoding bit-identically and verifies against the client's public key.
-- **Submitter binding**: the proof's public inputs include a `submitter` field. The circuit asserts the field equals a witness-shared value; the application contract on-chain asserts `publicInputs.submitter == msg.sender`. Together these close proof-stealing front-running.
-- **Relay set**: multiple relays per deployment. Clients fan out to `k < N` relays. Single-relay deployments do not satisfy the privacy assumption.
+- Client-side signing primitive: a signature the client device already supports (ECDSA-secp256k1 with RFC 6979 plus canonical-s, EdDSA, or RSA-PSS). The client never holds witness data the relay can extract beyond what the signed message carries.
+- In-circuit signature verification: Noir `std::ecdsa_secp256k1`, in-circuit EdDSA, or equivalent gadget. The circuit recomputes the signed-message encoding bit-identically and verifies against the client's public key.
+- Submitter binding: the proof's public inputs include a `submitter` field. The circuit asserts the field equals a witness-shared value; the application contract on-chain asserts `publicInputs.submitter == msg.sender`. Together these close proof-stealing front-running.
+- Relay set: multiple relays per deployment. Clients fan out to `k < N` relays. Single-relay deployments do not satisfy the privacy assumption.
 
 ## Protocol
 
@@ -79,10 +79,10 @@ The pattern is distinct from `pattern-safe-proof-delegation.md`, which addresses
 
 ## Guarantees & threat model
 
-- **Front-running resistance**: a front-runner who lifts the proof from the mempool cannot re-submit from a different address; the proof reverts on a different `msg.sender`.
-- **Witness confidentiality from the chain**: only public inputs are revealed on-chain. Private inputs (signature, membership path, internal state) stay with the relay during proof generation.
-- **No client-prover requirement**: the client device runs only its native signature primitive.
-- **Threat model**: adversaries include front-runners, the chain itself, and a non-quorum of compelled relays. Out of scope: a fully compelled or breached relay set; signed-message-encoding mismatches between client and circuit (a known historical bug class).
+- Front-running resistance: a front-runner who lifts the proof from the mempool cannot re-submit from a different address; the proof reverts on a different `msg.sender`.
+- Witness confidentiality from the chain: only public inputs are revealed on-chain. Private inputs (signature, membership path, internal state) stay with the relay during proof generation.
+- No client-prover requirement: the client device runs only its native signature primitive.
+- Threat model: adversaries include front-runners, the chain itself, and a non-quorum of compelled relays. Out of scope: a fully compelled or breached relay set; signed-message-encoding mismatches between client and circuit (a known historical bug class).
 
 ## Trade-offs
 

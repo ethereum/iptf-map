@@ -44,15 +44,6 @@ Example entry:
 - [New pattern name](patterns/pattern-slug.md) (#123)
 ```
 
-### Weekly Summaries
-
-Generate a weekly summary for sharing:
-
-```bash
-./scripts/weekly-summary.sh           # Last 7 days
-./scripts/weekly-summary.sh 2026-01-08 2026-01-15  # Custom range
-```
-
 ## CROPS Evaluation
 
 CROPS are the four non-negotiable properties defined by the Ethereum Foundation. They are indivisible: a solution that satisfies three out of four is not CROPS-aligned.

@@ -1,6 +1,6 @@
 ---
 title: Private Stocks
-status: stub
+status: ready
 primary_domain: Trading
 secondary_domain: Funds & Assets
 ---
@@ -66,5 +66,5 @@ Approach TBD. Consider:
 
 - Related: [private-rwa-tokenization.md](private-rwa-tokenization.md) (general RWA privacy)
 - Related: [private-bonds.md](private-bonds.md) (similar DvP requirements)
-- Market context: US Clarity Act draft includes tokenized equity provisions
+- Market context: US CLARITY Act (passed the House July 2025) addresses tokenized securities, incl. on-chain equity settlement venues
 - Regulatory: SEC, FINRA oversight; beneficial ownership reporting requirements

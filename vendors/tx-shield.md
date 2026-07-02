@@ -1,6 +1,6 @@
 ---
 title: "Vendor: TX-SHIELD"
-status: published
+status: ready
 ---
 
 # TX-SHIELD – Institutional Privacy Infrastructure
@@ -24,20 +24,12 @@ Each module can operate independently or as part of a unified privacy-preserving
 
 ---
 
-## Fits with patterns (names only)
+## Fits with patterns
 
-TX-SHIELD:
-- pattern-private-stablecoin-shielded-payments
-- pattern-private-pvp-stablecoins-erc5753
-- pattern-regulatory-disclosure-keys-proofs
-- pattern-te-ex-settlement
-
-OpenTMP LLM (adjacency):
-- pattern-adj-private-consortium-ledger
-- pattern-adj-delayed-post-trade-reporting
-
-Collab-Key:
-- pattern-key-management-threshold-kms
+- [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
+- [Private PvP Stablecoins (ERC-7573)](../patterns/pattern-private-pvp-stablecoins-erc7573.md)
+- [Regulatory Disclosure Keys & Proofs](../patterns/pattern-regulatory-disclosure-keys-proofs.md)
+- [MPC Custody](../patterns/pattern-mpc-custody.md)
 
 ---
 
@@ -77,7 +69,7 @@ Features an offline-by-default architecture with native FIDO2 support, integrati
 
 ---
 
-## Privacy domains (if applicable)
+## Privacy domains
 - Private Payments / Compliance Infrastructure  
 - Collaborative AI / Federated Learning Privacy  
 - ReRAM-backed Institutional Custody / Key Management  

@@ -1,6 +1,6 @@
 ---
 title: "Pattern: Onion Routing"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: offchain

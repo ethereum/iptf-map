@@ -1,9 +1,10 @@
 ---
 title: "Pattern: Recipient-Derived Receive Addresses"
-status: draft
+status: ready
 maturity: concept
+type: standard
 layer: L1
-last_reviewed: 2026-04-27
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Recipient is a constrained signer that cannot evaluate ECDH over the curve in real time
@@ -52,14 +53,14 @@ open_source_implementations:
 
 Generate Ethereum receive addresses deterministically from a long-lived recipient secret plus per-event context (e.g., event identifier, contract address, sequence number), such that an observer without the secret cannot predict, recognize, or link the addresses, while the recipient (with their secret) can re-derive the corresponding private key and spend the funds.
 
-This is **not** EIP-5564 stealth addressing. EIP-5564 derives destinations through ECDH between sender ephemeral and recipient view keys; recipients scan the chain to detect inbound funds; senders need the recipient's published view pubkey. The recipient-derived pattern is the recipient's own deterministic key-derivation scheme, optimized for constrained recipient devices that cannot evaluate ECDH in-the-loop and that have no published view-pubkey infrastructure.
+This is not EIP-5564 stealth addressing. EIP-5564 derives destinations through ECDH between sender ephemeral and recipient view keys; recipients scan the chain to detect inbound funds; senders need the recipient's published view pubkey. The recipient-derived pattern is the recipient's own deterministic key-derivation scheme, optimized for constrained recipient devices that cannot evaluate ECDH in-the-loop and that have no published view-pubkey infrastructure.
 
 ## Components
 
-- **Long-lived recipient secret**: 32 bytes provisioned at enrollment; held on a constrained device.
-- **PRF**: HMAC-SHA256 (universal in conservative crypto APIs). Any PRF with 256-bit output suffices.
-- **Curve operation**: secp256k1 scalar multiplication. Performed by the recipient or by an auxiliary device that learns nothing else; need not happen on the constrained device itself if it lacks the cycles.
-- **Address hash**: keccak256, producing the 20-byte Ethereum address from the public key.
+- Long-lived recipient secret: 32 bytes provisioned at enrollment; held on a constrained device.
+- PRF: HMAC-SHA256 (universal in conservative crypto APIs). Any PRF with 256-bit output suffices.
+- Curve operation: secp256k1 scalar multiplication. Performed by the recipient or by an auxiliary device that learns nothing else; need not happen on the constrained device itself if it lacks the cycles.
+- Address hash: keccak256, producing the 20-byte Ethereum address from the public key.
 
 ## Protocol
 
@@ -76,10 +77,10 @@ The construction is a PRF-derived deterministic key per `(recipientSecret, conte
 
 ## Guarantees & threat model
 
-- **Unlinkability against external observers**: HMAC-SHA256 is a PRF. Without the recipient secret, two destinations look uniformly random and uncorrelated. Address-space collisions are bounded by birthday probability over 160-bit addresses (about 2^-80 per pair).
-- **Spendability**: the recipient (with the secret and the public context) re-derives `derivedPrivkey` exactly. No chain scanning, no published view key.
-- **Non-interactivity**: the sender does not need a view pubkey, ephemeral keypair, or per-recipient state.
-- **Threat model**: adversary observes the chain and may compromise non-recipient parties. Out of scope: device seizure (long-lived secret residual); post-quantum adversary (recoverable curve).
+- Unlinkability against external observers: HMAC-SHA256 is a PRF. Without the recipient secret, two destinations look uniformly random and uncorrelated. Address-space collisions are bounded by birthday probability over 160-bit addresses (about 2^-80 per pair).
+- Spendability: the recipient (with the secret and the public context) re-derives `derivedPrivkey` exactly. No chain scanning, no published view key.
+- Non-interactivity: the sender does not need a view pubkey, ephemeral keypair, or per-recipient state.
+- Threat model: adversary observes the chain and may compromise non-recipient parties. Out of scope: device seizure (long-lived secret residual); post-quantum adversary (recoverable curve).
 
 ## Trade-offs
 

@@ -1,10 +1,10 @@
 ---
 title: "Pattern: TEE-Based Privacy"
-status: draft
+status: ready
 maturity: production
 type: standard
 layer: offchain
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Confidential computation is needed with lower latency than zero-knowledge proofs or multi-party computation can deliver.
@@ -65,7 +65,7 @@ Use hardware-isolated execution environments to protect sensitive computation fr
 - Measurement registry that records approved code and configuration hashes so verifiers know what "correct" looks like.
 - Operational stack: secure provisioning, sealing-key management, firmware and microcode update policy, physical security controls, and incident-response runbooks.
 
-Hardware TEEs differ from Hardware Security Modules. HSMs provide physical tamper resistance (EAL5 to 7), dedicated silicon, and a minimal firmware surface; TEEs offer general-purpose computation with logical isolation but share the CPU die, lack physical tamper resistance (EAL2 to 4), and have a larger attack surface with documented side-channel history. Contractual controls partially mitigate this gap but do not close it; treat TEEs as complementary to HSMs, not replacements.
+Hardware TEEs differ from Hardware Security Modules. HSMs provide physical tamper resistance (commonly certified to Common Criteria EAL4+), dedicated silicon, and a minimal firmware surface; TEEs offer general-purpose computation with logical isolation but share the CPU die, lack comparable physical tamper resistance, and have a larger attack surface with documented side-channel history. Contractual controls partially mitigate this gap but do not close it; treat TEEs as complementary to HSMs, not replacements.
 
 The two platform families differ in threat coverage:
 

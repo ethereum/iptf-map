@@ -1,10 +1,10 @@
 ---
 title: "Pattern: zk-TLS"
-status: draft
+status: ready
 maturity: testnet
 type: standard
 layer: offchain
-last_reviewed: 2026-04-22
+last_reviewed: 2026-06-18
 
 works-best-when:
   - Data required on-chain only lives behind a TLS-protected website with no usable API.
@@ -99,4 +99,4 @@ A custodian needs to verify that an investor holds a minimum balance at a regula
 
 - [TLSNotary documentation](https://tlsnotary.org/)
 - [Notary as a service, TLSNotary docs](https://docs.tlsnotary.org/)
-- [Notarizing TLS, iEEE 2023 paper](https://eprint.iacr.org/2023/964)
+- [Notarizing TLS, IEEE 2023 paper](https://eprint.iacr.org/2023/964)

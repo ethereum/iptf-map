@@ -1,9 +1,9 @@
 ---
 title: "Pattern: Mesh Store-and-Forward Submission"
-status: draft
-maturity: production
+status: ready
+maturity: concept
 layer: offchain
-last_reviewed: 2026-04-27
+last_reviewed: 2026-06-17
 
 works-best-when:
   - Senders lack persistent internet connectivity
@@ -46,8 +46,8 @@ open_source_implementations:
   - url: https://meshtastic.org/
     description: "Meshtastic: LoRa mesh messaging firmware"
     language: C++
-  - url: https://bridgefy.me/
-    description: "Bridgefy: commercial Bluetooth mesh SDK"
+  - url: https://github.com/bridgefy
+    description: "Bridgefy: Bluetooth mesh SDK (MIT-licensed)"
     language: Swift/Kotlin
 ---
 
@@ -59,11 +59,11 @@ The pattern is the recipient-side dual of `pattern-network-anonymity.md`. The um
 
 ## Components
 
-- **Mesh transport**: Bluetooth LE for short-range device-to-device, LoRa for kilometer-range, Wi-Fi Direct or local AP for higher-bandwidth corridors. Peer-to-peer or multi-hop store-and-forward.
-- **End-to-end encryption**: IND-CCA2 authenticated encryption with ephemeral sender keying. X25519 plus ChaCha20-Poly1305 or AES-256-GCM are conventional.
-- **Relay decryption keypair**: rotated by the relay at least every 24 hours; retired private keys securely erased.
-- **Source-fingerprinting mitigations**: at least two orthogonal mechanisms. Physical-layer options: randomized Bluetooth LE MACs, rotated LoRa node identifiers. Network-layer: onion-routed propagation (Sphinx-style), Poisson-distributed cover traffic.
-- **Out-of-band relay-key distribution**: relay identity public keys pre-loaded onto sender devices through trusted channels (printed cards, signed bundle, in-person handoff).
+- Mesh transport: Bluetooth LE for short-range device-to-device, LoRa for kilometer-range, Wi-Fi Direct or local AP for higher-bandwidth corridors. Peer-to-peer or multi-hop store-and-forward.
+- End-to-end encryption: IND-CCA2 authenticated encryption with ephemeral sender keying. X25519 plus ChaCha20-Poly1305 or AES-256-GCM are conventional.
+- Relay decryption keypair: rotated by the relay at least every 24 hours; retired private keys securely erased.
+- Source-fingerprinting mitigations: at least two orthogonal mechanisms. Physical-layer options: randomized Bluetooth LE MACs, rotated LoRa node identifiers. Network-layer: onion-routed propagation (Sphinx-style), Poisson-distributed cover traffic.
+- Out-of-band relay-key distribution: relay identity public keys pre-loaded onto sender devices through trusted channels (printed cards, signed bundle, in-person handoff).
 
 ## Protocol
 
@@ -78,10 +78,10 @@ The pattern is the recipient-side dual of `pattern-network-anonymity.md`. The um
 
 ## Guarantees & threat model
 
-- **End-to-end confidentiality**: intermediate peers cannot recover the cleartext payload.
-- **Source unlinkability across encounters**: physical-layer rotation plus network-layer cover traffic together prevent an adversary observing one mesh encounter from linking it to the same sender's prior or subsequent activity. Single-mitigation deployments do not satisfy this.
-- **Tolerance to high latency**: delivery is eventual, bounded only by mesh path connectivity.
-- **Threat model**: adversary observes radio spectrum and IP traffic, may control some peers, and may compromise individual companion devices. Out of scope: SIGINT-level RF fingerprinting that distinguishes individual transmitters by hardware characteristics.
+- End-to-end confidentiality: intermediate peers cannot recover the cleartext payload.
+- Source unlinkability across encounters: physical-layer rotation plus network-layer cover traffic together prevent an adversary observing one mesh encounter from linking it to the same sender's prior or subsequent activity. Single-mitigation deployments do not satisfy this.
+- Tolerance to high latency: delivery is eventual, bounded only by mesh path connectivity.
+- Threat model: adversary observes radio spectrum and IP traffic, may control some peers, and may compromise individual companion devices. Out of scope: SIGINT-level RF fingerprinting that distinguishes individual transmitters by hardware characteristics.
 
 ## Trade-offs
 
@@ -99,6 +99,6 @@ Reporters and human-rights observers in a region with periodic internet shutdown
 
 - [Briar Project](https://briarproject.org/): peer-to-peer messenger over Bluetooth LE, Wi-Fi LAN, and Tor.
 - [Meshtastic](https://meshtastic.org/): LoRa mesh messaging firmware.
-- [Bridgefy](https://bridgefy.me/): commercial Bluetooth mesh SDK.
+- [Bridgefy](https://bridgefy.me/): Bluetooth mesh SDK (MIT-licensed).
 - [Sphinx mix format (Danezis & Goldberg, IEEE S&P 2009)](https://cypherpunks.ca/~iang/pubs/Sphinx_Oakland09.pdf).
 - [RFC 8439: ChaCha20 and Poly1305 for IETF Protocols](https://www.rfc-editor.org/rfc/rfc8439).

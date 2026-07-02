@@ -1,5 +1,5 @@
 ---
-title: "Pattern: Crypto-register bridge (eWpG) with EAS mirroring"
+title: "Pattern: Crypto-registry bridge (eWpG) with EAS mirroring"
 status: ready
 maturity: concept
 type: standard

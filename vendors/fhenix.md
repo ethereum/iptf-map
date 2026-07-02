@@ -1,6 +1,6 @@
 ---
-title: "Vendor: Product Fhenix"
-status: draft
+title: "Vendor: Fhenix"
+status: ready
 maturity: testnet
 ---
 
@@ -10,7 +10,7 @@ maturity: testnet
 
 Fhenix builds a CoProcessor that brings Fully Homomorphic Encryption (FHE) to EVM chains, enabling developers to compute directly on encrypted data without ever decrypting it. This allows dApps to offer on-chain privacy by default. At its core, Fhenix introduces CoFHE, a decentralized coprocessor that makes encrypted computation fast, scalable, and easy for Solidity developers to adopt.
 
-## Fits with patterns (names only)
+## Fits with patterns
 
 - [Private Stablecoin Shielded Payments](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-stablecoin-shielded-payments.md) - FHE enables encrypted balances and amounts, supporting fully confidential stablecoin transfers.
 - [Private Intent-Based Vaults](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-vaults.md) - FHE-powered execution allows vault strategies to run privately while preserving on-chain auditability of assets.
@@ -27,7 +27,7 @@ Fhenix builds a CoProcessor that brings Fully Homomorphic Encryption (FHE) to EV
 
 CoFHE, Fhenix’s encrypted-computation coprocessor, enables smart contracts to perform arithmetic directly on encrypted values, bringing confidential computation seamlessly into standard EVM workflows.
 
-## Privacy domains (if applicable)
+## Privacy domains
 
 - FHE encryption at the contract and variable level.
 - Supports hybrid models (FHE + ZK for verification).

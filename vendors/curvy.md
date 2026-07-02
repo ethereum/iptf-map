@@ -1,6 +1,6 @@
 ---
 title: "Vendor: Curvy"
-status: draft
+status: ready
 maturity: production
 ---
 
@@ -11,12 +11,11 @@ maturity: production
 Curvy is a smart-contract-/wallet-based privacy layer for ERC-20 transfers (and other tokens) on EVM chains.  
 It introduces **stealth addresses**, **view keys**, and **one-time addresses per transaction** to break linkability of sender-recipient pairs, while preserving usability.
 
-## Fits with patterns (names only)
+## Fits with patterns
 
-- Pattern: Private ISO 20022 Messaging & Settlement
-- Pattern: Shielded-Pool Atomic Swap (ZK-HTLC)
-- Pattern: ZK Shielded Balances for Derivatives
-- Pattern: Confidential ERC-20
+- [Private ISO 20022](../patterns/pattern-private-iso20022.md)
+- [Stealth Addresses](../patterns/pattern-stealth-addresses.md)
+- [Recipient-Derived Receive Addresses](../patterns/pattern-recipient-derived-receive-addresses.md)
 
 ## Not a substitute for
 
