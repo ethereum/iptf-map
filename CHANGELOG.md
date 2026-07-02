@@ -4,6 +4,10 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-07-02
+
+23 commits, 166 files changed since [v0.3.0](https://github.com/ethereum/iptf-map/releases/tag/v0.3.0) (Apr 2026). Major additions: resilience use cases (civic participation, disbursement rails, identity continuity), I2U protection patterns, pattern/approach schema v2 (strict flip) with CROPS and post-quantum analysis, domain reframing beyond FIs, and a Q2 2026 content QA audit.
+
 - chore: Q2 2026 content audit pass across all patterns, use cases, approaches, domains, jurisdictions, and vendors; corrections tracked in [QA-AUDIT.md](QA-AUDIT.md) ([#130](https://github.com/ethereum/iptf-map/pull/130))
 - chore: remove the dormant `weekly-updates/` directory and `scripts/weekly-summary.sh` (single entry, unused since 2026-01) ([#130](https://github.com/ethereum/iptf-map/pull/130))
 - docs(domains): reframe [Domains index](domains/README.md), [Payments](domains/payments.md), [Identity & Compliance](domains/identity-compliance.md), [Funds & Assets](domains/funds-assets.md), [Trading](domains/trading.md), and [Data & Oracles](domains/data-oracles.md) to cover public-sector, NGO, and resilience contexts alongside FIs; add [Civic Coordination & Governance](domains/governance.md) domain; add `governance` to the use-case schema enum ([#170](https://github.com/ethereum/iptf-map/pull/170), closes [#169](https://github.com/ethereum/iptf-map/issues/169))
