@@ -7,7 +7,7 @@ secondary_domain: Civic Coordination & Governance
 
 ## 1) Use Case
 
-Prove identity claims, membership, eligibility, or attribute possession on-chain without revealing the underlying identity or creating linkable activity. Authentication is one key application — others include credential portability, sybil resistance, and selective disclosure. Applies to financial compliance (KYC registry membership), governance (anonymous voting), national identity (selective disclosure from government documents), and community membership (sybil-resistant access).
+Prove identity claims, membership, eligibility, or attribute possession on-chain without revealing the underlying identity or creating linkable activity. Authentication is one key application; others include credential portability, sybil resistance, and selective disclosure. Applies to financial compliance (KYC registry membership), governance (anonymous voting), national identity (selective disclosure from government documents), and community membership (sybil-resistant access).
 
 ## 2) Additional Context
 
@@ -107,5 +107,5 @@ See detailed architecture and trade-offs in [**Approach: Private Identity**](../
 - **ZK Frameworks:** [Semaphore](https://semaphore.pse.dev/), [Noir/Barretenberg](https://docs.aztec.network/), [Circom/Groth16](https://docs.circom.io/)
 - **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Rarimo](https://rarimo.com/), [Anon Aadhaar](https://github.com/anon-aadhaar), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [POD2](https://github.com/0xPARC/pod2), [OpenAC](https://eprint.iacr.org/2026/251)
 - **Validated Deployments:** [WFP Building Blocks](https://www.wfp.org/building-blocks), [OpenCerts](https://www.opencerts.io/)
-- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team, demo data) — verifiable credentials, KYC/KYB, licensing, selective disclosure
+- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team, demo data): verifiable credentials, KYC/KYB, licensing, selective disclosure
 - **Related Patterns:** [Private MTP Auth](../patterns/pattern-private-mtp-auth.md), [zk-TLS](../patterns/pattern-zk-tls.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md), [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [co-SNARK](../patterns/pattern-co-snark.md)

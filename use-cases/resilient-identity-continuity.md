@@ -98,7 +98,7 @@ See the [**Issuer-Independent Enrollment approach**](../approaches/approach-priv
 ## 7) Notes And Links
 
 - **Extends:** [Private Identity](private-identity.md) (drops the cooperative-issuer assumption)
-- **PoC:** [Resilient Private Identity](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-identity/resilient-private-identity)
+- **PoC:** [Resilient Private Identity](https://github.com/ethsystems/pocs/tree/master/pocs/private-identity/resilient-private-identity)
 - **Standards:** [RFC 9497 (OPRF)](https://www.rfc-editor.org/rfc/rfc9497) + [Jarecki threshold extension](https://eprint.iacr.org/2017/363), [RFC 9380 (hashToCurve)](https://www.rfc-editor.org/rfc/rfc9380), [W3C VC Data Model v2.0](https://www.w3.org/TR/vc-data-model-2.0/)
 - **Credential Systems:** [ZKPassport](https://zkpassport.id/), [Self](https://self.xyz/), [Anon Aadhaar](https://github.com/anon-aadhaar), [World ID](https://worldcoin.org/world-id), [zkEmail](https://prove.email/), [TLSNotary](https://tlsnotary.org/), [Semaphore](https://semaphore.pse.dev/), [Human Passport](https://passport.human.tech/), [Holonym](https://holonym.id/)
 - **Related Patterns:** [Private MTP Auth](../patterns/pattern-private-mtp-auth.md), [vOPRF Nullifiers](../patterns/pattern-voprf-nullifiers.md), [Selective Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md), [zk-TLS](../patterns/pattern-zk-tls.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md)

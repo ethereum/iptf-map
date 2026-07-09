@@ -1,8 +1,8 @@
-# IPTF Map - Q2 2026 QA Audit
+# EthSystems Map - Q2 2026 QA Audit
 
 > **Goal:** Every content file in the map read and reviewed by a human. Main targets: slop and incoherences.
 > **Period:** Q2 2026 (April - June)
-> **Where:** All audit work happens on the `feat/audit` branch ([PR #130](https://github.com/ethereum/iptf-map/pull/130)).
+> **Where:** All audit work happens on the `feat/audit` branch ([PR #130](https://github.com/ethsystems/map/pull/130)).
 
 ## How the audit works (claim and reveal)
 
@@ -55,7 +55,7 @@ The mechanical checks (frontmatter, word limits, link validity) are covered by `
 
 ## CodeRabbit review follow-up (PR #130, 2026-06-29)
 
-Post-audit corrections from the CodeRabbit review pass, content/style only, no new content. See the [PR #130](https://github.com/ethereum/iptf-map/pull/130) conversation for the full triage and the dismissed/deferred comments.
+Post-audit corrections from the CodeRabbit review pass, content/style only, no new content. See the [PR #130](https://github.com/ethsystems/map/pull/130) conversation for the full triage and the dismissed/deferred comments.
 
 - **approaches/approach-dvp-atomic-settlement.md**, standards line: ERC-3643 is Final (was "both still Draft"); ERC-6123 stays Draft. Cleared a Vale "only" on the constraints line.
 - **approaches/approach-private-identity.md**, TACEO:OPRF "currently in public beta" to "live in production"; "brought on chain" to "on-chain".
@@ -150,7 +150,7 @@ Tooling/config (not content files): reverted `vendors/_template.md` to master (k
 
 | # | File | Status | Reviewer | Claimed | Reviewed | Notes |
 |---|------|--------|----------|---------|----------|-------|
-| 1 | [private-bonds.md](use-cases/private-bonds.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Private iptf-pm umbrella link to public iptf-pocs ref; EIP-6123 to ERC-6123 |
+| 1 | [private-bonds.md](use-cases/private-bonds.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Private iptf-pm umbrella link to public ethsystems/pocs ref; EIP-6123 to ERC-6123 |
 | 2 | [private-commodities.md](use-cases/private-commodities.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed clean |
 | 3 | [private-corporate-bonds.md](use-cases/private-corporate-bonds.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | EIP-6123 to ERC-6123 |
 | 4 | [private-derivatives.md](use-cases/private-derivatives.md) | `ok` | Meyanis95 | 2026-06-19 | 2026-06-19 | Reviewed clean (ERC-6123 naming already correct) |
@@ -257,7 +257,7 @@ These are one-time checks on the overall map integrity:
 | All internal cross-links resolve | `ok` | Meyanis95 | 2026-06-24 | content links resolve after l2-eval cleanup; intentional non-resolving refs left as-is, template/example placeholders (rfps/_template.md, CONTRIBUTING.md), historical CHANGELOG release links to since-removed content (l2-eval/survey/weekly-updates; past releases are immutable), QA-AUDIT deprecated-row link (tracker bookkeeping) |
 | No orphan files (unreferenced content) | `ok` | Meyanis95 | 2026-06-24 | reviewed, prose-link "orphans" are mostly frontmatter/README-reachable (taxonomy); approach-white-label-deployment flagged for a use-case backlink (backlog) |
 | Frontmatter schema validation passes | `ok` | Meyanis95 | 2026-06-24 | `validate-patterns.js` passes (only content word-count warnings) |
-| Vale linting passes on all files | `ok` | Meyanis95 | 2026-06-24 | 0 errors; ~196 advisory warnings (IPTF.Marketing / IPTF.Terminology) to prose-sweep backlog |
+| Vale linting passes on all files | `ok` | Meyanis95 | 2026-06-24 | 0 errors; ~196 advisory warnings (EthSystems.Marketing / EthSystems.Terminology) to prose-sweep backlog |
 
 ---
 
@@ -274,4 +274,4 @@ Questions, uncertainties, or decisions that surface during the audit. Resolve or
 | 5 | Use-case `status`: the 14 former stubs are now `ready`, but the 9 complete/resilient files carry no `status` and the use-case `_template.md` omits it. Standardize (add `status: ready` to all + document in template) or keep `status` optional? | Meyanis95 | 2026-06-19 | [use-cases/_template.md](use-cases/_template.md) | Resolved 2026-06-19: `status: ready` on all 23 + added to `_template.md`; titles also normalized (unquoted, `(ERC-6123)` dropped from derivatives title) |
 | 6 | Dropped `## CROPS profile` from the vendor template + removed peer's inline CROPS (per decision), but the vendor [README](vendors/README.md) and [CONTRIBUTING § CROPS Evaluation](CONTRIBUTING.md#crops-evaluation) still present CROPS as the core vendor-evaluation framework. Reconcile the README/CONTRIBUTING, or reintroduce CROPS in another form? | Meyanis95 | 2026-06-19 | [vendors/README.md](vendors/README.md), [CONTRIBUTING.md](CONTRIBUTING.md) | **Resolved 2026-06-24:** keep CROPS as a curation guideline in the vendor docs (vendors/README + CONTRIBUTING left intact). The reconciliation is the already-completed drop of the *per-card* CROPS profile from the vendor template; the docs may reference CROPS as a selection guideline without per-card scoring. |
 | 7 | Some approaches list `primary_patterns` that no sub-approach `uses_patterns` references, dvp-atomic-settlement (`pattern-commit-and-prove`), private-payments (`pattern-private-iso20022`, `pattern-private-stablecoin-shielded-payments`). The template's subset rule is satisfied, but a *primary* pattern unused by every sub-approach is odd. Demote to supporting, or accept primaries as thematic anchors? | Meyanis95 | 2026-06-24 | [approach-dvp-atomic-settlement.md](approaches/approach-dvp-atomic-settlement.md), [approach-private-payments.md](approaches/approach-private-payments.md) | **Resolved 2026-06-24:** demoted the unused primaries to supporting, dvp (commit-and-prove); payments (private-iso20022, private-stablecoin-shielded-payments). |
-| 8 | Throughput figures in co-SNARK / FHE sub-approaches (`~200 TPS` co-SNARK, `500-1000 TPS` FHE in bonds; PoC benchmarks in payments) are stated as fact but trace to IPTF PoCs / vendor claims and were not independently verifiable in this pass. Add explicit sourcing or qualify as PoC-measured? Also: "Trusted setup is not required (UltraHonk)" recurs map-wide but UltraHonk uses a universal KZG SRS, precise wording is "no per-circuit trusted setup". | Meyanis95 | 2026-06-24 | [approach-private-bonds.md](approaches/approach-private-bonds.md), [approach-private-derivatives.md](approaches/approach-private-derivatives.md) | **Resolved 2026-06-24:** qualified co-SNARK ~200 TPS (TACEO-reported) + FHE 500-1000 TPS (vendor-reported) in bonds/derivatives; fixed "trusted setup not required (UltraHonk)" to "no per-circuit trusted setup (universal KZG SRS)" in bonds + payments; corrected the zk-wrappers UltraHonk transparency claim. |
+| 8 | Throughput figures in co-SNARK / FHE sub-approaches (`~200 TPS` co-SNARK, `500-1000 TPS` FHE in bonds; PoC benchmarks in payments) are stated as fact but trace to EthSystems PoCs / vendor claims and were not independently verifiable in this pass. Add explicit sourcing or qualify as PoC-measured? Also: "Trusted setup is not required (UltraHonk)" recurs map-wide but UltraHonk uses a universal KZG SRS, precise wording is "no per-circuit trusted setup". | Meyanis95 | 2026-06-24 | [approach-private-bonds.md](approaches/approach-private-bonds.md), [approach-private-derivatives.md](approaches/approach-private-derivatives.md) | **Resolved 2026-06-24:** qualified co-SNARK ~200 TPS (TACEO-reported) + FHE 500-1000 TPS (vendor-reported) in bonds/derivatives; fixed "trusted setup not required (UltraHonk)" to "no per-circuit trusted setup (universal KZG SRS)" in bonds + payments; corrected the zk-wrappers UltraHonk transparency claim. |

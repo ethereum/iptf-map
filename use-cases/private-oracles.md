@@ -51,7 +51,7 @@ Some institutions (particularly banks) are data providers/originators. Privacy r
 
 ### Problem 3: Data Provenance & Consent in Oracle Feeds
 
-When oracles aggregate data from multiple institutional sources, data providers need assurance their contributions are used only as agreed. Consumers need provenance guarantees — knowing that the data originates from authorized sources, has not been tampered with, and was aggregated according to a verifiable methodology. Consent receipts (tamper-evident records of data-use agreements) can be anchored on-chain.
+When oracles aggregate data from multiple institutional sources, data providers need assurance their contributions are used only as agreed. Consumers need provenance guarantees: knowing that the data originates from authorized sources, has not been tampered with, and was aggregated according to a verifiable methodology. Consent receipts (tamper-evident records of data-use agreements) can be anchored on-chain.
 
 **Requirements:**
 
@@ -87,4 +87,4 @@ Consider:
 - Cross-cutting concern: affects all use cases requiring external data
 - Related: [private-read.md](private-read.md) (query privacy for blockchain state)
 - Related: [private-derivatives.md](private-derivatives.md) (oracle-dependent pricing)
-- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team) — consent, data sharing, audit trails
+- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team): consent, data sharing, audit trails

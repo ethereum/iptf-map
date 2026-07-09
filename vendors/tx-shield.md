@@ -6,19 +6,19 @@ status: ready
 # TX-SHIELD – Institutional Privacy Infrastructure
 
 TX-SHIELD develops regulated privacy-preserving infrastructure for institutional payments (TX-SHIELD), private AI collaboration (OpenTMP LLM), and MPC-TSS key management (Collab-Key). 
-TX-SHIELD’s three core solutions — **TX-SHIELD**, **OpenTMP LLM**, and **Collab-Key** — address compliance, compute, and custody privacy challenges faced by regulated institutions.
+TX-SHIELD’s three core solutions, **TX-SHIELD**, **OpenTMP LLM**, and **Collab-Key**, address compliance, compute, and custody privacy challenges faced by regulated institutions.
 
 ---
 
 ## What it is
 TX-SHIELD builds modular privacy layers/solutions for institutional finance and AI systems:
-- **TX-SHIELD** — a regulated private payment layer/solution built on MPC-based encryption and threshold key control.  
+- **TX-SHIELD**: a regulated private payment layer/solution built on MPC-based encryption and threshold key control.  
 It enables confidential settlement for stablecoins, RWAs, and bonds while ensuring regulator-auditable transparency.  
 Transactions are visible only to stakeholders, while regulators can access details through granted audit keys.
 
-- **OpenTMP LLM** — is a distributed edge AI training and inference framework designed for privacy-preserving large-language model collaboration. It combines federated learning and multi-party computation (MPC-FL) to keep data local while enabling encrypted aggregation and joint model updates. It powers collaborative, effcient, secure, and governable AI training across distributed environments.
+- **OpenTMP LLM**: a distributed edge AI training and inference framework designed for privacy-preserving large-language model collaboration. It combines federated learning and multi-party computation (MPC-FL) to keep data local while enabling encrypted aggregation and joint model updates. It powers collaborative, effcient, secure, and governable AI training across distributed environments.
 
-- **Collab-Key** — is a high-performance MPC-TSS framework integrated with CrossBar’s EMPC + ReRAM hardware to provide a unified, privacy-preserving stack for institutional custody and payments. By executing multi-party ECDSA signing within a ReRAM-backed secure element, the solution ensures that full private keys are never reconstructed, eliminating single points of failure at both algorithmic and physical layers. Featuring an offline-by-default architecture and FIDO2 authentication, this integration provides high-assurance protection and regulator-auditable transparency for stablecoins, RWAs, and digital bonds.
+- **Collab-Key**: a high-performance MPC-TSS framework integrated with CrossBar’s EMPC + ReRAM hardware to provide a unified, privacy-preserving stack for institutional custody and payments. By executing multi-party ECDSA signing within a ReRAM-backed secure element, the solution ensures that full private keys are never reconstructed, eliminating single points of failure at both algorithmic and physical layers. Featuring an offline-by-default architecture and FIDO2 authentication, this integration provides high-assurance protection and regulator-auditable transparency for stablecoins, RWAs, and digital bonds.
 
 Each module can operate independently or as part of a unified privacy-preserving stack across payments, compute, and custody.
 

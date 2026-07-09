@@ -53,11 +53,11 @@ See detailed solution architecture and trade-offs in [**Approach: Private Paymen
 
 ### Non‑Solutions
 
-- **Public ledger without privacy** — transaction details exposed to all observers; fails institutional confidentiality requirements
-- **Simple payload encryption** — breaks on-chain verifiability, atomic settlement, and composability with other protocols
-- **HTLC-only atomicity** — incentive misalignment and timeout brittleness compared to conditional settlement standards like ERC‑7573 ([analysis](https://www.ndss-symposium.org/wp-content/uploads/2023-775-paper.pdf))
-- **Fully private infrastructure** — conflicts with regulatory transparency requirements and limits interoperability
-- **FHE alone for unlinkability** — provides confidentiality but does not hide address linkage; requires additional privacy layer (stealth addresses or similar)
+- **Public ledger without privacy**: transaction details exposed to all observers; fails institutional confidentiality requirements
+- **Simple payload encryption**: breaks on-chain verifiability, atomic settlement, and composability with other protocols
+- **HTLC-only atomicity**: incentive misalignment and timeout brittleness compared to conditional settlement standards like ERC‑7573 ([analysis](https://www.ndss-symposium.org/wp-content/uploads/2023-775-paper.pdf))
+- **Fully private infrastructure**: conflicts with regulatory transparency requirements and limits interoperability
+- **FHE alone for unlinkability**: provides confidentiality but does not hide address linkage; requires additional privacy layer (stealth addresses or similar)
 
 ## 6) Open Questions
 
@@ -74,8 +74,8 @@ See detailed solution architecture and trade-offs in [**Approach: Private Paymen
 
 ### Related patterns
 
-- [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md) — Onboarding privacy via client-side proving
-- [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md) — Issuer-side private minting
+- [Stateless Plasma Privacy](../patterns/pattern-plasma-stateless-privacy.md): Onboarding privacy via client-side proving
+- [TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md): Issuer-side private minting
 - [Private Stablecoin Shielded Payments](../patterns/pattern-private-stablecoin-shielded-payments.md)
 - [Private PvP Settlement](../patterns/pattern-private-pvp-stablecoins-erc7573.md)
 - [DvP via ERC-7573](../patterns/pattern-dvp-erc7573.md)

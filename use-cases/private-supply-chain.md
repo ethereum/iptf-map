@@ -85,4 +85,4 @@ Approach TBD. Key architectural considerations:
 
 - Related patterns: [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md), [L2 Encrypted Offchain Audit](../patterns/pattern-l2-encrypted-offchain-audit.md), [Commit and Prove](../patterns/pattern-commit-and-prove.md)
 - Regulatory drivers: EU Falsified Medicines Directive (FMD), US Drug Supply Chain Security Act (DSCSA)
-- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team) — pharmaceuticals, food aid, supply integrity, customs
+- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team): pharmaceuticals, food aid, supply integrity, customs

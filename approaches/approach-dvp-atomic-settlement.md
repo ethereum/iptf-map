@@ -16,7 +16,7 @@ supporting_patterns:
   - pattern-tee-zk-settlement
   - pattern-shielding
 
-iptf_pocs:
+pocs:
   folder: pocs/private-trade-settlement
   requirements: pocs/private-trade-settlement/REQUIREMENTS.md
   pocs:
@@ -156,7 +156,7 @@ example_vendors: []
 - Trusted oracle is incompatible with the threat model
 - Conditions cannot be specified precisely enough for unambiguous attestation
 
-**Implementation notes:** PoC at [TEE+ZK Cross-Chain Swap](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-trade-settlement/tee_swap) implements the oracle-attested variant where a TEE coordinator stands in for the oracle, generates a zero-knowledge proof of correct execution, and reveals stealth keys on success. See [Approach: Private Trade Settlement, TEE+ZK Coordination](approach-private-trade-settlement.md) for the same primitive in cross-network context. Common escrow-condition shapes:
+**Implementation notes:** PoC at [TEE+ZK Cross-Chain Swap](https://github.com/ethsystems/pocs/tree/master/pocs/private-trade-settlement/tee_swap) implements the oracle-attested variant where a TEE coordinator stands in for the oracle, generates a zero-knowledge proof of correct execution, and reveals stealth keys on success. See [Approach: Private Trade Settlement, TEE+ZK Coordination](approach-private-trade-settlement.md) for the same primitive in cross-network context. Common escrow-condition shapes:
 
 | Class | Example |
 |---|---|

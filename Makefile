@@ -1,10 +1,10 @@
-# IPTF Map - Local Validation Commands
+# EthSystems Map - Local Validation Commands
 # Run these before pushing to catch issues early
 
 .PHONY: help install validate lint check marketing-check
 
 help:
-	@echo "IPTF Map Validation Commands"
+	@echo "EthSystems Map Validation Commands"
 	@echo ""
 	@echo "  make install    - Install dependencies"
 	@echo "  make validate   - Run pattern validation"

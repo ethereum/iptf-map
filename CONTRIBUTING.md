@@ -1,4 +1,4 @@
-# Contributing to IPTF Map
+# Contributing to EthSystems Map
 
 ## How to Contribute
 

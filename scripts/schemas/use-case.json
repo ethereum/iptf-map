@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://iptf-map.ethereum.org/schemas/use-case.json",
-  "title": "IPTF Use Case Frontmatter",
-  "description": "Schema for use case document frontmatter in IPTF Map",
+  "$id": "https://ethsystems.org/schemas/use-case.json",
+  "title": "EthSystems Use Case Frontmatter",
+  "description": "Schema for use case document frontmatter in EthSystems Map",
   "type": "object",
   "required": ["title"],
   "properties": {

@@ -91,7 +91,7 @@ See also [private-stablecoins.md](private-stablecoins.md) for stablecoin-specifi
 - Related: [private-stablecoins.md](private-stablecoins.md) (stablecoin-specific privacy)
 - Related: [private-fx.md](private-fx.md) (cross-currency payments)
 - Related: [private-treasuries.md](private-treasuries.md) (corporate payment context)
-- Reference: [Private Payment PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment)
+- Reference: [Private Payment PoC](https://github.com/ethsystems/pocs/tree/master/pocs/private-payment)
 - Market context: Governments building digital currency infrastructure; cross-border payment networks exploring blockchain alternatives to SWIFT
 - Note: Transaction patterns are highly revealing of business and personal activity
-- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team) — G2P payments, aid disbursement
+- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team): G2P payments, aid disbursement

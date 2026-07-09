@@ -13,11 +13,11 @@ related_use_cases: []                              # optional list of use-case s
 primary_patterns: []                               # required; list of pattern-<slug>
 supporting_patterns: []                            # optional; list of pattern-<slug>
 
-# iptf_pocs: optional. IPTF research prototypes only (use open_source_implementations
-# for third-party signals). Required when an IPTF-internal prototype exists for the
+# pocs: optional. EthSystems research prototypes only (use open_source_implementations
+# for third-party signals). Required when an EthSystems-internal prototype exists for the
 # sub-approach (not inferred from maturity alone). Each pocs[].sub_approach must
 # match a ### <name> in ## Approaches.
-# iptf_pocs:
+# pocs:
 #   folder: pocs/<slug>
 #   requirements: pocs/<slug>/REQUIREMENTS.md
 #   pocs:

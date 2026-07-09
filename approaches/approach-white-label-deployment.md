@@ -19,7 +19,7 @@ supporting_patterns:
   - pattern-hybrid-public-private-modes
   - pattern-forced-withdrawal
 
-iptf_pocs:
+pocs:
   folder: pocs/diy-validium
   requirements: pocs/diy-validium/REQUIREMENTS.md
   pocs:
@@ -132,7 +132,7 @@ example_vendors: [aztec, miden, fhenix]
 - Time-to-market dominates and engineering capacity is unavailable
 - Institution does not have the operational maturity to run privacy-critical infrastructure
 
-**Implementation notes:** Reference build at [DIY Validium](https://github.com/ethereum/iptf-pocs/tree/master/pocs/diy-validium), an institution-controlled validium PoC (account-based validium with off-chain state, on-chain roots, ZK validity proofs via RISC Zero) demonstrating the same architecture as ZKsync Prividium with compliance logic expressed as Rust guest programs. Exit strategies must be documented at deployment for each scenario class:
+**Implementation notes:** Reference build at [DIY Validium](https://github.com/ethsystems/pocs/tree/master/pocs/diy-validium), an institution-controlled validium PoC (account-based validium with off-chain state, on-chain roots, ZK validity proofs via RISC Zero) demonstrating the same architecture as ZKsync Prividium with compliance logic expressed as Rust guest programs. Exit strategies must be documented at deployment for each scenario class:
 
 | Scenario | Approach |
 |---|---|

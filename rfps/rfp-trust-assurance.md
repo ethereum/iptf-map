@@ -43,7 +43,7 @@ Institutions evaluating privacy solutions ask "what am I trusting?" before "how 
 
 ## Deliverables
 
-- [ ] Assurance card template (markdown format, compatible with iptf-map patterns)
+- [ ] Assurance card template (markdown format, compatible with EthSystems Map patterns)
 - [ ] 4-6 completed assurance cards for major privacy system types
 - [ ] "Red team scenarios" document (3-5 attack scenarios per system type)
 - [ ] Controls mapping guide for institutional risk teams
@@ -64,4 +64,4 @@ Institutions evaluating privacy solutions ask "what am I trusting?" before "how 
 - [Pattern: TEE-Based Privacy](../patterns/pattern-tee-based-privacy.md)
 - [Pattern: Threshold Encrypted Mempool](../patterns/pattern-threshold-encrypted-mempool.md)
 - [Vendors](../vendors/) — Systems to analyze
-- [GitHub Issue #27](https://github.com/ethereum/iptf-map/issues/27) — Performance and trust assumptions mapping
+- [GitHub Issue #27](https://github.com/ethsystems/map/issues/27) — Performance and trust assumptions mapping

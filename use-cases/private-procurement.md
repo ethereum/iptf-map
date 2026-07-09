@@ -84,4 +84,4 @@ Approach TBD. Key architectural considerations:
 
 - Related patterns: [Commit and Prove](../patterns/pattern-commit-and-prove.md), [L2 Encrypted Offchain Audit](../patterns/pattern-l2-encrypted-offchain-audit.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md)
 - Related use cases: [private-payments.md](private-payments.md) (payment privacy), [private-government-debt.md](private-government-debt.md) (sealed auction parallels)
-- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team) — procurement & invoicing, audit trails, grants tracking
+- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team): procurement & invoicing, audit trails, grants tracking

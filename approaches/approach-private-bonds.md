@@ -19,7 +19,7 @@ supporting_patterns:
   - pattern-verifiable-attestation
   - pattern-proof-of-innocence
 
-iptf_pocs:
+pocs:
   folder: pocs/private-bond
   requirements: pocs/private-bond/REQUIREMENTS.md
   pocs:
@@ -234,7 +234,7 @@ For institutional bond issuance and trading at scale, UTXO Shielded Notes is the
 
 ### Technical perspective
 
-Engineering effort scales by approach. UTXO Shielded Notes requires deploying a verifier and shipping a ZK toolchain, but mature vendor implementations remove the circuit-design burden. Privacy L2 trades sequencer dependency for native primitives, removing in-house circuit work but adding bridge integration. co-SNARKs requires running or contracting an MPC committee with operational discipline; throughput is bounded by batch cadence. FHE simplifies the programming model for complex bond logic but inherits shared throughput limits across all FHE applications on the network. PoC results across all three IPTF implementations confirm that selective-disclosure semantics work in each model; the architectural choice is driven by trust topology and bond-logic complexity.
+Engineering effort scales by approach. UTXO Shielded Notes requires deploying a verifier and shipping a ZK toolchain, but mature vendor implementations remove the circuit-design burden. Privacy L2 trades sequencer dependency for native primitives, removing in-house circuit work but adding bridge integration. co-SNARKs requires running or contracting an MPC committee with operational discipline; throughput is bounded by batch cadence. FHE simplifies the programming model for complex bond logic but inherits shared throughput limits across all FHE applications on the network. PoC results across all three EthSystems implementations confirm that selective-disclosure semantics work in each model; the architectural choice is driven by trust topology and bond-logic complexity.
 
 ### Legal & risk perspective
 

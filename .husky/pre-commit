@@ -1,4 +1,4 @@
-# Pre-commit hook for IPTF Map
+# Pre-commit hook for EthSystems Map
 # Runs validation checks on staged markdown files
 
 # Run lint-staged for markdown validation

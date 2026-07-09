@@ -1,6 +1,6 @@
 # Use Cases
 
-**What this is.** One-page briefs that define a business problem, evidence, requirements, and acceptance criteria—then point to recommended approaches. Use cases drive decisions; patterns and approaches explain *how*.
+**What this is.** One-page briefs that define a business problem, evidence, requirements, and acceptance criteria, then point to recommended approaches. Use cases drive decisions; patterns and approaches explain *how*.
 
 **How to use.** Create a new file per scenario using the template below. Be clear on what must be private, regulator access, and DvP/finality needs. Link only the most relevant patterns and approaches; capture the decision and next steps.
 

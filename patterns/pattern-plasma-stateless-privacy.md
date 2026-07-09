@@ -52,8 +52,8 @@ related_patterns:
   see_also: [pattern-forced-withdrawal, pattern-l2-encrypted-offchain-audit]
 
 open_source_implementations:
-  - url: https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment/plasma
-    description: "IPTF PoC scaffolding an Intmax2-style stateless Plasma private-payment stack"
+  - url: https://github.com/ethsystems/pocs/tree/master/pocs/private-payment/plasma
+    description: "EthSystems PoC scaffolding an Intmax2-style stateless Plasma private-payment stack"
     language: "Rust, Solidity"
 ---
 

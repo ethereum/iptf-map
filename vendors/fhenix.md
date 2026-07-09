@@ -12,11 +12,11 @@ Fhenix builds a CoProcessor that brings Fully Homomorphic Encryption (FHE) to EV
 
 ## Fits with patterns
 
-- [Private Stablecoin Shielded Payments](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-stablecoin-shielded-payments.md) - FHE enables encrypted balances and amounts, supporting fully confidential stablecoin transfers.
-- [Private Intent-Based Vaults](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-private-vaults.md) - FHE-powered execution allows vault strategies to run privately while preserving on-chain auditability of assets.
-- [Shielded ERC-20 Transfers](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-shielding.md) - Native FHE support provides encrypted ERC-20 transfer flows for end-to-end confidentiality.
-- [Confidential ERC3643](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-erc3643-rwa.md) - FHE makes it possible to extend ERC3643 into a confidential standard with private, enforceable compliance logic.
-- [Private L2s](https://github.com/ethereum/iptf-map/blob/master/patterns/pattern-privacy-l2s.md) - Fhenix’s CoFHE serves as an FHE coprocessor enabling privacy-preserving rollups and encrypted execution environments.
+- [Private Stablecoin Shielded Payments](https://github.com/ethsystems/map/blob/master/patterns/pattern-private-stablecoin-shielded-payments.md) - FHE enables encrypted balances and amounts, supporting fully confidential stablecoin transfers.
+- [Private Intent-Based Vaults](https://github.com/ethsystems/map/blob/master/patterns/pattern-private-vaults.md) - FHE-powered execution allows vault strategies to run privately while preserving on-chain auditability of assets.
+- [Shielded ERC-20 Transfers](https://github.com/ethsystems/map/blob/master/patterns/pattern-shielding.md) - Native FHE support provides encrypted ERC-20 transfer flows for end-to-end confidentiality.
+- [Confidential ERC3643](https://github.com/ethsystems/map/blob/master/patterns/pattern-erc3643-rwa.md) - FHE makes it possible to extend ERC3643 into a confidential standard with private, enforceable compliance logic.
+- [Private L2s](https://github.com/ethsystems/map/blob/master/patterns/pattern-privacy-l2s.md) - Fhenix’s CoFHE serves as an FHE coprocessor enabling privacy-preserving rollups and encrypted execution environments.
 
 ## Not a substitute for
 
@@ -34,7 +34,7 @@ CoFHE, Fhenix’s encrypted-computation coprocessor, enables smart contracts to 
 
 ## Enterprise demand and use cases
 
-- Financial institutions: [private stablecoin](https://github.com/ethereum/iptf-map/blob/master/use-cases/private-stablecoins.md) transfers, on-chain strategies management and [RWA tokenization](https://github.com/ethereum/iptf-map/blob/master/use-cases/private-rwa-tokenization.md).
+- Financial institutions: [private stablecoin](https://github.com/ethsystems/map/blob/master/use-cases/private-stablecoins.md) transfers, on-chain strategies management and [RWA tokenization](https://github.com/ethsystems/map/blob/master/use-cases/private-rwa-tokenization.md).
 - Treasury managers: confidential DeFi strategies, conditional orders and portfolio management.
 - Private or dual-mode stablecoins, on-chain private intents, confidential lending markets and privacy-preserving yield strategies. 
 

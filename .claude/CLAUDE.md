@@ -1,8 +1,8 @@
-# IPTF Map - AI Assistant Context
+# EthSystems Map - AI Assistant Context
 
 ## Project Overview
 
-The **Institutional Privacy Task Force (IPTF) Map** is a public reference repository for privacy-preserving solutions in enterprise/institutional Ethereum adoption. Contains technical patterns, use cases, regulatory frameworks, and vendor evaluations.
+The **EthSystems Map** is a public reference repository for privacy-preserving solutions in enterprise/institutional Ethereum adoption. Contains technical patterns, use cases, regulatory frameworks, and vendor evaluations.
 
 **License:** CC0 (public domain)
 
@@ -80,11 +80,11 @@ Each directory has `_template.md` and `README.md`. Key structures:
 1. Add entry to `[Unreleased]` section
 2. Use semantic prefix: `feat(pattern):`, `feat(vendor):`, `fix:`, `docs:`, etc.
 3. Link to the file: `[Name](path/to/file.md)`
-4. Link to PR: `([#123](https://github.com/ethereum/iptf-map/pull/123))`
+4. Link to PR: `([#123](https://github.com/ethsystems/map/pull/123))`
 
 Example:
 ```markdown
-- feat(pattern): [New pattern name](patterns/pattern-slug.md) ([#123](https://github.com/ethereum/iptf-map/pull/123))
+- feat(pattern): [New pattern name](patterns/pattern-slug.md) ([#123](https://github.com/ethsystems/map/pull/123))
 ```
 
 ## Content Organization

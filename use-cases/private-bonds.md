@@ -40,7 +40,7 @@ Public chains expose volumes, prices, and positions by default, enabling front-r
 
 See detailed solution architecture and trade-offs in [**Approach: Private Bonds**](../approaches/approach-private-bonds.md).
 
-**PoC Implementation:** [Private Bond PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-bond) — Two approaches: Custom UTXO (EVM) and Privacy L2 (Aztec).
+**PoC Implementation:** [Private Bond PoC](https://github.com/ethsystems/pocs/tree/master/pocs/private-bond); two approaches: Custom UTXO (EVM) and Privacy L2 (Aztec).
 
 ## 6) Open Questions
 
@@ -54,6 +54,6 @@ _Notes below reference the PoC implementation._
 
 ## 7) Notes And Links
 
-- **Tracking:** Public workstream in [iptf-pocs / private-bond](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-bond)
+- **Tracking:** Public workstream in [ethsystems/pocs / private-bond](https://github.com/ethsystems/pocs/tree/master/pocs/private-bond)
 - **Standards:** ERC-6123 (derivative/bond lifecycle), ERC-7573 (atomic cross-domain DvP), ICMA Bond Data Taxonomy (BDT)
 - **Current standards:** ERC-20 tokens; HTLC sequences for DvP (to be replaced by ERC-7573)

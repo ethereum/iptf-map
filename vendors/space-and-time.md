@@ -75,7 +75,7 @@ The proof can be verified by an EVM-compatible verifier contract, enabling downs
 
 - **Data freshness / ingestion guarantees:** “Tamperproof” depends on how data is inserted, permissioned, and fingerprinted. All data queried from onchain EVM sources is attested, but offchain data can be tampered by the source.
 - **Privacy is not automatic:** Predicate-style privacy is possible, but outputs can still leak if the query is misrepresented. Sensitive workloads require careful query/result design and access controls. 
-- **Contract/security surface:** Verifier + relayer contracts become critical infrastructure—audits, upgrade policies, and chain-by-chain deployments matter. 
+- **Contract/security surface:** Verifier + relayer contracts become critical infrastructure: audits, upgrade policies, and chain-by-chain deployments matter. 
 
 
 ## Links

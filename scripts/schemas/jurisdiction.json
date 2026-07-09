@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://iptf-map.ethereum.org/schemas/jurisdiction.json",
-  "title": "IPTF Jurisdiction Frontmatter",
-  "description": "Schema for jurisdiction document frontmatter in IPTF Map",
+  "$id": "https://ethsystems.org/schemas/jurisdiction.json",
+  "title": "EthSystems Jurisdiction Frontmatter",
+  "description": "Schema for jurisdiction document frontmatter in EthSystems Map",
   "type": "object",
   "required": ["title", "status", "region"],
   "properties": {
