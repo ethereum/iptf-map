@@ -4,6 +4,8 @@ All notable changes to the IPTF Map are documented here.
 
 ## [Unreleased]
 
+- feat(vendor): [Nethermind](vendors/nethermind.md) -- privacy engineering and compliant infrastructure for institutional Ethereum (shielded pools with compliance proofs, ZK verifier engineering, compliant private tokens on EVM, compliance-aware transaction inclusion)
+
 ## [0.4.0] - 2026-07-02
 
 23 commits, 166 files changed since [v0.3.0](https://github.com/ethereum/iptf-map/releases/tag/v0.3.0) (Apr 2026). Major additions: resilience use cases (civic participation, disbursement rails, identity continuity), I2U protection patterns, pattern/approach schema v2 (strict flip) with CROPS and post-quantum analysis, domain reframing beyond FIs, and a Q2 2026 content QA audit.
