@@ -57,7 +57,7 @@ reviews:
         **Structure & frontmatter:** Validate against the template at `vendors/_template.md`.
 
         **Ethereum alignment (CRITICAL):**
-        Per `vendors/README.md`, IPTF only lists vendors whose products are Ethereum-aligned.
+        Per `vendors/README.md`, EthSystems only lists vendors whose products are Ethereum-aligned.
         Check that the product is built for or deployed on Ethereum mainnet or production L2s,
         or is a multichain solution that benefits the Ethereum ecosystem (supports EIPs/ERCs,
         advances shared privacy patterns, or brings institutional adoption to Ethereum).

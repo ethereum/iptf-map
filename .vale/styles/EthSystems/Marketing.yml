@@ -1,4 +1,4 @@
-# IPTF Marketing Language Detector
+# EthSystems Marketing Language Detector
 # Catches promotional/marketing language that should not appear in technical docs
 # Mirrors patterns from .marketing-exceptions.txt
 

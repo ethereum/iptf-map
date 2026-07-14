@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * LLM-Based Content Review Tool for IPTF Map
+ * LLM-Based Content Review Tool for EthSystems Map
  *
  * On-demand review of markdown files using Claude API to:
  * - Verify ERC/EIP numbers against ethereum.org
@@ -133,7 +133,7 @@ async function reviewFile(filePath) {
   console.log(`${colors.cyan}Reviewing: ${fileName}${colors.reset}`);
   console.log(`  Found ${standardRefs.length} standard references: ${standardRefs.join(', ') || 'none'}`);
 
-  const systemPrompt = `You are a technical documentation reviewer for the Institutional Privacy Task Force (IPTF) Map, a public reference repository for privacy-preserving solutions in enterprise Ethereum.
+  const systemPrompt = `You are a technical documentation reviewer for the EthSystems Map, a public reference repository for privacy-preserving solutions in enterprise Ethereum.
 
 Your task is to review documentation for:
 1. Technical accuracy and consistency
@@ -163,7 +163,7 @@ Concrete improvements to make the content more accurate and trustworthy.
 
 Be direct and specific. Only flag actual issues, not stylistic preferences.`;
 
-  const prompt = `Please review this documentation file for the IPTF Map repository:
+  const prompt = `Please review this documentation file for the EthSystems Map repository:
 
 File: ${fileName}
 
@@ -209,7 +209,7 @@ async function main() {
 
   if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
     console.log(`
-${colors.bold}LLM Content Review Tool for IPTF Map${colors.reset}
+${colors.bold}LLM Content Review Tool for EthSystems Map${colors.reset}
 
 Usage:
   ANTHROPIC_API_KEY=sk-... node scripts/llm-review.js <file.md> [file2.md ...]
@@ -255,7 +255,7 @@ This tool uses Claude to review documentation for:
     process.exit(1);
   }
 
-  console.log(`${colors.bold}IPTF Map LLM Content Review${colors.reset}`);
+  console.log(`${colors.bold}EthSystems Map LLM Content Review${colors.reset}`);
   console.log(`Reviewing ${files.length} file(s)...`);
   console.log('');
 

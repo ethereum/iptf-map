@@ -53,7 +53,7 @@ Unlike Ethereum (where the network executes everything), Miden pushes execution 
 - A high-performance STARK prover (Winterfell) used to generate proofs for the Miden VM.
 - L1/L2 communication bridging still to be defined.
 - Native account abstraction at the protocol level; accounts are smart contracts with updatable code.
-- Because users generate the proofs, the Sequencer is lightweight—it only aggregates proofs and builds blocks, preventing the "bottleneck" seen in EVM rollups.
+- Because users generate the proofs, the Sequencer is lightweight: it only aggregates proofs and builds blocks, preventing the "bottleneck" seen in EVM rollups.
 
 ## Strengths
 

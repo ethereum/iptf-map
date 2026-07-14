@@ -7,7 +7,7 @@ secondary_domain: Funds & Assets
 
 ## 1) Use Case
 
-Operating authoritative registries (securities holders, business entities, licenses, environmental permits) on-chain where registry entries must be verifiable by authorized parties but the full registry state must not be publicly exposed. Distinct from authentication (which proves membership in a registry) — this use case is about institutions that *run* registries: maintaining records, processing updates, and enabling cross-border lookups, all with privacy.
+Operating authoritative registries (securities holders, business entities, licenses, environmental permits) on-chain where registry entries must be verifiable by authorized parties but the full registry state must not be publicly exposed. Distinct from authentication (which proves membership in a registry); this use case is about institutions that *run* registries: maintaining records, processing updates, and enabling cross-border lookups, all with privacy.
 
 ## 2) Additional Context
 
@@ -84,5 +84,5 @@ Approach TBD. Key architectural considerations:
 ## 7) Notes And Links
 
 - Related patterns: [Crypto-Registry Bridge (eWpG/EAS)](../patterns/pattern-crypto-registry-bridge-ewpg-eas.md), [Verifiable Attestation](../patterns/pattern-verifiable-attestation.md), [Private MTP Auth](../patterns/pattern-private-mtp-auth.md)
-- Related use cases: [private-identity.md](private-identity.md) (consuming registries for authentication — this use case is about operating them)
-- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team, demo data) — business registry, land registry, environmental registries, licensing
+- Related use cases: [private-identity.md](private-identity.md) (consuming registries for authentication; this use case is about operating them)
+- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team, demo data): business registry, land registry, environmental registries, licensing

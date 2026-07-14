@@ -28,7 +28,7 @@ supporting_patterns:
   - pattern-proof-of-innocence
   - pattern-private-information-retrieval
 
-iptf_pocs:
+pocs:
   folder: pocs/private-payment
   requirements: pocs/private-payment/REQUIREMENTS.md
   pocs:

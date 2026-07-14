@@ -1,4 +1,4 @@
-# IPTF Accepted Vocabulary
+# EthSystems Accepted Vocabulary
 # Technical terms from GLOSSARY.md and blockchain domain
 
 # Core privacy concepts

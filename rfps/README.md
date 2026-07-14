@@ -2,15 +2,15 @@
 
 Preliminary research proposals for PSE (Privacy & Scaling Explorations) researchers and external grants. These are **non-critical-path** work items that strengthen the broader privacy ecosystem.
 
-## Relationship to IPTF Core Work
+## Relationship to EthSystems Core Work
 
-| | IPTF Core Team | RFPs |
+| | EthSystems Core Team | RFPs |
 |---|----------------|------|
 | **Focus** | Institutional PoCs (private bonds, stablecoins, DvP) | Research, tooling, benchmarks |
 | **Dependency** | Self-contained | No dependency on core team |
 | **Goal** | Prove it works for specific use cases | Make ecosystem better for everyone |
 
-RFPs are **accelerators, not blockers**. They feed back into the public iptf-map repo but don't gate current PoC work.
+RFPs are **accelerators, not blockers**. They feed back into the public EthSystems Map repo but don't gate current PoC work.
 
 ## Categories
 

@@ -51,5 +51,5 @@ See detailed solution architecture and trade-offs in [**Approach: Private Deriva
 ## 7) Notes And Links
 
 - **Standards:** [ERC-6123](https://eips.ethereum.org/EIPS/eip-6123), [ERC-7573](https://eips.ethereum.org/EIPS/eip-7573) (optional), confidential token patterns
-- **Related use cases:** [Private Bonds](./private-bonds.md) — key difference is **daily cadence** and **oracle dependency**
+- **Related use cases:** [Private Bonds](./private-bonds.md): key difference is **daily cadence** and **oracle dependency**
 - **Diff vs Private Bonds:** bonds = static, slow cadence; derivatives = dynamic, daily, oracle-driven

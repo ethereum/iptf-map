@@ -1,7 +1,7 @@
 {
-  "name": "iptf-map",
+  "name": "map",
   "version": "0.4.0",
-  "description": "Institutional Privacy Task Force Map - Privacy-preserving solutions for enterprise Ethereum",
+  "description": "EthSystems Map - Privacy-preserving solutions for enterprise Ethereum",
   "private": true,
   "scripts": {
     "validate": "node scripts/validate-patterns.js",
@@ -30,6 +30,6 @@
   "license": "CC0-1.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ethereum/iptf-map.git"
+    "url": "https://github.com/ethsystems/map.git"
   }
 }

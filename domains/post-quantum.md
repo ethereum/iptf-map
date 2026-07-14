@@ -6,7 +6,7 @@ description: "Migrate privacy and authentication to PQ-safe foundations before h
 
 ## TLDR
 
-- A Cryptographically Relevant Quantum Computer (CRQC) breaks ECDSA, BLS, ECDH, Groth16, PLONK/KZG — Ethereum consensus, execution, and application privacy layers all affected.
+- A Cryptographically Relevant Quantum Computer (CRQC) breaks ECDSA, BLS, ECDH, Groth16, PLONK/KZG; Ethereum consensus, execution, and application privacy layers all affected.
 - Harvest Now, Decrypt Later (HNDL) means confidentiality-critical applications face urgency now, even though CRQC is years away.
 - Hash-based and lattice-based primitives provide migration paths; STARKs are already PQ-safe.
 
@@ -52,7 +52,7 @@ Assumptions and schemes with no known quantum speedup. These form the basis for 
 | Assumption Family     | Hardness Problem                                                   | Representative Schemes             | NIST Status                  | Notes                                                                                |
 | --------------------- | ------------------------------------------------------------------ | ---------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------ |
 | Lattice-based         | Learning With Errors (LWE), Ring-LWE, Short Integer Solution (SIS) | ML-KEM (Kyber), ML-DSA (Dilithium) | Standardized (FIPS 203, 204) | Primary PQ replacement for key exchange and signatures                               |
-| Hash-based signatures | One-time signatures + Merkle trees                                 | XMSS, SPHINCS+ (SLH-DSA)           | Standardized (FIPS 205)      | Stateful (XMSS) or stateless (SPHINCS+); conservative — depends on hash security assumptions |
+| Hash-based signatures | One-time signatures + Merkle trees                                 | XMSS, SPHINCS+ (SLH-DSA)           | Standardized (FIPS 205)      | Stateful (XMSS) or stateless (SPHINCS+); conservative: depends on hash security assumptions |
 | Hash + FRI (STARKs)   | Hash collision resistance                                          | STARK proof systems                | N/A                          | Already deployed in Ethereum L2s; PQ-safe by construction                            |
 
 ## Ethereum Layer Analysis
@@ -84,7 +84,7 @@ Ethereum inherits PQ transport encryption for some surfaces (Go 1.24 ships hybri
 | ------------------------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------- |
 | Note discovery / viewing keys        | EC-based key derivation        | ML-KEM (outside ZK circuit) + OMR                                                                  | Tractable | [Shielding](../patterns/pattern-shielding.md), [Noir Private Contracts](../patterns/pattern-noir-private-contracts.md) |
 | Proven-correct encryption to auditor | ElGamal (EC scalar mul)        | Lattice PKE outside circuit + Poseidon symmetric encryption inside circuit (detect-and-flag model) | Partial   | [Regulatory Disclosure](../patterns/pattern-regulatory-disclosure-keys-proofs.md)                                      |
-| Protocol-enforced decryptability     | Proving lattice PKE in-circuit | Field mismatch (q=3,329 vs BN254); simpler than full ML-KEM but still expensive                    | Unsolved  | —                                                                                                                      |
+| Protocol-enforced decryptability     | Proving lattice PKE in-circuit | Field mismatch (q=3,329 vs BN254); simpler than full ML-KEM but still expensive                    | Unsolved  | N/A                                                                                                                    |
 
 ### Dependencies
 
@@ -114,16 +114,16 @@ Ethereum inherits PQ transport encryption for some surfaces (Go 1.24 ships hybri
 | [Safe Proof Delegation](../patterns/pattern-safe-proof-delegation.md)                         | Recursive ZK (if EC-based)         | Medium    | STARK-based recursion              |
 **PQ-safe patterns** (no mitigation needed):
 
-- [Private Shared State (FHE)](../patterns/pattern-private-shared-state-fhe.md) — lattice-based
-- [Private MTP Auth](../patterns/pattern-private-mtp-auth.md) — Merkle trees, hash-based
-- [Plasma Stateless Privacy](../patterns/pattern-plasma-stateless-privacy.md) — hash-based ZK
+- [Private Shared State (FHE)](../patterns/pattern-private-shared-state-fhe.md): lattice-based
+- [Private MTP Auth](../patterns/pattern-private-mtp-auth.md): Merkle trees, hash-based
+- [Plasma Stateless Privacy](../patterns/pattern-plasma-stateless-privacy.md): hash-based ZK
 
 ## See also
 
-- [Lean Ethereum](../patterns/pattern-lean-ethereum.md) — consensus-layer PQ migration
-- [Native Account Abstraction](../patterns/pattern-native-account-abstraction.md) — execution-layer PQ auth agility
-- [ZK Proof Systems](../patterns/pattern-zk-proof-systems.md) — STARK vs SNARK PQ comparison
-- [Permissionless Spend Auth](../patterns/pattern-permissionless-spend-auth.md) — application-layer auth agility
+- [Lean Ethereum](../patterns/pattern-lean-ethereum.md): consensus-layer PQ migration
+- [Native Account Abstraction](../patterns/pattern-native-account-abstraction.md): execution-layer PQ auth agility
+- [ZK Proof Systems](../patterns/pattern-zk-proof-systems.md): STARK vs SNARK PQ comparison
+- [Permissionless Spend Auth](../patterns/pattern-permissionless-spend-auth.md): application-layer auth agility
 - [NIST PQC standards](https://csrc.nist.gov/projects/post-quantum-cryptography)
 - [Ethereum PQ tasklist (ethresear.ch)](https://ethresear.ch/t/tasklist-for-post-quantum-eth/21296)
 - [How to hard-fork to save most users' funds in a quantum emergency](https://ethresear.ch/t/how-to-hard-fork-to-save-most-users-funds-in-a-quantum-emergency/18901)

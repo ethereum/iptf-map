@@ -1,7 +1,7 @@
 {
-  "name": "iptf-map-validation",
+  "name": "map-validation",
   "version": "1.0.0",
-  "description": "Validation scripts for IPTF Map documentation",
+  "description": "Validation scripts for EthSystems Map documentation",
   "main": "validate-patterns.js",
   "scripts": {
     "validate": "node validate-patterns.js",

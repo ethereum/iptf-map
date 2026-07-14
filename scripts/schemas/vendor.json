@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://iptf-map.ethereum.org/schemas/vendor.json",
-  "title": "IPTF Vendor Frontmatter",
-  "description": "Schema for vendor document frontmatter in IPTF Map",
+  "$id": "https://ethsystems.org/schemas/vendor.json",
+  "title": "EthSystems Vendor Frontmatter",
+  "description": "Schema for vendor document frontmatter in EthSystems Map",
   "type": "object",
   "required": ["title", "status"],
   "properties": {

@@ -88,4 +88,4 @@ See [approach-private-bonds.md](../approaches/approach-private-bonds.md) for gen
 - Related: [private-bonds.md](private-bonds.md) (general bond pattern)
 - Related: [private-corporate-bonds.md](private-corporate-bonds.md) (higher privacy requirements)
 - Emerging market: Municipal debt tokenization gaining traction in Asia
-- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team) — treasury transparency, audit trails
+- See also: [EPIC map](https://epic-webapp.vercel.app/) (GovTech & EPIC team): treasury transparency, audit trails

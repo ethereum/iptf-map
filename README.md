@@ -1,8 +1,10 @@
 # Public Reference Materials
 
-The Institutional Privacy Task Force (IPTF) helps onboard institutions and enterprises onto Ethereum, with a focus on ensuring their privacy needs are met in a performant, secure, usable, and accessible way.
+> This repository was formerly `iptf-map`, published under the Institutional Privacy Task Force (now EthSystems).
 
-This folder contains public-facing documentation for IPTF, including technical patterns, use cases, regulatory frameworks, and vendor evaluations.
+EthSystems helps onboard institutions and enterprises onto Ethereum, with a focus on ensuring their privacy needs are met in a performant, secure, usable, and accessible way.
+
+This folder contains public-facing documentation for EthSystems, including technical patterns, use cases, regulatory frameworks, and vendor evaluations.
 
 ## Structure
 

@@ -54,24 +54,24 @@ Privacy L2 vendors claim 25k+ TPS, but institutions have no way to verify these 
 
 - [ ] Benchmark harness repo (open source, Docker-based)
 - [ ] CI pipeline that runs weekly and publishes results
-- [ ] Comparison dashboard (static site or markdown in iptf-map)
+- [ ] Comparison dashboard (static site or markdown in EthSystems Map)
 - [ ] Methodology document (how to interpret results, caveats)
-- [ ] Integration with iptf-map vendor pages (automated updates)
+- [ ] Integration with EthSystems Map vendor pages (automated updates)
 
 ## Dependencies
 
 **Requires:**
 - Public testnet access for target systems
-- Clear workload definitions (coordinate with IPTF team)
+- Clear workload definitions (coordinate with EthSystems team)
 - Trust schema from [Trust Assurance](rfp-trust-assurance.md) for complete picture
 
 **Enables:**
 - Data-driven vendor comparisons
-- Input to [L2 Privacy Comparison Matrix](https://github.com/ethereum/iptf-map/issues/27)
+- Input to [L2 Privacy Comparison Matrix](https://github.com/ethsystems/map/issues/27)
 - Credible "reality check" for institutional presentations
 
 ## See Also
 
-- [GitHub Issue #27](https://github.com/ethereum/iptf-map/issues/27) — Performance and trust assumptions mapping
+- [GitHub Issue #27](https://github.com/ethsystems/map/issues/27) — Performance and trust assumptions mapping
 - [Vendors](../vendors/) — Systems to benchmark
 - [Pattern: DvP Settlement](../patterns/pattern-dvp-erc7573.md) — Example workload

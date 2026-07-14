@@ -56,8 +56,8 @@ open_source_implementations:
   - url: https://github.com/0xMiden/miden-node
     description: "Miden zkVM client-side proving rollup"
     language: "Rust"
-  - url: https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-bond/privacy-l2
-    description: "IPTF PoC: private institutional bond on a privacy L2"
+  - url: https://github.com/ethsystems/pocs/tree/master/pocs/private-bond/privacy-l2
+    description: "EthSystems PoC: private institutional bond on a privacy L2"
     language: "Noir, Solidity"
 ---
 

@@ -16,7 +16,7 @@ supporting_patterns:
   - pattern-regulatory-disclosure-keys-proofs
   - pattern-private-pvp-stablecoins-erc7573
 
-iptf_pocs:
+pocs:
   folder: pocs/private-trade-settlement
   requirements: pocs/private-trade-settlement/REQUIREMENTS.md
   pocs:

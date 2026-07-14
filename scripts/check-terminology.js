@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * GLOSSARY.md Term Consistency Checker for IPTF Map
+ * GLOSSARY.md Term Consistency Checker for EthSystems Map
  * Parses GLOSSARY.md and checks all files for canonical term usage
  *
  * Usage:

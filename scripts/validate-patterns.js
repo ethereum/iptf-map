@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Pattern Validation Script for IPTF Map
+ * Pattern Validation Script for EthSystems Map
  * Validates pattern and vendor documents against PRD requirements
  */
 

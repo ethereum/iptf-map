@@ -37,7 +37,7 @@ Peer (ex-ZKP2P) is an open-source protocol that enables peer-to-peer fiat-to-cry
 
 ## Technical details
 
-- **Proof system**: Vendor-agnostic — supports TLSNotary, Primus, and ZKEmail as proof backends. TEE attestation service validates proofs and produces EIP-712 attestations.
+- **Proof system**: Vendor-agnostic; supports TLSNotary, Primus, and ZKEmail as proof backends. TEE attestation service validates proofs and produces EIP-712 attestations.
 - **Supported rails**: Venmo, Revolut, and additional payment providers supported via the V3 unified verification architecture.
 - **Settlement chain**: Ethereum and L2s.
 - **Client-side**: Browser extension handles TLS session co-signing and proof generation.
@@ -46,15 +46,15 @@ Peer (ex-ZKP2P) is an open-source protocol that enables peer-to-peer fiat-to-cry
 ## Strengths
 
 - Fully open-source protocol and client tooling
-- No custodial intermediary — settlement is peer-to-peer with onchain escrow
-- Payment privacy preserved — zero-knowledge proofs reveal necessary payment attributes without exposing full account details
+- No custodial intermediary; settlement is peer-to-peer with onchain escrow
+- Payment privacy preserved; zero-knowledge proofs reveal necessary payment attributes without exposing full account details
 - Extensible to payment rails with TLS-accessible confirmation endpoints
 - Permissionless participation for both liquidity providers and takers
 
 ## Risks and open questions
 
 - **TEE trust**: V3 relies on TEE attestation services for offchain proof verification. TEE hardware vulnerabilities (side-channel attacks, firmware exploits) could compromise attestation integrity.
-- **Attestor centralization**: Although rotating attestors distribute trust, the attestor set must be managed — a compromised or colluding majority could produce false attestations.
+- **Attestor centralization**: Although rotating attestors distribute trust, the attestor set must be managed: a compromised or colluding majority could produce false attestations.
 - **Notary trust**: Underlying zk-TLS still requires a trusted Notary to co-sign TLS sessions. Malicious or compromised Notary can forge proofs or deny service.
 - **Payment rail stability**: Changes to payment provider APIs or TLS configurations can break proof generation.
 - **Regulatory uncertainty**: P2P fiat-to-crypto onramps may face regulatory scrutiny depending on jurisdiction.

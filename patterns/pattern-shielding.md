@@ -44,8 +44,8 @@ open_source_implementations:
   - url: https://github.com/Railgun-Privacy/contract
     description: "Railgun shielded pool (L1, production)"
     language: "Solidity, Circom"
-  - url: https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment
-    description: "IPTF PoC (UltraHonk/Noir, research)"
+  - url: https://github.com/ethsystems/pocs/tree/master/pocs/private-payment
+    description: "EthSystems PoC (UltraHonk/Noir, research)"
     language: "Noir, Solidity"
   - url: https://github.com/AztecProtocol/aztec-packages
     description: "Aztec Network, privacy L2 with native shielding (production)"
@@ -108,5 +108,5 @@ Threat model:
 - [Railgun](../vendors/railgun.md)
 - [Hinkal](../vendors/hinkal.md)
 - [Aztec](../vendors/aztec.md)
-- [Exploring hardened shielded pools](https://iptf.ethereum.org/blog/exploring-hardened-shielded-pools/)
-- [Shielded-pool extension PoC](https://github.com/ethereum/iptf-pocs/tree/master/pocs/private-payment/shielded-pool-extension)
+- [Exploring hardened shielded pools](https://ethsystems.org/blog/exploring-hardened-shielded-pools/)
+- [Shielded-pool extension PoC](https://github.com/ethsystems/pocs/tree/master/pocs/private-payment/shielded-pool-extension)

@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://iptf-map.ethereum.org/schemas/pattern.json",
-  "title": "IPTF Pattern Frontmatter (v2)",
-  "description": "Schema for pattern document frontmatter in IPTF Map. All v1 aliases have been removed. Structured context_differentiation, crops_context, post_quantum, related_patterns, open_source_implementations, and meta-pattern support are the canonical shape.",
+  "$id": "https://ethsystems.org/schemas/pattern.json",
+  "title": "EthSystems Pattern Frontmatter (v2)",
+  "description": "Schema for pattern document frontmatter in EthSystems Map. All v1 aliases have been removed. Structured context_differentiation, crops_context, post_quantum, related_patterns, open_source_implementations, and meta-pattern support are the canonical shape.",
   "type": "object",
   "required": ["title", "status", "maturity", "crops_profile"],
   "properties": {

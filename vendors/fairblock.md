@@ -4,7 +4,7 @@ status: ready
 maturity: testnet
 ---
 
-# Fairblock — Cross-chain Confidential Transfers (lightweight homomorphic ops + ZK)
+# Fairblock: Cross-chain Confidential Transfers (lightweight homomorphic ops + ZK)
 
 ## What it is
 

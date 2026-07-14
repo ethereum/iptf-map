@@ -35,7 +35,7 @@ crops_profile:
   p: full | partial | none # Privacy (who sees what)
   s: high | medium | low # Security (trust model, assumptions)
 
-# Narrative context for each CROPS dimension — where the badges drift up or
+# Narrative context for each CROPS dimension: where the badges drift up or
 # down in practice. Replaces the ad-hoc "CROPS context" bullet in Trade-offs.
 crops_context:
   cr: "Reaches `high` on L1 permissionless pools. Drops to `low` on permissioned L2s with operator-controlled exit."
@@ -66,16 +66,16 @@ standards: [ERC-20, ERC-5564, EIP-7573]
 
 # Cross-references to other patterns. Replaces the old `dependencies` field
 # and the pattern-to-pattern links that used to live in `## See also`.
-# Each entry is a slug matching patterns/pattern-<slug>.md — no paths, just
+# Each entry is a slug matching patterns/pattern-<slug>.md: no paths, just
 # the slug. The validator resolves and checks the file exists.
 related_patterns:
-  requires: [pattern-shielding] # hard dependency — can't implement this without it
+  requires: [pattern-shielding] # hard dependency: can't implement this without it
   composes_with: [pattern-stealth-addresses] # works well together, optional
   alternative_to: [pattern-tee-based-privacy] # competing approach to the same problem
   see_also: [pattern-forced-withdrawal] # related for context
 
 # Known implementations (plural, neutral). Renamed from "reference
-# implementation" — that phrase has a specific meaning in standards contexts.
+# implementation"; that phrase has a specific meaning in standards contexts.
 open_source_implementations:
   - url: https://github.com/Railgun-Privacy/contract
     description: "Railgun shielded pool (L1, production)"
@@ -107,8 +107,8 @@ One short paragraph: the job this pattern does.
 What makes up this pattern. Primitives, on-chain code, and off-chain services
 all belong here. Each item gets a short note on its role.
 
-- <Primitive or module> — <role it plays>
-- <Primitive or module> — <role it plays>
+- <Primitive or module>: <role it plays>
+- <Primitive or module>: <role it plays>
 
 If a component is also a standalone pattern in this map, link it via
 `related_patterns` rather than describing it in depth here.
@@ -147,7 +147,7 @@ not here.
 
 ## Example
 
-"Bank A sells €5m zero-coupon to Bank B…" — 3-5 bullets showing flow.
+"Bank A sells €5m zero-coupon to Bank B…": 3-5 bullets showing flow.
 Optional for `type: meta` patterns.
 
 ## See also
