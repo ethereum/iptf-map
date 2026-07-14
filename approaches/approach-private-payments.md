@@ -309,7 +309,7 @@ example_vendors: [taceo-merces]
 ### Resilient Disbursement Rails
 
 ```yaml
-maturity: documented
+maturity: prototyped
 context: i2u
 crops: { cr: high, o: yes, p: full, s: high }
 uses_patterns:
@@ -357,7 +357,7 @@ example_vendors: []
 - Recipients have reliable internet and modern wallet capability (use the institutional rails: L1 Shielded, Privacy L2, or Stateless Plasma, with viewing keys instead)
 - Single-jurisdiction deployment cannot meet relay-set floors
 
-**Implementation notes:** Spec stage; PoC forthcoming. Production dependencies: Tor, Briar, Meshtastic, EAL4+ secure elements (Keycard-class), Noir + UltraHonk for ECDSA-in-SNARK at the relay. Cohort attestation uses ECDSA-pubkey leaves so the smartcard signs ECDSA only; in-circuit Poseidon hashing happens at the relay. Rotating EOAs funded via shielded unshield handle relay submission.
+**Implementation notes:** Production dependencies: Tor, Briar, Meshtastic, EAL4+ secure elements (Keycard-class), Noir + UltraHonk for ECDSA-in-SNARK at the relay. Cohort attestation uses ECDSA-pubkey leaves so the smartcard signs ECDSA only; in-circuit Poseidon hashing happens at the relay. Rotating EOAs funded via shielded unshield handle relay submission.
 
 ## Comparison
 

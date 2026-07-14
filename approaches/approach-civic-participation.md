@@ -48,7 +48,7 @@ An organising body collects a verifiable threshold of signatures from credential
 ### Resilient Civic Participation Protocol
 
 ```yaml
-maturity: concept
+maturity: prototyped
 context: both
 crops: { cr: high, o: yes, p: full, s: high }
 uses_patterns: [pattern-forward-secure-pseudorandom-tree, pattern-blob-anchored-state-with-dispute, pattern-private-mtp-auth, pattern-zk-proof-systems, pattern-verifiable-attestation, pattern-relay-mediated-proving, pattern-network-anonymity, pattern-focil-eip7805]
