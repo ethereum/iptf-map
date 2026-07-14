@@ -378,7 +378,7 @@ example_vendors: []
 
 ### Business perspective
 
-For institutional treasury at moderate volume with standard compliance needs, the default described in `## Recommendation` is the Hybrid L1/L2 composition: Privacy L2 absorbs the high-frequency intra-bank flow and L1 Shielded Payments handles high-value or anonymity-sensitive transfers. Cost is predictable, sequencer trust during rollup decentralization is the main accepted risk. Stateless Plasma is reserved for treasuries with sustained high volume that justify operator infrastructure and user-side state custody. MPC-Based Privacy fits bilateral settlement with named counterparties, where address-level privacy is not the concern. Resilient Disbursement Rails is reserved for humanitarian programs whose donor policy already names the threat model.
+For institutional treasury at moderate volume with standard compliance needs, the default described in `Recommendation` is the Hybrid L1/L2 composition: Privacy L2 absorbs the high-frequency intra-bank flow and L1 Shielded Payments handles high-value or anonymity-sensitive transfers. Cost is predictable, sequencer trust during rollup decentralization is the main accepted risk. Stateless Plasma is reserved for treasuries with sustained high volume that justify operator infrastructure and user-side state custody. MPC-Based Privacy fits bilateral settlement with named counterparties, where address-level privacy is not the concern. Resilient Disbursement Rails is reserved for humanitarian programs whose donor policy already names the threat model.
 
 ### Technical perspective
 
