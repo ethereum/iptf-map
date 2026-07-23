@@ -27,7 +27,7 @@ Zama develops open-source Fully Homomorphic Encryption (FHE) tooling and operate
 
 Contracts import the FHEVM Solidity library and use encrypted types (`euint8` to `euint256`, `ebool`, `eaddress`). Each encrypted value is referenced on-chain by a 32-byte handle. Zama's documentation places the ciphertext itself "off-chain, with the coprocessor" and the handle on-chain as the identifier pointing to it. FHE operations run symbolically on the host chain, generating new handles and emitting events, while a network of coprocessors performs the computation using TFHE-rs.
 
-The protocol has five components: the FHEVM Solidity library; host contracts that enforce access control and emit events; coprocessors that verify inputs, execute FHE operations and store ciphertexts; the Gateway, a dedicated Arbitrum rollup that orchestrates input validation, decryption and bridging; and a threshold multi-party computation Key Management Service.
+The protocol combines the FHEVM Solidity library; host contracts that enforce access control and emit events; coprocessors that verify inputs, execute FHE operations and store ciphertexts; the Gateway, a dedicated Arbitrum rollup that orchestrates input validation, decryption and bridging; and a threshold multi-party computation Key Management Service. Relayer and oracle services connect users and contracts to the Gateway and are not part of the trusted base.
 
 ## Privacy domains
 
@@ -51,20 +51,21 @@ The protocol has five components: the FHEVM Solidity library; host contracts tha
 
 ## Strengths
 
-- Runs on existing chains, so users do not bridge to a separate network
+- Host contracts deploy onto existing chains, EVM or non-EVM, so users do not move to a dedicated network
 - Composable between confidential contracts and with non-confidential ones
+- Every FHE computation and input verification carries a commitment and a signature, so anyone can recompute the result and check it independently
+- No single party ever holds the decryption key: it is secret-shared across the threshold network, and each decryption is authorized by the Access Control List and logged through the Gateway
+- Confidential contracts are written in plain Solidity, without a new language or cryptography expertise
 - Compliance rules are defined by each application in its own contracts rather than by the protocol
-- The FHE scheme is post-quantum
+- Audited by Trail of Bits and Zenith
+- The FHE and multi-party computation layers are post-quantum
 
 ## Risks and open questions
 
-- Decryption depends on the threshold Key Management Service: 13 multi-party computation nodes, with a documented threshold example of 9 of 13, giving a correct output with up to one third malicious nodes
-- Those nodes run inside AWS Nitro Enclaves, so verifiability rests partly on hardware assumptions. Zama states the goal is to add zero-knowledge proofs to the multi-party computation protocol to remove that dependency
-- Coprocessor correctness rests on a majority-honest assumption, backed by staking and slashing
-- The zero-knowledge proof used for input verification is not yet post-quantum, unlike the FHE and multi-party computation layers
+- The trust model is layered: decryption runs through a threshold Key Management Service of 13 multi-party computation nodes, with a documented threshold example of 9 of 13 and tolerance up to one third malicious; those nodes run inside AWS Nitro Enclaves, so verifiability rests partly on hardware assumptions; and coprocessor correctness rests on a majority-honest assumption backed by staking and slashing. Zama states the goal is to add zero-knowledge proofs to the multi-party computation protocol to remove the hardware dependency
 - Operators can pause the protocol and blacklist addresses, and the Access Control List carries an account deny list
-- Interoperability between Fully Homomorphic Encryption networks is still emerging
-- Throughput and cost stay above plaintext execution, and protocol support beyond Ethereum mainnet is roadmap rather than shipped
+- Open source under a dual license: free for non-commercial use, with a commercial license required for use outside the Zama Protocol
+- Cost and latency stay above plaintext execution, and protocol support beyond Ethereum mainnet is roadmap rather than shipped
 
 ## Links
 
