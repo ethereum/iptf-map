@@ -4,6 +4,8 @@ All notable changes to the EthSystems Map are documented here.
 
 ## [Unreleased]
 
+- fix(vendor): [Zama](vendors/zama.md) — mainnet maturity, symbolic-execution architecture, TFHE-rs, ERC-7984; sync fhEVM status and docs link in [Private Shared State (FHE)](patterns/pattern-private-shared-state-fhe.md) ([#180](https://github.com/ethsystems/map/pull/180))
+
 ## [0.4.0] - 2026-07-02
 
 23 commits, 166 files changed since [v0.3.0](https://github.com/ethsystems/map/releases/tag/v0.3.0) (Apr 2026). Major additions: resilience use cases (civic participation, disbursement rails, identity continuity), I2U protection patterns, pattern/approach schema v2 (strict flip) with CROPS and post-quantum analysis, domain reframing beyond FIs, and a Q2 2026 content QA audit.
