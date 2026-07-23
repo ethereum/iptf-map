@@ -52,13 +52,11 @@ The protocol combines the FHEVM Solidity library; host contracts that enforce ac
 ## Strengths
 
 - Host contracts deploy onto existing chains, EVM or non-EVM, so users do not move to a dedicated network
-- Composable between confidential contracts and with non-confidential ones
+- Composable between confidential contracts and with non-confidential ones, and contracts are written in plain Solidity rather than a new language
 - Every FHE computation and input verification carries a commitment and a signature, so anyone can recompute the result and check it independently
-- No single party ever holds the decryption key: it is secret-shared across the threshold network, and each decryption is authorized by the Access Control List and logged through the Gateway
-- Confidential contracts are written in plain Solidity, without a new language or cryptography expertise
+- No single party ever holds the decryption key: it is secret-shared across the threshold network, and each decryption is authorized by the Access Control List
 - Compliance rules are defined by each application in its own contracts rather than by the protocol
-- Audited by Trail of Bits and Zenith
-- The FHE and multi-party computation layers are post-quantum
+- Audited by Trail of Bits and Zenith, and the FHE and multi-party computation layers are post-quantum
 
 ## Risks and open questions
 
